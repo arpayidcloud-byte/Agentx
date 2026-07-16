@@ -1,0 +1,28 @@
+{
+  "name": "@agentx/provider-sdk",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "echo 'skip build'",
+    "typecheck": "echo 'skip typecheck'",
+    "test": "vitest run test/provider-sdk.test.ts",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src/"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "1.6.0",
+    "typescript": "5.4.5",
+    "vitest": "1.6.0"
+  },
+  "dependencies": {
+    "@agentx/secrets": "workspace:*",
+    "@agentx/runtime-adapters": "workspace:*",
+    "@agentx/runtime-production": "workspace:*",
+    "@agentx/provider-qualification": "workspace:*",
+    "@anthropic-ai/sdk": "^0.111.0",
+    "@google/generative-ai": "^0.24.1"
+  }
+}

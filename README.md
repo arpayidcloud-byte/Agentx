@@ -1,15 +1,20 @@
-# AgentX
+# AgentX Platform
+> Provider-agnostic, multi-agent AI software-engineering platform.
 
-AgentX is an enterprise-grade, provider-agnostic multi-agent AI runtime platform.
+## Quick Start
+```bash
+pnpm install
+docker compose up -d
+cp .env.example .env
+pnpm build
+pnpm test
+```
 
 ## Architecture
+Please see [ARCHITECTURE.md](./ARCHITECTURE.md).
 
-Architecture Handbook:
-https://github.com/arpayidcloud-byte/agentx-handbook
+## Contributing
+Please read [CONTRIBUTING.md](./CONTRIBUTING.md).
 
-## Status
-
-🚧 Under active development.
-
-Current milestone:
-- v0.1 CLI Foundation
+## Handbook
+The full architecture specification and authoritative documentation live in the separate `agentx-handbook` repository.

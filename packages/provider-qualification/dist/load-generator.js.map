@@ -1,0 +1,1 @@
+{"version":3,"file":"load-generator.js","sourceRoot":"","sources":["../src/load-generator.ts"],"names":[],"mappings":"AAAA;;;GAGG;AAEH,MAAM,OAAO,aAAa;IACxB,QAAQ,CAAC,QAAgB,EAAE,UAAkB;QAC3C,OAAO,IAAI,OAAO,CAAC,OAAO,CAAC,EAAE;YAC3B,UAAU,CAAC,OAAO,EAAE,UAAU,CAAC,CAAC,CAAC,YAAY;QAC/C,CAAC,CAAC,CAAC;IACL,CAAC;CACF"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"git-commit.d.ts","sourceRoot":"","sources":["../../src/git/git-commit.ts"],"names":[],"mappings":"AAAA;;;;GAIG;AAEH,OAAO,EAAE,mBAAmB,EAAE,kBAAkB,EAAE,mBAAmB,EAAE,MAAM,iBAAiB,CAAC;AAI/F;;GAEG;AACH,qBAAa,aAAa;IACxB,OAAO,CAAC,QAAQ,CAAc;gBAElB,OAAO,EAAE,mBAAmB;IAIxC;;;;OAIG;IACG,OAAO,CAAC,OAAO,EAAE,mBAAmB,GAAG,OAAO,CAAC,kBAAkB,CAAC;IAqBxE;;OAEG;IACH,eAAe;CAGhB"}

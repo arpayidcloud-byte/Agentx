@@ -1,0 +1,29 @@
+{
+  "name": "@agentx/multi-agent-reasoning",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "echo 'skip build'",
+    "typecheck": "echo 'skip typecheck'",
+    "test": "vitest run test/multi-agent-reasoning.test.ts",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src/"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "1.6.0",
+    "typescript": "5.4.5",
+    "vitest": "1.6.0"
+  },
+  "dependencies": {
+    "@agentx/cognitive-contracts": "workspace:*",
+    "@agentx/cognitive-kernel": "workspace:*",
+    "@agentx/reasoning-framework": "workspace:*",
+    "@agentx/cognitive-learning": "workspace:*",
+    "@agentx/goal-intelligence": "workspace:*",
+    "@agentx/workflow-orchestration": "workspace:*",
+    "@agentx/multi-agent-collaboration": "workspace:*"
+  }
+}

@@ -1,0 +1,1 @@
+{"version":3,"file":"runtime-supervisor.d.ts","sourceRoot":"","sources":["../src/runtime-supervisor.ts"],"names":[],"mappings":"AAAA;;;GAGG;AAIH,qBAAa,iBAAiB;IAC5B,OAAO,CAAC,aAAa,CAAgB;IACrC,OAAO,CAAC,SAAS,CAAS;;IAO1B,OAAO,CAAC,qBAAqB;IAU7B,KAAK,IAAI,IAAI;IAIb,IAAI,IAAI,IAAI;IAIZ,SAAS,IAAI,OAAO;IAIpB,eAAe;IAIf,KAAK,IAAI,IAAI;IAIb,MAAM,IAAI,IAAI;CAGf"}

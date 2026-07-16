@@ -1,0 +1,17 @@
+/**
+ * @module cognitive-kernel/kernel-dispatcher
+ * @description Dispatches tasks to appropriate engine handlers.
+ */
+
+import { EngineContract } from './interfaces.js';
+import { DispatcherError } from './errors.js';
+
+export class KernelDispatcher {
+  async dispatch(engine: EngineContract, input: unknown): Promise<unknown> {
+    try {
+      return await engine.execute(input);
+    } catch (err: any) {
+      throw new DispatcherError(`Failed to dispatch task: ${err.message}`, 'dispatcher');
+    }
+  }
+}

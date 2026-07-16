@@ -1,0 +1,1 @@
+{"version":3,"file":"sub-agent-factory.d.ts","sourceRoot":"","sources":["../../src/sub-agents/sub-agent-factory.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,SAAS,EAAE,QAAQ,EAAE,MAAM,iBAAiB,CAAC;AAYtD,qBAAa,eAAe;IACnB,WAAW,CAAC,IAAI,EAAE,SAAS,GAAG,QAAQ;CAc9C"}

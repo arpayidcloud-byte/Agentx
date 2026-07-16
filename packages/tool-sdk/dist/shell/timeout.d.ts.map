@@ -1,0 +1,1 @@
+{"version":3,"file":"timeout.d.ts","sourceRoot":"","sources":["../../src/shell/timeout.ts"],"names":[],"mappings":"AAAA;;;;GAIG;;AAEH,OAAO,EAAE,aAAa,EAAE,MAAM,iBAAiB,CAAC;AAShD;;;;GAIG;AACH,wBAAgB,uBAAuB,CACrC,MAAM,GAAE,OAAO,CAAC,aAAa,CAAM,GAClC;IAAE,UAAU,EAAE,eAAe,CAAC;IAAC,OAAO,EAAE,MAAM,IAAI,CAAA;CAAE,CAsBtD;AAED;;;GAGG;AACH,wBAAgB,uBAAuB,IAAI,aAAa,CAEvD"}

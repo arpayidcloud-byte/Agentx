@@ -1,0 +1,83 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Memory Engine Models (Volume 6)
+model Task {
+  id                String   @id @default(uuid())
+  goal              String
+  state             String
+  parentTaskId      String?
+  taskGraphId       String?
+  assignedAgentRole String?
+  dependsOn         String[] // Stored as JSON array or via relation
+  requiresApproval  Boolean  @default(false)
+  traceId           String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  tenantId          String?  // Added for Volume 10
+}
+
+model TaskGraph {
+  id        String   @id @default(uuid())
+  status    String
+  createdAt DateTime @default(now())
+}
+
+model AgentResult {
+  id        String   @id @default(uuid())
+  taskId    String
+  role      String
+  output    String
+  createdAt DateTime @default(now())
+}
+
+model AuditEvent {
+  id            String   @id @default(uuid())
+  topic         String
+  traceId       String
+  payload       Json
+  occurredAt    DateTime @default(now())
+  
+  // Immutability hashes (RFC-0024)
+  record_hash   String
+  previous_hash String
+}
+
+model CostRecord {
+  id           String   @id @default(uuid())
+  taskId       String
+  providerId   String
+  inputTokens  Int
+  outputTokens Int
+  costUsd      Float
+  createdAt    DateTime @default(now())
+}
+
+// Enterprise Models (Volume 10 / RFC-0026, RFC-0032, RFC-0037)
+model prompt_version {
+  agent_id String
+  version  String
+  content  String
+  @@id([agent_id, version])
+}
+
+model role_assignment {
+  identityId String
+  roleId     String
+  scope      String
+  scopeId    String
+  @@id([identityId, roleId, scope, scopeId])
+}
+
+model org_config {
+  organization_id String
+  key             String
+  value           String
+  @@id([organization_id, key])
+}

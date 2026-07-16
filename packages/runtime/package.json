@@ -1,0 +1,31 @@
+{
+  "name": "@agentx/runtime",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src/"
+  },
+  "dependencies": {
+    "@agentx/shared": "workspace:*",
+    "@agentx/core-runtime": "workspace:*",
+    "@agentx/tool-sdk": "workspace:*",
+    "@agentx/agent-platform": "workspace:*",
+    "@agentx/workflow-engine": "workspace:*",
+    "@agentx/context-engine": "workspace:*",
+    "@agentx/memory-engine": "workspace:*",
+    "@agentx/knowledge-engine": "workspace:*",
+    "@agentx/planning-engine": "workspace:*"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "1.6.0",
+    "typescript": "5.4.5",
+    "vitest": "1.6.0"
+  }
+}

@@ -1,0 +1,65 @@
+/**
+ * @module git/git-branch
+ * @description Git branch tool implementation.
+ * Provides read-only git branch query within sandbox.
+ */
+import { GitExecutor } from './executor.js';
+/**
+ * Git branch tool for listing branches
+ */
+export class GitBranchTool {
+    executor;
+    constructor(context) {
+        this.executor = new GitExecutor(context);
+    }
+    /**
+     * Executes git branch command
+     * @param request - The execution request
+     * @returns Execution result with parsed branches
+     */
+    async execute(request) {
+        const result = await this.executor.execute({
+            ...request,
+            operation: 'git.branch',
+        });
+        if (result.allowed && result.exitCode === 0) {
+            result.parsedOutput = {
+                operation: 'git.branch',
+                raw: result.stdout,
+                data: this.parseBranches(result.stdout),
+            };
+        }
+        return result;
+    }
+    /**
+     * Parses git branch output
+     * @param output - Raw git branch output
+     * @returns Parsed GitBranchOutput
+     */
+    parseBranches(output) {
+        const branches = [];
+        const lines = output.split('\n').filter(line => line.trim().length > 0);
+        for (const line of lines) {
+            const trimmed = line.trim();
+            const current = trimmed.startsWith('* ');
+            const name = current ? trimmed.substring(2) : trimmed;
+            const remote = name.startsWith('remotes/');
+            if (name && !name.startsWith('HEAD ->')) {
+                branches.push({
+                    name: name.replace('remotes/origin/', ''),
+                    current,
+                    remote,
+                    lastCommit: undefined,
+                });
+            }
+        }
+        return { branches };
+    }
+    /**
+     * Gets the audit emitter
+     */
+    getAuditEmitter() {
+        return this.executor.getAuditEmitter();
+    }
+}
+//# sourceMappingURL=git-branch.js.map

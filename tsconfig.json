@@ -1,0 +1,20 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/shared" },
+    { "path": "./packages/secrets" },
+    { "path": "./packages/core-runtime" },
+    { "path": "./packages/provider-sdk" },
+    { "path": "./packages/tool-sdk" },
+    { "path": "./packages/agent-platform" },
+    { "path": "./packages/workflow-engine" },
+    { "path": "./packages/memory-engine" },
+    { "path": "./packages/plugin-sdk" },
+    { "path": "./packages/auth" },
+    { "path": "./packages/handbook-lint" },
+    { "path": "./tooling/eslint-plugin-internal" },
+    { "path": "./apps/cli" }
+    , { "path": "../context-engine" }, { "path": "../knowledge-engine" }, { "path": "../planning-engine" }
+    , { "path": "../runtime" }
+  ]
+}

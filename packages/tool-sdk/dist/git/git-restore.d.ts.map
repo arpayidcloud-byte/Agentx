@@ -1,0 +1,1 @@
+{"version":3,"file":"git-restore.d.ts","sourceRoot":"","sources":["../../src/git/git-restore.ts"],"names":[],"mappings":"AAAA;;;;GAIG;AAEH,OAAO,EAAE,mBAAmB,EAAE,kBAAkB,EAAE,mBAAmB,EAAE,MAAM,iBAAiB,CAAC;AAG/F;;GAEG;AACH,qBAAa,cAAc;IACzB,OAAO,CAAC,QAAQ,CAAc;gBAElB,OAAO,EAAE,mBAAmB;IAIxC;;;;OAIG;IACG,OAAO,CAAC,OAAO,EAAE,mBAAmB,GAAG,OAAO,CAAC,kBAAkB,CAAC;IAOxE;;OAEG;IACH,eAAe;CAGhB"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"fault-injector.js","sourceRoot":"","sources":["../src/fault-injector.ts"],"names":[],"mappings":"AAAA;;;GAGG;AAEH,MAAM,OAAO,aAAa;IACxB,WAAW;QACT,kBAAkB;IACpB,CAAC;IAED,WAAW,CAAC,EAAU;QACpB,OAAO,IAAI,OAAO,CAAC,OAAO,CAAC,EAAE,CAAC,UAAU,CAAC,OAAO,EAAE,EAAE,CAAC,CAAC,CAAC;IACzD,CAAC;IAED,gBAAgB;QACd,uBAAuB;IACzB,CAAC;CACF"}
