@@ -66,42 +66,23 @@ importers:
         specifier: 1.6.0
         version: 1.6.0(@types/node@20.19.43)
 
-  packages/agent-platform:
+  packages/agent/agent-platform:
     dependencies:
       '@agentx/core-runtime':
         specifier: workspace:*
-        version: link:../core-runtime
+        version: link:../../shared/core-runtime
       '@agentx/provider-sdk':
         specifier: workspace:*
-        version: link:../provider-sdk
+        version: link:../../provider/provider-sdk
       '@agentx/secrets':
         specifier: workspace:*
-        version: link:../secrets
+        version: link:../../shared/secrets
       '@agentx/shared':
         specifier: workspace:*
-        version: link:../shared
+        version: link:../../shared/shared
       '@agentx/tool-sdk':
         specifier: workspace:*
-        version: link:../tool-sdk
-    devDependencies:
-      '@vitest/coverage-v8':
-        specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@20.19.43))
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
-      vitest:
-        specifier: 1.6.0
-        version: 1.6.0(@types/node@20.19.43)
-
-  packages/architecture-sdk:
-    dependencies:
-      '@agentx/runtime-adapters':
-        specifier: workspace:*
-        version: link:../runtime-adapters
-      '@agentx/runtime-production':
-        specifier: workspace:*
-        version: link:../runtime-production
+        version: link:../../shared/tool-sdk
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 1.6.0
@@ -113,23 +94,11 @@ importers:
         specifier: 1.6.0
         version: 1.6.0(@types/node@26.1.1)
 
-  packages/auth:
-    devDependencies:
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
-      vitest:
-        specifier: 1.6.0
-        version: 1.6.0(@types/node@20.19.43)
-
-  packages/cognitive-contracts:
+  packages/agent/multi-agent-collaboration:
     dependencies:
       '@agentx/runtime-adapters':
         specifier: workspace:*
-        version: link:../runtime-adapters
-      '@agentx/runtime-production':
-        specifier: workspace:*
-        version: link:../runtime-production
+        version: link:../../runtime/runtime-adapters
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 1.6.0
@@ -141,14 +110,86 @@ importers:
         specifier: 1.6.0
         version: 1.6.0(@types/node@26.1.1)
 
-  packages/cognitive-kernel:
+  packages/agent/multi-agent-reasoning:
+    dependencies:
+      '@agentx/cognitive-contracts':
+        specifier: workspace:*
+        version: link:../../cognitive/cognitive-contracts
+      '@agentx/cognitive-kernel':
+        specifier: workspace:*
+        version: link:../../cognitive/cognitive-kernel
+      '@agentx/cognitive-learning':
+        specifier: workspace:*
+        version: link:../../cognitive/cognitive-learning
+      '@agentx/goal-intelligence':
+        specifier: workspace:*
+        version: link:../../planning/goal-intelligence
+      '@agentx/multi-agent-collaboration':
+        specifier: workspace:*
+        version: link:../multi-agent-collaboration
+      '@agentx/reasoning-framework':
+        specifier: workspace:*
+        version: link:../../reasoning/reasoning-framework
+      '@agentx/workflow-orchestration':
+        specifier: workspace:*
+        version: link:../../workflow/workflow-orchestration
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 1.6.0
+        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@types/node@26.1.1)
+
+  packages/cognitive/autonomous-cognition:
+    dependencies:
+      '@agentx/core-runtime':
+        specifier: workspace:*
+        version: link:../../shared/core-runtime
+      '@agentx/shared':
+        specifier: workspace:*
+        version: link:../../shared/shared
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 1.6.0
+        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@types/node@26.1.1)
+
+  packages/cognitive/cognitive-contracts:
+    dependencies:
+      '@agentx/runtime-adapters':
+        specifier: workspace:*
+        version: link:../../runtime/runtime-adapters
+      '@agentx/runtime-production':
+        specifier: workspace:*
+        version: link:../../runtime/runtime-production
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 1.6.0
+        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@types/node@26.1.1)
+
+  packages/cognitive/cognitive-kernel:
     dependencies:
       '@agentx/cognitive-contracts':
         specifier: workspace:*
         version: link:../cognitive-contracts
       '@agentx/runtime-adapters':
         specifier: workspace:*
-        version: link:../runtime-adapters
+        version: link:../../runtime/runtime-adapters
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 1.6.0
@@ -160,7 +201,7 @@ importers:
         specifier: 1.6.0
         version: 1.6.0(@types/node@26.1.1)
 
-  packages/cognitive-learning:
+  packages/cognitive/cognitive-learning:
     dependencies:
       '@agentx/cognitive-contracts':
         specifier: workspace:*
@@ -170,7 +211,7 @@ importers:
         version: link:../cognitive-kernel
       '@agentx/reasoning-algorithms':
         specifier: workspace:*
-        version: link:../reasoning-algorithms
+        version: link:../../reasoning/reasoning-algorithms
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 1.6.0
@@ -182,7 +223,456 @@ importers:
         specifier: 1.6.0
         version: 1.6.0(@types/node@26.1.1)
 
-  packages/context-engine:
+  packages/distributed/distributed-cognition:
+    dependencies:
+      '@agentx/cognitive-contracts':
+        specifier: workspace:*
+        version: link:../../cognitive/cognitive-contracts
+      '@agentx/core-runtime':
+        specifier: workspace:*
+        version: link:../../shared/core-runtime
+      '@agentx/shared':
+        specifier: workspace:*
+        version: link:../../shared/shared
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 1.6.0
+        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@types/node@26.1.1)
+
+  packages/planning/goal-intelligence:
+    dependencies:
+      '@agentx/cognitive-contracts':
+        specifier: workspace:*
+        version: link:../../cognitive/cognitive-contracts
+      '@agentx/cognitive-kernel':
+        specifier: workspace:*
+        version: link:../../cognitive/cognitive-kernel
+      '@agentx/cognitive-learning':
+        specifier: workspace:*
+        version: link:../../cognitive/cognitive-learning
+      '@agentx/reasoning-algorithms':
+        specifier: workspace:*
+        version: link:../../reasoning/reasoning-algorithms
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 1.6.0
+        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@types/node@26.1.1)
+
+  packages/planning/planning-engine:
+    dependencies:
+      '@agentx/core-runtime':
+        specifier: workspace:*
+        version: link:../../shared/core-runtime
+      '@agentx/shared':
+        specifier: workspace:*
+        version: link:../../shared/shared
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 1.6.0
+        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@types/node@26.1.1)
+
+  packages/platform/developer-platform:
+    dependencies:
+      '@agentx/shared':
+        specifier: workspace:*
+        version: link:../../shared/shared
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 1.6.0
+        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@types/node@26.1.1)
+
+  packages/provider/native-providers:
+    dependencies:
+      '@agentx/runtime-adapters':
+        specifier: workspace:*
+        version: link:../../runtime/runtime-adapters
+      '@agentx/runtime-production':
+        specifier: workspace:*
+        version: link:../../runtime/runtime-production
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 1.6.0
+        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@types/node@26.1.1)
+
+  packages/provider/provider-qualification:
+    dependencies:
+      '@agentx/agent-platform':
+        specifier: workspace:*
+        version: link:../../agent/agent-platform
+      '@agentx/context-engine':
+        specifier: workspace:*
+        version: link:../../shared/context-engine
+      '@agentx/core-runtime':
+        specifier: workspace:*
+        version: link:../../shared/core-runtime
+      '@agentx/knowledge-engine':
+        specifier: workspace:*
+        version: link:../../shared/knowledge-engine
+      '@agentx/memory-engine':
+        specifier: workspace:*
+        version: link:../../shared/memory-engine
+      '@agentx/planning-engine':
+        specifier: workspace:*
+        version: link:../../planning/planning-engine
+      '@agentx/runtime':
+        specifier: workspace:*
+        version: link:../../runtime/runtime
+      '@agentx/runtime-adapters':
+        specifier: workspace:*
+        version: link:../../runtime/runtime-adapters
+      '@agentx/runtime-production':
+        specifier: workspace:*
+        version: link:../../runtime/runtime-production
+      '@agentx/shared':
+        specifier: workspace:*
+        version: link:../../shared/shared
+      '@agentx/tool-sdk':
+        specifier: workspace:*
+        version: link:../../shared/tool-sdk
+      '@agentx/workflow-engine':
+        specifier: workspace:*
+        version: link:../../workflow/workflow-engine
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 1.6.0
+        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@types/node@26.1.1)
+
+  packages/provider/provider-release:
+    dependencies:
+      '@agentx/provider-qualification':
+        specifier: workspace:*
+        version: link:../provider-qualification
+      '@agentx/provider-sdk':
+        specifier: workspace:*
+        version: link:../provider-sdk
+      '@agentx/runtime-adapters':
+        specifier: workspace:*
+        version: link:../../runtime/runtime-adapters
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 1.6.0
+        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@types/node@26.1.1)
+
+  packages/provider/provider-sdk:
+    dependencies:
+      '@agentx/provider-qualification':
+        specifier: workspace:*
+        version: link:../provider-qualification
+      '@agentx/runtime-adapters':
+        specifier: workspace:*
+        version: link:../../runtime/runtime-adapters
+      '@agentx/runtime-production':
+        specifier: workspace:*
+        version: link:../../runtime/runtime-production
+      '@agentx/secrets':
+        specifier: workspace:*
+        version: link:../../shared/secrets
+      '@anthropic-ai/sdk':
+        specifier: ^0.111.0
+        version: 0.111.0
+      '@google/generative-ai':
+        specifier: ^0.24.1
+        version: 0.24.1
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 1.6.0
+        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@types/node@26.1.1)
+
+  packages/provider/vendor-certification:
+    dependencies:
+      '@agentx/runtime-adapters':
+        specifier: workspace:*
+        version: link:../../runtime/runtime-adapters
+      '@agentx/runtime-production':
+        specifier: workspace:*
+        version: link:../../runtime/runtime-production
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 1.6.0
+        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@types/node@26.1.1)
+
+  packages/quality/architecture-sdk:
+    dependencies:
+      '@agentx/runtime-adapters':
+        specifier: workspace:*
+        version: link:../../runtime/runtime-adapters
+      '@agentx/runtime-production':
+        specifier: workspace:*
+        version: link:../../runtime/runtime-production
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 1.6.0
+        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@types/node@26.1.1)
+
+  packages/quality/production-quality:
+    dependencies:
+      '@agentx/runtime-adapters':
+        specifier: workspace:*
+        version: link:../../runtime/runtime-adapters
+      '@agentx/runtime-production':
+        specifier: workspace:*
+        version: link:../../runtime/runtime-production
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 1.6.0
+        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@types/node@26.1.1)
+
+  packages/reasoning/reasoning-algorithms:
+    dependencies:
+      '@agentx/cognitive-contracts':
+        specifier: workspace:*
+        version: link:../../cognitive/cognitive-contracts
+      '@agentx/cognitive-kernel':
+        specifier: workspace:*
+        version: link:../../cognitive/cognitive-kernel
+      '@agentx/reasoning-framework':
+        specifier: workspace:*
+        version: link:../reasoning-framework
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 1.6.0
+        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@types/node@26.1.1)
+
+  packages/reasoning/reasoning-framework:
+    dependencies:
+      '@agentx/cognitive-contracts':
+        specifier: workspace:*
+        version: link:../../cognitive/cognitive-contracts
+      '@agentx/cognitive-kernel':
+        specifier: workspace:*
+        version: link:../../cognitive/cognitive-kernel
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 1.6.0
+        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@types/node@26.1.1)
+
+  packages/runtime/enterprise-runtime:
+    dependencies:
+      '@agentx/core-runtime':
+        specifier: workspace:*
+        version: link:../../shared/core-runtime
+      '@agentx/shared':
+        specifier: workspace:*
+        version: link:../../shared/shared
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 1.6.0
+        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@types/node@26.1.1)
+
+  packages/runtime/runtime:
+    dependencies:
+      '@agentx/agent-platform':
+        specifier: workspace:*
+        version: link:../../agent/agent-platform
+      '@agentx/context-engine':
+        specifier: workspace:*
+        version: link:../../shared/context-engine
+      '@agentx/core-runtime':
+        specifier: workspace:*
+        version: link:../../shared/core-runtime
+      '@agentx/knowledge-engine':
+        specifier: workspace:*
+        version: link:../../shared/knowledge-engine
+      '@agentx/memory-engine':
+        specifier: workspace:*
+        version: link:../../shared/memory-engine
+      '@agentx/planning-engine':
+        specifier: workspace:*
+        version: link:../../planning/planning-engine
+      '@agentx/shared':
+        specifier: workspace:*
+        version: link:../../shared/shared
+      '@agentx/tool-sdk':
+        specifier: workspace:*
+        version: link:../../shared/tool-sdk
+      '@agentx/workflow-engine':
+        specifier: workspace:*
+        version: link:../../workflow/workflow-engine
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 1.6.0
+        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@types/node@26.1.1)
+
+  packages/runtime/runtime-adapters:
+    dependencies:
+      '@agentx/agent-platform':
+        specifier: workspace:*
+        version: link:../../agent/agent-platform
+      '@agentx/context-engine':
+        specifier: workspace:*
+        version: link:../../shared/context-engine
+      '@agentx/core-runtime':
+        specifier: workspace:*
+        version: link:../../shared/core-runtime
+      '@agentx/knowledge-engine':
+        specifier: workspace:*
+        version: link:../../shared/knowledge-engine
+      '@agentx/memory-engine':
+        specifier: workspace:*
+        version: link:../../shared/memory-engine
+      '@agentx/planning-engine':
+        specifier: workspace:*
+        version: link:../../planning/planning-engine
+      '@agentx/runtime':
+        specifier: workspace:*
+        version: link:../runtime
+      '@agentx/runtime-production':
+        specifier: workspace:*
+        version: link:../runtime-production
+      '@agentx/shared':
+        specifier: workspace:*
+        version: link:../../shared/shared
+      '@agentx/tool-sdk':
+        specifier: workspace:*
+        version: link:../../shared/tool-sdk
+      '@agentx/workflow-engine':
+        specifier: workspace:*
+        version: link:../../workflow/workflow-engine
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 1.6.0
+        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@types/node@26.1.1)
+
+  packages/runtime/runtime-production:
+    dependencies:
+      '@agentx/agent-platform':
+        specifier: workspace:*
+        version: link:../../agent/agent-platform
+      '@agentx/context-engine':
+        specifier: workspace:*
+        version: link:../../shared/context-engine
+      '@agentx/core-runtime':
+        specifier: workspace:*
+        version: link:../../shared/core-runtime
+      '@agentx/knowledge-engine':
+        specifier: workspace:*
+        version: link:../../shared/knowledge-engine
+      '@agentx/memory-engine':
+        specifier: workspace:*
+        version: link:../../shared/memory-engine
+      '@agentx/planning-engine':
+        specifier: workspace:*
+        version: link:../../planning/planning-engine
+      '@agentx/runtime':
+        specifier: workspace:*
+        version: link:../runtime
+      '@agentx/shared':
+        specifier: workspace:*
+        version: link:../../shared/shared
+      '@agentx/tool-sdk':
+        specifier: workspace:*
+        version: link:../../shared/tool-sdk
+      '@agentx/workflow-engine':
+        specifier: workspace:*
+        version: link:../../workflow/workflow-engine
+    devDependencies:
+      '@vitest/coverage-v8':
+        specifier: 1.6.0
+        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@types/node@26.1.1)
+
+  packages/shared/context-engine:
     dependencies:
       '@agentx/core-runtime':
         specifier: workspace:*
@@ -201,7 +691,7 @@ importers:
         specifier: 1.6.0
         version: 1.6.0(@types/node@26.1.1)
 
-  packages/core-runtime:
+  packages/shared/core-runtime:
     dependencies:
       bullmq:
         specifier: ^5.80.2
@@ -215,50 +705,9 @@ importers:
         version: 5.4.5
       vitest:
         specifier: 1.6.0
-        version: 1.6.0(@types/node@20.19.43)
-
-  packages/goal-intelligence:
-    dependencies:
-      '@agentx/cognitive-contracts':
-        specifier: workspace:*
-        version: link:../cognitive-contracts
-      '@agentx/cognitive-kernel':
-        specifier: workspace:*
-        version: link:../cognitive-kernel
-      '@agentx/cognitive-learning':
-        specifier: workspace:*
-        version: link:../cognitive-learning
-      '@agentx/reasoning-algorithms':
-        specifier: workspace:*
-        version: link:../reasoning-algorithms
-    devDependencies:
-      '@vitest/coverage-v8':
-        specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
-      vitest:
-        specifier: 1.6.0
         version: 1.6.0(@types/node@26.1.1)
 
-  packages/handbook-lint:
-    dependencies:
-      chalk:
-        specifier: ^5.3.0
-        version: 5.6.2
-      glob:
-        specifier: ^10.4.1
-        version: 10.5.0
-    devDependencies:
-      '@types/node':
-        specifier: ^20.0.0
-        version: 20.19.43
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
-
-  packages/knowledge-engine:
+  packages/shared/knowledge-engine:
     dependencies:
       '@agentx/core-runtime':
         specifier: workspace:*
@@ -277,24 +726,8 @@ importers:
         specifier: 1.6.0
         version: 1.6.0(@types/node@26.1.1)
 
-  packages/memory-engine:
+  packages/shared/memory-engine:
     devDependencies:
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
-      vitest:
-        specifier: 1.6.0
-        version: 1.6.0(@types/node@20.19.43)
-
-  packages/multi-agent-collaboration:
-    dependencies:
-      '@agentx/runtime-adapters':
-        specifier: workspace:*
-        version: link:../runtime-adapters
-    devDependencies:
-      '@vitest/coverage-v8':
-        specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
@@ -302,379 +735,7 @@ importers:
         specifier: 1.6.0
         version: 1.6.0(@types/node@26.1.1)
 
-  packages/multi-agent-reasoning:
-    dependencies:
-      '@agentx/cognitive-contracts':
-        specifier: workspace:*
-        version: link:../cognitive-contracts
-      '@agentx/cognitive-kernel':
-        specifier: workspace:*
-        version: link:../cognitive-kernel
-      '@agentx/cognitive-learning':
-        specifier: workspace:*
-        version: link:../cognitive-learning
-      '@agentx/goal-intelligence':
-        specifier: workspace:*
-        version: link:../goal-intelligence
-      '@agentx/multi-agent-collaboration':
-        specifier: workspace:*
-        version: link:../multi-agent-collaboration
-      '@agentx/reasoning-framework':
-        specifier: workspace:*
-        version: link:../reasoning-framework
-      '@agentx/workflow-orchestration':
-        specifier: workspace:*
-        version: link:../workflow-orchestration
-    devDependencies:
-      '@vitest/coverage-v8':
-        specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
-      vitest:
-        specifier: 1.6.0
-        version: 1.6.0(@types/node@26.1.1)
-
-  packages/native-providers:
-    dependencies:
-      '@agentx/runtime-adapters':
-        specifier: workspace:*
-        version: link:../runtime-adapters
-      '@agentx/runtime-production':
-        specifier: workspace:*
-        version: link:../runtime-production
-    devDependencies:
-      '@vitest/coverage-v8':
-        specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
-      vitest:
-        specifier: 1.6.0
-        version: 1.6.0(@types/node@26.1.1)
-
-  packages/planning-engine:
-    dependencies:
-      '@agentx/core-runtime':
-        specifier: workspace:*
-        version: link:../core-runtime
-      '@agentx/shared':
-        specifier: workspace:*
-        version: link:../shared
-    devDependencies:
-      '@vitest/coverage-v8':
-        specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
-      vitest:
-        specifier: 1.6.0
-        version: 1.6.0(@types/node@26.1.1)
-
-  packages/plugin-sdk:
-    devDependencies:
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
-      vitest:
-        specifier: 1.6.0
-        version: 1.6.0(@types/node@20.19.43)
-
-  packages/production-quality:
-    dependencies:
-      '@agentx/runtime-adapters':
-        specifier: workspace:*
-        version: link:../runtime-adapters
-      '@agentx/runtime-production':
-        specifier: workspace:*
-        version: link:../runtime-production
-    devDependencies:
-      '@vitest/coverage-v8':
-        specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
-      vitest:
-        specifier: 1.6.0
-        version: 1.6.0(@types/node@26.1.1)
-
-  packages/provider-qualification:
-    dependencies:
-      '@agentx/agent-platform':
-        specifier: workspace:*
-        version: link:../agent-platform
-      '@agentx/context-engine':
-        specifier: workspace:*
-        version: link:../context-engine
-      '@agentx/core-runtime':
-        specifier: workspace:*
-        version: link:../core-runtime
-      '@agentx/knowledge-engine':
-        specifier: workspace:*
-        version: link:../knowledge-engine
-      '@agentx/memory-engine':
-        specifier: workspace:*
-        version: link:../memory-engine
-      '@agentx/planning-engine':
-        specifier: workspace:*
-        version: link:../planning-engine
-      '@agentx/runtime':
-        specifier: workspace:*
-        version: link:../runtime
-      '@agentx/runtime-adapters':
-        specifier: workspace:*
-        version: link:../runtime-adapters
-      '@agentx/runtime-production':
-        specifier: workspace:*
-        version: link:../runtime-production
-      '@agentx/shared':
-        specifier: workspace:*
-        version: link:../shared
-      '@agentx/tool-sdk':
-        specifier: workspace:*
-        version: link:../tool-sdk
-      '@agentx/workflow-engine':
-        specifier: workspace:*
-        version: link:../workflow-engine
-    devDependencies:
-      '@vitest/coverage-v8':
-        specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
-      vitest:
-        specifier: 1.6.0
-        version: 1.6.0(@types/node@26.1.1)
-
-  packages/provider-release:
-    dependencies:
-      '@agentx/provider-qualification':
-        specifier: workspace:*
-        version: link:../provider-qualification
-      '@agentx/provider-sdk':
-        specifier: workspace:*
-        version: link:../provider-sdk
-      '@agentx/runtime-adapters':
-        specifier: workspace:*
-        version: link:../runtime-adapters
-    devDependencies:
-      '@vitest/coverage-v8':
-        specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
-      vitest:
-        specifier: 1.6.0
-        version: 1.6.0(@types/node@26.1.1)
-
-  packages/provider-sdk:
-    dependencies:
-      '@agentx/provider-qualification':
-        specifier: workspace:*
-        version: link:../provider-qualification
-      '@agentx/runtime-adapters':
-        specifier: workspace:*
-        version: link:../runtime-adapters
-      '@agentx/runtime-production':
-        specifier: workspace:*
-        version: link:../runtime-production
-      '@agentx/secrets':
-        specifier: workspace:*
-        version: link:../secrets
-      '@anthropic-ai/sdk':
-        specifier: ^0.111.0
-        version: 0.111.0
-      '@google/generative-ai':
-        specifier: ^0.24.1
-        version: 0.24.1
-    devDependencies:
-      '@vitest/coverage-v8':
-        specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@20.19.43))
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
-      vitest:
-        specifier: 1.6.0
-        version: 1.6.0(@types/node@20.19.43)
-
-  packages/reasoning-algorithms:
-    dependencies:
-      '@agentx/cognitive-contracts':
-        specifier: workspace:*
-        version: link:../cognitive-contracts
-      '@agentx/cognitive-kernel':
-        specifier: workspace:*
-        version: link:../cognitive-kernel
-      '@agentx/reasoning-framework':
-        specifier: workspace:*
-        version: link:../reasoning-framework
-    devDependencies:
-      '@vitest/coverage-v8':
-        specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
-      vitest:
-        specifier: 1.6.0
-        version: 1.6.0(@types/node@26.1.1)
-
-  packages/reasoning-framework:
-    dependencies:
-      '@agentx/cognitive-contracts':
-        specifier: workspace:*
-        version: link:../cognitive-contracts
-      '@agentx/cognitive-kernel':
-        specifier: workspace:*
-        version: link:../cognitive-kernel
-    devDependencies:
-      '@vitest/coverage-v8':
-        specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
-      vitest:
-        specifier: 1.6.0
-        version: 1.6.0(@types/node@26.1.1)
-
-  packages/runtime:
-    dependencies:
-      '@agentx/agent-platform':
-        specifier: workspace:*
-        version: link:../agent-platform
-      '@agentx/context-engine':
-        specifier: workspace:*
-        version: link:../context-engine
-      '@agentx/core-runtime':
-        specifier: workspace:*
-        version: link:../core-runtime
-      '@agentx/knowledge-engine':
-        specifier: workspace:*
-        version: link:../knowledge-engine
-      '@agentx/memory-engine':
-        specifier: workspace:*
-        version: link:../memory-engine
-      '@agentx/planning-engine':
-        specifier: workspace:*
-        version: link:../planning-engine
-      '@agentx/shared':
-        specifier: workspace:*
-        version: link:../shared
-      '@agentx/tool-sdk':
-        specifier: workspace:*
-        version: link:../tool-sdk
-      '@agentx/workflow-engine':
-        specifier: workspace:*
-        version: link:../workflow-engine
-    devDependencies:
-      '@vitest/coverage-v8':
-        specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
-      vitest:
-        specifier: 1.6.0
-        version: 1.6.0(@types/node@26.1.1)
-
-  packages/runtime-adapters:
-    dependencies:
-      '@agentx/agent-platform':
-        specifier: workspace:*
-        version: link:../agent-platform
-      '@agentx/context-engine':
-        specifier: workspace:*
-        version: link:../context-engine
-      '@agentx/core-runtime':
-        specifier: workspace:*
-        version: link:../core-runtime
-      '@agentx/knowledge-engine':
-        specifier: workspace:*
-        version: link:../knowledge-engine
-      '@agentx/memory-engine':
-        specifier: workspace:*
-        version: link:../memory-engine
-      '@agentx/planning-engine':
-        specifier: workspace:*
-        version: link:../planning-engine
-      '@agentx/runtime':
-        specifier: workspace:*
-        version: link:../runtime
-      '@agentx/runtime-production':
-        specifier: workspace:*
-        version: link:../runtime-production
-      '@agentx/shared':
-        specifier: workspace:*
-        version: link:../shared
-      '@agentx/tool-sdk':
-        specifier: workspace:*
-        version: link:../tool-sdk
-      '@agentx/workflow-engine':
-        specifier: workspace:*
-        version: link:../workflow-engine
-    devDependencies:
-      '@vitest/coverage-v8':
-        specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
-      vitest:
-        specifier: 1.6.0
-        version: 1.6.0(@types/node@26.1.1)
-
-  packages/runtime-production:
-    dependencies:
-      '@agentx/agent-platform':
-        specifier: workspace:*
-        version: link:../agent-platform
-      '@agentx/context-engine':
-        specifier: workspace:*
-        version: link:../context-engine
-      '@agentx/core-runtime':
-        specifier: workspace:*
-        version: link:../core-runtime
-      '@agentx/knowledge-engine':
-        specifier: workspace:*
-        version: link:../knowledge-engine
-      '@agentx/memory-engine':
-        specifier: workspace:*
-        version: link:../memory-engine
-      '@agentx/planning-engine':
-        specifier: workspace:*
-        version: link:../planning-engine
-      '@agentx/runtime':
-        specifier: workspace:*
-        version: link:../runtime
-      '@agentx/shared':
-        specifier: workspace:*
-        version: link:../shared
-      '@agentx/tool-sdk':
-        specifier: workspace:*
-        version: link:../tool-sdk
-      '@agentx/workflow-engine':
-        specifier: workspace:*
-        version: link:../workflow-engine
-    devDependencies:
-      '@vitest/coverage-v8':
-        specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
-      vitest:
-        specifier: 1.6.0
-        version: 1.6.0(@types/node@26.1.1)
-
-  packages/secrets:
+  packages/shared/secrets:
     dependencies:
       lru-cache:
         specifier: ^11.5.2
@@ -690,28 +751,19 @@ importers:
         specifier: 1.6.0
         version: 1.6.0(@types/node@26.1.1)
 
-  packages/shared:
+  packages/shared/shared:
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@20.19.43))
+        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: 1.6.0
-        version: 1.6.0(@types/node@20.19.43)
+        version: 1.6.0(@types/node@26.1.1)
 
-  packages/shared-config:
-    devDependencies:
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
-      vitest:
-        specifier: 1.6.0
-        version: 1.6.0(@types/node@20.19.43)
-
-  packages/tool-sdk:
+  packages/shared/tool-sdk:
     dependencies:
       '@agentx/core-runtime':
         specifier: workspace:*
@@ -728,22 +780,28 @@ importers:
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@20.19.43))
+        version: 1.6.0(vitest@1.6.0(@types/node@26.1.1))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: 1.6.0
-        version: 1.6.0(@types/node@20.19.43)
+        version: 1.6.0(@types/node@26.1.1)
 
-  packages/vendor-certification:
+  packages/workflow/workflow-engine:
     dependencies:
-      '@agentx/runtime-adapters':
+      '@agentx/agent-platform':
         specifier: workspace:*
-        version: link:../runtime-adapters
-      '@agentx/runtime-production':
+        version: link:../../agent/agent-platform
+      '@agentx/core-runtime':
         specifier: workspace:*
-        version: link:../runtime-production
+        version: link:../../shared/core-runtime
+      '@agentx/shared':
+        specifier: workspace:*
+        version: link:../../shared/shared
+      '@agentx/tool-sdk':
+        specifier: workspace:*
+        version: link:../../shared/tool-sdk
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 1.6.0
@@ -755,36 +813,11 @@ importers:
         specifier: 1.6.0
         version: 1.6.0(@types/node@26.1.1)
 
-  packages/workflow-engine:
-    dependencies:
-      '@agentx/agent-platform':
-        specifier: workspace:*
-        version: link:../agent-platform
-      '@agentx/core-runtime':
-        specifier: workspace:*
-        version: link:../core-runtime
-      '@agentx/shared':
-        specifier: workspace:*
-        version: link:../shared
-      '@agentx/tool-sdk':
-        specifier: workspace:*
-        version: link:../tool-sdk
-    devDependencies:
-      '@vitest/coverage-v8':
-        specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@20.19.43))
-      typescript:
-        specifier: 5.4.5
-        version: 5.4.5
-      vitest:
-        specifier: 1.6.0
-        version: 1.6.0(@types/node@20.19.43)
-
-  packages/workflow-hardening:
+  packages/workflow/workflow-hardening:
     dependencies:
       '@agentx/runtime-adapters':
         specifier: workspace:*
-        version: link:../runtime-adapters
+        version: link:../../runtime/runtime-adapters
       '@agentx/workflow-orchestration':
         specifier: workspace:*
         version: link:../workflow-orchestration
@@ -799,14 +832,14 @@ importers:
         specifier: 1.6.0
         version: 1.6.0(@types/node@26.1.1)
 
-  packages/workflow-orchestration:
+  packages/workflow/workflow-orchestration:
     dependencies:
       '@agentx/goal-intelligence':
         specifier: workspace:*
-        version: link:../goal-intelligence
+        version: link:../../planning/goal-intelligence
       '@agentx/runtime-adapters':
         specifier: workspace:*
-        version: link:../runtime-adapters
+        version: link:../../runtime/runtime-adapters
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 1.6.0
@@ -823,6 +856,22 @@ importers:
       eslint:
         specifier: ^8.57.0
         version: 8.57.1
+
+  tooling/handbook-lint:
+    dependencies:
+      chalk:
+        specifier: ^5.3.0
+        version: 5.6.2
+      glob:
+        specifier: ^10.4.1
+        version: 10.5.0
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
 
 packages:
 

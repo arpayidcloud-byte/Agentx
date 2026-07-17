@@ -1,0 +1,25 @@
+{
+  "name": "@agentx/distributed-cognition",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "echo 'skip build'",
+    "typecheck": "echo 'skip typecheck'",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src/"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "1.6.0",
+    "typescript": "5.4.5",
+    "vitest": "1.6.0"
+  },
+  "dependencies": {
+    "@agentx/shared": "workspace:*",
+    "@agentx/core-runtime": "workspace:*",
+    "@agentx/cognitive-contracts": "workspace:*"
+  }
+}
