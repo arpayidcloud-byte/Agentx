@@ -45,7 +45,7 @@ export class AgentPool {
       if (!this.idleAgents.has(agent.role)) {
         this.idleAgents.set(agent.role, []);
       }
-      this.idleAgents.get(agent.role).push(agent);
+      this.idleAgents.get(agent.role)!.push(agent);
     }
   }
 
@@ -54,7 +54,7 @@ export class AgentPool {
       if (this.getTotalAgentsCount() >= this.config.maxAgents) break;
       const agent = this.factory.createAgent(role);
       if (!this.idleAgents.has(role)) this.idleAgents.set(role, []);
-      this.idleAgents.get(role).push(agent);
+      this.idleAgents.get(role)!.push(agent);
     }
   }
 

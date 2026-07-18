@@ -10,7 +10,7 @@ export class MessageBus {
     if (!this.handlers.has(topic)) {
       this.handlers.set(topic, new Set());
     }
-    this.handlers.get(topic).add(handler);
+    this.handlers.get(topic)!.add(handler);
   }
 
   public publish(message: AgentMessage): void {

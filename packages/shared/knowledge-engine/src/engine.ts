@@ -58,8 +58,9 @@ export class KnowledgeEngine implements IKnowledgeEngine {
   public async retrieve(query: KnowledgeQuery): Promise<KnowledgeNode[]> {
     let results = await this.store.searchNodes(query.text, query.limit);
 
-    if (query.minConfidence !== undefined) {
-      results = results.filter((n) => n.confidenceScore >= query.minConfidence);
+    const minConf = query.minConfidence;
+    if (minConf !== undefined) {
+      results = results.filter((n) => n.confidenceScore >= minConf);
     }
 
     return results;

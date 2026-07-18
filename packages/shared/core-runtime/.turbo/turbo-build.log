@@ -1,5 +1,2 @@
 [WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies". See https://pnpm.io/settings for the new home of each setting.
 $ tsc --build
-src/events/index.ts(38,5): error TS2532: Object is possibly 'undefined'.
-src/events/index.ts(145,11): error TS18048: 'queue' is possibly 'undefined'.
-[ELIFECYCLE] Command failed with exit code 1.

@@ -40,8 +40,9 @@ export class ClusterMembership {
     }
     // Simple determinism: lexicographical order of ID
     activeNodes.sort((a, b) => a.id.localeCompare(b.id));
-    const first = activeNodes[0];
-    this.leaderId = first.id;
+    const leader = activeNodes[0];
+    if (!leader) throw new ClusterError('No active nodes for leader election', 'cluster-membership');
+    this.leaderId = leader.id;
     return this.leaderId;
   }
 

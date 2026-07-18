@@ -1,6 +1,6 @@
-import { IScheduler, ITaskRepository } from '../interfaces/scheduler.js';
-import { TaskModel } from '../interfaces/task.js';
-import { IEventBus } from '../interfaces/events.js';
+import type { IScheduler, ITaskRepository } from '../interfaces/scheduler.js';
+import type { TaskModel } from '../interfaces/task.js';
+import type { IEventBus } from '../interfaces/events.js';
 export interface SchedulerConfig {
     maxConcurrentTaskGraphs?: number;
     maxParallelAgents?: number;

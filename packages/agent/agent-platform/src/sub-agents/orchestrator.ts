@@ -118,22 +118,23 @@ export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
 
         // Execute ready nodes in parallel
         const promises = readyNodes.map(async (node) => {
-          this.resourceManager.registerAgent(node.task.assignedAgentRole, node.estimatedBudget);
+          const agentRole = node.task.assignedAgentRole as string;
+          this.resourceManager.registerAgent(agentRole, node.estimatedBudget);
 
           const result = await this.runner.runParallel(
             node.task,
-            [node.task.assignedAgentRole as any],
+            [agentRole as any],
             {},
           );
 
-          this.resourceManager.unregisterAgent(node.task.assignedAgentRole);
+          this.resourceManager.unregisterAgent(agentRole);
 
           wf.completedNodes.add(node.task.id);
           executionResults[node.task.id] = result;
 
           wf.history.push({
             timestamp: new Date(),
-            agentId: node.task.assignedAgentRole,
+            agentId: agentRole,
             taskId: node.task.id,
             approvalRequired: false,
             retries: 0,

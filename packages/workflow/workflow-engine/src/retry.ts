@@ -56,7 +56,7 @@ export class RetryCoordinator {
         remainingRetries: 3,
       });
     }
-    return this.budgets.get(nodeId);
+    return this.budgets.get(nodeId) as RetryBudget;
   }
 
   public recordAttempt(nodeId: string): void {

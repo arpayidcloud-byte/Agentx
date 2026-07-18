@@ -1,4 +1,4 @@
-import { IEventBus, EventEnvelope } from '../interfaces/events.js';
+import type { IEventBus, EventEnvelope } from '../interfaces/events.js';
 export declare class InMemoryEventBus implements IEventBus {
     private handlers;
     private processedEventIds;

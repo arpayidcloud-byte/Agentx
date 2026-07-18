@@ -20,7 +20,7 @@ export class RuntimeDI {
       return this.services.get(name) as T;
     }
     if (this.factories.has(name)) {
-      const instance = this.factories.get(name)() as T;
+      const instance = this.factories.get(name)!() as T;
       this.services.set(name, instance);
       return instance;
     }

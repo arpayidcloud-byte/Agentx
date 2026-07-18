@@ -42,13 +42,14 @@ export class FilesystemPolicy implements IFilesystemPolicy {
     if (patternParts.length > pathParts.length) return false;
 
     for (let i = 0; i < patternParts.length; i++) {
-      const patternPart = patternParts[i];
+      const patternPart = patternParts[i] as string;
+      const pathPart = pathParts[i] as string;
       if (patternPart === '**') return true;
       if (!patternPart.includes('*')) {
-        if (patternPart !== pathParts[i]) return false;
+        if (patternPart !== pathPart) return false;
       } else {
         const regex = new RegExp('^' + patternPart.replace(/\*/g, '[^/]*') + '$');
-        if (!regex.test(pathParts[i])) return false;
+        if (!regex.test(pathPart)) return false;
       }
     }
 

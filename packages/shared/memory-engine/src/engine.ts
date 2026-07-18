@@ -120,8 +120,9 @@ export class InMemoryStore implements IMemoryStore {
     if (options?.type) {
       results = results.filter((m) => m.type === options.type);
     }
-    if (options?.minImportance) {
-      results = results.filter((m) => m.importance >= options.minImportance);
+    const minImportance = options?.minImportance;
+    if (minImportance) {
+      results = results.filter((m) => m.importance >= minImportance);
     }
     if (options?.limit) {
       results = results.slice(0, options.limit);
