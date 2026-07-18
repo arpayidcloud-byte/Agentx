@@ -40,7 +40,8 @@ export class ClusterMembership {
     }
     // Simple determinism: lexicographical order of ID
     activeNodes.sort((a, b) => a.id.localeCompare(b.id));
-    this.leaderId = activeNodes[0].id;
+    const first = activeNodes[0] as ClusterNode;
+    this.leaderId = first.id;
     return this.leaderId;
   }
 

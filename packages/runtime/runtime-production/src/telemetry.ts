@@ -40,10 +40,9 @@ export class ProductionTelemetry {
   }
 
   recordHistogram(name: string, value: number): void {
-    if (!this.metrics.histograms[name]) {
-      this.metrics.histograms[name] = [];
-    }
-    this.metrics.histograms[name].push(value);
+    const existing = this.metrics.histograms[name] ?? [];
+    existing.push(value);
+    this.metrics.histograms[name] = existing;
   }
 
   getMetrics(): TelemetryMetrics {
