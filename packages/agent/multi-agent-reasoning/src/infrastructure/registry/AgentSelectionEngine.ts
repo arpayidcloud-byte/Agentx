@@ -6,8 +6,13 @@
 import { AgentDirectoryEntry } from '../../domain/collaboration/interfaces.js';
 
 export class AgentSelectionEngine {
-  selectBestCandidate(entries: AgentDirectoryEntry[], requiredCapabilities: string[]): AgentDirectoryEntry | null {
-    const candidates = entries.filter(e => requiredCapabilities.every(cap => e.capabilities.includes(cap)));
+  selectBestCandidate(
+    entries: AgentDirectoryEntry[],
+    requiredCapabilities: string[],
+  ): AgentDirectoryEntry | null {
+    const candidates = entries.filter((e) =>
+      requiredCapabilities.every((cap) => e.capabilities.includes(cap)),
+    );
     if (candidates.length === 0) return null;
 
     let best = candidates[0]!;

@@ -20,21 +20,33 @@ export class LearningHookManager {
   }
 
   async runBeforeLearning(sessionId: string): Promise<void> {
-    for (const h of this.hooks) { if (h.beforeLearning) await h.beforeLearning(sessionId); }
+    for (const h of this.hooks) {
+      if (h.beforeLearning) await h.beforeLearning(sessionId);
+    }
   }
   async runAfterLearning(sessionId: string, result: unknown): Promise<void> {
-    for (const h of this.hooks) { if (h.afterLearning) await h.afterLearning(sessionId, result); }
+    for (const h of this.hooks) {
+      if (h.afterLearning) await h.afterLearning(sessionId, result);
+    }
   }
   async runBeforeReflection(sessionId: string): Promise<void> {
-    for (const h of this.hooks) { if (h.beforeReflection) await h.beforeReflection(sessionId); }
+    for (const h of this.hooks) {
+      if (h.beforeReflection) await h.beforeReflection(sessionId);
+    }
   }
   async runAfterReflection(sessionId: string): Promise<void> {
-    for (const h of this.hooks) { if (h.afterReflection) await h.afterReflection(sessionId); }
+    for (const h of this.hooks) {
+      if (h.afterReflection) await h.afterReflection(sessionId);
+    }
   }
   async runBeforeAdaptation(sessionId: string): Promise<void> {
-    for (const h of this.hooks) { if (h.beforeAdaptation) await h.beforeAdaptation(sessionId); }
+    for (const h of this.hooks) {
+      if (h.beforeAdaptation) await h.beforeAdaptation(sessionId);
+    }
   }
   async runAfterAdaptation(sessionId: string): Promise<void> {
-    for (const h of this.hooks) { if (h.afterAdaptation) await h.afterAdaptation(sessionId); }
+    for (const h of this.hooks) {
+      if (h.afterAdaptation) await h.afterAdaptation(sessionId);
+    }
   }
 }

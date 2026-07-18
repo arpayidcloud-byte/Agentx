@@ -14,7 +14,7 @@ import { ApprovalRequest, ApprovalResult } from './interfaces.js';
  */
 export function createSuccessResult(
   request: ApprovalRequest,
-  doubleConfirmationRequired: boolean
+  doubleConfirmationRequired: boolean,
 ): ApprovalResult {
   return {
     approved: true,
@@ -32,10 +32,7 @@ export function createSuccessResult(
  * @param reason - Rejection reason
  * @returns ApprovalResult
  */
-export function createRejectionResult(
-  request: ApprovalRequest,
-  reason?: string
-): ApprovalResult {
+export function createRejectionResult(request: ApprovalRequest, reason?: string): ApprovalResult {
   return {
     approved: false,
     request,

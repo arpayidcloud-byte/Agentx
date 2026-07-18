@@ -31,10 +31,10 @@ describe('Provider Registry', () => {
   it('registers, resolves, and lists providers', async () => {
     const queueProvider = new MemoryQueueProvider();
     registry.registerProvider('queue', queueProvider);
-    
+
     expect(registry.resolve('queue')).toBeDefined();
     expect(registry.listProviders()).toHaveLength(1);
-    
+
     registry.unregisterProvider('queue');
     expect(() => registry.resolve('queue')).toThrow(ProviderResolutionError);
   });
@@ -58,8 +58,18 @@ describe('Provider Registry', () => {
     const mockProvider = {
       getMetadata: () => ({ id: 'mock', name: 'Mock', type: 'queue' as const, version: '1.0' }),
       getCapabilities: () => ({}),
-      healthCheck: async () => ({ healthy: false, latencyMs: 0, lastChecked: new Date(), status: 'DOWN' as const }),
-      getMetrics: () => ({ totalRequests: 0, successfulRequests: 0, failedRequests: 0, averageLatencyMs: 0 }),
+      healthCheck: async () => ({
+        healthy: false,
+        latencyMs: 0,
+        lastChecked: new Date(),
+        status: 'DOWN' as const,
+      }),
+      getMetrics: () => ({
+        totalRequests: 0,
+        successfulRequests: 0,
+        failedRequests: 0,
+        averageLatencyMs: 0,
+      }),
     };
     registry.registerProvider('mock', mockProvider);
     await expect(registry.healthCheck()).rejects.toThrow(ProviderUnavailableError);
@@ -71,7 +81,9 @@ describe('Provider Capability Resolver', () => {
     const resolver = new ProviderCapabilityResolver();
     const actual = { transactions: true, priorityQueue: true };
     expect(() => resolver.validateCapabilities({ transactions: true }, actual)).not.toThrow();
-    expect(() => resolver.validateCapabilities({ transactions: true, leaderElection: true }, actual)).toThrow();
+    expect(() =>
+      resolver.validateCapabilities({ transactions: true, leaderElection: true }, actual),
+    ).toThrow();
 
     expect(resolver.supportsTransactions(actual)).toBe(true);
     expect(resolver.supportsPriorityQueue(actual)).toBe(true);
@@ -86,11 +98,11 @@ describe('Provider Health Monitor', () => {
   it('monitors health, computes latency, and availability', async () => {
     const monitor = new ProviderHealthMonitor();
     const provider = new MemoryQueueProvider();
-    
+
     await monitor.health(provider);
     const latency = await monitor.ping(provider);
     expect(latency).toBeGreaterThanOrEqual(0);
-    
+
     expect(monitor.availability('memory-queue')).toBe(100);
     expect(monitor.failureCount('memory-queue')).toBe(0);
     expect(monitor.lastFailure('memory-queue')).toBeUndefined();
@@ -103,16 +115,16 @@ describe('Provider Failover Manager', () => {
     const manager = new ProviderFailoverManager();
     const primary = new MemoryQueueProvider();
     const secondary = new MemoryLockProvider();
-    
+
     manager.monitorPrimary(primary);
     manager.monitorSecondary(secondary);
-    
+
     expect(manager.getPrimary()).toBe(primary);
     expect(manager.getSecondary()).toBe(secondary);
-    
+
     const switched = await manager.switchProvider();
     expect(switched).toBe(secondary); // Since it was swapped, primary is now secondary, and it returns the new primary which is secondary
-    
+
     // Now primary is secondary (MemoryLockProvider), secondary is primary (MemoryQueueProvider)
     await manager.promoteSecondary(); // Promotes current secondary (MemoryQueueProvider) to primary
     expect(manager.getPrimary()).toBe(primary); // Should be MemoryQueueProvider
@@ -130,17 +142,17 @@ describe('Memory Queue Provider', () => {
   it('manages queues by priority and depth', async () => {
     await provider.enqueue('topic', { msg: '1' }, 1);
     await provider.enqueue('topic', { msg: '2' }, 10);
-    
+
     expect(await provider.getDepth('topic')).toBe(2);
     expect(await provider.peek('topic')).toEqual({ msg: '2' });
-    
+
     const msg = await provider.dequeue('topic');
     expect(msg).toEqual({ msg: '2' });
-    
+
     await provider.ack('topic', '1');
     await provider.purge('topic');
     expect(await provider.getDepth('topic')).toBe(0);
-    
+
     expect(provider.getMetrics()).toBeDefined();
   });
 });
@@ -156,10 +168,10 @@ describe('Memory Lock Provider', () => {
     const lockId = await provider.acquire('res-1', 10000);
     expect(lockId).toBeDefined();
     expect(await provider.isLocked('res-1')).toBe(true);
-    
+
     await provider.renew('res-1', lockId, 20000);
     await provider.release('res-1', lockId);
-    
+
     await provider.acquire('res-1', 10000);
     await provider.expire('res-1');
     expect(await provider.isLocked('res-1')).toBe(false);
@@ -177,10 +189,10 @@ describe('Memory Storage Provider', () => {
     await provider.put('bucket', 'key1', 'value1');
     expect(await provider.exists('bucket', 'key1')).toBe(true);
     expect(await provider.get('bucket', 'key1')).toBe('value1');
-    
+
     const list = await provider.list('bucket', 'key');
     expect(list).toContain('key1');
-    
+
     await provider.delete('bucket', 'key1');
     expect(await provider.exists('bucket', 'key1')).toBe(false);
 
@@ -202,11 +214,11 @@ describe('Memory Telemetry Provider', () => {
     const spanId = provider.startSpan('op-1', { traceId: 't1' });
     provider.endSpan(spanId, 'OK');
     expect(provider.getSpans().get(spanId)?.status).toBe('OK');
-    
+
     provider.recordCounter('count', 10);
     provider.recordGauge('gauge', 50);
     provider.recordHistogram('hist', 100);
-    
+
     expect(provider.getGauges().get('count')).toBe(10);
     expect(provider.getGauges().get('gauge')).toBe(50);
     await provider.flush();
@@ -223,12 +235,12 @@ describe('Memory Secret Provider', () => {
   it('manages secrets and rotation', async () => {
     await provider.putSecret('api_key', '123');
     expect(await provider.getSecret('api_key')).toBe('123');
-    
+
     expect(await provider.listSecrets()).toContain('api_key');
-    
+
     await provider.rotateSecret('api_key', '456');
     expect(await provider.getSecret('api_key')).toBe('456');
-    
+
     await provider.deleteSecret('api_key');
     expect(await provider.getSecret('api_key')).toBeUndefined();
   });
@@ -244,11 +256,11 @@ describe('Memory Worker Discovery Provider', () => {
   it('manages worker registration, heartbeats, and discovery', async () => {
     await provider.registerWorker('worker-1', { capabilities: ['gpu'] });
     expect((await provider.listWorkers()).length).toBe(1);
-    
+
     await provider.heartbeat('worker-1');
     expect((await provider.discover('gpu')).length).toBe(1);
     expect((await provider.discover('cpu')).length).toBe(0);
-    
+
     await provider.removeWorker('worker-1');
     expect((await provider.listWorkers()).length).toBe(0);
   });
@@ -329,8 +341,15 @@ describe('Provider Failover Manager coverage', () => {
 describe('Provider Capability Resolver coverage', () => {
   it('covers throwing missing capabilities', () => {
     const resolver = new ProviderCapabilityResolver();
-    const caps = { transactions: false, priorityQueue: false, distributedLocks: false, leaderElection: false, telemetry: false, secretRotation: false };
-    
+    const caps = {
+      transactions: false,
+      priorityQueue: false,
+      distributedLocks: false,
+      leaderElection: false,
+      telemetry: false,
+      secretRotation: false,
+    };
+
     expect(() => resolver.validateCapabilities({ transactions: true }, caps)).toThrow();
     expect(() => resolver.validateCapabilities({ priorityQueue: true }, caps)).toThrow();
     expect(() => resolver.validateCapabilities({ distributedLocks: true }, caps)).toThrow();

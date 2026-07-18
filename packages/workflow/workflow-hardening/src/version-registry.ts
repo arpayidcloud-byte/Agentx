@@ -33,7 +33,10 @@ export class WorkflowVersionRegistry {
 
   rollback(id: string, version: string): boolean {
     if (this.frozen.has(`${id}:${version}`)) {
-      throw new VersionRollbackError(`Cannot rollback frozen version ${id}:${version}`, 'version-registry');
+      throw new VersionRollbackError(
+        `Cannot rollback frozen version ${id}:${version}`,
+        'version-registry',
+      );
     }
     this.versions.delete(`${id}:${version}`);
     return true;

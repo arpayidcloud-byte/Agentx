@@ -3,7 +3,13 @@
  * @description Reference in-memory database and storage provider.
  */
 
-import { IStorageProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics } from '../interfaces.js';
+import {
+  IStorageProvider,
+  ProviderMetadata,
+  ProviderCapabilities,
+  ProviderHealth,
+  ProviderMetrics,
+} from '../interfaces.js';
 
 export class MemoryStorageProvider implements IStorageProvider {
   private store = new Map<string, Map<string, string>>();
@@ -28,7 +34,12 @@ export class MemoryStorageProvider implements IStorageProvider {
   }
 
   getMetrics(): ProviderMetrics {
-    return { totalRequests: this.total, successfulRequests: this.successes, failedRequests: 0, averageLatencyMs: 0 };
+    return {
+      totalRequests: this.total,
+      successfulRequests: this.successes,
+      failedRequests: 0,
+      averageLatencyMs: 0,
+    };
   }
 
   async put(bucket: string, key: string, value: string): Promise<void> {
@@ -50,7 +61,7 @@ export class MemoryStorageProvider implements IStorageProvider {
   async list(bucket: string, prefix?: string): Promise<string[]> {
     const keys = Array.from(this.store.get(bucket)?.keys() || []);
     if (prefix) {
-      return keys.filter(k => k.startsWith(prefix));
+      return keys.filter((k) => k.startsWith(prefix));
     }
     return keys;
   }

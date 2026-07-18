@@ -3,11 +3,13 @@ export type ConsensusStrategy = 'majority' | 'weighted' | 'reviewerOverride';
 export class ConsensusEngine {
   constructor(private strategy: ConsensusStrategy) {}
 
-  public computeConsensus(votes: Array<{ agentRole: string; value: string; weight?: number }>): string {
+  public computeConsensus(
+    votes: Array<{ agentRole: string; value: string; weight?: number }>,
+  ): string {
     if (votes.length === 0) return '';
 
     if (this.strategy === 'reviewerOverride') {
-      const reviewerVote = votes.find(v => v.agentRole === 'reviewer');
+      const reviewerVote = votes.find((v) => v.agentRole === 'reviewer');
       if (reviewerVote) return reviewerVote.value;
     }
 

@@ -60,10 +60,14 @@ describe('1. Algorithm Error Hardening', () => {
 describe('2. Forward Chaining Exhaustive Verification', () => {
   let fc: ForwardChaining;
 
-  beforeEach(() => { fc = new ForwardChaining(); });
+  beforeEach(() => {
+    fc = new ForwardChaining();
+  });
 
   it('single rule inference', () => {
-    const r = fc.execute(new Set(['A']), [{ id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 }]);
+    const r = fc.execute(new Set(['A']), [
+      { id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 },
+    ]);
     expect(r.has('B')).toBe(true);
   });
 
@@ -79,12 +83,16 @@ describe('2. Forward Chaining Exhaustive Verification', () => {
   });
 
   it('deduplicates facts', () => {
-    const r = fc.execute(new Set(['A', 'A']), [{ id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 }]);
+    const r = fc.execute(new Set(['A', 'A']), [
+      { id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 },
+    ]);
     expect(r.size).toBe(2);
   });
 
   it('empty fact base returns empty', () => {
-    const r = fc.execute(new Set(), [{ id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 }]);
+    const r = fc.execute(new Set(), [
+      { id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 },
+    ]);
     expect(r.size).toBe(0);
   });
 
@@ -93,7 +101,13 @@ describe('2. Forward Chaining Exhaustive Verification', () => {
     for (let i = 0; i < 100; i++) facts.add(`F${i}`);
     const rules: Rule[] = [];
     for (let i = 0; i < 100; i++) {
-      rules.push({ id: `r${i}`, antecedents: [`F${i}`], consequent: `G${i}`, priority: 1, weight: 1 });
+      rules.push({
+        id: `r${i}`,
+        antecedents: [`F${i}`],
+        consequent: `G${i}`,
+        priority: 1,
+        weight: 1,
+      });
     }
     const r = fc.execute(facts, rules);
     expect(r.size).toBe(200);
@@ -137,7 +151,9 @@ describe('2. Forward Chaining Exhaustive Verification', () => {
   });
 
   it('handles empty antecedents rule', () => {
-    const rules: Rule[] = [{ id: 'r1', antecedents: [], consequent: 'ALWAYS', priority: 1, weight: 1 }];
+    const rules: Rule[] = [
+      { id: 'r1', antecedents: [], consequent: 'ALWAYS', priority: 1, weight: 1 },
+    ];
     const r = fc.execute(new Set(), rules);
     expect(r.has('ALWAYS')).toBe(true);
   });
@@ -150,14 +166,20 @@ describe('2. Forward Chaining Exhaustive Verification', () => {
 describe('3. Backward Chaining Exhaustive Verification', () => {
   let bc: BackwardChaining;
 
-  beforeEach(() => { bc = new BackwardChaining(); });
+  beforeEach(() => {
+    bc = new BackwardChaining();
+  });
 
   it('goal found directly in facts', () => {
     expect(bc.execute('A', new Set(['A']), [])).toBe(true);
   });
 
   it('goal found via single rule', () => {
-    expect(bc.execute('B', new Set(['A']), [{ id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 }])).toBe(true);
+    expect(
+      bc.execute('B', new Set(['A']), [
+        { id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 },
+      ]),
+    ).toBe(true);
   });
 
   it('goal missing returns false', () => {
@@ -165,7 +187,9 @@ describe('3. Backward Chaining Exhaustive Verification', () => {
   });
 
   it('partial evidence does not prove goal', () => {
-    const rules: Rule[] = [{ id: 'r', antecedents: ['A', 'B'], consequent: 'C', priority: 1, weight: 1 }];
+    const rules: Rule[] = [
+      { id: 'r', antecedents: ['A', 'B'], consequent: 'C', priority: 1, weight: 1 },
+    ];
     expect(bc.execute('C', new Set(['A']), rules)).toBe(false);
   });
 
@@ -195,13 +219,17 @@ describe('3. Backward Chaining Exhaustive Verification', () => {
   });
 
   it('deterministic output across runs', () => {
-    const rules: Rule[] = [{ id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 }];
+    const rules: Rule[] = [
+      { id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 },
+    ];
     const facts = new Set(['A']);
     expect(bc.execute('B', facts, rules)).toBe(bc.execute('B', facts, rules));
   });
 
   it('empty facts with rule having no antecedents', () => {
-    const rules: Rule[] = [{ id: 'r', antecedents: [], consequent: 'ALWAYS', priority: 1, weight: 1 }];
+    const rules: Rule[] = [
+      { id: 'r', antecedents: [], consequent: 'ALWAYS', priority: 1, weight: 1 },
+    ];
     expect(bc.execute('ALWAYS', new Set(), rules)).toBe(true);
   });
 
@@ -217,13 +245,26 @@ describe('3. Backward Chaining Exhaustive Verification', () => {
 describe('4. Decision Tree Exhaustive Validation', () => {
   let engine: DecisionTreeEngine;
 
-  beforeEach(() => { engine = new DecisionTreeEngine(); });
+  beforeEach(() => {
+    engine = new DecisionTreeEngine();
+  });
 
   it('balanced binary tree traversal', () => {
     const tree: DecisionTree = {
       rootNodeId: 'root',
       nodes: new Map([
-        ['root', { id: 'root', label: 'Root', type: 'decision', branches: [{ condition: 'a', targetNodeId: 'l1' }, { condition: 'b', targetNodeId: 'l2' }] }],
+        [
+          'root',
+          {
+            id: 'root',
+            label: 'Root',
+            type: 'decision',
+            branches: [
+              { condition: 'a', targetNodeId: 'l1' },
+              { condition: 'b', targetNodeId: 'l2' },
+            ],
+          },
+        ],
         ['l1', { id: 'l1', label: 'Leaf1', type: 'leaf', branches: [] }],
         ['l2', { id: 'l2', label: 'Leaf2', type: 'leaf', branches: [] }],
       ]),
@@ -235,8 +276,24 @@ describe('4. Decision Tree Exhaustive Validation', () => {
     const tree: DecisionTree = {
       rootNodeId: 'root',
       nodes: new Map([
-        ['root', { id: 'root', label: 'Root', type: 'decision', branches: [{ condition: 'x', targetNodeId: 'd1' }] }],
-        ['d1', { id: 'd1', label: 'Deep', type: 'decision', branches: [{ condition: 'y', targetNodeId: 'leaf' }] }],
+        [
+          'root',
+          {
+            id: 'root',
+            label: 'Root',
+            type: 'decision',
+            branches: [{ condition: 'x', targetNodeId: 'd1' }],
+          },
+        ],
+        [
+          'd1',
+          {
+            id: 'd1',
+            label: 'Deep',
+            type: 'decision',
+            branches: [{ condition: 'y', targetNodeId: 'leaf' }],
+          },
+        ],
         ['leaf', { id: 'leaf', label: 'Leaf', type: 'leaf', branches: [] }],
       ]),
     };
@@ -244,14 +301,27 @@ describe('4. Decision Tree Exhaustive Validation', () => {
   });
 
   it('single-node leaf tree', () => {
-    const tree: DecisionTree = { rootNodeId: 'only', nodes: new Map([['only', { id: 'only', label: 'Only Leaf', type: 'leaf', branches: [] }]]) };
+    const tree: DecisionTree = {
+      rootNodeId: 'only',
+      nodes: new Map([['only', { id: 'only', label: 'Only Leaf', type: 'leaf', branches: [] }]]),
+    };
     expect(engine.traverse(tree, {})).toEqual(['only']);
   });
 
   it('throws on invalid branches (no condition matches)', () => {
     const tree: DecisionTree = {
       rootNodeId: 'root',
-      nodes: new Map([['root', { id: 'root', label: 'Root', type: 'decision', branches: [{ condition: 'x', targetNodeId: 'leaf' }] }]]),
+      nodes: new Map([
+        [
+          'root',
+          {
+            id: 'root',
+            label: 'Root',
+            type: 'decision',
+            branches: [{ condition: 'x', targetNodeId: 'leaf' }],
+          },
+        ],
+      ]),
     };
     expect(() => engine.traverse(tree, {})).toThrow();
   });
@@ -259,7 +329,17 @@ describe('4. Decision Tree Exhaustive Validation', () => {
   it('throws on missing target node', () => {
     const tree: DecisionTree = {
       rootNodeId: 'root',
-      nodes: new Map([['root', { id: 'root', label: 'Root', type: 'decision', branches: [{ condition: 'x', targetNodeId: 'missing' }] }]]),
+      nodes: new Map([
+        [
+          'root',
+          {
+            id: 'root',
+            label: 'Root',
+            type: 'decision',
+            branches: [{ condition: 'x', targetNodeId: 'missing' }],
+          },
+        ],
+      ]),
     };
     expect(() => engine.traverse(tree, { x: true })).toThrow();
   });
@@ -268,7 +348,15 @@ describe('4. Decision Tree Exhaustive Validation', () => {
     const tree: DecisionTree = {
       rootNodeId: 'n1',
       nodes: new Map([
-        ['n1', { id: 'n1', label: 'A', type: 'decision', branches: [{ condition: 'c', targetNodeId: 'n2' }] }],
+        [
+          'n1',
+          {
+            id: 'n1',
+            label: 'A',
+            type: 'decision',
+            branches: [{ condition: 'c', targetNodeId: 'n2' }],
+          },
+        ],
         ['n2', { id: 'n2', label: 'B', type: 'leaf', branches: [] }],
       ]),
     };
@@ -279,7 +367,15 @@ describe('4. Decision Tree Exhaustive Validation', () => {
   it('maximum depth chain resolves correctly', () => {
     const map: [string, any][] = [];
     for (let i = 0; i < 50; i++) {
-      map.push([`n${i}`, { id: `n${i}`, label: `N${i}`, type: i < 49 ? 'decision' : 'leaf', branches: i < 49 ? [{ condition: 'go', targetNodeId: `n${i + 1}` }] : [] }]);
+      map.push([
+        `n${i}`,
+        {
+          id: `n${i}`,
+          label: `N${i}`,
+          type: i < 49 ? 'decision' : 'leaf',
+          branches: i < 49 ? [{ condition: 'go', targetNodeId: `n${i + 1}` }] : [],
+        },
+      ]);
     }
     const tree: DecisionTree = { rootNodeId: 'n0', nodes: new Map(map) };
     const opts: Record<string, boolean> = { go: true };
@@ -291,9 +387,7 @@ describe('4. Decision Tree Exhaustive Validation', () => {
     // If branch target is empty string, while loop exits and returns path
     const tree: DecisionTree = {
       rootNodeId: 'root',
-      nodes: new Map([
-        ['root', { id: 'root', label: 'Root', type: 'leaf', branches: [] }],
-      ]),
+      nodes: new Map([['root', { id: 'root', label: 'Root', type: 'leaf', branches: [] }]]),
     };
     // Leaf node immediately returns path, so the while loop exit is not hit.
     // To hit the return path at line 34, we need a decision node that somehow
@@ -310,14 +404,32 @@ describe('4. Decision Tree Exhaustive Validation', () => {
 describe('5. Reasoning Graph — Full DAG Testing', () => {
   let ge: ReasoningGraphEngine;
 
-  beforeEach(() => { ge = new ReasoningGraphEngine(); });
+  beforeEach(() => {
+    ge = new ReasoningGraphEngine();
+  });
 
   it('linear DAG sorted correctly', () => {
-    expect(ge.topologicalSort(['A', 'B', 'C'], [['A', 'B'], ['B', 'C']])).toEqual(['A', 'B', 'C']);
+    expect(
+      ge.topologicalSort(
+        ['A', 'B', 'C'],
+        [
+          ['A', 'B'],
+          ['B', 'C'],
+        ],
+      ),
+    ).toEqual(['A', 'B', 'C']);
   });
 
   it('diamond DAG sorted correctly', () => {
-    const s = ge.topologicalSort(['A', 'B', 'C', 'D'], [['A', 'B'], ['A', 'C'], ['B', 'D'], ['C', 'D']]);
+    const s = ge.topologicalSort(
+      ['A', 'B', 'C', 'D'],
+      [
+        ['A', 'B'],
+        ['A', 'C'],
+        ['B', 'D'],
+        ['C', 'D'],
+      ],
+    );
     expect(s.indexOf('A')).toBeLessThan(s.indexOf('B'));
     expect(s.indexOf('A')).toBeLessThan(s.indexOf('C'));
     expect(s.indexOf('B')).toBeLessThan(s.indexOf('D'));
@@ -325,11 +437,28 @@ describe('5. Reasoning Graph — Full DAG Testing', () => {
   });
 
   it('detects direct cycle', () => {
-    expect(() => ge.topologicalSort(['A', 'B'], [['A', 'B'], ['B', 'A']])).toThrow(CyclicDependencyError);
+    expect(() =>
+      ge.topologicalSort(
+        ['A', 'B'],
+        [
+          ['A', 'B'],
+          ['B', 'A'],
+        ],
+      ),
+    ).toThrow(CyclicDependencyError);
   });
 
   it('detects indirect cycle', () => {
-    expect(() => ge.topologicalSort(['A', 'B', 'C'], [['A', 'B'], ['B', 'C'], ['C', 'A']])).toThrow(CyclicDependencyError);
+    expect(() =>
+      ge.topologicalSort(
+        ['A', 'B', 'C'],
+        [
+          ['A', 'B'],
+          ['B', 'C'],
+          ['C', 'A'],
+        ],
+      ),
+    ).toThrow(CyclicDependencyError);
   });
 
   it('isolated node included in sort', () => {
@@ -338,13 +467,25 @@ describe('5. Reasoning Graph — Full DAG Testing', () => {
   });
 
   it('multiple roots sorted', () => {
-    const s = ge.topologicalSort(['A', 'B', 'C'], [['A', 'C'], ['B', 'C']]);
+    const s = ge.topologicalSort(
+      ['A', 'B', 'C'],
+      [
+        ['A', 'C'],
+        ['B', 'C'],
+      ],
+    );
     expect(s.indexOf('A')).toBeLessThan(s.indexOf('C'));
     expect(s.indexOf('B')).toBeLessThan(s.indexOf('C'));
   });
 
   it('multiple leaves sorted', () => {
-    const s = ge.topologicalSort(['A', 'B', 'C'], [['A', 'B'], ['A', 'C']]);
+    const s = ge.topologicalSort(
+      ['A', 'B', 'C'],
+      [
+        ['A', 'B'],
+        ['A', 'C'],
+      ],
+    );
     expect(s[0]).toBe('A');
   });
 
@@ -387,34 +528,45 @@ describe('5. Reasoning Graph — Full DAG Testing', () => {
 describe('6. Hypothesis Engine Thorough Testing', () => {
   let he: HypothesisEngine;
 
-  beforeEach(() => { he = new HypothesisEngine(); });
+  beforeEach(() => {
+    he = new HypothesisEngine();
+  });
 
   it('ranks by confidence descending', () => {
-    const h = [ { id: 'a', label: 'A', evidence: [], confidence: 30 }, { id: 'b', label: 'B', evidence: [], confidence: 90 } ];
+    const h = [
+      { id: 'a', label: 'A', evidence: [], confidence: 30 },
+      { id: 'b', label: 'B', evidence: [], confidence: 90 },
+    ];
     const ranked = he.rank(h);
     expect(ranked[0].id).toBe('b');
   });
 
   it('equal confidence preserves order', () => {
-    const h = [ { id: 'a', label: 'A', evidence: [], confidence: 50 }, { id: 'b', label: 'B', evidence: [], confidence: 50 } ];
+    const h = [
+      { id: 'a', label: 'A', evidence: [], confidence: 50 },
+      { id: 'b', label: 'B', evidence: [], confidence: 50 },
+    ];
     const ranked = he.rank(h);
     expect(ranked.length).toBe(2);
   });
 
   it('prune removes low confidence', () => {
-    const h = [ { id: 'a', label: 'A', evidence: [], confidence: 30 }, { id: 'b', label: 'B', evidence: [], confidence: 80 } ];
+    const h = [
+      { id: 'a', label: 'A', evidence: [], confidence: 30 },
+      { id: 'b', label: 'B', evidence: [], confidence: 80 },
+    ];
     const pruned = he.prune(h, 50);
     expect(pruned).toHaveLength(1);
     expect(pruned[0].id).toBe('b');
   });
 
   it('prune with threshold 0 keeps all', () => {
-    const h = [ { id: 'a', label: 'A', evidence: [], confidence: 10 } ];
+    const h = [{ id: 'a', label: 'A', evidence: [], confidence: 10 }];
     expect(he.prune(h, 0)).toHaveLength(1);
   });
 
   it('prune with high threshold removes all', () => {
-    const h = [ { id: 'a', label: 'A', evidence: [], confidence: 10 } ];
+    const h = [{ id: 'a', label: 'A', evidence: [], confidence: 10 }];
     expect(he.prune(h, 100)).toHaveLength(0);
   });
 
@@ -427,7 +579,7 @@ describe('6. Hypothesis Engine Thorough Testing', () => {
   });
 
   it('rank handles single element', () => {
-    const h = [ { id: 'x', label: 'X', evidence: [], confidence: 50 } ];
+    const h = [{ id: 'x', label: 'X', evidence: [], confidence: 50 }];
     expect(he.rank(h)).toHaveLength(1);
   });
 });
@@ -439,43 +591,93 @@ describe('6. Hypothesis Engine Thorough Testing', () => {
 describe('7. Confidence Calculator Full Coverage', () => {
   let cc: ConfidenceCalculator;
 
-  beforeEach(() => { cc = new ConfidenceCalculator(); });
+  beforeEach(() => {
+    cc = new ConfidenceCalculator();
+  });
 
   it('maximum confidence with all evidence', () => {
-    expect(cc.calculate({ evidenceCount: 5, conflictCount: 0, missingFactsCount: 0, contradictionsCount: 0 })).toBe(100);
+    expect(
+      cc.calculate({
+        evidenceCount: 5,
+        conflictCount: 0,
+        missingFactsCount: 0,
+        contradictionsCount: 0,
+      }),
+    ).toBe(100);
   });
 
   it('minimum confidence with all negatives', () => {
-    expect(cc.calculate({ evidenceCount: 0, conflictCount: 10, missingFactsCount: 10, contradictionsCount: 10 })).toBe(0);
+    expect(
+      cc.calculate({
+        evidenceCount: 0,
+        conflictCount: 10,
+        missingFactsCount: 10,
+        contradictionsCount: 10,
+      }),
+    ).toBe(0);
   });
 
   it('proportional confidence calculation', () => {
-    const c = cc.calculate({ evidenceCount: 3, conflictCount: 1, missingFactsCount: 1, contradictionsCount: 0 });
+    const c = cc.calculate({
+      evidenceCount: 3,
+      conflictCount: 1,
+      missingFactsCount: 1,
+      contradictionsCount: 0,
+    });
     expect(c).toBeGreaterThan(0);
     expect(c).toBeLessThan(100);
   });
 
   it('contradictions heavily penalize', () => {
-    const c = cc.calculate({ evidenceCount: 3, conflictCount: 0, missingFactsCount: 0, contradictionsCount: 4 });
+    const c = cc.calculate({
+      evidenceCount: 3,
+      conflictCount: 0,
+      missingFactsCount: 0,
+      contradictionsCount: 4,
+    });
     expect(c).toBe(0);
   });
 
   it('missing facts reduce confidence', () => {
-    const c = cc.calculate({ evidenceCount: 3, conflictCount: 0, missingFactsCount: 3, contradictionsCount: 0 });
+    const c = cc.calculate({
+      evidenceCount: 3,
+      conflictCount: 0,
+      missingFactsCount: 3,
+      contradictionsCount: 0,
+    });
     expect(c).toBe(30);
   });
 
   it('deterministic across calls', () => {
-    const input = { evidenceCount: 3, conflictCount: 1, missingFactsCount: 1, contradictionsCount: 0 };
+    const input = {
+      evidenceCount: 3,
+      conflictCount: 1,
+      missingFactsCount: 1,
+      contradictionsCount: 0,
+    };
     expect(cc.calculate(input)).toBe(cc.calculate(input));
   });
 
   it('all zeros returns zero', () => {
-    expect(cc.calculate({ evidenceCount: 0, conflictCount: 0, missingFactsCount: 0, contradictionsCount: 0 })).toBe(0);
+    expect(
+      cc.calculate({
+        evidenceCount: 0,
+        conflictCount: 0,
+        missingFactsCount: 0,
+        contradictionsCount: 0,
+      }),
+    ).toBe(0);
   });
 
   it('large values clamp to 100', () => {
-    expect(cc.calculate({ evidenceCount: 100, conflictCount: 0, missingFactsCount: 0, contradictionsCount: 0 })).toBe(100);
+    expect(
+      cc.calculate({
+        evidenceCount: 100,
+        conflictCount: 0,
+        missingFactsCount: 0,
+        contradictionsCount: 0,
+      }),
+    ).toBe(100);
   });
 });
 
@@ -489,7 +691,9 @@ describe('8. Conflict Resolver All Policies', () => {
   const r2 = { id: 'r2', antecedents: [], consequent: '', priority: 10, weight: 5 };
   const r3 = { id: 'r3', antecedents: [], consequent: '', priority: 10, weight: 20 };
 
-  beforeEach(() => { cr = new ConflictResolver(); });
+  beforeEach(() => {
+    cr = new ConflictResolver();
+  });
 
   it('priority strategy picks highest priority', () => {
     expect(cr.resolve([r1, r2], 'priority')?.id).toBe('r2');
@@ -538,7 +742,9 @@ describe('8. Conflict Resolver All Policies', () => {
 describe('9. Explanation Engine Consistency', () => {
   let ee: ExplanationEngine;
 
-  beforeEach(() => { ee = new ExplanationEngine(); });
+  beforeEach(() => {
+    ee = new ExplanationEngine();
+  });
 
   it('identical inputs produce identical outputs', () => {
     const e1 = ee.explain(['A', 'B'], ['n1'], ['ev1']);
@@ -589,14 +795,25 @@ describe('9. Explanation Engine Consistency', () => {
 describe('10. Validator Exhaustive Edge Cases', () => {
   let validator: ReasoningValidator;
 
-  beforeEach(() => { validator = new ReasoningValidator(); });
+  beforeEach(() => {
+    validator = new ReasoningValidator();
+  });
 
   it('validates valid rules pass', () => {
-    expect(() => validator.validateRules([{ id: 'r', antecedents: [], consequent: '', priority: 1, weight: 1 }])).not.toThrow();
+    expect(() =>
+      validator.validateRules([
+        { id: 'r', antecedents: [], consequent: '', priority: 1, weight: 1 },
+      ]),
+    ).not.toThrow();
   });
 
   it('rejects duplicate rule IDs', () => {
-    expect(() => validator.validateRules([{ id: 'r', antecedents: [], consequent: '', priority: 1, weight: 1 }, { id: 'r', antecedents: [], consequent: '', priority: 2, weight: 2 }])).toThrow(IntegrityError);
+    expect(() =>
+      validator.validateRules([
+        { id: 'r', antecedents: [], consequent: '', priority: 1, weight: 1 },
+        { id: 'r', antecedents: [], consequent: '', priority: 2, weight: 2 },
+      ]),
+    ).toThrow(IntegrityError);
   });
 
   it('accepts empty rule list', () => {
@@ -604,11 +821,21 @@ describe('10. Validator Exhaustive Edge Cases', () => {
   });
 
   it('accepts single rule', () => {
-    expect(() => validator.validateRules([{ id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 }])).not.toThrow();
+    expect(() =>
+      validator.validateRules([
+        { id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 },
+      ]),
+    ).not.toThrow();
   });
 
   it('accepts multiple unique rules', () => {
-    const rules = Array.from({ length: 100 }, (_, i) => ({ id: `r${i}`, antecedents: [], consequent: '', priority: i, weight: i }));
+    const rules = Array.from({ length: 100 }, (_, i) => ({
+      id: `r${i}`,
+      antecedents: [],
+      consequent: '',
+      priority: i,
+      weight: i,
+    }));
     expect(() => validator.validateRules(rules)).not.toThrow();
   });
 });
@@ -620,7 +847,9 @@ describe('10. Validator Exhaustive Edge Cases', () => {
 describe('11. Checkpoint Full Lifecycle Verification', () => {
   let cp: CheckpointManager;
 
-  beforeEach(() => { cp = new CheckpointManager(); });
+  beforeEach(() => {
+    cp = new CheckpointManager();
+  });
 
   it('creates and restores checkpoint', () => {
     cp.save('s1', { data: 'test' });
@@ -707,45 +936,81 @@ describe('13. Hooks Ordering & Isolation', () => {
   });
 
   it('executes beforeReasoning hook', async () => {
-    hm.register({ beforeReasoning: async (id: string) => { order.push(`br:${id}`); } });
+    hm.register({
+      beforeReasoning: async (id: string) => {
+        order.push(`br:${id}`);
+      },
+    });
     await hm.runBeforeReasoning('s1');
     expect(order).toEqual(['br:s1']);
   });
 
   it('executes afterReasoning hook', async () => {
-    hm.register({ afterReasoning: async (id: string, _r: unknown) => { order.push(`ar:${id}`); } });
+    hm.register({
+      afterReasoning: async (id: string, _r: unknown) => {
+        order.push(`ar:${id}`);
+      },
+    });
     await hm.runAfterReasoning('s1', {});
     expect(order).toEqual(['ar:s1']);
   });
 
   it('executes onConflict hook', async () => {
-    hm.register({ onConflict: async (r1: string, r2: string) => { order.push(`conflict:${r1}-${r2}`); } });
+    hm.register({
+      onConflict: async (r1: string, r2: string) => {
+        order.push(`conflict:${r1}-${r2}`);
+      },
+    });
     await hm.runOnConflict('r1', 'r2');
     expect(order).toEqual(['conflict:r1-r2']);
   });
 
   it('executes onRollback hook', async () => {
-    hm.register({ onRollback: async (id: string) => { order.push(`rb:${id}`); } });
+    hm.register({
+      onRollback: async (id: string) => {
+        order.push(`rb:${id}`);
+      },
+    });
     await hm.runOnRollback('s1');
     expect(order).toEqual(['rb:s1']);
   });
 
   it('executes onRecover hook', async () => {
-    hm.register({ onRecover: async (id: string) => { order.push(`rc:${id}`); } });
+    hm.register({
+      onRecover: async (id: string) => {
+        order.push(`rc:${id}`);
+      },
+    });
     await hm.runOnRecover('s1');
     expect(order).toEqual(['rc:s1']);
   });
 
   it('multiple hooks execute in registration order', async () => {
-    hm.register({ beforeReasoning: async () => { order.push('h1'); } });
-    hm.register({ beforeReasoning: async () => { order.push('h2'); } });
+    hm.register({
+      beforeReasoning: async () => {
+        order.push('h1');
+      },
+    });
+    hm.register({
+      beforeReasoning: async () => {
+        order.push('h2');
+      },
+    });
     await hm.runBeforeReasoning('s1');
     expect(order).toEqual(['h1', 'h2']);
   });
 
   it('hook isolation — one failing does not stop others', async () => {
-    hm.register({ beforeReasoning: async () => { throw new Error('fail'); } });
-    hm.register({ beforeReasoning: async () => { order.push('ok'); } });
+    hm.register({
+      beforeReasoning: async () => {
+        throw new Error('fail');
+      },
+    });
+    hm.register({
+      beforeReasoning: async () => {
+        order.push('ok');
+      },
+    });
     await expect(hm.runBeforeReasoning('s1')).rejects.toThrow();
   });
 
@@ -765,7 +1030,9 @@ describe('13. Hooks Ordering & Isolation', () => {
 describe('14. Events Complete Validation', () => {
   let bus: ReasoningEventBus;
 
-  beforeEach(() => { bus = new ReasoningEventBus(); });
+  beforeEach(() => {
+    bus = new ReasoningEventBus();
+  });
 
   it('publishes and receives single event', () => {
     const fn = vi.fn();
@@ -811,10 +1078,14 @@ describe('14. Events Complete Validation', () => {
 describe('15. Reasoning Engine Orchestrator Full Flow', () => {
   let engine: ReasoningEngine;
 
-  beforeEach(() => { engine = new ReasoningEngine(); });
+  beforeEach(() => {
+    engine = new ReasoningEngine();
+  });
 
   it('runs forward chaining via execute', async () => {
-    const res = await engine.execute('s1', 'B', new Set(['A']), [{ id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 }]);
+    const res = await engine.execute('s1', 'B', new Set(['A']), [
+      { id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 },
+    ]);
     expect(res.has('B')).toBe(true);
   });
 
@@ -824,7 +1095,9 @@ describe('15. Reasoning Engine Orchestrator Full Flow', () => {
   });
 
   it('executes backward chaining successfully', async () => {
-    const ok = await engine.executeGoalDriven('s1', 'G', new Set(['A']), [{ id: 'r', antecedents: ['A'], consequent: 'G', priority: 1, weight: 1 }]);
+    const ok = await engine.executeGoalDriven('s1', 'G', new Set(['A']), [
+      { id: 'r', antecedents: ['A'], consequent: 'G', priority: 1, weight: 1 },
+    ]);
     expect(ok).toBe(true);
   });
 
@@ -835,13 +1108,17 @@ describe('15. Reasoning Engine Orchestrator Full Flow', () => {
 
   it('forward chaining event firing', async () => {
     const spy = vi.spyOn(engine.events, 'publish');
-    await engine.execute('s1', 'B', new Set(['A']), [{ id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 }]);
+    await engine.execute('s1', 'B', new Set(['A']), [
+      { id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 },
+    ]);
     expect(spy).toHaveBeenCalledWith('reasoning.completed', expect.any(Object));
   });
 
   it('backward chaining event firing', async () => {
     const spy = vi.spyOn(engine.events, 'publish');
-    await engine.executeGoalDriven('s1', 'B', new Set(['A']), [{ id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 }]);
+    await engine.executeGoalDriven('s1', 'B', new Set(['A']), [
+      { id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 },
+    ]);
     expect(spy).toHaveBeenCalledWith('reasoning.completed', expect.any(Object));
   });
 
@@ -849,11 +1126,16 @@ describe('15. Reasoning Engine Orchestrator Full Flow', () => {
     const spy = vi.spyOn(engine.events, 'publish');
     const result = await engine.executeGoalDriven('s1', 'G', new Set(), []);
     expect(result).toBe(false);
-    expect(spy).toHaveBeenCalledWith('reasoning.failed', expect.objectContaining({ sessionId: 's1' }));
+    expect(spy).toHaveBeenCalledWith(
+      'reasoning.failed',
+      expect.objectContaining({ sessionId: 's1' }),
+    );
   });
 
   it('checkpoint created after forward chaining', async () => {
-    await engine.execute('s1', 'B', new Set(['A']), [{ id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 }]);
+    await engine.execute('s1', 'B', new Set(['A']), [
+      { id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 },
+    ]);
     expect(engine.checkpointManager.load('s1')).toBeDefined();
   });
 
@@ -863,7 +1145,9 @@ describe('15. Reasoning Engine Orchestrator Full Flow', () => {
   });
 
   it('recover after execution restores state', async () => {
-    await engine.execute('s1', 'B', new Set(['A']), [{ id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 }]);
+    await engine.execute('s1', 'B', new Set(['A']), [
+      { id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 },
+    ]);
     const recovered = await engine.recover('s1');
     expect(recovered).toBeDefined();
   });
@@ -878,11 +1162,31 @@ describe('15. Reasoning Engine Orchestrator Full Flow', () => {
   });
 
   it('validate decision node with no branches throws', () => {
-    expect(() => engine.validate({ rootNodeId: 'n', nodes: new Map([['n', { id: 'n', label: 'N', type: 'decision', branches: [] }]]) })).toThrow(IntegrityError);
+    expect(() =>
+      engine.validate({
+        rootNodeId: 'n',
+        nodes: new Map([['n', { id: 'n', label: 'N', type: 'decision', branches: [] }]]),
+      }),
+    ).toThrow(IntegrityError);
   });
 
   it('validate node with missing target throws', () => {
-    expect(() => engine.validate({ rootNodeId: 'n', nodes: new Map([['n', { id: 'n', label: 'N', type: 'decision', branches: [{ condition: 'ok', targetNodeId: 'missing' }] }]]) })).toThrow(IntegrityError);
+    expect(() =>
+      engine.validate({
+        rootNodeId: 'n',
+        nodes: new Map([
+          [
+            'n',
+            {
+              id: 'n',
+              label: 'N',
+              type: 'decision',
+              branches: [{ condition: 'ok', targetNodeId: 'missing' }],
+            },
+          ],
+        ]),
+      }),
+    ).toThrow(IntegrityError);
   });
 
   it('full lifecycle: execute -> checkpoint -> recover', async () => {
@@ -904,29 +1208,55 @@ describe('15. Reasoning Engine Orchestrator Full Flow', () => {
   });
 
   it('executeGoalDriven throws on invalid rules', async () => {
-    await expect(engine.executeGoalDriven('s1', 'G', new Set(['A']), [{ id: 'dup', antecedents: ['A'], consequent: 'G', priority: 1, weight: 1 }, { id: 'dup', antecedents: ['A'], consequent: 'G', priority: 1, weight: 1 }])).rejects.toThrow();
+    await expect(
+      engine.executeGoalDriven('s1', 'G', new Set(['A']), [
+        { id: 'dup', antecedents: ['A'], consequent: 'G', priority: 1, weight: 1 },
+        { id: 'dup', antecedents: ['A'], consequent: 'G', priority: 1, weight: 1 },
+      ]),
+    ).rejects.toThrow();
   });
 
   it('execute catches hook failures inside try block', async () => {
     const engine = new ReasoningEngine();
-    engine.hooks.register({ afterReasoning: async () => { throw new Error('hook fail'); } });
-    await expect(engine.execute('s2', 'B', new Set(['A']), [{ id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 }])).rejects.toThrow('hook fail');
+    engine.hooks.register({
+      afterReasoning: async () => {
+        throw new Error('hook fail');
+      },
+    });
+    await expect(
+      engine.execute('s2', 'B', new Set(['A']), [
+        { id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 },
+      ]),
+    ).rejects.toThrow('hook fail');
   });
 
   it('executeGoalDriven catches hook failures inside try block', async () => {
     const engine = new ReasoningEngine();
-    engine.hooks.register({ afterReasoning: async () => { throw new Error('hook fail'); } });
-    await expect(engine.executeGoalDriven('s2', 'B', new Set(['A']), [{ id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 }])).rejects.toThrow('hook fail');
+    engine.hooks.register({
+      afterReasoning: async () => {
+        throw new Error('hook fail');
+      },
+    });
+    await expect(
+      engine.executeGoalDriven('s2', 'B', new Set(['A']), [
+        { id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 },
+      ]),
+    ).rejects.toThrow('hook fail');
   });
 
   it('executeGoalDriven throws on duplicate rule IDs', async () => {
-    await expect(engine.executeGoalDriven('s1', 'G', new Set(['A']), [{ id: 'd', antecedents: ['A'], consequent: 'G', priority: 1, weight: 1 }, { id: 'd', antecedents: ['A'], consequent: 'G', priority: 1, weight: 1 }])).rejects.toThrow();
+    await expect(
+      engine.executeGoalDriven('s1', 'G', new Set(['A']), [
+        { id: 'd', antecedents: ['A'], consequent: 'G', priority: 1, weight: 1 },
+        { id: 'd', antecedents: ['A'], consequent: 'G', priority: 1, weight: 1 },
+      ]),
+    ).rejects.toThrow();
   });
 
   it('validate passes for valid tree', () => {
     const tree: DecisionTree = {
       rootNodeId: 'n1',
-      nodes: new Map([['n1', { id: 'n1', label: 'L', type: 'leaf', branches: [] }]])
+      nodes: new Map([['n1', { id: 'n1', label: 'L', type: 'leaf', branches: [] }]]),
     };
     expect(() => engine.validate(tree)).not.toThrow();
   });
@@ -948,12 +1278,16 @@ describe('16. Fuzz Testing — Malformed Inputs', () => {
   });
 
   it('forward chaining handles NaN weight', () => {
-    const r = fc.execute(new Set(['A']), [{ id: 'r', antecedents: ['A'], consequent: 'B', priority: NaN, weight: NaN }]);
+    const r = fc.execute(new Set(['A']), [
+      { id: 'r', antecedents: ['A'], consequent: 'B', priority: NaN, weight: NaN },
+    ]);
     expect(r.has('B')).toBe(true);
   });
 
   it('forward chaining handles empty antecedents', () => {
-    const r = fc.execute(new Set(), [{ id: 'r', antecedents: [], consequent: 'X', priority: 1, weight: 1 }]);
+    const r = fc.execute(new Set(), [
+      { id: 'r', antecedents: [], consequent: 'X', priority: 1, weight: 1 },
+    ]);
     expect(r.has('X')).toBe(true);
   });
 
@@ -962,20 +1296,35 @@ describe('16. Fuzz Testing — Malformed Inputs', () => {
   });
 
   it('conflict resolver handles NaN priorities', () => {
-    const rules = [{ id: 'r1', antecedents: [], consequent: '', priority: NaN, weight: 1 }, { id: 'r2', antecedents: [], consequent: '', priority: NaN, weight: 2 }];
+    const rules = [
+      { id: 'r1', antecedents: [], consequent: '', priority: NaN, weight: 1 },
+      { id: 'r2', antecedents: [], consequent: '', priority: NaN, weight: 2 },
+    ];
     const r = cr.resolve(rules, 'priority');
     expect(r).toBeDefined();
   });
 
   it('forward chaining handles large number of rules', () => {
-    const rules: Rule[] = Array.from({ length: 5000 }, (_, i) => ({ id: `r${i}`, antecedents: [`F${i}`], consequent: `G${i}`, priority: 1, weight: 1 }));
+    const rules: Rule[] = Array.from({ length: 5000 }, (_, i) => ({
+      id: `r${i}`,
+      antecedents: [`F${i}`],
+      consequent: `G${i}`,
+      priority: 1,
+      weight: 1,
+    }));
     const facts = new Set(Array.from({ length: 5000 }, (_, i) => `F${i}`));
     const r = fc.execute(facts, rules);
     expect(r.size).toBe(10000);
   });
 
   it('backward chaining handles deep recursion gracefully', () => {
-    const rules: Rule[] = Array.from({ length: 100 }, (_, i) => ({ id: `r${i}`, antecedents: [`S${i}`], consequent: `S${i + 1}`, priority: 1, weight: 1 }));
+    const rules: Rule[] = Array.from({ length: 100 }, (_, i) => ({
+      id: `r${i}`,
+      antecedents: [`S${i}`],
+      consequent: `S${i + 1}`,
+      priority: 1,
+      weight: 1,
+    }));
     expect(bc.execute('S99', new Set(['S0']), rules)).toBe(true);
   });
 });
@@ -988,7 +1337,13 @@ describe('17. Stress Testing — Large Inputs', () => {
   it('forward chaining with 10000 facts and rules', () => {
     const fc = new ForwardChaining();
     const facts = new Set(Array.from({ length: 10000 }, (_, i) => `F${i}`));
-    const rules: Rule[] = Array.from({ length: 10000 }, (_, i) => ({ id: `r${i}`, antecedents: [`F${i}`], consequent: `G${i}`, priority: 1, weight: 1 }));
+    const rules: Rule[] = Array.from({ length: 10000 }, (_, i) => ({
+      id: `r${i}`,
+      antecedents: [`F${i}`],
+      consequent: `G${i}`,
+      priority: 1,
+      weight: 1,
+    }));
     const r = fc.execute(facts, rules);
     expect(r.size).toBe(20000);
   });
@@ -1003,7 +1358,12 @@ describe('17. Stress Testing — Large Inputs', () => {
 
   it('hypothesis engine with 10000 candidates', () => {
     const he = new HypothesisEngine();
-    const candidates = Array.from({ length: 10000 }, (_, i) => ({ id: `h${i}`, label: `H${i}`, evidence: [], confidence: i % 101 }));
+    const candidates = Array.from({ length: 10000 }, (_, i) => ({
+      id: `h${i}`,
+      label: `H${i}`,
+      evidence: [],
+      confidence: i % 101,
+    }));
     const ranked = he.rank(candidates);
     expect(ranked.length).toBe(10000);
     expect(he.prune(ranked, 50).length).toBeLessThanOrEqual(10000);
@@ -1018,7 +1378,7 @@ describe('17. Stress Testing — Large Inputs', () => {
       const res = await engine.execute(`s${i}`, 'C', facts, rules);
       results.push(Array.from(res).sort().join(','));
     }
-    expect(results.every(r => r === results[0])).toBe(true);
+    expect(results.every((r) => r === results[0])).toBe(true);
   });
 });
 
@@ -1055,7 +1415,12 @@ describe('18. Security Validation', () => {
 
   it('fail closed on duplicate rule IDs', () => {
     const validator = new ReasoningValidator();
-    expect(() => validator.validateRules([{ id: 'dup', antecedents: [], consequent: '', priority: 1, weight: 1 }, { id: 'dup', antecedents: [], consequent: '', priority: 2, weight: 2 }])).toThrow(IntegrityError);
+    expect(() =>
+      validator.validateRules([
+        { id: 'dup', antecedents: [], consequent: '', priority: 1, weight: 1 },
+        { id: 'dup', antecedents: [], consequent: '', priority: 2, weight: 2 },
+      ]),
+    ).toThrow(IntegrityError);
   });
 
   it('no singleton — separate instances have separate state', () => {
@@ -1106,9 +1471,20 @@ describe('19. Property-Based Inline Testing', () => {
   it('decision tree invariant: traversal produces valid path', () => {
     const dte = new DecisionTreeEngine();
     for (let iter = 0; iter < 20; iter++) {
-      const n1 = { id: 'root', label: 'Root', type: 'decision' as const, branches: [{ condition: 'go', targetNodeId: 'leaf' }] };
+      const n1 = {
+        id: 'root',
+        label: 'Root',
+        type: 'decision' as const,
+        branches: [{ condition: 'go', targetNodeId: 'leaf' }],
+      };
       const n2 = { id: 'leaf', label: 'Leaf', type: 'leaf' as const, branches: [] };
-      const tree: DecisionTree = { rootNodeId: 'root', nodes: new Map([['root', n1], ['leaf', n2]]) };
+      const tree: DecisionTree = {
+        rootNodeId: 'root',
+        nodes: new Map([
+          ['root', n1],
+          ['leaf', n2],
+        ]),
+      };
       try {
         const path = dte.traverse(tree, { go: true });
         expect(path.length).toBeGreaterThanOrEqual(1);
@@ -1144,14 +1520,20 @@ describe('20. Integration & Race Safety', () => {
   it('parallel reasoning engine executions produce consistent results', async () => {
     const engines = Array.from({ length: 10 }, () => new ReasoningEngine());
     const results = await Promise.all(
-      engines.map((e, i) => e.execute(`s${i}`, 'B', new Set(['A']), [{ id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 }]))
+      engines.map((e, i) =>
+        e.execute(`s${i}`, 'B', new Set(['A']), [
+          { id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 },
+        ]),
+      ),
     );
-    results.forEach(r => expect(r.has('B')).toBe(true));
+    results.forEach((r) => expect(r.has('B')).toBe(true));
   });
 
   it('sequential recoveries produce consistent state', async () => {
     const engine = new ReasoningEngine();
-    await engine.execute('s1', 'B', new Set(['A']), [{ id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 }]);
+    await engine.execute('s1', 'B', new Set(['A']), [
+      { id: 'r', antecedents: ['A'], consequent: 'B', priority: 1, weight: 1 },
+    ]);
     const r1 = await engine.recover('s1');
     const r2 = await engine.recover('s1');
     expect(r1).toEqual(r2);

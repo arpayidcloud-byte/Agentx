@@ -40,7 +40,10 @@ export function createEmptyOutput(): CollectedOutput {
  * @param maxLength - Maximum length in bytes
  * @returns Truncated output
  */
-export function truncateOutput(output: string, maxLength: number): { output: string; truncated: boolean } {
+export function truncateOutput(
+  output: string,
+  maxLength: number,
+): { output: string; truncated: boolean } {
   const encoder = new TextEncoder();
   const encoded = encoder.encode(output);
 

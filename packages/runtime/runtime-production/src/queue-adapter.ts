@@ -31,20 +31,20 @@ export class MemoryQueue implements IExecutionQueue {
   }
 
   async ack(id: string): Promise<void> {
-    const idx = this.queue.findIndex(m => m.id === id);
+    const idx = this.queue.findIndex((m) => m.id === id);
     if (idx !== -1) {
       this.queue.splice(idx, 1);
     }
   }
 
   async retry(id: string): Promise<void> {
-    const msg = this.queue.find(m => m.id === id);
+    const msg = this.queue.find((m) => m.id === id);
     if (msg) {
       msg.retryCount++;
       if (msg.retryCount > 3) {
         msg.status = 'FAILED';
         this.deadLetterQueue.push(msg);
-        this.queue = this.queue.filter(m => m.id !== id);
+        this.queue = this.queue.filter((m) => m.id !== id);
       } else {
         msg.status = 'PENDING';
       }

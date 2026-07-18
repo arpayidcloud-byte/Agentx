@@ -1,12 +1,5 @@
-import {
-  SecretStore,
-  SecretEntry,
-  SecretMetadata,
-} from './interfaces.js';
-import {
-  OperationNotSupportedError,
-  SecretNotFoundError,
-} from './errors.js';
+import { SecretStore, SecretEntry, SecretMetadata } from './interfaces.js';
+import { OperationNotSupportedError, SecretNotFoundError } from './errors.js';
 
 export class EnvVarSecretStore implements SecretStore {
   readonly backendId = 'env';
@@ -32,11 +25,15 @@ export class EnvVarSecretStore implements SecretStore {
   }
 
   public async set(_key: string, _value: string, _metadata?: SecretMetadata): Promise<void> {
-    throw new OperationNotSupportedError('set() is not supported by EnvVarSecretStore (immutable at runtime)');
+    throw new OperationNotSupportedError(
+      'set() is not supported by EnvVarSecretStore (immutable at runtime)',
+    );
   }
 
   public async delete(_key: string): Promise<void> {
-    throw new OperationNotSupportedError('delete() is not supported by EnvVarSecretStore (immutable at runtime)');
+    throw new OperationNotSupportedError(
+      'delete() is not supported by EnvVarSecretStore (immutable at runtime)',
+    );
   }
 
   public async list(): Promise<string[]> {
@@ -48,6 +45,8 @@ export class EnvVarSecretStore implements SecretStore {
   }
 
   public async rotate(_key: string): Promise<void> {
-    throw new OperationNotSupportedError('rotate() is not supported by EnvVarSecretStore (immutable at runtime)');
+    throw new OperationNotSupportedError(
+      'rotate() is not supported by EnvVarSecretStore (immutable at runtime)',
+    );
   }
 }

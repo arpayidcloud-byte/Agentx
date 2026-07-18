@@ -35,7 +35,10 @@ export class CircuitBreaker {
   private checkState(): void {
     if (this.state === 'OPEN') {
       const now = Date.now();
-      if (this.lastFailureTime && now - this.lastFailureTime.getTime() > this.config.recoveryTimeoutMs) {
+      if (
+        this.lastFailureTime &&
+        now - this.lastFailureTime.getTime() > this.config.recoveryTimeoutMs
+      ) {
         this.state = 'HALF_OPEN';
       } else {
         throw new CircuitOpenError('Circuit breaker is open', 'circuit-breaker');

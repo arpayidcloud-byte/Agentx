@@ -18,7 +18,9 @@ export interface CollaborationPlan {
 export class CollaborationPlanner {
   plan(goalId: string, agentIds: string[]): CollaborationPlan {
     const phases = ['planning', 'execution', 'verification', 'completion'];
-    const checksum = createHash('sha256').update(JSON.stringify({ goalId, agentIds })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ goalId, agentIds }))
+      .digest('hex');
     return {
       id: `plan-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,
       goalId,

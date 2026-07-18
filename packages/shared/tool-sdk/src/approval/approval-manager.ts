@@ -37,7 +37,7 @@ export class ApprovalManager {
    */
   async createRequest(
     params: CreateApprovalRequestParams,
-    operatorId: string
+    operatorId: string,
   ): Promise<ApprovalRequest> {
     // Get or create session
     let session = this.getActiveSession(operatorId);
@@ -63,7 +63,11 @@ export class ApprovalManager {
    * @param confirmed - Whether double confirmation is given
    * @returns ApprovalResult
    */
-  async approve(requestId: string, operatorId: string, confirmed?: boolean): Promise<ApprovalResult> {
+  async approve(
+    requestId: string,
+    operatorId: string,
+    confirmed?: boolean,
+  ): Promise<ApprovalResult> {
     return this.service.approve(requestId, operatorId, confirmed);
   }
 

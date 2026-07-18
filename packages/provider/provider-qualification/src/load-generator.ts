@@ -5,7 +5,7 @@
 
 export class LoadGenerator {
   generate(_rateRps: number, durationMs: number): Promise<void> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(resolve, durationMs); // Simulated
     });
   }

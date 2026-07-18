@@ -33,6 +33,8 @@ export class TraceContext {
    * Create a new unique correlation ID.
    */
   public static generateId(): string {
-    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    return (
+      Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+    );
   }
 }

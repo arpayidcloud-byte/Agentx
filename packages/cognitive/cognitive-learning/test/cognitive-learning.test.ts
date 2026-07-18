@@ -46,10 +46,16 @@ import {
 } from '../src/index.js';
 
 const sampleExperience = (overrides: Partial<Experience> = {}): Experience => ({
-  id: 'exp-1', sessionId: 's1', goal: 'test',
-  reasoningTrace: ['step1', 'step2'], decision: 'action_a',
-  confidence: 80, outcome: 'success', feedback: [],
-  timestamp: new Date(), checksum: '',
+  id: 'exp-1',
+  sessionId: 's1',
+  goal: 'test',
+  reasoningTrace: ['step1', 'step2'],
+  decision: 'action_a',
+  confidence: 80,
+  outcome: 'success',
+  feedback: [],
+  timestamp: new Date(),
+  checksum: '',
   ...overrides,
 });
 
@@ -61,7 +67,13 @@ const sampleFailure = (overrides: Partial<Experience> = {}): Experience =>
 // ============================================================
 describe('Errors', () => {
   it('instantiates all error types', () => {
-    const errs = [LearningStateError, InvalidExperienceError, InvalidPatternError, AdaptationError, CheckpointError];
+    const errs = [
+      LearningStateError,
+      InvalidExperienceError,
+      InvalidPatternError,
+      AdaptationError,
+      CheckpointError,
+    ];
     for (const ET of errs) {
       const e = new ET('msg', 'src');
       expect(e.message).toBe('msg');
@@ -117,7 +129,9 @@ describe('Learning Session', () => {
 // ============================================================
 describe('Experience Store', () => {
   let store: ExperienceStore;
-  beforeEach(() => { store = new ExperienceStore(); });
+  beforeEach(() => {
+    store = new ExperienceStore();
+  });
 
   it('stores immutable experiences', () => {
     store.store(sampleExperience());
@@ -144,9 +158,11 @@ describe('Experience Extractor and Pattern Engine', () => {
   it('extracts patterns from experiences', () => {
     const extractor = new ExperienceExtractor();
     const patterns = extractor.extractPatterns([
-      sampleFailure(), sampleFailure(), sampleExperience()
+      sampleFailure(),
+      sampleFailure(),
+      sampleExperience(),
     ]);
-    expect(patterns.some(p => p.type === 'repeated_failure')).toBe(true);
+    expect(patterns.some((p) => p.type === 'repeated_failure')).toBe(true);
   });
 
   it('pattern engine discovers frequent paths', () => {
@@ -156,7 +172,7 @@ describe('Experience Extractor and Pattern Engine', () => {
       sampleExperience({ reasoningTrace: ['A', 'B'], id: 'e2', sessionId: 's2' }),
     ];
     const patterns = engine.analyze(exps);
-    expect(patterns.some(p => p.type === 'frequent_path')).toBe(true);
+    expect(patterns.some((p) => p.type === 'frequent_path')).toBe(true);
   });
 });
 
@@ -167,7 +183,15 @@ describe('Pattern Validator', () => {
   it('explore all pattern validator branches', () => {
     const v = new PatternValidator();
     // Valid pattern should not throw
-    const validPattern: Pattern = { id: 'p1', type: 'repeated_failure', signature: 's', occurrenceCount: 5, firstSeen: new Date(), lastSeen: new Date(), checksum: 'c' };
+    const validPattern: Pattern = {
+      id: 'p1',
+      type: 'repeated_failure',
+      signature: 's',
+      occurrenceCount: 5,
+      firstSeen: new Date(),
+      lastSeen: new Date(),
+      checksum: 'c',
+    };
     expect(() => v.validate(validPattern)).not.toThrow();
     // Missing id
     expect(() => v.validate({ ...validPattern, id: '' })).toThrow(InvalidPatternError);
@@ -180,7 +204,14 @@ describe('Feedback Validator', () => {
   it('validates feedback records', () => {
     const v = new FeedbackValidator();
     expect(() => v.validate({} as any)).toThrow(InvalidExperienceError);
-    const valid: Feedback = { id: 'f1', sessionId: 's1', source: 'runtime', type: 'success', payload: {}, timestamp: new Date() };
+    const valid: Feedback = {
+      id: 'f1',
+      sessionId: 's1',
+      source: 'runtime',
+      type: 'success',
+      payload: {},
+      timestamp: new Date(),
+    };
     expect(() => v.validate(valid)).not.toThrow();
   });
 });
@@ -189,8 +220,12 @@ describe('Improvement Validator', () => {
   it('validates improvements', () => {
     const v = new ImprovementValidator();
     expect(() => v.validate({ id: '', recommendation: '', priority: -1 } as any)).toThrow();
-    expect(() => v.validate({ id: 'i1', recommendation: 'test', priority: 0 } as any)).not.toThrow();
-    expect(() => v.validate({ id: 'i1', recommendation: 'test', priority: 5 } as any)).not.toThrow();
+    expect(() =>
+      v.validate({ id: 'i1', recommendation: 'test', priority: 0 } as any),
+    ).not.toThrow();
+    expect(() =>
+      v.validate({ id: 'i1', recommendation: 'test', priority: 5 } as any),
+    ).not.toThrow();
     // Validate the missing recommendation branch
     expect(() => v.validate({ id: 'i1', recommendation: '', priority: 1 } as any)).toThrow();
   });
@@ -244,7 +279,7 @@ describe('Success & Failure Analyzers', () => {
   it('failure analyzer identifies empty trace root causes', () => {
     const fa = new FailureAnalyzer();
     const causes = fa.analyze([sampleFailure({ reasoningTrace: [] })]);
-    expect(causes.some(c => c.includes('empty-trace'))).toBe(true);
+    expect(causes.some((c) => c.includes('empty-trace'))).toBe(true);
   });
 });
 
@@ -272,14 +307,30 @@ describe('Reflection Engine & History', () => {
 describe('Adaptation Engine', () => {
   it('generates adaptations based on patterns', () => {
     const eng = new AdaptationEngine();
-    const p: Pattern = { id: 'p1', type: 'repeated_failure', signature: 'f', occurrenceCount: 3, firstSeen: new Date(), lastSeen: new Date(), checksum: '' };
+    const p: Pattern = {
+      id: 'p1',
+      type: 'repeated_failure',
+      signature: 'f',
+      occurrenceCount: 3,
+      firstSeen: new Date(),
+      lastSeen: new Date(),
+      checksum: '',
+    };
     const adapts = eng.adapt([p], 'balanced');
     expect(adapts.length).toBeGreaterThan(0);
   });
 
   it('no adaptation with conservative policy', () => {
     const eng = new AdaptationEngine();
-    const p: Pattern = { id: 'p1', type: 'repeated_failure', signature: 'f', occurrenceCount: 3, firstSeen: new Date(), lastSeen: new Date(), checksum: '' };
+    const p: Pattern = {
+      id: 'p1',
+      type: 'repeated_failure',
+      signature: 'f',
+      occurrenceCount: 3,
+      firstSeen: new Date(),
+      lastSeen: new Date(),
+      checksum: '',
+    };
     expect(eng.adapt([p], 'conservative')).toHaveLength(0);
   });
 });
@@ -309,7 +360,15 @@ describe('Strategy Selector & Registry', () => {
 
   it('selects fallback strategy with failure patterns', () => {
     const sel = new StrategySelector();
-    const failurePattern: Pattern = { id: 'fp', type: 'repeated_failure', signature: 'f', occurrenceCount: 3, firstSeen: new Date(), lastSeen: new Date(), checksum: '' };
+    const failurePattern: Pattern = {
+      id: 'fp',
+      type: 'repeated_failure',
+      signature: 'f',
+      occurrenceCount: 3,
+      firstSeen: new Date(),
+      lastSeen: new Date(),
+      checksum: '',
+    };
     const strategies: StrategyRecord[] = [
       { id: 's1', name: 'S1', version: '1', priority: 1, confidence: 60 },
       { id: 's2', name: 'S2', version: '1', priority: 2, confidence: 80 },
@@ -325,7 +384,20 @@ describe('Strategy Selector & Registry', () => {
       { id: 's2', name: 'S2', version: '1', priority: 2, confidence: 80 },
     ];
     // No failure patterns -> goes to best.sort path
-    const selected = sel.select([{ id: 'ok', type: 'repeated_success', signature: 's', occurrenceCount: 2, firstSeen: new Date(), lastSeen: new Date(), checksum: '' }], strategies);
+    const selected = sel.select(
+      [
+        {
+          id: 'ok',
+          type: 'repeated_success',
+          signature: 's',
+          occurrenceCount: 2,
+          firstSeen: new Date(),
+          lastSeen: new Date(),
+          checksum: '',
+        },
+      ],
+      strategies,
+    );
     expect(selected.id).toBe('s2');
   });
 
@@ -351,12 +423,28 @@ describe('Improvement Engine', () => {
     const eng = new ImprovementEngine();
     const successes = [sampleExperience({ id: 'e1', sessionId: 's1' })];
     const patterns: Pattern[] = [
-      { id: 'p1', type: 'repeated_success', signature: 's', occurrenceCount: 2, firstSeen: new Date(), lastSeen: new Date(), checksum: '' },
-      { id: 'p2', type: 'repeated_success', signature: 's2', occurrenceCount: 3, firstSeen: new Date(), lastSeen: new Date(), checksum: '' },
+      {
+        id: 'p1',
+        type: 'repeated_success',
+        signature: 's',
+        occurrenceCount: 2,
+        firstSeen: new Date(),
+        lastSeen: new Date(),
+        checksum: '',
+      },
+      {
+        id: 'p2',
+        type: 'repeated_success',
+        signature: 's2',
+        occurrenceCount: 3,
+        firstSeen: new Date(),
+        lastSeen: new Date(),
+        checksum: '',
+      },
     ];
     const imps = eng.generate(successes, patterns);
     expect(imps.length).toBeGreaterThan(0);
-    expect(imps.some(i => i.recommendation.includes('Continue'))).toBe(true);
+    expect(imps.some((i) => i.recommendation.includes('Continue'))).toBe(true);
   });
 });
 
@@ -365,7 +453,9 @@ describe('Improvement Engine', () => {
 // ============================================================
 describe('Checkpoint & Recovery', () => {
   let cm: LearningCheckpointManager;
-  beforeEach(() => { cm = new LearningCheckpointManager(); });
+  beforeEach(() => {
+    cm = new LearningCheckpointManager();
+  });
 
   it('saves and loads checkpoints', () => {
     const cp = cm.save('s1', { data: 'test' });
@@ -397,7 +487,14 @@ describe('Events', () => {
 describe('Hooks', () => {
   it('executes all hook points', async () => {
     const hm = new LearningHookManager();
-    const hook = { beforeLearning: vi.fn(), afterLearning: vi.fn(), beforeReflection: vi.fn(), afterReflection: vi.fn(), beforeAdaptation: vi.fn(), afterAdaptation: vi.fn() };
+    const hook = {
+      beforeLearning: vi.fn(),
+      afterLearning: vi.fn(),
+      beforeReflection: vi.fn(),
+      afterReflection: vi.fn(),
+      beforeAdaptation: vi.fn(),
+      afterAdaptation: vi.fn(),
+    };
     hm.register(hook);
     await hm.runBeforeLearning('s1');
     await hm.runAfterLearning('s1', {});
@@ -470,7 +567,9 @@ describe('Feedback Collector Edge Cases', () => {
 describe('Learning Engine Orchestration', () => {
   let engine: LearningEngine;
 
-  beforeEach(() => { engine = new LearningEngine(); });
+  beforeEach(() => {
+    engine = new LearningEngine();
+  });
 
   it('executes complete learning cycle with patterns', async () => {
     const experiences = [
@@ -512,7 +611,18 @@ describe('Learning Engine Orchestration', () => {
   });
 
   it('handles error during pattern validation', async () => {
-    const badExp: Experience = { id: '', sessionId: '', goal: '', reasoningTrace: [], decision: '', confidence: 0, outcome: 'failure', feedback: [], timestamp: new Date(), checksum: '' };
+    const badExp: Experience = {
+      id: '',
+      sessionId: '',
+      goal: '',
+      reasoningTrace: [],
+      decision: '',
+      confidence: 0,
+      outcome: 'failure',
+      feedback: [],
+      timestamp: new Date(),
+      checksum: '',
+    };
     await expect(engine.run([badExp])).rejects.toThrow();
   });
 });

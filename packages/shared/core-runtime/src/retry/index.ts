@@ -10,20 +10,30 @@ export class RetryPolicy implements IRetryPolicy {
 
   private retryableErrors: string[];
 
-  constructor(config: {
-    type?: 'exponential' | 'linear' | 'constant';
-    maxAttempts?: number;
-    initialDelayMs?: number;
-    backoffMultiplier?: number;
-    maxDelayMs?: number;
-    retryableErrors?: string[];
-  } = {}) {
+  constructor(
+    config: {
+      type?: 'exponential' | 'linear' | 'constant';
+      maxAttempts?: number;
+      initialDelayMs?: number;
+      backoffMultiplier?: number;
+      maxDelayMs?: number;
+      retryableErrors?: string[];
+    } = {},
+  ) {
     this.type = config.type || 'exponential';
     this.maxAttempts = config.maxAttempts ?? 3;
     this.initialDelayMs = config.initialDelayMs ?? 1000;
     this.backoffMultiplier = config.backoffMultiplier ?? 2.0;
     this.maxDelayMs = config.maxDelayMs;
-    this.retryableErrors = config.retryableErrors || ['ECONNRESET', 'ETIMEDOUT', 'EAI_AGAIN', '429', '500', '502', '503'];
+    this.retryableErrors = config.retryableErrors || [
+      'ECONNRESET',
+      'ETIMEDOUT',
+      'EAI_AGAIN',
+      '429',
+      '500',
+      '502',
+      '503',
+    ];
   }
 
   public calculateDelay(attempt: number): number {
@@ -31,7 +41,7 @@ export class RetryPolicy implements IRetryPolicy {
 
     switch (this.type) {
       case 'linear':
-        delay = this.initialDelayMs + (this.initialDelayMs * attempt);
+        delay = this.initialDelayMs + this.initialDelayMs * attempt;
         break;
       case 'constant':
         delay = this.initialDelayMs;
@@ -53,15 +63,15 @@ export class RetryPolicy implements IRetryPolicy {
 
   public isRetryable(error: Error): boolean {
     const msg = error.message.toUpperCase();
-    return this.retryableErrors.some(code => msg.includes(code));
+    return this.retryableErrors.some((code) => msg.includes(code));
   }
 
   public async execute<T>(
     operation: () => Promise<T>,
-    cancellationToken?: CancellationToken
+    cancellationToken?: CancellationToken,
   ): Promise<T> {
     let lastError: Error | undefined;
-    
+
     for (let attempt = 0; attempt <= this.maxAttempts; attempt++) {
       if (cancellationToken?.isCancelled) {
         throw new Error(`Operation cancelled: ${cancellationToken.reason}`);
@@ -71,13 +81,13 @@ export class RetryPolicy implements IRetryPolicy {
         return await operation();
       } catch (e: unknown) {
         lastError = e instanceof Error ? e : new Error(String(e));
-        
+
         if (attempt >= this.maxAttempts || !this.isRetryable(lastError)) {
           throw lastError;
         }
 
         const delay = this.calculateDelay(attempt);
-        await new Promise(resolve => setTimeout(resolve, delay));
+        await new Promise((resolve) => setTimeout(resolve, delay));
       }
     }
 

@@ -12,7 +12,10 @@ export class QualificationRegistry {
 
   register(report: CertificationReport): void {
     if (this.reports.has(report.providerId)) {
-      throw new QualificationRegistryError(`Provider already registered: ${report.providerId}`, 'qualification-registry');
+      throw new QualificationRegistryError(
+        `Provider already registered: ${report.providerId}`,
+        'qualification-registry',
+      );
     }
     this.reports.set(report.providerId, report);
   }

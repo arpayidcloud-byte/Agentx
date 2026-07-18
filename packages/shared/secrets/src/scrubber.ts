@@ -30,7 +30,9 @@ export class RedactedString {
  * Scrubs any keys starting with AGENTX_SECRET_ from the environment object.
  * Returns a new object to avoid mutating the original unless desired.
  */
-export function scrubEnvironment(env: Record<string, string | undefined>): Record<string, string | undefined> {
+export function scrubEnvironment(
+  env: Record<string, string | undefined>,
+): Record<string, string | undefined> {
   const scrubbed: Record<string, string | undefined> = {};
   for (const key of Object.keys(env)) {
     if (!key.startsWith('AGENTX_SECRET_')) {

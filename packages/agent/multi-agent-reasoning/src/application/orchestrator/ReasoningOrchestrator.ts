@@ -39,7 +39,7 @@ export class ReasoningOrchestrator {
     this.eventBus.publish('collaboration.session.created', { sessionId: session.id });
 
     const plan = this.planner.plan(goalId, agentIds);
-    
+
     for (const agentId of agentIds) {
       const delegation = this.delegationEngine.delegate(`task-${agentId}`, agentId, goalId, 5);
       this.scheduler.schedule(delegation);
@@ -58,7 +58,7 @@ export class ReasoningOrchestrator {
     await this.hooks.runBeforeCollaboration(session.id);
     this.auditManager.log(session.traceId, session.id, 'reasoning.started', {});
 
-    const decisions = session.participants.map(p => ({
+    const decisions = session.participants.map((p) => ({
       agentId: p,
       decision: `decision-${p}`,
       confidence: 0.9,
@@ -68,7 +68,12 @@ export class ReasoningOrchestrator {
 
     this.sessionManager.completeSession(session.id);
     await this.hooks.runAfterCollaboration(session.id, output);
-    this.auditManager.log(session.traceId, session.id, 'reasoning.completed', output as unknown as Record<string, unknown>);
+    this.auditManager.log(
+      session.traceId,
+      session.id,
+      'reasoning.completed',
+      output as unknown as Record<string, unknown>,
+    );
 
     return { sessionId: session.id, success: true, output };
   }

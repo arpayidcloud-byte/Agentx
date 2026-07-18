@@ -14,8 +14,17 @@ export class PluginMarketplace {
 
   list(name: string, version: string, author: string): MarketplaceListing {
     const listingId = `pm-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ listingId, name, version, author })).digest('hex');
-    const listing: MarketplaceListing = Object.freeze({ listingId, name, type: 'PLUGIN', version, author, checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ listingId, name, version, author }))
+      .digest('hex');
+    const listing: MarketplaceListing = Object.freeze({
+      listingId,
+      name,
+      type: 'PLUGIN',
+      version,
+      author,
+      checksum,
+    });
     this.listings.set(listingId, listing);
     return listing;
   }
@@ -34,8 +43,17 @@ export class ExtensionMarketplace {
 
   list(name: string, version: string, author: string): MarketplaceListing {
     const listingId = `em-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ listingId, name, version, author })).digest('hex');
-    const listing: MarketplaceListing = Object.freeze({ listingId, name, type: 'EXTENSION', version, author, checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ listingId, name, version, author }))
+      .digest('hex');
+    const listing: MarketplaceListing = Object.freeze({
+      listingId,
+      name,
+      type: 'EXTENSION',
+      version,
+      author,
+      checksum,
+    });
     this.listings.set(listingId, listing);
     return listing;
   }
@@ -54,8 +72,17 @@ export class PackageMarketplace {
 
   list(name: string, version: string, author: string): MarketplaceListing {
     const listingId = `pkmg-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ listingId, name, version, author })).digest('hex');
-    const listing: MarketplaceListing = Object.freeze({ listingId, name, type: 'PACKAGE', version, author, checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ listingId, name, version, author }))
+      .digest('hex');
+    const listing: MarketplaceListing = Object.freeze({
+      listingId,
+      name,
+      type: 'PACKAGE',
+      version,
+      author,
+      checksum,
+    });
     this.listings.set(listingId, listing);
     return listing;
   }
@@ -82,7 +109,9 @@ export class ArtifactRepository {
 
   upload(name: string, type: string, size: number): ArtifactRepoEntry {
     const artifactId = `ar-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ artifactId, name, type, size })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ artifactId, name, type, size }))
+      .digest('hex');
     const entry: ArtifactRepoEntry = Object.freeze({ artifactId, name, type, size, checksum });
     this.artifacts.set(artifactId, entry);
     return entry;

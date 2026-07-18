@@ -14,7 +14,11 @@ import {
 import { parseCommand } from './command-parser.js';
 import { validateCommand } from './validator.js';
 import { scrubEnvironment } from './environment.js';
-import { CommandBlockedError, CommandNotAllowedError, InvalidWorkingDirectoryError } from './errors.js';
+import {
+  CommandBlockedError,
+  CommandNotAllowedError,
+  InvalidWorkingDirectoryError,
+} from './errors.js';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 
@@ -92,7 +96,7 @@ export class ShellSandbox {
 
     if (!resolved.startsWith(workspaceRoot)) {
       throw new InvalidWorkingDirectoryError(
-        `Directory '${directory}' escapes workspace jail '${workspaceRoot}'`
+        `Directory '${directory}' escapes workspace jail '${workspaceRoot}'`,
       );
     }
   }

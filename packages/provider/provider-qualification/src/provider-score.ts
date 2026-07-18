@@ -13,13 +13,13 @@ export class ProviderScoreCalculator {
     reliability: number;
     security: number;
   }): QualificationScore {
-    const overall = (
-      components.contract +
-      components.compatibility +
-      components.performance +
-      components.reliability +
-      components.security
-    ) / 5;
+    const overall =
+      (components.contract +
+        components.compatibility +
+        components.performance +
+        components.reliability +
+        components.security) /
+      5;
 
     return {
       contractScore: components.contract,

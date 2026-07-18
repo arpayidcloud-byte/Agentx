@@ -21,11 +21,16 @@ const transitions: Record<LearningState, LearningState[]> = {
 export class LearningStateMachine {
   private state: LearningState = 'CREATED';
 
-  getState(): LearningState { return this.state; }
+  getState(): LearningState {
+    return this.state;
+  }
 
   transition(next: LearningState): void {
     if (!transitions[this.state]?.includes(next)) {
-      throw new LearningStateError(`Invalid transition from ${this.state} to ${next}`, 'learning-state');
+      throw new LearningStateError(
+        `Invalid transition from ${this.state} to ${next}`,
+        'learning-state',
+      );
     }
     this.state = next;
   }

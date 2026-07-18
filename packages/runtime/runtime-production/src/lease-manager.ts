@@ -9,10 +9,15 @@ import { LeaseError } from './errors.js';
 export class ExecutionLeaseManager {
   private leases = new Map<string, LeaseInfo>();
 
-  acquireLease(workerId: string, resourceType: string, resourceId: string, ttlMs: number): LeaseInfo {
+  acquireLease(
+    workerId: string,
+    resourceType: string,
+    resourceId: string,
+    ttlMs: number,
+  ): LeaseInfo {
     const key = `${resourceType}:${resourceId}`;
     const existing = this.leases.get(key);
-    
+
     if (existing && existing.expiresAt.getTime() > Date.now()) {
       throw new LeaseError(`Resource already leased: ${key}`, 'lease-manager');
     }
@@ -38,7 +43,10 @@ export class ExecutionLeaseManager {
       throw new LeaseError(`Lease not found: ${key}`, 'lease-manager');
     }
     if (existing.workerId !== workerId) {
-      throw new LeaseError(`Lease owned by different worker: ${existing.workerId}`, 'lease-manager');
+      throw new LeaseError(
+        `Lease owned by different worker: ${existing.workerId}`,
+        'lease-manager',
+      );
     }
 
     existing.expiresAt = new Date(Date.now() + existing.heartbeatMs);
@@ -53,7 +61,12 @@ export class ExecutionLeaseManager {
     }
   }
 
-  takeoverLease(newWorkerId: string, resourceType: string, resourceId: string, ttlMs: number): LeaseInfo {
+  takeoverLease(
+    newWorkerId: string,
+    resourceType: string,
+    resourceId: string,
+    ttlMs: number,
+  ): LeaseInfo {
     const key = `${resourceType}:${resourceId}`;
     const existing = this.leases.get(key);
 

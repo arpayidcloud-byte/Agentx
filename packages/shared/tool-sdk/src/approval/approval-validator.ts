@@ -58,7 +58,7 @@ export class ApprovalValidator implements IApprovalValidator {
     const valid = validStates[action];
     if (!valid || !valid.includes(request.state)) {
       throw new ApprovalValidationError(
-        `Cannot ${action} request '${request.id}' in state '${request.state}'`
+        `Cannot ${action} request '${request.id}' in state '${request.state}'`,
       );
     }
 

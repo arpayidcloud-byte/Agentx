@@ -48,13 +48,7 @@ export interface ExecutionCoordinatorMetrics {
   recoveryCount: number;
 }
 
-export type ExecutionPhase = 
-  | 'PLANNING'
-  | 'WORKFLOW'
-  | 'AGENT'
-  | 'APPROVAL'
-  | 'TOOL'
-  | 'COMPLETION';
+export type ExecutionPhase = 'PLANNING' | 'WORKFLOW' | 'AGENT' | 'APPROVAL' | 'TOOL' | 'COMPLETION';
 
 export interface ExecutionTicket {
   id: string;

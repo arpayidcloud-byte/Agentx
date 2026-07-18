@@ -14,11 +14,12 @@ export class RecoveryCertificationEngine {
     const failureRecovery = this.validateFailureRecovery(workflowId);
     const retryCorrectness = this.validateRetryCorrectness(workflowId);
 
-    const score = (recoveryCorrectness ? 20 : 0) +
-                  (checkpointRestoration ? 20 : 0) +
-                  (rollbackIntegrity ? 20 : 0) +
-                  (failureRecovery ? 20 : 0) +
-                  (retryCorrectness ? 20 : 0);
+    const score =
+      (recoveryCorrectness ? 20 : 0) +
+      (checkpointRestoration ? 20 : 0) +
+      (rollbackIntegrity ? 20 : 0) +
+      (failureRecovery ? 20 : 0) +
+      (retryCorrectness ? 20 : 0);
 
     const cert: RecoveryCertification = {
       id: `rc-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,

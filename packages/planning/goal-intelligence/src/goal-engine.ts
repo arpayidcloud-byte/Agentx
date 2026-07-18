@@ -40,7 +40,12 @@ export class GoalEngine {
   public hooks = new GoalHookManager();
   public metrics = new GoalIntelligenceMetricsCollector();
 
-  async processGoal(title: string, description: string, objectiveCount: number = 2, policy: 'safe' | 'balanced' | 'aggressive' = 'balanced'): Promise<{ plan: PlanningPlan; subgoals: number }> {
+  async processGoal(
+    title: string,
+    description: string,
+    objectiveCount: number = 2,
+    policy: 'safe' | 'balanced' | 'aggressive' = 'balanced',
+  ): Promise<{ plan: PlanningPlan; subgoals: number }> {
     const goal = this.parser.parse(title, description);
     this.validator.validate(goal);
 
@@ -73,7 +78,10 @@ export class GoalEngine {
       this.stateMachine.transition('PLANNING');
       await this.hooks.runBeforePlanning(session.goal.id);
       const ordered = this.taskOrdering.order(subgoals);
-      const orderedWithPriority = ordered.map(sg => ({ ...sg, priority: this.taskPriority.assignPriority(sg, sg.priority) }));
+      const orderedWithPriority = ordered.map((sg) => ({
+        ...sg,
+        priority: this.taskPriority.assignPriority(sg, sg.priority),
+      }));
       const budget: PlanningBudget = { tokens: 1000, timeMs: 10000, cost: 5 };
       const plan = this.planningEngine.generatePlan(session.goal.id, orderedWithPriority, budget);
 

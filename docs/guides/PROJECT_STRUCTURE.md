@@ -54,6 +54,7 @@ apps/
 ## packages/ (38 packages)
 
 ### Cognitive Layer
+
 ```
 packages/
 ├── cognitive-contracts/                # Budget, hooks, lifecycle, metrics, reasoning
@@ -69,6 +70,7 @@ packages/
 ```
 
 ### Agent & Multi-Agent
+
 ```
 ├── agent-platform/                     # Sub-agent orchestration, parallel runners
 ├── multi-agent-collaboration/          # Agent directories, consensus, message routing
@@ -77,6 +79,7 @@ packages/
 ```
 
 ### Runtime & Infrastructure
+
 ```
 ├── core-runtime/                       # Task scheduling, state machine, retry, cancellation
 ├── runtime/                            # Coordinator, dispatcher, scheduler, bootstrap, DI
@@ -87,6 +90,7 @@ packages/
 ```
 
 ### Provider & SDK
+
 ```
 ├── provider-sdk/                       # Base provider, factory, registry, resilience
 ├── native-providers/                   # Anthropic, OpenAI, Gemini, Ollama adapters
@@ -98,6 +102,7 @@ packages/
 ```
 
 ### Workflow
+
 ```
 ├── workflow-engine/                    # Compilation, execution, replay, retry, snapshots
 ├── workflow-hardening/                 # Integrity, compensation, replay, audit
@@ -105,6 +110,7 @@ packages/
 ```
 
 ### Tooling & Quality
+
 ```
 ├── tool-sdk/                           # Shell exec, filesystem, git, approval workflows
 ├── production-quality/                 # Quality gates, validators (audit, branch, coverage...)
@@ -189,30 +195,30 @@ scripts/
 
 ## Statistik
 
-| Komponen | Jumlah |
-|----------|--------|
-| Packages | 38 |
-| Apps | 1 (cli) |
-| Prompt Agents | 4 (coding, review, security, test) |
-| Prisma Models | 8 |
-| Docker Services | 2 (Postgres, Redis) |
-| CI Workflows | 1 |
-| Design Docs | 5 |
-| Custom ESLint Rules | 3 |
+| Komponen            | Jumlah                             |
+| ------------------- | ---------------------------------- |
+| Packages            | 38                                 |
+| Apps                | 1 (cli)                            |
+| Prompt Agents       | 4 (coding, review, security, test) |
+| Prisma Models       | 8                                  |
+| Docker Services     | 2 (Postgres, Redis)                |
+| CI Workflows        | 1                                  |
+| Design Docs         | 5                                  |
+| Custom ESLint Rules | 3                                  |
 
 ---
 
 ## Tech Stack
 
-| Komponen | Teknologi |
-|----------|-----------|
-| Runtime | Node.js >= 20 |
-| Language | TypeScript 5.4.5 |
-| Package Manager | pnpm 11.13.0 |
-| Build System | Turborepo |
-| Testing | Vitest + @vitest/coverage-v8 |
-| Linting | ESLint + Prettier |
-| Database | PostgreSQL 16 (Prisma) |
-| Cache | Redis 7 |
-| CI | GitHub Actions |
-| Versioning | Changesets |
+| Komponen        | Teknologi                    |
+| --------------- | ---------------------------- |
+| Runtime         | Node.js >= 20                |
+| Language        | TypeScript 5.4.5             |
+| Package Manager | pnpm 11.13.0                 |
+| Build System    | Turborepo                    |
+| Testing         | Vitest + @vitest/coverage-v8 |
+| Linting         | ESLint + Prettier            |
+| Database        | PostgreSQL 16 (Prisma)       |
+| Cache           | Redis 7                      |
+| CI              | GitHub Actions               |
+| Versioning      | Changesets                   |

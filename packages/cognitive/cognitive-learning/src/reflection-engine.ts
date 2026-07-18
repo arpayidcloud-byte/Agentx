@@ -16,7 +16,9 @@ export class ReflectionEngine {
 
     const answers = [
       `Outcome was ${experience.outcome} with confidence ${experience.confidence}`,
-      experience.outcome === 'failure' ? 'Consider alternative reasoning path' : 'Current strategy performed adequately',
+      experience.outcome === 'failure'
+        ? 'Consider alternative reasoning path'
+        : 'Current strategy performed adequately',
       `Decision: ${experience.decision}`,
     ];
 

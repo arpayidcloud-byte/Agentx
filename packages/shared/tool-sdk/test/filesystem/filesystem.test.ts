@@ -29,7 +29,9 @@ describe('Errors', () => {
 
 describe('PathResolver', () => {
   let resolver: PathResolver;
-  beforeEach(() => { resolver = new PathResolver(); });
+  beforeEach(() => {
+    resolver = new PathResolver();
+  });
 
   it('normalizes paths correctly', () => {
     expect(resolver.canonicalize('foo/../bar')).toBe('bar');
@@ -62,7 +64,9 @@ describe('PathResolver', () => {
 
   it('validateWorkspaceJail checks path starts with root', () => {
     resolver.validateWorkspaceJail('/root/agentx/workspace', '/root/agentx/workspace');
-    expect(() => resolver.validateWorkspaceJail('/other/path', '/root/agentx/workspace')).toThrow(WorkspaceEscapeError);
+    expect(() => resolver.validateWorkspaceJail('/other/path', '/root/agentx/workspace')).toThrow(
+      WorkspaceEscapeError,
+    );
   });
 
   it('validateSymlinkEscape is a no-op placeholder', () => {
@@ -75,7 +79,7 @@ describe('FilesystemPolicy', () => {
     const policy = new FilesystemPolicy({
       allow: ['src/**', 'packages/**', 'docs/**'],
       maxFileSizeBytes: 1024,
-      allowHiddenFiles: false
+      allowHiddenFiles: false,
     });
     expect(policy.isAllowed('src/app.ts')).toBe(true);
     expect(policy.isAllowed('packages/tool-sdk/index.ts')).toBe(true);
@@ -83,30 +87,50 @@ describe('FilesystemPolicy', () => {
   });
 
   it('handles ** glob patterns', () => {
-    const policy = new FilesystemPolicy({ allow: ['**'], maxFileSizeBytes: 1024, allowHiddenFiles: true });
+    const policy = new FilesystemPolicy({
+      allow: ['**'],
+      maxFileSizeBytes: 1024,
+      allowHiddenFiles: true,
+    });
     expect(policy.isAllowed('anything/here.txt')).toBe(true);
   });
 
   it('handles wildcard patterns with *', () => {
-    const policy = new FilesystemPolicy({ allow: ['src/*.ts'], maxFileSizeBytes: 1024, allowHiddenFiles: false });
+    const policy = new FilesystemPolicy({
+      allow: ['src/*.ts'],
+      maxFileSizeBytes: 1024,
+      allowHiddenFiles: false,
+    });
     expect(policy.isAllowed('src/app.ts')).toBe(true);
     expect(policy.isAllowed('src/sub/app.ts')).toBe(false);
   });
 
   it('enforces file size limits', () => {
-    const policy = new FilesystemPolicy({ allow: ['**'], maxFileSizeBytes: 1000, allowHiddenFiles: true });
+    const policy = new FilesystemPolicy({
+      allow: ['**'],
+      maxFileSizeBytes: 1000,
+      allowHiddenFiles: true,
+    });
     expect(() => policy.validateFileSize(500)).not.toThrow();
     expect(() => policy.validateFileSize(1500)).toThrow(FileTooLargeError);
   });
 
   it('enforces hidden file policy', () => {
-    const policy = new FilesystemPolicy({ allow: ['**'], maxFileSizeBytes: 1024, allowHiddenFiles: false });
+    const policy = new FilesystemPolicy({
+      allow: ['**'],
+      maxFileSizeBytes: 1024,
+      allowHiddenFiles: false,
+    });
     expect(policy.isAllowed('src/app.ts')).toBe(true);
     expect(policy.isAllowed('.gitignore')).toBe(false);
   });
 
   it('allows hidden files when configured', () => {
-    const policy = new FilesystemPolicy({ allow: ['**'], maxFileSizeBytes: 1024, allowHiddenFiles: true });
+    const policy = new FilesystemPolicy({
+      allow: ['**'],
+      maxFileSizeBytes: 1024,
+      allowHiddenFiles: true,
+    });
     expect(policy.isAllowed('.gitignore')).toBe(true);
   });
 
@@ -125,29 +149,41 @@ describe('FilesystemSandbox', () => {
 
   beforeEach(() => {
     pathResolver = new PathResolver();
-    policy = new FilesystemPolicy({ allow: ['src/**', 'packages/**'], maxFileSizeBytes: 10 * 1024 * 1024, allowHiddenFiles: false });
+    policy = new FilesystemPolicy({
+      allow: ['src/**', 'packages/**'],
+      maxFileSizeBytes: 10 * 1024 * 1024,
+      allowHiddenFiles: false,
+    });
     sandbox = new FilesystemSandbox(workspaceRoot, pathResolver, policy);
   });
 
   it('validates workspace jail correctly', () => {
     sandbox.validateWorkspaceJail('/root/agentx/workspace/src/app.ts');
-    expect(() => sandbox.validateWorkspaceJail('/root/agentx/other')).toThrow(SandboxViolationError);
+    expect(() => sandbox.validateWorkspaceJail('/root/agentx/other')).toThrow(
+      SandboxViolationError,
+    );
   });
 
   it('validates allowlist correctly', () => {
     sandbox.validateAllowlist('/root/agentx/workspace/src/app.ts');
-    expect(() => sandbox.validateAllowlist('/root/agentx/workspace/etc/passwd')).toThrow(AllowlistViolationError);
+    expect(() => sandbox.validateAllowlist('/root/agentx/workspace/etc/passwd')).toThrow(
+      AllowlistViolationError,
+    );
   });
 
   it('validates hidden file policy', () => {
     sandbox.validateHiddenFilePolicy('/root/agentx/workspace/src/app.ts');
-    expect(() => sandbox.validateHiddenFilePolicy('/root/agentx/workspace/.gitignore')).toThrow(SandboxViolationError);
+    expect(() => sandbox.validateHiddenFilePolicy('/root/agentx/workspace/.gitignore')).toThrow(
+      SandboxViolationError,
+    );
   });
 });
 
 describe('FilesystemValidator', () => {
   let validator: FilesystemValidator;
-  beforeEach(() => { validator = new FilesystemValidator(); });
+  beforeEach(() => {
+    validator = new FilesystemValidator();
+  });
 
   it('validates UTF-8 encoding', () => {
     expect(validator.validateEncoding(Buffer.from('Hello World'))).toBe(true);
@@ -201,7 +237,10 @@ describe('FilesystemReadTool', () => {
       validateRead: vi.fn().mockResolvedValue('/root/agentx/workspace/src/app.ts'),
       validateSymlinkEscape: vi.fn().mockResolvedValue(undefined),
     } as any;
-    const mockValidator = { detectBinary: vi.fn().mockReturnValue(false), validateEncoding: vi.fn().mockReturnValue(true) } as any;
+    const mockValidator = {
+      detectBinary: vi.fn().mockReturnValue(false),
+      validateEncoding: vi.fn().mockReturnValue(true),
+    } as any;
     const mockPolicy = { validateFileSize: vi.fn() } as any;
 
     const readTool = new FilesystemReadTool(mockSandbox, mockValidator, mockPolicy);
@@ -215,11 +254,19 @@ describe('FilesystemWriteTool', () => {
       validateWrite: vi.fn().mockResolvedValue('/root/agentx/workspace/src/app.ts'),
       validateSymlinkEscape: vi.fn().mockResolvedValue(undefined),
     } as any;
-    const mockValidator = { detectBinary: vi.fn().mockReturnValue(false), validateEncoding: vi.fn().mockReturnValue(true) } as any;
+    const mockValidator = {
+      detectBinary: vi.fn().mockReturnValue(false),
+      validateEncoding: vi.fn().mockReturnValue(true),
+    } as any;
     const mockPolicy = { validateFileSize: vi.fn() } as any;
     const mockAtomicWriter = { write: vi.fn().mockResolvedValue(undefined) } as any;
 
-    const writeTool = new FilesystemWriteTool(mockSandbox, mockAtomicWriter, mockValidator, mockPolicy);
+    const writeTool = new FilesystemWriteTool(
+      mockSandbox,
+      mockAtomicWriter,
+      mockValidator,
+      mockPolicy,
+    );
     expect(writeTool).toBeDefined();
   });
 });

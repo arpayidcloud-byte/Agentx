@@ -3,6 +3,7 @@
 The authoritative architecture specification is maintained in the `agentx-handbook` repository.
 
 ## The 16 Volumes
+
 1. **Foundation**: System definition, terminology, dependency graph.
 2. **Core Runtime**: State machine, Event Bus, Scheduler.
 3. **Agent Platform**: AI Decomposer and 4 specialist agents.
@@ -21,4 +22,5 @@ The authoritative architecture specification is maintained in the `agentx-handbo
 16. **Secrets & Keys**: Secure credential storage, cache, invalidation.
 
 ## Key Decisions (ADRs)
+
 See `/root/agentx-handbook/03-ADR/` for detailed rationale on key structural choices (fail-closed permissions, Postgres triggers for audit logs, etc.).

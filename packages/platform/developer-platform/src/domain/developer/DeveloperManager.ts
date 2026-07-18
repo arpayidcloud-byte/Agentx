@@ -10,11 +10,19 @@ export interface DeveloperAccount {
 }
 
 export class DeveloperProjectManager {
-  private projects = new Map<string, { projectId: string; name: string; accountId: string; checksum: string }>();
+  private projects = new Map<
+    string,
+    { projectId: string; name: string; accountId: string; checksum: string }
+  >();
 
-  create(name: string, accountId: string): { projectId: string; name: string; accountId: string; checksum: string } {
+  create(
+    name: string,
+    accountId: string,
+  ): { projectId: string; name: string; accountId: string; checksum: string } {
     const projectId = `proj-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ projectId, name, accountId })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ projectId, name, accountId }))
+      .digest('hex');
     const project = Object.freeze({ projectId, name, accountId, checksum });
     this.projects.set(projectId, project);
     return project;
@@ -25,7 +33,7 @@ export class DeveloperProjectManager {
   }
 
   getByAccount(accountId: string) {
-    return Array.from(this.projects.values()).filter(p => p.accountId === accountId);
+    return Array.from(this.projects.values()).filter((p) => p.accountId === accountId);
   }
 
   delete(projectId: string): boolean {
@@ -50,7 +58,9 @@ export class PackageRegistry {
 
   publish(name: string, version: string, type: PackageEntry['type']): PackageEntry {
     const packageId = `pkg-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ packageId, name, version, type })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ packageId, name, version, type }))
+      .digest('hex');
     const entry: PackageEntry = Object.freeze({ packageId, name, version, type, checksum });
     this.packages.set(packageId, entry);
     return entry;
@@ -61,7 +71,7 @@ export class PackageRegistry {
   }
 
   findByName(name: string): PackageEntry[] {
-    return Array.from(this.packages.values()).filter(p => p.name === name);
+    return Array.from(this.packages.values()).filter((p) => p.name === name);
   }
 
   getAll(): PackageEntry[] {
@@ -82,7 +92,9 @@ export class ArtifactRegistry {
 
   upload(name: string, type: string, size: number): ArtifactEntry {
     const artifactId = `art-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ artifactId, name, type, size })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ artifactId, name, type, size }))
+      .digest('hex');
     const entry: ArtifactEntry = Object.freeze({ artifactId, name, type, size, checksum });
     this.artifacts.set(artifactId, entry);
     return entry;
@@ -113,7 +125,9 @@ export class VersionRegistry {
 
   register(packageName: string, version: string): VersionEntry {
     const versionId = `ver-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ versionId, packageName, version })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ versionId, packageName, version }))
+      .digest('hex');
     const entry: VersionEntry = Object.freeze({ versionId, packageName, version, checksum });
     this.versions.set(versionId, entry);
     return entry;
@@ -124,7 +138,7 @@ export class VersionRegistry {
   }
 
   getByPackage(packageName: string): VersionEntry[] {
-    return Array.from(this.versions.values()).filter(v => v.packageName === packageName);
+    return Array.from(this.versions.values()).filter((v) => v.packageName === packageName);
   }
 
   getAll(): VersionEntry[] {
@@ -146,8 +160,17 @@ export class ReleaseManager {
 
   publish(packageName: string, version: string): ReleaseEntry {
     const releaseId = `rel-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ releaseId, packageName, version })).digest('hex');
-    const entry: ReleaseEntry = Object.freeze({ releaseId, packageName, version, status: 'PUBLISHED', publishedAt: new Date(), checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ releaseId, packageName, version }))
+      .digest('hex');
+    const entry: ReleaseEntry = Object.freeze({
+      releaseId,
+      packageName,
+      version,
+      status: 'PUBLISHED',
+      publishedAt: new Date(),
+      checksum,
+    });
     this.releases.set(releaseId, entry);
     return entry;
   }
@@ -181,7 +204,9 @@ export class DocumentationEngine {
 
   create(title: string, content: string, category: string): DocPage {
     const pageId = `doc-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ pageId, title, content, category })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ pageId, title, content, category }))
+      .digest('hex');
     const page: DocPage = Object.freeze({ pageId, title, content, category, checksum });
     this.pages.set(pageId, page);
     return page;
@@ -192,7 +217,7 @@ export class DocumentationEngine {
   }
 
   getByCategory(category: string): DocPage[] {
-    return Array.from(this.pages.values()).filter(p => p.category === category);
+    return Array.from(this.pages.values()).filter((p) => p.category === category);
   }
 
   getAll(): DocPage[] {
@@ -213,7 +238,9 @@ export class ExampleRepositoryManager {
 
   add(title: string, language: string, content: string): ExampleEntry {
     const exampleId = `ex-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ exampleId, title, language, content })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ exampleId, title, language, content }))
+      .digest('hex');
     const entry: ExampleEntry = Object.freeze({ exampleId, title, language, content, checksum });
     this.examples.set(exampleId, entry);
     return entry;
@@ -224,7 +251,7 @@ export class ExampleRepositoryManager {
   }
 
   getByLanguage(language: string): ExampleEntry[] {
-    return Array.from(this.examples.values()).filter(e => e.language === language);
+    return Array.from(this.examples.values()).filter((e) => e.language === language);
   }
 
   getAll(): ExampleEntry[] {

@@ -13,13 +13,9 @@ export class CompatibilityScoreCalculator {
     performance: number;
     security: number;
   }): CompatibilityScore {
-    const overall = (
-      metrics.api +
-      metrics.runtime +
-      metrics.feature +
-      metrics.performance +
-      metrics.security
-    ) / 5;
+    const overall =
+      (metrics.api + metrics.runtime + metrics.feature + metrics.performance + metrics.security) /
+      5;
 
     return {
       api: metrics.api,

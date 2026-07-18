@@ -29,7 +29,13 @@ export class ProviderRunner {
     const chaos = await this.chaosHarness.run(provider);
     const security = await this.secHarness.run(provider);
 
-    const passed = contract.passed && compatibility.passed && benchmark.passed && stress.passed && chaos.passed && security.passed;
+    const passed =
+      contract.passed &&
+      compatibility.passed &&
+      benchmark.passed &&
+      stress.passed &&
+      chaos.passed &&
+      security.passed;
 
     const report: ConformanceReport = {
       providerId: provider.getMetadata().id,

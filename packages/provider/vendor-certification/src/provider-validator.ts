@@ -12,7 +12,10 @@ export class ProviderValidator {
       throw new ValidationError('Provider does not implement getMetadata()', 'provider-validator');
     }
     if (typeof provider.getCapabilities !== 'function') {
-      throw new ValidationError('Provider does not implement getCapabilities()', 'provider-validator');
+      throw new ValidationError(
+        'Provider does not implement getCapabilities()',
+        'provider-validator',
+      );
     }
     if (typeof provider.healthCheck !== 'function') {
       throw new ValidationError('Provider does not implement healthCheck()', 'provider-validator');

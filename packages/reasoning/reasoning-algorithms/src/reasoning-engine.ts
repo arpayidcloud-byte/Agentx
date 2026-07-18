@@ -46,7 +46,12 @@ export class ReasoningEngine {
     rollbackCount: 0,
   };
 
-  async execute(sessionId: string, goal: string, facts: Set<string>, rules: Rule[]): Promise<Set<string>> {
+  async execute(
+    sessionId: string,
+    goal: string,
+    facts: Set<string>,
+    rules: Rule[],
+  ): Promise<Set<string>> {
     await this.hooks.runBeforeReasoning(sessionId);
     this.events.publish('reasoning.started', { sessionId, goal });
     this.validator.validateRules(rules);
@@ -55,14 +60,14 @@ export class ReasoningEngine {
       const start = Date.now();
       const result = this.forwardChaining.execute(facts, rules);
       const depth = result.size;
-      
+
       this.metrics.reasoningRuns++;
       this.metrics.avgDepth = (this.metrics.avgDepth + depth) / this.metrics.reasoningRuns;
-      
+
       await this.hooks.runAfterReasoning(sessionId, result);
       this.events.publish('reasoning.completed', { sessionId, goal });
       this.checkpointManager.save(sessionId, { facts: Array.from(result), goal });
-      
+
       return result;
     } catch (err: any) {
       this.events.publish('reasoning.failed', { sessionId, error: err.message });
@@ -70,21 +75,26 @@ export class ReasoningEngine {
     }
   }
 
-  async executeGoalDriven(sessionId: string, goal: string, facts: Set<string>, rules: Rule[]): Promise<boolean> {
+  async executeGoalDriven(
+    sessionId: string,
+    goal: string,
+    facts: Set<string>,
+    rules: Rule[],
+  ): Promise<boolean> {
     await this.hooks.runBeforeReasoning(sessionId);
     this.validator.validateRules(rules);
-    
+
     try {
       const result = this.backwardChaining.execute(goal, facts, rules);
       this.metrics.reasoningRuns++;
-      
+
       if (!result) {
         this.events.publish('reasoning.failed', { sessionId, error: 'Goal unreachable' });
       } else {
         this.events.publish('reasoning.completed', { sessionId, goal });
         this.checkpointManager.save(sessionId, { facts: Array.from(facts), goal });
       }
-      
+
       await this.hooks.runAfterReasoning(sessionId, result);
       return result;
     } catch (err: any) {
@@ -97,12 +107,12 @@ export class ReasoningEngine {
     if (tree.nodes.size === 0) {
       throw new IntegrityError('Empty decision tree', 'reasoning-engine');
     }
-    
+
     for (const node of tree.nodes.values()) {
       if (node.type === 'decision' && node.branches.length === 0) {
         throw new IntegrityError(`Decision node ${node.id} has no branches`, 'reasoning-engine');
       }
-      
+
       for (const branch of node.branches) {
         if (!tree.nodes.has(branch.targetNodeId)) {
           throw new IntegrityError(`Node ${node.id} points to missing target`, 'reasoning-engine');

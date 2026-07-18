@@ -13,7 +13,7 @@ import { ProviderTimeoutError } from './errors.js';
 export abstract class BaseProvider implements Provider {
   public readonly id: string;
   public abstract readonly capabilities: ProviderCapabilities;
-  
+
   protected config: ProviderConfiguration;
   protected circuitBreaker?: CircuitBreaker;
   protected costCalculator: CostCalculator;
@@ -53,9 +53,9 @@ export abstract class BaseProvider implements Provider {
           this.id,
           response.modelId,
           latencyMs,
-          response.usage
+          response.usage,
         );
-        
+
         response.latencyMs = latencyMs;
         response.metrics = metrics;
 
@@ -73,7 +73,7 @@ export abstract class BaseProvider implements Provider {
     if (this.config.retryPolicy) {
       return executeWithRetry(action, this.config.retryPolicy, this.id, this.circuitBreaker);
     }
-    
+
     if (this.circuitBreaker && this.circuitBreaker.isOpen()) {
       throw new Error('CircuitBreakerOpenError');
     }
@@ -101,6 +101,9 @@ export abstract class BaseProvider implements Provider {
     return Math.random().toString(36).substring(2, 15);
   }
 
-  protected abstract doComplete(req: CompletionRequest, signal: AbortSignal): Promise<CompletionResponse>;
+  protected abstract doComplete(
+    req: CompletionRequest,
+    signal: AbortSignal,
+  ): Promise<CompletionResponse>;
   protected abstract mapError(error: unknown): Error;
 }

@@ -18,7 +18,12 @@ export interface AuditEntry {
 export class AuditTrailManager {
   private entries: AuditEntry[] = [];
 
-  log(traceId: string, sessionId: string, action: string, metadata: Record<string, unknown>): AuditEntry {
+  log(
+    traceId: string,
+    sessionId: string,
+    action: string,
+    metadata: Record<string, unknown>,
+  ): AuditEntry {
     const payload = JSON.stringify({ traceId, sessionId, action, metadata });
     const checksum = createHash('sha256').update(payload).digest('hex');
     const entry: AuditEntry = {
@@ -35,9 +40,14 @@ export class AuditTrailManager {
   }
 
   verifyIntegrity(sessionId: string): boolean {
-    const entries = this.entries.filter(e => e.sessionId === sessionId);
-    return entries.every(e => {
-      const payload = JSON.stringify({ traceId: e.traceId, sessionId: e.sessionId, action: e.action, metadata: e.metadata });
+    const entries = this.entries.filter((e) => e.sessionId === sessionId);
+    return entries.every((e) => {
+      const payload = JSON.stringify({
+        traceId: e.traceId,
+        sessionId: e.sessionId,
+        action: e.action,
+        metadata: e.metadata,
+      });
       const computed = createHash('sha256').update(payload).digest('hex');
       return computed === e.checksum;
     });

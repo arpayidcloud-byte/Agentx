@@ -38,12 +38,24 @@ import {
 } from '../src/index.js';
 
 const makeAgent = (id: string, capabilities: string[] = ['compute']): AgentMetadata => ({
-  id, name: `Agent ${id}`, version: '1.0', type: 'worker', capabilities, checksum: '',
+  id,
+  name: `Agent ${id}`,
+  version: '1.0',
+  type: 'worker',
+  capabilities,
+  checksum: '',
 });
 
 describe('Errors', () => {
   it('instantiates all error types', () => {
-    const errs = [AgentError, DelegationError, ConsensusError, ConflictError, SharedMemoryError, CircularDelegationError];
+    const errs = [
+      AgentError,
+      DelegationError,
+      ConsensusError,
+      ConflictError,
+      SharedMemoryError,
+      CircularDelegationError,
+    ];
     for (const Err of errs) {
       const e = new Err('msg', 'src');
       expect(e.message).toBe('msg');
@@ -56,7 +68,9 @@ describe('Errors', () => {
 
 describe('Agent Registry', () => {
   let registry: AgentRegistry;
-  beforeEach(() => { registry = new AgentRegistry(); });
+  beforeEach(() => {
+    registry = new AgentRegistry();
+  });
 
   it('registers, heartbeats, and manages agents', () => {
     registry.register(makeAgent('a1'));
@@ -83,7 +97,9 @@ describe('Agent Registry', () => {
 
 describe('Agent Directory', () => {
   let dir: AgentDirectory;
-  beforeEach(() => { dir = new AgentDirectory(); });
+  beforeEach(() => {
+    dir = new AgentDirectory();
+  });
 
   it('discovers agents by capabilities', () => {
     dir.register('a1', ['compute', 'gpu'], 5, 2);
@@ -172,8 +188,24 @@ describe('Task Delegation Engine', () => {
 describe('Collaboration Scheduler', () => {
   it('queues and dequeues tasks by priority', () => {
     const sched = new CollaborationScheduler();
-    const t1 = { taskId: 't1', agentId: 'a1', goalId: 'g1', priority: 1, timeout: 1000, status: 'ASSIGNED' as const, metadata: {} };
-    const t2 = { taskId: 't2', agentId: 'a1', goalId: 'g1', priority: 10, timeout: 1000, status: 'ASSIGNED' as const, metadata: {} };
+    const t1 = {
+      taskId: 't1',
+      agentId: 'a1',
+      goalId: 'g1',
+      priority: 1,
+      timeout: 1000,
+      status: 'ASSIGNED' as const,
+      metadata: {},
+    };
+    const t2 = {
+      taskId: 't2',
+      agentId: 'a1',
+      goalId: 'g1',
+      priority: 10,
+      timeout: 1000,
+      status: 'ASSIGNED' as const,
+      metadata: {},
+    };
     sched.schedule(t1);
     sched.schedule(t2);
     expect(sched.getQueueSize()).toBe(2);
@@ -184,7 +216,12 @@ describe('Collaboration Scheduler', () => {
 describe('Consensus Engine', () => {
   it('reaches consensus', async () => {
     const engine = new ConsensusEngine();
-    const result = await engine.reachConsensus({ proposalId: 'p1', agents: ['a1', 'a2'], proposal: 'test', timeout: 1000 });
+    const result = await engine.reachConsensus({
+      proposalId: 'p1',
+      agents: ['a1', 'a2'],
+      proposal: 'test',
+      timeout: 1000,
+    });
     expect(result.approved).toBe(true);
     expect(engine.getResults()).toHaveLength(1);
   });
@@ -239,7 +276,14 @@ describe('Knowledge Synchronizer', () => {
 describe('Message Router', () => {
   it('routes and retrieves messages', () => {
     const router = new MessageRouter();
-    const msg = { id: 'm1', fromAgentId: 'a1', toAgentId: 'a2', type: 'task', payload: {}, timestamp: new Date() };
+    const msg = {
+      id: 'm1',
+      fromAgentId: 'a1',
+      toAgentId: 'a2',
+      type: 'task',
+      payload: {},
+      timestamp: new Date(),
+    };
     router.route(msg);
     expect(router.getInbox('a2')).toHaveLength(1);
     router.clearInbox('a2');
@@ -329,7 +373,9 @@ describe('Collaboration Event Bus', () => {
 describe('Multi-Agent Collaboration Engine', () => {
   let engine: MultiAgentCollaborationEngine;
 
-  beforeEach(() => { engine = new MultiAgentCollaborationEngine(); });
+  beforeEach(() => {
+    engine = new MultiAgentCollaborationEngine();
+  });
 
   it('starts session and delegates tasks', async () => {
     const session = await engine.startSession('g1', ['a1', 'a2']);

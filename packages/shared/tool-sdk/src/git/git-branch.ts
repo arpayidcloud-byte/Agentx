@@ -4,7 +4,13 @@
  * Provides read-only git branch query within sandbox.
  */
 
-import { GitExecutionRequest, GitExecutionResult, GitExecutionContext, GitBranchOutput, GitBranchInfo } from './interfaces.js';
+import {
+  GitExecutionRequest,
+  GitExecutionResult,
+  GitExecutionContext,
+  GitBranchOutput,
+  GitBranchInfo,
+} from './interfaces.js';
 import { GitExecutor } from './executor.js';
 
 /**
@@ -46,7 +52,7 @@ export class GitBranchTool {
    */
   private parseBranches(output: string): GitBranchOutput {
     const branches: GitBranchInfo[] = [];
-    const lines = output.split('\n').filter(line => line.trim().length > 0);
+    const lines = output.split('\n').filter((line) => line.trim().length > 0);
 
     for (const line of lines) {
       const trimmed = line.trim();

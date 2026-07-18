@@ -9,9 +9,9 @@
 
 ### Root Cause Analysis
 
-| File | Line | Branch | Root Cause | Resolution |
-|------|------|--------|------------|------------|
-| Platform.ts | 236 | `?? 0` fallback | Defensive fallback on `sorted[idx]` access | Replaced with `reduce` iterator pattern that eliminates the undefined branch entirely |
+| File        | Line | Branch          | Root Cause                                 | Resolution                                                                            |
+| ----------- | ---- | --------------- | ------------------------------------------ | ------------------------------------------------------------------------------------- |
+| Platform.ts | 236  | `?? 0` fallback | Defensive fallback on `sorted[idx]` access | Replaced with `reduce` iterator pattern that eliminates the undefined branch entirely |
 
 ### Before Hardening
 
@@ -33,21 +33,21 @@ return sorted.reduce((acc, val, i) => (i === idx ? val : acc), 0);
 
 ### Branch Coverage Progress
 
-| Metric | Before | After | Change |
-|--------|--------|-------|--------|
-| Branches | 99.53% | **100%** | +0.47% |
+| Metric     | Before | After    | Change |
+| ---------- | ------ | -------- | ------ |
+| Branches   | 99.53% | **100%** | +0.47% |
 | Statements | 99.91% | **100%** | +0.09% |
 
 ---
 
 ## 2. Coverage Report
 
-| Metric | Target | Achieved |
-|--------|--------|----------|
-| **Statements** | 100% | **100%** |
-| **Branches** | 100% | **100%** |
-| **Functions** | 100% | **100%** |
-| **Lines** | 100% | **100%** |
+| Metric         | Target | Achieved |
+| -------------- | ------ | -------- |
+| **Statements** | 100%   | **100%** |
+| **Branches**   | 100%   | **100%** |
+| **Functions**  | 100%   | **100%** |
+| **Lines**      | 100%   | **100%** |
 
 ### Per-File Coverage
 
@@ -68,51 +68,51 @@ All files          |     100 |      100 |     100 |     100 |
 
 ## 3. Static Analysis Report
 
-| Check | Result |
-|-------|--------|
-| TypeScript Strict | ✅ 0 errors |
-| Non-null Assertions | ✅ 0 |
-| `any` Usage | ✅ 0 |
-| `ts-ignore` | ✅ 0 |
-| `ts-expect-error` | ✅ 0 |
-| Dead Code | ✅ 0 |
-| Circular Dependencies | ✅ 0 |
-| Architecture Violations | ✅ 0 |
+| Check                   | Result      |
+| ----------------------- | ----------- |
+| TypeScript Strict       | ✅ 0 errors |
+| Non-null Assertions     | ✅ 0        |
+| `any` Usage             | ✅ 0        |
+| `ts-ignore`             | ✅ 0        |
+| `ts-expect-error`       | ✅ 0        |
+| Dead Code               | ✅ 0        |
+| Circular Dependencies   | ✅ 0        |
+| Architecture Violations | ✅ 0        |
 
 ---
 
 ## 4. Quality Scorecard
 
-| Criterion | Target | Achieved |
-|-----------|--------|----------|
-| Statements | 100% | **100%** ✅ |
-| Branches | 100% | **100%** ✅ |
-| Functions | 100% | **100%** ✅ |
-| Lines | 100% | **100%** ✅ |
-| Dead Code | 0 | **0** ✅ |
-| Unreachable Branches | 0 | **0** ✅ |
-| Non-null Assertions | 0 | **0** ✅ |
-| `any` | 0 | **0** ✅ |
-| `ts-ignore` | 0 | **0** ✅ |
-| TypeScript Strict | 0 errors | **0** ✅ |
-| Workspace Regression | 0 | **0** ✅ |
+| Criterion            | Target   | Achieved    |
+| -------------------- | -------- | ----------- |
+| Statements           | 100%     | **100%** ✅ |
+| Branches             | 100%     | **100%** ✅ |
+| Functions            | 100%     | **100%** ✅ |
+| Lines                | 100%     | **100%** ✅ |
+| Dead Code            | 0        | **0** ✅    |
+| Unreachable Branches | 0        | **0** ✅    |
+| Non-null Assertions  | 0        | **0** ✅    |
+| `any`                | 0        | **0** ✅    |
+| `ts-ignore`          | 0        | **0** ✅    |
+| TypeScript Strict    | 0 errors | **0** ✅    |
+| Workspace Regression | 0        | **0** ✅    |
 
 ---
 
 ## 5. Workspace Regression Report
 
-| Package | Tests | Status |
-|---------|-------|--------|
-| @agentx/cognitive-contracts | 13 | ✅ PASS |
-| @agentx/cognitive-kernel | 24 | ✅ PASS |
-| @agentx/reasoning-framework | 21 | ✅ PASS |
-| @agentx/workflow-orchestration | 54 | ✅ PASS |
-| @agentx/multi-agent-reasoning | 102 | ✅ PASS |
-| @agentx/distributed-cognition | 233 | ✅ PASS |
-| @agentx/autonomous-cognition | 92 | ✅ PASS |
-| @agentx/enterprise-runtime | 139 | ✅ PASS |
-| @agentx/developer-platform | 77 | ✅ PASS |
-| **Total** | **755** | **ALL PASS** |
+| Package                        | Tests   | Status       |
+| ------------------------------ | ------- | ------------ |
+| @agentx/cognitive-contracts    | 13      | ✅ PASS      |
+| @agentx/cognitive-kernel       | 24      | ✅ PASS      |
+| @agentx/reasoning-framework    | 21      | ✅ PASS      |
+| @agentx/workflow-orchestration | 54      | ✅ PASS      |
+| @agentx/multi-agent-reasoning  | 102     | ✅ PASS      |
+| @agentx/distributed-cognition  | 233     | ✅ PASS      |
+| @agentx/autonomous-cognition   | 92      | ✅ PASS      |
+| @agentx/enterprise-runtime     | 139     | ✅ PASS      |
+| @agentx/developer-platform     | 77      | ✅ PASS      |
+| **Total**                      | **755** | **ALL PASS** |
 
 ---
 

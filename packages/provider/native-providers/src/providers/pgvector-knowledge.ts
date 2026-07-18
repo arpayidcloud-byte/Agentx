@@ -3,7 +3,13 @@
  * @description PgVector similarity and semantic knowledge adapter.
  */
 
-import { IStorageProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics } from '@agentx/runtime-adapters';
+import {
+  IStorageProvider,
+  ProviderMetadata,
+  ProviderCapabilities,
+  ProviderHealth,
+  ProviderMetrics,
+} from '@agentx/runtime-adapters';
 import { IConfigurationProvider, INativeProvider } from '../interfaces.js';
 import { ConfigurationError } from '../errors.js';
 
@@ -33,7 +39,7 @@ export class PgVectorKnowledgeProvider implements IStorageProvider, INativeProvi
   }
 
   async getHealth() {
-    return { status: this.connected ? 'UP' : 'DOWN' as const, latencyMs: 12 };
+    return { status: this.connected ? 'UP' : ('DOWN' as const), latencyMs: 12 };
   }
 
   getMetadata(): ProviderMetadata {
@@ -45,7 +51,12 @@ export class PgVectorKnowledgeProvider implements IStorageProvider, INativeProvi
   }
 
   async healthCheck(): Promise<ProviderHealth> {
-    return { healthy: this.connected, latencyMs: 12, lastChecked: new Date(), status: this.connected ? 'ACTIVE' : 'DOWN' };
+    return {
+      healthy: this.connected,
+      latencyMs: 12,
+      lastChecked: new Date(),
+      status: this.connected ? 'ACTIVE' : 'DOWN',
+    };
   }
 
   getMetrics(): ProviderMetrics {
@@ -53,11 +64,17 @@ export class PgVectorKnowledgeProvider implements IStorageProvider, INativeProvi
   }
 
   async put(bucket: string, key: string, value: string): Promise<void> {}
-  async get(bucket: string, key: string): Promise<string | undefined> { return undefined; }
+  async get(bucket: string, key: string): Promise<string | undefined> {
+    return undefined;
+  }
   async delete(bucket: string, key: string): Promise<void> {}
-  async list(bucket: string, prefix?: string): Promise<string[]> { return []; }
-  async exists(bucket: string, key: string): Promise<boolean> { return false; }
-  
+  async list(bucket: string, prefix?: string): Promise<string[]> {
+    return [];
+  }
+  async exists(bucket: string, key: string): Promise<boolean> {
+    return false;
+  }
+
   async transaction(operations: () => Promise<void>): Promise<void> {
     if (!this.connected) throw new Error('Not connected');
     await operations();

@@ -28,7 +28,10 @@ export class CognitiveLifecycle {
   transition(nextState: CognitiveState): void {
     const valid = validTransitions[this.currentState]?.includes(nextState);
     if (!valid) {
-      throw new ValidationError(`Invalid transition from ${this.currentState} to ${nextState}`, 'lifecycle');
+      throw new ValidationError(
+        `Invalid transition from ${this.currentState} to ${nextState}`,
+        'lifecycle',
+      );
     }
     this.currentState = nextState;
   }

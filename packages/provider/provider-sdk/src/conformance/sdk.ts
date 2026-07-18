@@ -15,10 +15,16 @@ export class PSCK {
   private validator = new ProviderValidator();
   private packager = new ProviderPackager();
 
-  async validateAndRun(provider: IProvider, manifest: ProviderManifest): Promise<ConformanceReport> {
+  async validateAndRun(
+    provider: IProvider,
+    manifest: ProviderManifest,
+  ): Promise<ConformanceReport> {
     const valid = this.validator.validate(provider, manifest);
     if (!valid) {
-      throw new ValidationFailedError(`Provider validation failed against manifest ID: ${manifest.id}`, 'sdk');
+      throw new ValidationFailedError(
+        `Provider validation failed against manifest ID: ${manifest.id}`,
+        'sdk',
+      );
     }
     return this.runner.runSuite(provider);
   }

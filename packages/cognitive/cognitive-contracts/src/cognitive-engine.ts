@@ -4,7 +4,11 @@
  */
 
 export class CognitiveEngineBase {
-  constructor(private id: string, private name: string, private version: string) {}
+  constructor(
+    private id: string,
+    private name: string,
+    private version: string,
+  ) {}
 
   getEngineMetadata() {
     return { id: this.id, name: this.name, version: this.version };

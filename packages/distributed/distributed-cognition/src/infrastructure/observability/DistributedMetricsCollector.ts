@@ -9,7 +9,12 @@ export interface MetricPoint {
 export class DistributedMetricsCollector {
   private metrics: MetricPoint[] = [];
 
-  record(name: string, value: number, nodeId: string, tags: Record<string, string> = {}): MetricPoint {
+  record(
+    name: string,
+    value: number,
+    nodeId: string,
+    tags: Record<string, string> = {},
+  ): MetricPoint {
     const point: MetricPoint = Object.freeze({
       name,
       value,
@@ -22,13 +27,16 @@ export class DistributedMetricsCollector {
   }
 
   query(name: string, nodeId?: string): MetricPoint[] {
-    return this.metrics.filter(m => m.name === name && (!nodeId || m.nodeId === nodeId));
+    return this.metrics.filter((m) => m.name === name && (!nodeId || m.nodeId === nodeId));
   }
 
-  aggregate(name: string, nodeId: string): { sum: number; count: number; avg: number; max: number; min: number } {
+  aggregate(
+    name: string,
+    nodeId: string,
+  ): { sum: number; count: number; avg: number; max: number; min: number } {
     const points = this.query(name, nodeId);
     if (points.length === 0) return { sum: 0, count: 0, avg: 0, max: 0, min: 0 };
-    const values = points.map(p => p.value);
+    const values = points.map((p) => p.value);
     const sum = values.reduce((a, b) => a + b, 0);
     return {
       sum,

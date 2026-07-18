@@ -6,7 +6,11 @@
 import { ReasoningTree, TreeNode, TreeMetadata } from './interfaces.js';
 
 export class ReasoningTreeManager {
-  private tree: ReasoningTree = { nodes: [], edges: [], metadata: { depth: 0, branchingFactor: 0 } };
+  private tree: ReasoningTree = {
+    nodes: [],
+    edges: [],
+    metadata: { depth: 0, branchingFactor: 0 },
+  };
 
   addNode(node: TreeNode): void {
     this.tree.nodes.push(node);

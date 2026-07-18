@@ -14,9 +14,16 @@ export class ExecutionCheckpointManager {
 
   save(goalId: string, state: Record<string, unknown>, version: number): Checkpoint {
     const checkpointId = `cp-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ goalId, state, version })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ goalId, state, version }))
+      .digest('hex');
     const cp: Checkpoint = Object.freeze({
-      checkpointId, goalId, state: JSON.parse(JSON.stringify(state)), version, timestamp: new Date(), checksum,
+      checkpointId,
+      goalId,
+      state: JSON.parse(JSON.stringify(state)),
+      version,
+      timestamp: new Date(),
+      checksum,
     });
     const existing = this.checkpoints.get(goalId) ?? [];
     existing.push(cp);
@@ -31,7 +38,9 @@ export class ExecutionCheckpointManager {
   }
 
   validate(cp: Checkpoint): boolean {
-    const computed = createHash('sha256').update(JSON.stringify({ goalId: cp.goalId, state: cp.state, version: cp.version })).digest('hex');
+    const computed = createHash('sha256')
+      .update(JSON.stringify({ goalId: cp.goalId, state: cp.state, version: cp.version }))
+      .digest('hex');
     return computed === cp.checksum;
   }
 
@@ -56,9 +65,16 @@ export class ExecutionReplayEngine {
 
   record(goalId: string, action: string, state: Record<string, unknown>): ReplayEntry {
     const entryId = `re-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ goalId, action, state })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ goalId, action, state }))
+      .digest('hex');
     const entry: ReplayEntry = Object.freeze({
-      entryId, goalId, action, state: JSON.parse(JSON.stringify(state)), timestamp: new Date(), checksum,
+      entryId,
+      goalId,
+      action,
+      state: JSON.parse(JSON.stringify(state)),
+      timestamp: new Date(),
+      checksum,
     });
     const existing = this.entries.get(goalId) ?? [];
     existing.push(entry);
@@ -75,8 +91,10 @@ export class ExecutionReplayEngine {
   validate(goalId: string): boolean {
     const all = this.entries.get(goalId);
     if (!all) return true;
-    return all.every(e => {
-      const computed = createHash('sha256').update(JSON.stringify({ goalId: e.goalId, action: e.action, state: e.state })).digest('hex');
+    return all.every((e) => {
+      const computed = createHash('sha256')
+        .update(JSON.stringify({ goalId: e.goalId, action: e.action, state: e.state }))
+        .digest('hex');
       return computed === e.checksum;
     });
   }

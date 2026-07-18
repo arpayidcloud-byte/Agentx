@@ -8,7 +8,7 @@ export class ContextCompressor implements IContextCompressor {
     const result: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(data)) {
       if (value === null || value === undefined) continue;
-      
+
       if (typeof value === 'string' && value.length > 100) {
         result[key] = value.substring(0, Math.floor(value.length * ratio)) + '...';
       } else if (Array.isArray(value)) {

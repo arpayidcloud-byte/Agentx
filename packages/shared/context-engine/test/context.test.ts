@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { 
-  ContextEngine, 
-  SimpleTokenEstimator, 
-  ContextWindowManager, 
-  ContextCompressor 
+import {
+  ContextEngine,
+  SimpleTokenEstimator,
+  ContextWindowManager,
+  ContextCompressor,
 } from '../src/index.js';
 import { InMemoryEventBus } from '@agentx/core-runtime';
 
@@ -67,7 +67,7 @@ describe('Context Engine', () => {
 
     const compressed = await engine.compressContext(ctx.id, 10);
     expect(compressed.tokenEstimate).toBeLessThanOrEqual(25);
-    
+
     // Also test early exit when targetTokens is >= estimate
     const uncompressed = await engine.compressContext(ctx.id, 100);
     // Since ctx was updated by the first compress, we should compare to compressed.version

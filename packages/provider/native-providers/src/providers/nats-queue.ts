@@ -3,7 +3,13 @@
  * @description Native NATS PubSub and streaming queue provider wrapper (Stub implementation).
  */
 
-import { IQueueProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics } from '@agentx/runtime-adapters';
+import {
+  IQueueProvider,
+  ProviderMetadata,
+  ProviderCapabilities,
+  ProviderHealth,
+  ProviderMetrics,
+} from '@agentx/runtime-adapters';
 import { IConfigurationProvider, INativeProvider } from '../interfaces.js';
 import { ConfigurationError } from '../errors.js';
 
@@ -33,7 +39,7 @@ export class NATSQueueProvider implements IQueueProvider, INativeProvider {
   }
 
   async getHealth() {
-    return { status: this.connected ? 'UP' : 'DOWN' as const, latencyMs: 4 };
+    return { status: this.connected ? 'UP' : ('DOWN' as const), latencyMs: 4 };
   }
 
   getMetadata(): ProviderMetadata {
@@ -45,7 +51,12 @@ export class NATSQueueProvider implements IQueueProvider, INativeProvider {
   }
 
   async healthCheck(): Promise<ProviderHealth> {
-    return { healthy: this.connected, latencyMs: 4, lastChecked: new Date(), status: this.connected ? 'ACTIVE' : 'DOWN' };
+    return {
+      healthy: this.connected,
+      latencyMs: 4,
+      lastChecked: new Date(),
+      status: this.connected ? 'ACTIVE' : 'DOWN',
+    };
   }
 
   getMetrics(): ProviderMetrics {
@@ -53,11 +64,17 @@ export class NATSQueueProvider implements IQueueProvider, INativeProvider {
   }
 
   async enqueue(topic: string, message: unknown, priority?: number): Promise<void> {}
-  async dequeue(topic: string): Promise<unknown | undefined> { return undefined; }
-  async peek(topic: string): Promise<unknown | undefined> { return undefined; }
+  async dequeue(topic: string): Promise<unknown | undefined> {
+    return undefined;
+  }
+  async peek(topic: string): Promise<unknown | undefined> {
+    return undefined;
+  }
   async ack(topic: string, messageId: string): Promise<void> {}
   async retry(topic: string, messageId: string): Promise<void> {}
   async deadLetter(topic: string, messageId: string): Promise<void> {}
-  async getDepth(topic: string): Promise<number> { return 0; }
+  async getDepth(topic: string): Promise<number> {
+    return 0;
+  }
   async purge(topic: string): Promise<void> {}
 }

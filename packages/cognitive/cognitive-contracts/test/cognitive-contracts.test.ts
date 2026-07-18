@@ -81,8 +81,14 @@ describe('Cognitive Lifecycle State Transitions', () => {
 describe('Cognitive Budget Manager', () => {
   it('manages and enforces token budgets', () => {
     const budget = {
-      inputBudget: 100, outputBudget: 100, reasoningBudget: 100, reflectionBudget: 100,
-      planningBudget: 100, toolBudget: 100, memoryBudget: 100, globalBudget: 1000
+      inputBudget: 100,
+      outputBudget: 100,
+      reasoningBudget: 100,
+      reflectionBudget: 100,
+      planningBudget: 100,
+      toolBudget: 100,
+      memoryBudget: 100,
+      globalBudget: 1000,
     };
     const manager = new CognitiveBudgetManager(budget);
     manager.consume('inputBudget', 50);
@@ -94,7 +100,14 @@ describe('Cognitive Budget Manager', () => {
 describe('Cognitive Validator', () => {
   it('validates critical session properties', () => {
     const validator = new CognitiveValidator();
-    const session: ThinkingSession = { id: 's1', traceId: 't1', correlationId: 'c1', state: 'CREATED', startedAt: new Date(), metadata: {} };
+    const session: ThinkingSession = {
+      id: 's1',
+      traceId: 't1',
+      correlationId: 'c1',
+      state: 'CREATED',
+      startedAt: new Date(),
+      metadata: {},
+    };
     expect(() => validator.validateSession(session)).not.toThrow();
     expect(() => validator.validateSession({} as any)).toThrow(ValidationError);
   });
@@ -116,7 +129,12 @@ describe('Cognitive Registry and Factory', () => {
 describe('Cognitive Policy Enforcer', () => {
   it('evaluates safety confidence thresholds', () => {
     const enforcer = new CognitivePolicyEnforcer();
-    const policy: SafetyPolicy = { riskLevel: 'LOW', confidenceThreshold: 80, requiresHumanApproval: false, rollbackOnFailure: false };
+    const policy: SafetyPolicy = {
+      riskLevel: 'LOW',
+      confidenceThreshold: 80,
+      requiresHumanApproval: false,
+      rollbackOnFailure: false,
+    };
     expect(() => enforcer.enforce(policy, 90)).not.toThrow();
     expect(() => enforcer.enforce(policy, 70)).toThrow(SafetyViolationError);
   });
@@ -137,14 +155,18 @@ describe('Capability and Compatibility Resolvers', () => {
 
   it('checks architectural dependency directions', () => {
     const validator = new CognitiveArchitectureValidator();
-    expect(validator.validateArchitectureDirection('cognitive-contracts', 'native-providers')).toBe(false);
+    expect(validator.validateArchitectureDirection('cognitive-contracts', 'native-providers')).toBe(
+      false,
+    );
     expect(validator.validateArchitectureDirection('cognitive-contracts', 'runtime')).toBe(true);
   });
 });
 
 describe('Event Contracts', () => {
   it('creates cognitive event envelopes', () => {
-    const event = createCognitiveEvent('thinking.started', 's1', 't1', 'w1', 'c1', 'src', { extra: 'data' });
+    const event = createCognitiveEvent('thinking.started', 's1', 't1', 'w1', 'c1', 'src', {
+      extra: 'data',
+    });
     expect(event.type).toBe('thinking.started');
     expect(event.payload.extra).toBe('data');
   });
@@ -184,19 +206,46 @@ describe('Engine Base Contract Stubs', () => {
 
 describe('Cognitive Session Model Classes', () => {
   it('wraps models', () => {
-    const rc = new ReasoningContextBase({ sessionId: 's1', traceId: 't1', goalId: 'g1', depth: 1, maxDepth: 5 });
+    const rc = new ReasoningContextBase({
+      sessionId: 's1',
+      traceId: 't1',
+      goalId: 'g1',
+      depth: 1,
+      maxDepth: 5,
+    });
     expect(rc.getContext().sessionId).toBe('s1');
 
-    const ts = new ThinkingSessionBase({ id: 's1', traceId: 't1', correlationId: 'c1', state: 'CREATED', startedAt: new Date(), metadata: {} });
+    const ts = new ThinkingSessionBase({
+      id: 's1',
+      traceId: 't1',
+      correlationId: 'c1',
+      state: 'CREATED',
+      startedAt: new Date(),
+      metadata: {},
+    });
     expect(ts.getSession().id).toBe('s1');
 
     const state = new ThinkingStateBase({ session: {} as any, history: [] });
     expect(state.getState().history).toHaveLength(0);
 
-    const snap = new ThinkingSnapshotBase({ id: '1', timestamp: new Date(), state: {} as any, checksum: 'abc' });
+    const snap = new ThinkingSnapshotBase({
+      id: '1',
+      timestamp: new Date(),
+      state: {} as any,
+      checksum: 'abc',
+    });
     expect(snap.getSnapshot().checksum).toBe('abc');
 
-    const trace: ReasoningTrace = { traceId: 't1', sessionId: 's1', goalId: 'g1', reasoningSteps: [], reflectionSteps: [], decisionSteps: [], timestamps: { start: new Date() }, checksum: 'abc' };
+    const trace: ReasoningTrace = {
+      traceId: 't1',
+      sessionId: 's1',
+      goalId: 'g1',
+      reasoningSteps: [],
+      reflectionSteps: [],
+      decisionSteps: [],
+      timestamps: { start: new Date() },
+      checksum: 'abc',
+    };
     const rtb = new ReasoningTraceBase(trace);
     expect(rtb.getTrace().traceId).toBe('t1');
 
@@ -204,7 +253,16 @@ describe('Cognitive Session Model Classes', () => {
     ctb.addTrace(trace);
     expect(ctb.getTraces()).toHaveLength(1);
 
-    const metrics: CognitiveMetrics = { thinkingDurationMs: 0, reasoningDurationMs: 0, reflectionDurationMs: 0, decisionDurationMs: 0, planningDurationMs: 0, averageConfidence: 0, riskDistribution: {}, budgetConsumption: {} };
+    const metrics: CognitiveMetrics = {
+      thinkingDurationMs: 0,
+      reasoningDurationMs: 0,
+      reflectionDurationMs: 0,
+      decisionDurationMs: 0,
+      planningDurationMs: 0,
+      averageConfidence: 0,
+      riskDistribution: {},
+      budgetConsumption: {},
+    };
     const cmb = new CognitiveMetricsBase(metrics);
     expect(cmb.getMetrics().thinkingDurationMs).toBe(0);
   });

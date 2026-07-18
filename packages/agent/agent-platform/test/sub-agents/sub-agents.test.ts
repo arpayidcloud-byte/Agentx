@@ -68,13 +68,16 @@ describe('AgentPool', () => {
 
   beforeEach(() => {
     const factory = new SubAgentFactory();
-    pool = new AgentPool({
-      minAgents: 1,
-      maxAgents: 3,
-      idleTimeoutMs: 5000,
-      reuseIdleAgents: true,
-      spawnStrategy: 'lazy',
-    }, factory);
+    pool = new AgentPool(
+      {
+        minAgents: 1,
+        maxAgents: 3,
+        idleTimeoutMs: 5000,
+        reuseIdleAgents: true,
+        spawnStrategy: 'lazy',
+      },
+      factory,
+    );
   });
 
   it('acquires and releases agents', () => {
@@ -85,7 +88,7 @@ describe('AgentPool', () => {
     pool.release(agent.id);
     // Releasing puts it back to idle since reuseIdleAgents is true
     expect(pool.getTotalAgentsCount()).toBe(1);
-    
+
     // Acquiring again should reuse the idle agent
     const agent2 = pool.acquire('coder');
     expect(agent2.id).toBe(agent.id);
@@ -107,7 +110,16 @@ describe('AgentPool', () => {
 describe('ParallelRunner', () => {
   it('runs sub-agents in parallel and publishes messages', async () => {
     const factory = new SubAgentFactory();
-    const pool = new AgentPool({ minAgents: 1, maxAgents: 10, idleTimeoutMs: 1000, reuseIdleAgents: true, spawnStrategy: 'lazy' }, factory);
+    const pool = new AgentPool(
+      {
+        minAgents: 1,
+        maxAgents: 10,
+        idleTimeoutMs: 1000,
+        reuseIdleAgents: true,
+        spawnStrategy: 'lazy',
+      },
+      factory,
+    );
     const eventBus = new InMemoryEventBus();
     const bus = new MessageBus(eventBus);
     const runner = new ParallelRunner(pool, bus);
@@ -160,14 +172,16 @@ describe('ResourceManager', () => {
   it('rejects allocation when budget exceeded', () => {
     const manager = new ResourceManager({ ...DEFAULT_BUDGET, costCeilingUsd: 0.5 });
     manager.recordUsage({ costUsd: 0.4 });
-    expect(() => manager.registerAgent('agent-2', {
-      estimatedCpuTimeMs: 100,
-      estimatedMemoryBytes: 1024,
-      tokenBudget: 50,
-      costCeilingUsd: 0.2, // 0.4 + 0.2 > 0.5
-      maxConcurrentProviders: 1,
-      maxConcurrentTools: 1,
-    })).toThrow(ResourceLimitExceededError);
+    expect(() =>
+      manager.registerAgent('agent-2', {
+        estimatedCpuTimeMs: 100,
+        estimatedMemoryBytes: 1024,
+        tokenBudget: 50,
+        costCeilingUsd: 0.2, // 0.4 + 0.2 > 0.5
+        maxConcurrentProviders: 1,
+        maxConcurrentTools: 1,
+      }),
+    ).toThrow(ResourceLimitExceededError);
   });
 });
 
@@ -200,7 +214,7 @@ describe('HeartbeatMonitor', () => {
     });
 
     monitor.startMonitoring(5);
-    await new Promise(r => setTimeout(r, 20));
+    await new Promise((r) => setTimeout(r, 20));
     expect(lostHandler).toHaveBeenCalled();
     monitor.stopMonitoring();
   });
@@ -236,27 +250,27 @@ describe('MergeEngine & ConflictResolver', () => {
   const resolver = new ConflictResolver();
 
   it('merges distinct outputs successfully', () => {
-    const outputs = [
-      { file1: 'content1' },
-      { file2: 'content2' },
-    ];
+    const outputs = [{ file1: 'content1' }, { file2: 'content2' }];
     const result = mergeEngine.merge(outputs);
     expect(result.file1).toBe('content1');
     expect(result.file2).toBe('content2');
   });
 
   it('throws MergeConflictError on overlapping conflicts', () => {
-    const outputs = [
-      { file1: 'content1' },
-      { file1: 'content2' },
-    ];
+    const outputs = [{ file1: 'content1' }, { file1: 'content2' }];
     expect(() => mergeEngine.merge(outputs)).toThrow(MergeConflictError);
   });
 
   it('resolves conflicts based on overrides and coverage criteria', () => {
-    expect(resolver.resolveConflict('key', 'val1', 'val2', { architectOverride: true })).toBe('val1');
-    expect(resolver.resolveConflict('key', 'val1', 'val2', { coverageScore1: 90, coverageScore2: 80 })).toBe('val1');
-    expect(resolver.resolveConflict('key', 'val1', 'val2', { coverageScore1: 70, coverageScore2: 80 })).toBe('val2');
+    expect(resolver.resolveConflict('key', 'val1', 'val2', { architectOverride: true })).toBe(
+      'val1',
+    );
+    expect(
+      resolver.resolveConflict('key', 'val1', 'val2', { coverageScore1: 90, coverageScore2: 80 }),
+    ).toBe('val1');
+    expect(
+      resolver.resolveConflict('key', 'val1', 'val2', { coverageScore1: 70, coverageScore2: 80 }),
+    ).toBe('val2');
     expect(resolver.resolveConflict('key', 'val1', 'val2', {})).toBe('val1');
   });
 });
@@ -301,14 +315,14 @@ describe('MessageBus', () => {
     const globalBus = new InMemoryEventBus();
     const spy = vi.spyOn(globalBus, 'publish');
     const bus = new MessageBus(globalBus);
-    
+
     await bus.broadcastToGlobalBus({
       id: 'msg-1',
       topic: 'TaskAssigned',
       senderId: 'orchestrator',
       taskId: 'task-1',
       payload: {},
-      timestamp: new Date()
+      timestamp: new Date(),
     });
 
     expect(spy).toHaveBeenCalled();

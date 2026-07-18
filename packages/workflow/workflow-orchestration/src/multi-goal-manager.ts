@@ -37,6 +37,6 @@ export class MultiGoalManager {
   }
 
   getRunning(): GoalSession[] {
-    return Array.from(this.goals.values()).filter(g => g.status === 'RUNNING');
+    return Array.from(this.goals.values()).filter((g) => g.status === 'RUNNING');
   }
 }

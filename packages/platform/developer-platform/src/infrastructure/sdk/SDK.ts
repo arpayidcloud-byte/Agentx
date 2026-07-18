@@ -15,8 +15,17 @@ export class TypeScriptSDK {
   generate(name: string, version: string): SDKPackage {
     const packageId = `ts-sdk-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
     const content = `export class ${name} { version = '${version}'; }`;
-    const checksum = createHash('sha256').update(JSON.stringify({ packageId, name, version, content })).digest('hex');
-    const pkg: SDKPackage = Object.freeze({ packageId, name, language: 'typescript', version, content, checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ packageId, name, version, content }))
+      .digest('hex');
+    const pkg: SDKPackage = Object.freeze({
+      packageId,
+      name,
+      language: 'typescript',
+      version,
+      content,
+      checksum,
+    });
     this.packages.set(packageId, pkg);
     return pkg;
   }
@@ -36,8 +45,17 @@ export class GoSDK {
   generate(name: string, version: string): SDKPackage {
     const packageId = `go-sdk-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
     const content = `package ${name}\nconst Version = "${version}"`;
-    const checksum = createHash('sha256').update(JSON.stringify({ packageId, name, version, content })).digest('hex');
-    const pkg: SDKPackage = Object.freeze({ packageId, name, language: 'go', version, content, checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ packageId, name, version, content }))
+      .digest('hex');
+    const pkg: SDKPackage = Object.freeze({
+      packageId,
+      name,
+      language: 'go',
+      version,
+      content,
+      checksum,
+    });
     this.packages.set(packageId, pkg);
     return pkg;
   }
@@ -57,8 +75,17 @@ export class PythonSDK {
   generate(name: string, version: string): SDKPackage {
     const packageId = `py-sdk-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
     const content = `__version__ = "${version}"\nclass ${name}: pass`;
-    const checksum = createHash('sha256').update(JSON.stringify({ packageId, name, version, content })).digest('hex');
-    const pkg: SDKPackage = Object.freeze({ packageId, name, language: 'python', version, content, checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ packageId, name, version, content }))
+      .digest('hex');
+    const pkg: SDKPackage = Object.freeze({
+      packageId,
+      name,
+      language: 'python',
+      version,
+      content,
+      checksum,
+    });
     this.packages.set(packageId, pkg);
     return pkg;
   }
@@ -78,8 +105,17 @@ export class RustSDK {
   generate(name: string, version: string): SDKPackage {
     const packageId = `rs-sdk-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
     const content = `pub const VERSION: &str = "${version}";\npub struct ${name} {}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ packageId, name, version, content })).digest('hex');
-    const pkg: SDKPackage = Object.freeze({ packageId, name, language: 'rust', version, content, checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ packageId, name, version, content }))
+      .digest('hex');
+    const pkg: SDKPackage = Object.freeze({
+      packageId,
+      name,
+      language: 'rust',
+      version,
+      content,
+      checksum,
+    });
     this.packages.set(packageId, pkg);
     return pkg;
   }
@@ -106,7 +142,9 @@ export class CLISDK {
 
   generate(name: string, version: string, platform: string): CLIBinary {
     const binaryId = `cli-sdk-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ binaryId, name, version, platform })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ binaryId, name, version, platform }))
+      .digest('hex');
     const binary: CLIBinary = Object.freeze({ binaryId, name, version, platform, checksum });
     this.binaries.set(binaryId, binary);
     return binary;

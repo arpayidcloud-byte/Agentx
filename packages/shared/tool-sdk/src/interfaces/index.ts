@@ -1,4 +1,5 @@
-export type ToolCategory = 'fs.read' | 'fs.write' | 'shell.build' | 'shell.exec' | 'git.read' | 'git.write' | string;
+export type ToolCategory =
+  'fs.read' | 'fs.write' | 'shell.build' | 'shell.exec' | 'git.read' | 'git.write' | string;
 
 export enum PermissionLevel {
   READ_ONLY = 'READ_ONLY',
@@ -6,7 +7,7 @@ export enum PermissionLevel {
   NETWORK = 'NETWORK',
   PROCESS = 'PROCESS',
   SYSTEM = 'SYSTEM',
-  DESTRUCTIVE = 'DESTRUCTIVE'
+  DESTRUCTIVE = 'DESTRUCTIVE',
 }
 
 export type RiskScore = number; // 0 to 100

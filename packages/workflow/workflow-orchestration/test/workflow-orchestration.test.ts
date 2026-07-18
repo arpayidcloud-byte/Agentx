@@ -53,8 +53,17 @@ import {
 } from '../src/index.js';
 
 const makeTask = (id: string, priority: number = 5, type: string = 'a'): WorkflowTask => ({
-  id, goalId: 'g1', workflowId: 'w1', type, payload: {}, priority,
-  timeout: 1000, status: 'PENDING', retries: 0, maxRetries: 3, timestamp: new Date(),
+  id,
+  goalId: 'g1',
+  workflowId: 'w1',
+  type,
+  payload: {},
+  priority,
+  timeout: 1000,
+  status: 'PENDING',
+  retries: 0,
+  maxRetries: 3,
+  timestamp: new Date(),
 });
 
 // ============================================================
@@ -156,14 +165,18 @@ describe('Workflow Builder', () => {
 describe('Workflow Validator', () => {
   it('validates and rejects invalid graphs', () => {
     const v = new WorkflowValidator();
-    expect(() => v.validateGraph({ id: 'g1', nodes: [], edges: [], checksum: '', timestamp: new Date() })).toThrow(WorkflowValidationError);
-    expect(() => v.validateGraph({
-      id: 'g1',
-      nodes: [{ id: 'n1', type: 'sequential', taskId: 't1', metadata: {} }],
-      edges: [{ source: 'n1', target: 'n2', weight: 1 }],
-      checksum: '',
-      timestamp: new Date(),
-    })).toThrow(WorkflowValidationError);
+    expect(() =>
+      v.validateGraph({ id: 'g1', nodes: [], edges: [], checksum: '', timestamp: new Date() }),
+    ).toThrow(WorkflowValidationError);
+    expect(() =>
+      v.validateGraph({
+        id: 'g1',
+        nodes: [{ id: 'n1', type: 'sequential', taskId: 't1', metadata: {} }],
+        edges: [{ source: 'n1', target: 'n2', weight: 1 }],
+        checksum: '',
+        timestamp: new Date(),
+      }),
+    ).toThrow(WorkflowValidationError);
   });
 });
 
@@ -174,10 +187,18 @@ describe('Workflow Graph Manager', () => {
   it('detects cycles', () => {
     const gm = new WorkflowGraphManager();
     expect(gm.detectCycles([], [])).toBe(false);
-    expect(gm.detectCycles(
-      [{ id: 'a', type: 'sequential', taskId: 't1', metadata: {} }, { id: 'b', type: 'sequential', taskId: 't2', metadata: {} }],
-      [{ source: 'a', target: 'b', weight: 1 }, { source: 'b', target: 'a', weight: 1 }]
-    )).toBe(true);
+    expect(
+      gm.detectCycles(
+        [
+          { id: 'a', type: 'sequential', taskId: 't1', metadata: {} },
+          { id: 'b', type: 'sequential', taskId: 't2', metadata: {} },
+        ],
+        [
+          { source: 'a', target: 'b', weight: 1 },
+          { source: 'b', target: 'a', weight: 1 },
+        ],
+      ),
+    ).toBe(true);
   });
 });
 
@@ -298,7 +319,13 @@ describe('Execution Policy and Validator', () => {
 describe('Replanning Engine and Policy', () => {
   it('executes replanning', () => {
     const engine = new ReplanningEngine();
-    const graph: WorkflowGraph = { id: 'g1', nodes: [], edges: [], checksum: '', timestamp: new Date() };
+    const graph: WorkflowGraph = {
+      id: 'g1',
+      nodes: [],
+      edges: [],
+      checksum: '',
+      timestamp: new Date(),
+    };
     const replanned = engine.replan(graph, 'reason');
     expect(replanned.timestamp).toBeInstanceOf(Date);
   });
@@ -327,7 +354,11 @@ describe('Barriers, Splitters, and Mergers', () => {
 
   it('splitter creates parallel branches', () => {
     const splitter = new WorkflowSplitter();
-    const result = splitter.split([{ id: 'n1', type: 'sequential', taskId: 't1', metadata: {} }], 'n1', 2);
+    const result = splitter.split(
+      [{ id: 'n1', type: 'sequential', taskId: 't1', metadata: {} }],
+      'n1',
+      2,
+    );
     expect(result.nodes).toHaveLength(1);
   });
 
@@ -394,11 +425,16 @@ describe('Workflow Hook Manager', () => {
   it('executes all hooks', async () => {
     const hm = new WorkflowHookManager();
     const hook: WorkflowHook = {
-      beforeWorkflow: vi.fn(), afterWorkflow: vi.fn(),
-      beforeExecution: vi.fn(), afterExecution: vi.fn(),
-      beforeDispatch: vi.fn(), afterDispatch: vi.fn(),
-      beforeReplanning: vi.fn(), afterReplanning: vi.fn(),
-      beforeConflictResolution: vi.fn(), afterConflictResolution: vi.fn(),
+      beforeWorkflow: vi.fn(),
+      afterWorkflow: vi.fn(),
+      beforeExecution: vi.fn(),
+      afterExecution: vi.fn(),
+      beforeDispatch: vi.fn(),
+      afterDispatch: vi.fn(),
+      beforeReplanning: vi.fn(),
+      afterReplanning: vi.fn(),
+      beforeConflictResolution: vi.fn(),
+      afterConflictResolution: vi.fn(),
     };
     hm.register(hook);
     await hm.runBeforeWorkflow('w1');
@@ -472,7 +508,9 @@ describe('Workflow Statistics', () => {
 describe('Workflow Orchestrator Full Flow', () => {
   let orch: WorkflowOrchestrator;
 
-  beforeEach(() => { orch = new WorkflowOrchestrator(); });
+  beforeEach(() => {
+    orch = new WorkflowOrchestrator();
+  });
 
   it('executes workflow end-to-end', async () => {
     const result = await orch.executeWorkflow('g1', 2);

@@ -21,10 +21,10 @@ export class CoordinatorHealthChecker {
   }
 
   checkAll(): CoordinatorHealthStatus[] {
-    return Array.from(this.checks.values()).map(fn => fn());
+    return Array.from(this.checks.values()).map((fn) => fn());
   }
 
   isHealthy(): boolean {
-    return this.checkAll().every(status => status.healthy);
+    return this.checkAll().every((status) => status.healthy);
   }
 }

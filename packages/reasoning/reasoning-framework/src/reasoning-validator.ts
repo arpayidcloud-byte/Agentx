@@ -15,10 +15,13 @@ export class ReasoningValidator {
 
   validateGraph(graph: ReasoningGraph): void {
     // Check that all edges refer to existing nodes
-    const nodeIds = graph.nodes.map(n => n.id);
+    const nodeIds = graph.nodes.map((n) => n.id);
     for (const edge of graph.edges) {
       if (!nodeIds.includes(edge.sourceId) || !nodeIds.includes(edge.targetId)) {
-        throw new GraphIntegrityError(`Edge refers to missing nodes: ${edge.sourceId} -> ${edge.targetId}`, 'validator');
+        throw new GraphIntegrityError(
+          `Edge refers to missing nodes: ${edge.sourceId} -> ${edge.targetId}`,
+          'validator',
+        );
       }
     }
   }

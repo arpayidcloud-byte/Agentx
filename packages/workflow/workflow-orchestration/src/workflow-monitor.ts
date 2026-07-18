@@ -17,6 +17,6 @@ export class WorkflowMonitor {
   }
 
   getStateCount(state: string): number {
-    return Array.from(this.states.values()).filter(s => s === state).length;
+    return Array.from(this.states.values()).filter((s) => s === state).length;
   }
 }

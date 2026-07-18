@@ -3,7 +3,14 @@
  * @description Reference in-memory telemetry, metrics, and tracing provider.
  */
 
-import { ITelemetryProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics, ProviderContext } from '../interfaces.js';
+import {
+  ITelemetryProvider,
+  ProviderMetadata,
+  ProviderCapabilities,
+  ProviderHealth,
+  ProviderMetrics,
+  ProviderContext,
+} from '../interfaces.js';
 
 export interface TelemetrySpanRecord {
   id: string;
@@ -36,7 +43,12 @@ export class MemoryTelemetryProvider implements ITelemetryProvider {
   }
 
   getMetrics(): ProviderMetrics {
-    return { totalRequests: this.total, successfulRequests: this.total, failedRequests: 0, averageLatencyMs: 0 };
+    return {
+      totalRequests: this.total,
+      successfulRequests: this.total,
+      failedRequests: 0,
+      averageLatencyMs: 0,
+    };
   }
 
   startSpan(name: string, context?: ProviderContext): string {

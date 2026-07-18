@@ -4,7 +4,10 @@ export class DistributedCache {
   private cache = new Map<string, { value: unknown; expiresAt: number }>();
 
   set(key: string, value: unknown, ttlMs: number = 60000): void {
-    this.cache.set(key, { value: typeof value === 'object' ? JSON.parse(JSON.stringify(value)) : value, expiresAt: Date.now() + ttlMs });
+    this.cache.set(key, {
+      value: typeof value === 'object' ? JSON.parse(JSON.stringify(value)) : value,
+      expiresAt: Date.now() + ttlMs,
+    });
   }
 
   get(key: string): unknown {
@@ -48,14 +51,23 @@ export class BackgroundJobScheduler {
 
   schedule(type: string, payload: Record<string, unknown>): JobEntry {
     const jobId = `job-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ jobId, type, payload })).digest('hex');
-    const job: JobEntry = Object.freeze({ jobId, type, payload: { ...payload }, status: 'PENDING', createdAt: new Date(), checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ jobId, type, payload }))
+      .digest('hex');
+    const job: JobEntry = Object.freeze({
+      jobId,
+      type,
+      payload: { ...payload },
+      status: 'PENDING',
+      createdAt: new Date(),
+      checksum,
+    });
     this.jobs.push(job);
     return job;
   }
 
   getPending(): JobEntry[] {
-    return this.jobs.filter(j => j.status === 'PENDING');
+    return this.jobs.filter((j) => j.status === 'PENDING');
   }
 
   getAll(): JobEntry[] {
@@ -76,8 +88,16 @@ export class QueueManager {
 
   enqueue(queue: string, payload: Record<string, unknown>): QueueMessage {
     const messageId = `qm-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ messageId, queue, payload })).digest('hex');
-    const msg: QueueMessage = Object.freeze({ messageId, queue, payload: { ...payload }, enqueuedAt: new Date(), checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ messageId, queue, payload }))
+      .digest('hex');
+    const msg: QueueMessage = Object.freeze({
+      messageId,
+      queue,
+      payload: { ...payload },
+      enqueuedAt: new Date(),
+      checksum,
+    });
     const existing = this.queues.get(queue) ?? [];
     existing.push(msg);
     this.queues.set(queue, existing);

@@ -3,7 +3,14 @@
  * @description Native OpenTelemetry metrics and tracing provider wrapper (Stub implementation).
  */
 
-import { ITelemetryProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics, ProviderContext } from '@agentx/runtime-adapters';
+import {
+  ITelemetryProvider,
+  ProviderMetadata,
+  ProviderCapabilities,
+  ProviderHealth,
+  ProviderMetrics,
+  ProviderContext,
+} from '@agentx/runtime-adapters';
 import { IConfigurationProvider, INativeProvider } from '../interfaces.js';
 import { ConfigurationError } from '../errors.js';
 
@@ -33,7 +40,7 @@ export class OTELTelemetryProvider implements ITelemetryProvider, INativeProvide
   }
 
   async getHealth() {
-    return { status: this.connected ? 'UP' : 'DOWN' as const, latencyMs: 3 };
+    return { status: this.connected ? 'UP' : ('DOWN' as const), latencyMs: 3 };
   }
 
   getMetadata(): ProviderMetadata {
@@ -45,7 +52,12 @@ export class OTELTelemetryProvider implements ITelemetryProvider, INativeProvide
   }
 
   async healthCheck(): Promise<ProviderHealth> {
-    return { healthy: this.connected, latencyMs: 3, lastChecked: new Date(), status: this.connected ? 'ACTIVE' : 'DOWN' };
+    return {
+      healthy: this.connected,
+      latencyMs: 3,
+      lastChecked: new Date(),
+      status: this.connected ? 'ACTIVE' : 'DOWN',
+    };
   }
 
   getMetrics(): ProviderMetrics {

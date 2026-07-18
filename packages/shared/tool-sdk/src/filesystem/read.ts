@@ -7,7 +7,7 @@ export class FilesystemReadTool {
   constructor(
     private readonly sandbox: ISandbox,
     private readonly validator: IFilesystemValidator,
-    private readonly policy: IFilesystemPolicy
+    private readonly policy: IFilesystemPolicy,
   ) {}
 
   public async read(requestPath: string): Promise<{
@@ -16,17 +16,17 @@ export class FilesystemReadTool {
   }> {
     const realPath = await this.sandbox.validateRead(requestPath);
     await this.sandbox.validateSymlinkEscape(realPath);
-    
+
     const stats = await fs.stat(realPath);
     if (!stats.isFile()) {
       throw new Error(`Path "${realPath}" is not a file`);
     }
-    
+
     this.policy.validateFileSize(stats.size);
-    
+
     const buffer = await fs.readFile(realPath);
     const isBinary = this.validator.detectBinary(buffer);
-    
+
     if (isBinary) {
       throw new InvalidEncodingError('Binary file detected and cannot be read as text');
     }
@@ -38,7 +38,7 @@ export class FilesystemReadTool {
 
     return {
       content: buffer.toString('utf-8'),
-      metadata: { size: stats.size, isBinary: false }
+      metadata: { size: stats.size, isBinary: false },
     };
   }
 }

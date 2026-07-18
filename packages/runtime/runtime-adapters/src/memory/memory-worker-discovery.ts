@@ -3,10 +3,19 @@
  * @description Reference in-memory service discovery provider.
  */
 
-import { IWorkerDiscoveryProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics } from '../interfaces.js';
+import {
+  IWorkerDiscoveryProvider,
+  ProviderMetadata,
+  ProviderCapabilities,
+  ProviderHealth,
+  ProviderMetrics,
+} from '../interfaces.js';
 
 export class MemoryWorkerDiscoveryProvider implements IWorkerDiscoveryProvider {
-  private workers = new Map<string, { metadata: Record<string, unknown>; capabilities: string[] }>();
+  private workers = new Map<
+    string,
+    { metadata: Record<string, unknown>; capabilities: string[] }
+  >();
   private total = 0;
 
   getMetadata(): ProviderMetadata {
@@ -27,7 +36,12 @@ export class MemoryWorkerDiscoveryProvider implements IWorkerDiscoveryProvider {
   }
 
   getMetrics(): ProviderMetrics {
-    return { totalRequests: this.total, successfulRequests: this.total, failedRequests: 0, averageLatencyMs: 0 };
+    return {
+      totalRequests: this.total,
+      successfulRequests: this.total,
+      failedRequests: 0,
+      averageLatencyMs: 0,
+    };
   }
 
   async registerWorker(workerId: string, metadata: Record<string, unknown>): Promise<void> {

@@ -39,7 +39,7 @@ export class GitAuditEmitter extends ShellAuditEmitter {
    * @returns Filtered events
    */
   getEventsByOperation(_operation: GitOperation): GitAuditEvent[] {
-    return this.getEvents().map(e => ({
+    return this.getEvents().map((e) => ({
       eventType: e.eventType as GitAuditEvent['eventType'],
       category: e.category,
       operation: e.command as GitOperation,
@@ -66,7 +66,7 @@ export function createGitInvokedEvent(
   branch: string | undefined,
   taskId: string,
   traceId: string,
-  agentRole: string
+  agentRole: string,
 ): GitAuditEvent {
   return {
     eventType: 'tool.invoked',
@@ -94,7 +94,7 @@ export function createGitFinishedEvent(
   durationMs: number,
   taskId: string,
   traceId: string,
-  agentRole: string
+  agentRole: string,
 ): GitAuditEvent {
   return {
     eventType: 'tool.finished',
@@ -121,7 +121,7 @@ export function createGitFailedEvent(
   repository: string,
   taskId: string,
   traceId: string,
-  agentRole: string
+  agentRole: string,
 ): GitAuditEvent {
   return {
     eventType: 'tool.failed',

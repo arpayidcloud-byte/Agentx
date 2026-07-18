@@ -5,7 +5,12 @@
  * Per Volume 7, shell.build commands do not require approval but are restricted.
  */
 
-import { ShellExecutionRequest, ShellExecutionResult, ShellExecutionContext, ToolCategory } from './interfaces.js';
+import {
+  ShellExecutionRequest,
+  ShellExecutionResult,
+  ShellExecutionContext,
+  ToolCategory,
+} from './interfaces.js';
 import { ShellExecutor } from './executor.js';
 
 /**

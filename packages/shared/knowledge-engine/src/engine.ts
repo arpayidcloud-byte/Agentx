@@ -1,12 +1,12 @@
-import { 
-  IKnowledgeEngine, 
-  IKnowledgeStore, 
-  KnowledgeDocument, 
-  KnowledgeQuery, 
-  KnowledgeNode, 
-  KnowledgeRelation, 
+import {
+  IKnowledgeEngine,
+  IKnowledgeStore,
+  KnowledgeDocument,
+  KnowledgeQuery,
+  KnowledgeNode,
+  KnowledgeRelation,
   KnowledgeGraph,
-  KnowledgeMetrics 
+  KnowledgeMetrics,
 } from './interfaces.js';
 import { IEventBus } from '@agentx/core-runtime';
 
@@ -15,12 +15,12 @@ export class KnowledgeEngine implements IKnowledgeEngine {
     totalDocuments: 0,
     totalNodes: 0,
     totalRelations: 0,
-    averageConfidence: 0
+    averageConfidence: 0,
   };
 
   constructor(
     private store: IKnowledgeStore,
-    private eventBus: IEventBus
+    private eventBus: IEventBus,
   ) {}
 
   public async ingest(data: Partial<KnowledgeDocument>): Promise<KnowledgeDocument> {
@@ -33,11 +33,11 @@ export class KnowledgeEngine implements IKnowledgeEngine {
       version: 1,
       sourceUri: data.sourceUri,
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
     };
 
     await this.store.saveDocument(doc);
-    
+
     // Auto-create a node for the document (simple chunking logic: 1 doc = 1 node for foundation)
     const node: KnowledgeNode = {
       id: `node_${doc.id}`,
@@ -45,27 +45,30 @@ export class KnowledgeEngine implements IKnowledgeEngine {
       content: doc.content,
       metadata: doc.metadata,
       confidenceScore: 1.0,
-      createdAt: now
+      createdAt: now,
     };
     await this.store.saveNode(node);
 
     await this.updateMetrics();
     await this.eventBus.publish('knowledge.ingested', doc, `trace_${doc.id}`);
-    
+
     return doc;
   }
 
   public async retrieve(query: KnowledgeQuery): Promise<KnowledgeNode[]> {
     let results = await this.store.searchNodes(query.text, query.limit);
-    
+
     if (query.minConfidence !== undefined) {
-      results = results.filter(n => n.confidenceScore >= query.minConfidence!);
+      results = results.filter((n) => n.confidenceScore >= query.minConfidence!);
     }
-    
+
     return results;
   }
 
-  public async update(documentId: string, updates: Partial<KnowledgeDocument>): Promise<KnowledgeDocument> {
+  public async update(
+    documentId: string,
+    updates: Partial<KnowledgeDocument>,
+  ): Promise<KnowledgeDocument> {
     const existing = await this.store.getDocument(documentId);
     if (!existing) throw new Error(`Document ${documentId} not found`);
 
@@ -73,18 +76,18 @@ export class KnowledgeEngine implements IKnowledgeEngine {
       ...existing,
       ...updates,
       version: existing.version + 1,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     await this.store.saveDocument(doc);
-    
+
     // Update corresponding node
     const node = await this.store.getNode(`node_${doc.id}`);
     if (node) {
       await this.store.saveNode({
         ...node,
         content: doc.content,
-        metadata: doc.metadata
+        metadata: doc.metadata,
       });
     }
 
@@ -98,7 +101,12 @@ export class KnowledgeEngine implements IKnowledgeEngine {
     await this.eventBus.publish('knowledge.deleted', { id: documentId }, `trace_${documentId}`);
   }
 
-  public async createRelationship(sourceId: string, targetId: string, type: string, metadata?: Record<string, unknown>): Promise<KnowledgeRelation> {
+  public async createRelationship(
+    sourceId: string,
+    targetId: string,
+    type: string,
+    metadata?: Record<string, unknown>,
+  ): Promise<KnowledgeRelation> {
     const relation: KnowledgeRelation = {
       id: `rel_${Math.random().toString(36).substring(2, 9)}`,
       sourceId,
@@ -106,7 +114,7 @@ export class KnowledgeEngine implements IKnowledgeEngine {
       type,
       weight: 1.0,
       metadata: metadata || {},
-      createdAt: new Date()
+      createdAt: new Date(),
     };
 
     await this.store.saveRelation(relation);
@@ -117,12 +125,12 @@ export class KnowledgeEngine implements IKnowledgeEngine {
   public async traverse(startNodeId: string, maxDepth: number = 1): Promise<KnowledgeGraph> {
     const nodes = new Map<string, KnowledgeNode>();
     const relations: KnowledgeRelation[] = [];
-    
+
     const startNode = await this.store.getNode(startNodeId);
     if (!startNode) return { nodes: [], relations: [] };
-    
+
     nodes.set(startNode.id, startNode);
-    
+
     // Simple 1-level traversal for foundation
     if (maxDepth >= 1) {
       const rels = await this.store.getRelations(startNodeId);
@@ -134,10 +142,10 @@ export class KnowledgeEngine implements IKnowledgeEngine {
         }
       }
     }
-    
+
     return {
       nodes: Array.from(nodes.values()),
-      relations
+      relations,
     };
   }
 
@@ -149,7 +157,7 @@ export class KnowledgeEngine implements IKnowledgeEngine {
     const docs = await this.store.listDocuments();
     this.metrics.totalDocuments = docs.length;
     // Mock metric updates for nodes/relations based on docs length
-    this.metrics.totalNodes = docs.length; 
+    this.metrics.totalNodes = docs.length;
     this.metrics.totalRelations = docs.length > 1 ? docs.length - 1 : 0;
     this.metrics.averageConfidence = docs.length > 0 ? 1.0 : 0;
   }
@@ -188,7 +196,7 @@ export class InMemoryKnowledgeStore implements IKnowledgeStore {
   async searchNodes(query: string, limit?: number): Promise<KnowledgeNode[]> {
     let results = Array.from(this.nodes.values());
     if (query) {
-      results = results.filter(n => n.content.includes(query));
+      results = results.filter((n) => n.content.includes(query));
     }
     if (limit) {
       results = results.slice(0, limit);

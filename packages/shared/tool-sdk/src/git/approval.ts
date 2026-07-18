@@ -23,20 +23,21 @@ const GIT_RISK_SCORES: Record<GitOperation, number> = {
 };
 
 /** Classification labels */
-const GIT_CLASSIFICATIONS: Record<GitOperation, 'Safe' | 'PotentiallyDestructive' | 'Destructive'> = {
-  'git.status': 'Safe',
-  'git.diff': 'Safe',
-  'git.log': 'Safe',
-  'git.branch': 'Safe',
-  'git.show': 'Safe',
-  'git.revparse': 'Safe',
-  'git.lsfiles': 'Safe',
-  'git.add': 'PotentiallyDestructive',
-  'git.restore': 'PotentiallyDestructive',
-  'git.checkout': 'PotentiallyDestructive',
-  'git.commit': 'PotentiallyDestructive',
-  'git.reset': 'Destructive',
-};
+const GIT_CLASSIFICATIONS: Record<GitOperation, 'Safe' | 'PotentiallyDestructive' | 'Destructive'> =
+  {
+    'git.status': 'Safe',
+    'git.diff': 'Safe',
+    'git.log': 'Safe',
+    'git.branch': 'Safe',
+    'git.show': 'Safe',
+    'git.revparse': 'Safe',
+    'git.lsfiles': 'Safe',
+    'git.add': 'PotentiallyDestructive',
+    'git.restore': 'PotentiallyDestructive',
+    'git.checkout': 'PotentiallyDestructive',
+    'git.commit': 'PotentiallyDestructive',
+    'git.reset': 'Destructive',
+  };
 
 /** Classification reasons */
 const GIT_REASONS: Record<GitOperation, string> = {
@@ -65,7 +66,8 @@ export function classifyGitOperation(operation: GitOperation): GitApprovalClassi
   const reason = GIT_REASONS[operation] || 'Unknown operation';
 
   return {
-    requiresApproval: classification === 'Destructive' || classification === 'PotentiallyDestructive',
+    requiresApproval:
+      classification === 'Destructive' || classification === 'PotentiallyDestructive',
     riskScore,
     classification,
     reason,

@@ -12,7 +12,9 @@ export class NodeCapabilityRegistry {
 
   register(nodeId: string, capabilities: NodeCapability[]): void {
     const sorted = [...capabilities].sort((a, b) => b.weight - a.weight);
-    const checksum = createHash('sha256').update(JSON.stringify({ nodeId, capabilities: sorted })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ nodeId, capabilities: sorted }))
+      .digest('hex');
     const entry: NodeCapabilityEntry = Object.freeze({ nodeId, capabilities: sorted, checksum });
     this.capabilities.set(nodeId, entry);
   }
@@ -28,7 +30,7 @@ export class NodeCapabilityRegistry {
   findNodesWithCapability(capName: string): string[] {
     const result: string[] = [];
     for (const [nodeId, entry] of this.capabilities) {
-      if (entry.capabilities.some(c => c.name === capName)) {
+      if (entry.capabilities.some((c) => c.name === capName)) {
         result.push(nodeId);
       }
     }

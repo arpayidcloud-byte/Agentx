@@ -23,11 +23,17 @@ const validTransitions: Record<GoalState, GoalState[]> = {
 export class GoalStateMachine {
   private state: GoalState = 'CREATED';
 
-  getState(): GoalState { return this.state; }
+  getState(): GoalState {
+    return this.state;
+  }
 
   transition(next: GoalState): void {
     if (!validTransitions[this.state]?.includes(next)) {
-      throw new GoalError(`Invalid transition from ${this.state} to ${next}`, 'GOAL_STATE_ERROR', 'goal-state');
+      throw new GoalError(
+        `Invalid transition from ${this.state} to ${next}`,
+        'GOAL_STATE_ERROR',
+        'goal-state',
+      );
     }
     this.state = next;
   }

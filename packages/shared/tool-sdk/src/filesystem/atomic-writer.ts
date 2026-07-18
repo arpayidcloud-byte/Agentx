@@ -15,7 +15,7 @@ export class AtomicWriter implements IAtomicWriter {
       await fs.rename(tempFilePath, filePath);
     } catch (error: unknown) {
       await this.cleanup(tempFilePath);
-      
+
       const errMsg = error instanceof Error ? error.message : String(error);
       throw new AtomicWriteError(errMsg, error instanceof Error ? error : undefined);
     } finally {

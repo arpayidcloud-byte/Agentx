@@ -12,7 +12,7 @@ export class ArchitectureFreeze {
   freeze(metadata: ArchitectureMetadata): ArchitectureReport {
     const payload = JSON.stringify(metadata.packages) + JSON.stringify(metadata.dependencies);
     this.frozenHash = createHash('sha256').update(payload).digest('hex');
-    
+
     metadata.checksum = this.frozenHash;
     metadata.frozenAt = new Date();
 

@@ -3,7 +3,13 @@
  * @description Master orchestrator for multi-agent cognitive collaboration.
  */
 
-import { AgentMetadata, CollaborationSession, SharedContext, TaskDelegation, ConsensusRequest } from './interfaces.js';
+import {
+  AgentMetadata,
+  CollaborationSession,
+  SharedContext,
+  TaskDelegation,
+  ConsensusRequest,
+} from './interfaces.js';
 import { AgentRegistry } from './agent-registry.js';
 import { AgentDirectory } from './agent-directory.js';
 import { AgentSelectionEngine } from './agent-selection-engine.js';
@@ -65,7 +71,10 @@ export class MultiAgentCollaborationEngine {
       this.metrics.recordDelegation(10);
       this.metrics.recordAgentRegistration();
       await this.hooks.runBeforeDelegation(delegation.taskId);
-      this.events.publish('collaboration.delegation.created', { taskId: delegation.taskId, agentId });
+      this.events.publish('collaboration.delegation.created', {
+        taskId: delegation.taskId,
+        agentId,
+      });
     }
 
     const context = this.sharedContext.create(session.id, { goalId, agentIds });
@@ -83,7 +92,10 @@ export class MultiAgentCollaborationEngine {
     this.metrics.recordConsensus(10);
     await this.hooks.runBeforeConsensus(proposalId);
     await this.hooks.runAfterConsensus(proposalId, result.approved);
-    this.events.publish('collaboration.consensus.reached', { proposalId, approved: result.approved });
+    this.events.publish('collaboration.consensus.reached', {
+      proposalId,
+      approved: result.approved,
+    });
     return result.approved;
   }
 

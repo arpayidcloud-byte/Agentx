@@ -39,18 +39,18 @@ export class InMemoryAuditStore implements IAuditStore {
   }
 
   async getByTraceId(traceId: string): Promise<AuditRecord[]> {
-    return this.records.filter(r => r.traceId === traceId);
+    return this.records.filter((r) => r.traceId === traceId);
   }
 
   async getBySessionId(sessionId: string): Promise<AuditRecord[]> {
-    return this.records.filter(r => r.sessionId === sessionId);
+    return this.records.filter((r) => r.sessionId === sessionId);
   }
 
   async getByWorkflowId(workflowId: string): Promise<AuditRecord[]> {
-    return this.records.filter(r => r.workflowId === workflowId);
+    return this.records.filter((r) => r.workflowId === workflowId);
   }
 
   async delete(id: string): Promise<void> {
-    this.records = this.records.filter(r => r.id !== id);
+    this.records = this.records.filter((r) => r.id !== id);
   }
 }

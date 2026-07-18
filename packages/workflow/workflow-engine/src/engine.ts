@@ -3,7 +3,13 @@
  * @description Core workflow execution engine.
  */
 
-import { WorkflowDefinition, WorkflowState, NodeState, ExecutionHistoryEntry, WorkflowMetrics } from './interfaces.js';
+import {
+  WorkflowDefinition,
+  WorkflowState,
+  NodeState,
+  ExecutionHistoryEntry,
+  WorkflowMetrics,
+} from './interfaces.js';
 import { findReadyNodes } from './graph.js';
 import { InMemoryCheckpointManager } from './checkpoint.js';
 
@@ -51,7 +57,12 @@ export class WorkflowEngine {
       let progress = true;
       while (progress && completedNodes.size < workflow.nodes.length) {
         progress = false;
-        const readyNodes = findReadyNodes(workflow.nodes, workflow.edges, completedNodes, activeNodes);
+        const readyNodes = findReadyNodes(
+          workflow.nodes,
+          workflow.edges,
+          completedNodes,
+          activeNodes,
+        );
 
         if (readyNodes.length > 0) {
           progress = true;
@@ -65,17 +76,25 @@ export class WorkflowEngine {
               completedNodes.add(node.id);
               activeNodes.delete(node.id);
               this.history.push({
-                workflowId: workflow.id, nodeId: node.id, state: 'COMPLETED',
-                result: this.results.get(node.id), durationMs: Date.now() - nodeStart,
-                startedAt: new Date(nodeStart), completedAt: new Date(),
+                workflowId: workflow.id,
+                nodeId: node.id,
+                state: 'COMPLETED',
+                result: this.results.get(node.id),
+                durationMs: Date.now() - nodeStart,
+                startedAt: new Date(nodeStart),
+                completedAt: new Date(),
               });
             } catch (error) {
               this.nodeStates.set(node.id, 'FAILED');
               activeNodes.delete(node.id);
               this.history.push({
-                workflowId: workflow.id, nodeId: node.id, state: 'FAILED',
+                workflowId: workflow.id,
+                nodeId: node.id,
+                state: 'FAILED',
                 error: error instanceof Error ? error.message : String(error),
-                durationMs: Date.now() - nodeStart, startedAt: new Date(nodeStart), completedAt: new Date(),
+                durationMs: Date.now() - nodeStart,
+                startedAt: new Date(nodeStart),
+                completedAt: new Date(),
               });
             }
           });
@@ -91,46 +110,73 @@ export class WorkflowEngine {
     return this.buildMetrics(workflow.id, Date.now() - startTime);
   }
 
-  pause(): void { if (this.state === 'RUNNING') this.state = 'PAUSED'; }
-  resume(): void { if (this.state === 'PAUSED') this.state = 'RUNNING'; }
-  cancel(): void { if (this.state === 'RUNNING' || this.state === 'PAUSED') this.state = 'CANCELLED'; }
-  getState(): WorkflowState { return this.state; }
-  getNodeState(nodeId: string): NodeState | undefined { return this.nodeStates.get(nodeId); }
-  getHistory(): ExecutionHistoryEntry[] { return [...this.history]; }
+  pause(): void {
+    if (this.state === 'RUNNING') this.state = 'PAUSED';
+  }
+  resume(): void {
+    if (this.state === 'PAUSED') this.state = 'RUNNING';
+  }
+  cancel(): void {
+    if (this.state === 'RUNNING' || this.state === 'PAUSED') this.state = 'CANCELLED';
+  }
+  getState(): WorkflowState {
+    return this.state;
+  }
+  getNodeState(nodeId: string): NodeState | undefined {
+    return this.nodeStates.get(nodeId);
+  }
+  getHistory(): ExecutionHistoryEntry[] {
+    return [...this.history];
+  }
 
   private async saveCheckpoint(workflowId: string): Promise<void> {
     await this.checkpointManager.save({
-      workflowId, nodeStates: new Map(this.nodeStates),
-      results: new Map(this.results), timestamp: new Date(), version: 1,
+      workflowId,
+      nodeStates: new Map(this.nodeStates),
+      results: new Map(this.results),
+      timestamp: new Date(),
+      version: 1,
     });
   }
 
   private async executeNode(node: any): Promise<void> {
     switch (node.config.type) {
       case 'task':
-        this.results.set(node.id, { status: 'completed', goal: node.config.goal }); break;
+        this.results.set(node.id, { status: 'completed', goal: node.config.goal });
+        break;
       case 'tool':
-        this.results.set(node.id, { status: 'completed', tool: node.config.toolName }); break;
+        this.results.set(node.id, { status: 'completed', tool: node.config.toolName });
+        break;
       case 'agent':
-        this.results.set(node.id, { status: 'completed', role: node.config.role }); break;
+        this.results.set(node.id, { status: 'completed', role: node.config.role });
+        break;
       case 'approval':
-        this.nodeStates.set(node.id, 'WAITING_APPROVAL'); break;
+        this.nodeStates.set(node.id, 'WAITING_APPROVAL');
+        break;
       default:
         this.results.set(node.id, { status: 'completed' });
     }
   }
 
   private buildMetrics(workflowId: string, totalDurationMs: number): WorkflowMetrics {
-    let completed = 0; let failed = 0; let skipped = 0;
+    let completed = 0;
+    let failed = 0;
+    let skipped = 0;
     for (const state of this.nodeStates.values()) {
       if (state === 'COMPLETED') completed++;
       else if (state === 'FAILED') failed++;
       else if (state === 'SKIPPED') skipped++;
     }
     return {
-      workflowId, totalNodes: this.nodeStates.size, completedNodes: completed,
-      failedNodes: failed, skippedNodes: skipped, totalDurationMs,
-      nodeDurations: new Map(), retries: 0, errors: failed,
+      workflowId,
+      totalNodes: this.nodeStates.size,
+      completedNodes: completed,
+      failedNodes: failed,
+      skippedNodes: skipped,
+      totalDurationMs,
+      nodeDurations: new Map(),
+      retries: 0,
+      errors: failed,
     };
   }
 }

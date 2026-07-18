@@ -4,7 +4,7 @@ import { SubAgentFactory } from './sub-agent-factory.js';
 export class AgentPool {
   private config: AgentPoolConfig;
   private factory: SubAgentFactory;
-  
+
   private idleAgents = new Map<AgentRole, SubAgent[]>();
   private busyAgents = new Map<string, SubAgent>();
 

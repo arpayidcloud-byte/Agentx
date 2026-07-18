@@ -30,7 +30,9 @@ export class DistributedLearningSynchronizer {
       }
     }
 
-    const checksum = createHash('sha256').update(JSON.stringify({ sessionId, syncedEntries, conflictsResolved })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ sessionId, syncedEntries, conflictsResolved }))
+      .digest('hex');
     const result: LearningSyncResult = Object.freeze({
       sessionId,
       syncedEntries,

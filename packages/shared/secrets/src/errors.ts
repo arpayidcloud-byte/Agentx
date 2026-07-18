@@ -27,6 +27,8 @@ export class SecretNotFoundError extends SecretError {
 
 export class CredentialResolutionError extends SecretError {
   constructor(providerId: string) {
-    super(`Credential not found: provider.${providerId}.api_key. Set it via 'agentx secrets set' or the AGENTX_SECRET_${providerId.toUpperCase()}_API_KEY env var.`);
+    super(
+      `Credential not found: provider.${providerId}.api_key. Set it via 'agentx secrets set' or the AGENTX_SECRET_${providerId.toUpperCase()}_API_KEY env var.`,
+    );
   }
 }

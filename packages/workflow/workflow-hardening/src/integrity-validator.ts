@@ -11,7 +11,10 @@ export class WorkflowIntegrityValidator {
   validateChecksum(data: string, expectedChecksum: string): void {
     const computed = createHash('sha256').update(data).digest('hex');
     if (computed !== expectedChecksum) {
-      throw new IntegrityError(`Checksum mismatch: expected ${expectedChecksum}, got ${computed}`, 'integrity-validator');
+      throw new IntegrityError(
+        `Checksum mismatch: expected ${expectedChecksum}, got ${computed}`,
+        'integrity-validator',
+      );
     }
   }
 
@@ -26,7 +29,10 @@ export class WorkflowIntegrityValidator {
     const nodeSet = new Set(nodes);
     for (const [src, tgt] of edges) {
       if (!nodeSet.has(src) || !nodeSet.has(tgt)) {
-        throw new IntegrityError(`Edge references missing node: ${src} -> ${tgt}`, 'integrity-validator');
+        throw new IntegrityError(
+          `Edge references missing node: ${src} -> ${tgt}`,
+          'integrity-validator',
+        );
       }
     }
   }

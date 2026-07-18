@@ -102,8 +102,22 @@ describe('Coordinator Events', () => {
 describe('Coordinator Hooks', () => {
   it('executes hooks', async () => {
     const manager = new CoordinatorHookManager();
-    const session = { id: 's1', traceId: 't1', correlationId: 'c1', goal: 'test', status: 'ACTIVE' as const, startedAt: new Date(), metadata: {} };
-    const hook = { name: 'test', beforeExecution: vi.fn(), afterExecution: vi.fn(), onDispatch: vi.fn(), onRetry: vi.fn() };
+    const session = {
+      id: 's1',
+      traceId: 't1',
+      correlationId: 'c1',
+      goal: 'test',
+      status: 'ACTIVE' as const,
+      startedAt: new Date(),
+      metadata: {},
+    };
+    const hook = {
+      name: 'test',
+      beforeExecution: vi.fn(),
+      afterExecution: vi.fn(),
+      onDispatch: vi.fn(),
+      onRetry: vi.fn(),
+    };
     manager.register(hook);
     await manager.executeBeforeExecution(session);
     await manager.executeAfterExecution(session, {});
@@ -152,7 +166,13 @@ describe('Coordinator Health', () => {
 describe('Execution Scheduler', () => {
   it('schedules and dequeues tickets', () => {
     const scheduler = new ExecutionScheduler();
-    const ticket = { id: 't1', sessionId: 's1', phase: 'PLANNING' as const, priority: 1, status: 'PENDING' as const };
+    const ticket = {
+      id: 't1',
+      sessionId: 's1',
+      phase: 'PLANNING' as const,
+      priority: 1,
+      status: 'PENDING' as const,
+    };
     scheduler.schedule(ticket);
     expect(scheduler.getQueueSize()).toBe(1);
     const dequeued = scheduler.dequeue();
@@ -165,7 +185,13 @@ describe('Execution Dispatcher', () => {
     const dispatcher = new ExecutionDispatcher();
     const mockEngine = { execute: vi.fn().mockResolvedValue('result') };
     dispatcher.registerEngine('PLANNING', mockEngine);
-    const ticket = { id: 't1', sessionId: 's1', phase: 'PLANNING' as const, priority: 1, status: 'EXECUTING' as const };
+    const ticket = {
+      id: 't1',
+      sessionId: 's1',
+      phase: 'PLANNING' as const,
+      priority: 1,
+      status: 'EXECUTING' as const,
+    };
     await dispatcher.dispatch(ticket);
     expect(mockEngine.execute).toHaveBeenCalled();
   });
@@ -184,7 +210,16 @@ describe('Execution Reservation', () => {
 
 describe('Concurrency Controller', () => {
   it('manages concurrency limits', () => {
-    const controller = new ConcurrencyController({ maxWorkers: 2, maxTools: 10, maxProviders: 10, maxApprovals: 10, maxAgents: 10, maxQueueSize: 100, maxParallel: 10, maxBatch: 5 });
+    const controller = new ConcurrencyController({
+      maxWorkers: 2,
+      maxTools: 10,
+      maxProviders: 10,
+      maxApprovals: 10,
+      maxAgents: 10,
+      maxQueueSize: 100,
+      maxParallel: 10,
+      maxBatch: 5,
+    });
     expect(controller.canAcquire('worker')).toBe(true);
     controller.acquire('worker');
     controller.acquire('worker');
@@ -233,14 +268,32 @@ describe('Production Execution Coordinator', () => {
   });
 
   it('starts and executes goals', async () => {
-    const session: CoordinatorSession = { id: 's1', traceId: 't1', correlationId: 'c1', goal: 'build', status: 'ACTIVE', startedAt: new Date(), metadata: {} };
+    const session: CoordinatorSession = {
+      id: 's1',
+      traceId: 't1',
+      correlationId: 'c1',
+      goal: 'build',
+      status: 'ACTIVE',
+      startedAt: new Date(),
+      metadata: {},
+    };
     await coordinator.execute(session);
     expect(coordinator.getState()).toBe('COMPLETED');
   });
 
   it('handles execution failure', async () => {
-    const session: CoordinatorSession = { id: 's2', traceId: 't2', correlationId: 'c2', goal: 'fail', status: 'ACTIVE', startedAt: new Date(), metadata: { fail: true } };
-    try { await coordinator.execute(session); } catch (e) {}
+    const session: CoordinatorSession = {
+      id: 's2',
+      traceId: 't2',
+      correlationId: 'c2',
+      goal: 'fail',
+      status: 'ACTIVE',
+      startedAt: new Date(),
+      metadata: { fail: true },
+    };
+    try {
+      await coordinator.execute(session);
+    } catch (e) {}
     expect(coordinator.getState()).toBe('FAILED');
   });
 
@@ -268,8 +321,20 @@ describe('Coordinator Bootstrap', () => {
 describe('Execution Scheduler additional functions', () => {
   it('covers cancel, batching, dequeue, peek, and clear', () => {
     const scheduler = new ExecutionScheduler();
-    const t1 = { id: 't1', sessionId: 's1', phase: 'PLANNING' as const, priority: 1, status: 'PENDING' as const };
-    const t2 = { id: 't2', sessionId: 's1', phase: 'PLANNING' as const, priority: 2, status: 'PENDING' as const };
+    const t1 = {
+      id: 't1',
+      sessionId: 's1',
+      phase: 'PLANNING' as const,
+      priority: 1,
+      status: 'PENDING' as const,
+    };
+    const t2 = {
+      id: 't2',
+      sessionId: 's1',
+      phase: 'PLANNING' as const,
+      priority: 2,
+      status: 'PENDING' as const,
+    };
     scheduler.schedule(t1);
     scheduler.schedule(t2);
     expect(scheduler.peek()?.id).toBe('t2');
@@ -293,7 +358,7 @@ describe('Execution Reservation manager edge cases', () => {
 
     const activeRes = manager.reserve('worker', 5, 10000);
     expect(() => manager.allocate(activeRes.id, 10)).toThrow(CoordinatorReservationError);
-    
+
     manager.clear();
     expect(manager.getReservations()).toHaveLength(0);
   });
@@ -302,9 +367,26 @@ describe('Execution Reservation manager edge cases', () => {
 describe('Concurrency Controller limits', () => {
   it('covers all limits', () => {
     const controller = new ConcurrencyController({
-      maxWorkers: 1, maxTools: 1, maxProviders: 1, maxApprovals: 1, maxAgents: 1, maxQueueSize: 1, maxParallel: 1, maxBatch: 1
+      maxWorkers: 1,
+      maxTools: 1,
+      maxProviders: 1,
+      maxApprovals: 1,
+      maxAgents: 1,
+      maxQueueSize: 1,
+      maxParallel: 1,
+      maxBatch: 1,
     });
-    const limits = ['worker', 'tool', 'provider', 'approval', 'agent', 'queue', 'parallel', 'batch', 'unknown'];
+    const limits = [
+      'worker',
+      'tool',
+      'provider',
+      'approval',
+      'agent',
+      'queue',
+      'parallel',
+      'batch',
+      'unknown',
+    ];
     for (const lim of limits) {
       expect(controller.canAcquire(lim)).toBe(true);
       controller.acquire(lim);
@@ -343,12 +425,20 @@ describe('Coordinator Health Checker registration and check methods', () => {
 describe('Coordinator Hooks manager edge cases', () => {
   it('covers hooks omission and clear method', async () => {
     const manager = new CoordinatorHookManager();
-    const session = { id: 's1', traceId: 't1', correlationId: 'c1', goal: 'test', status: 'ACTIVE' as const, startedAt: new Date(), metadata: {} };
+    const session = {
+      id: 's1',
+      traceId: 't1',
+      correlationId: 'c1',
+      goal: 'test',
+      status: 'ACTIVE' as const,
+      startedAt: new Date(),
+      metadata: {},
+    };
     await manager.executeBeforeExecution(session);
     await manager.executeAfterExecution(session, {});
     await manager.executeOnDispatch(session, 'PLANNING');
     await manager.executeOnRetry(session, 'PLANNING', 1);
-    
+
     manager.register({ name: 'hook' });
     manager.unregister('hook');
     manager.clear();
@@ -369,14 +459,14 @@ describe('Coordinator Metrics Collector reset and decrement edge cases', () => {
     const collector = new CoordinatorMetricsCollector();
     collector.decrementActive();
     expect(collector.getMetrics().activeExecutions).toBe(0);
-    
+
     collector.incrementExecutions();
     collector.incrementFailed(100);
     collector.incrementCancelled();
     collector.incrementRetries();
     collector.incrementRecoveries();
     collector.addQueueTime(50);
-    
+
     collector.reset();
     expect(collector.getMetrics().totalExecutions).toBe(0);
   });
@@ -385,7 +475,13 @@ describe('Coordinator Metrics Collector reset and decrement edge cases', () => {
 describe('Execution Dispatcher missing engine throw', () => {
   it('throws when dispatching to unregistered phase', async () => {
     const dispatcher = new ExecutionDispatcher();
-    const ticket = { id: 't1', sessionId: 's1', phase: 'PLANNING' as const, priority: 1, status: 'EXECUTING' as const };
+    const ticket = {
+      id: 't1',
+      sessionId: 's1',
+      phase: 'PLANNING' as const,
+      priority: 1,
+      status: 'EXECUTING' as const,
+    };
     await expect(dispatcher.dispatch(ticket)).rejects.toThrow(CoordinatorExecutionError);
   });
 });

@@ -11,7 +11,10 @@ export class ReleaseRegistry {
 
   register(manifest: ReleaseManifest): void {
     if (this.releases.has(manifest.providerId)) {
-      throw new RegistryError(`Release already registered: ${manifest.providerId}`, 'release-registry');
+      throw new RegistryError(
+        `Release already registered: ${manifest.providerId}`,
+        'release-registry',
+      );
     }
     this.releases.set(manifest.providerId, manifest);
   }

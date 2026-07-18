@@ -13,9 +13,16 @@ export interface ReplayEntry {
 export class DistributedReplayEngine {
   private entries = new Map<string, ReplayEntry[]>();
 
-  record(sessionId: string, nodeId: string, action: string, state: Record<string, unknown>): ReplayEntry {
+  record(
+    sessionId: string,
+    nodeId: string,
+    action: string,
+    state: Record<string, unknown>,
+  ): ReplayEntry {
     const entryId = `re-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ sessionId, nodeId, action, state })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ sessionId, nodeId, action, state }))
+      .digest('hex');
     const entry: ReplayEntry = Object.freeze({
       entryId,
       sessionId,
@@ -37,13 +44,17 @@ export class DistributedReplayEngine {
 
   validate(sessionId: string): boolean {
     const entries = this.entries.get(sessionId) || [];
-    return entries.every(entry => {
-      const computed = createHash('sha256').update(JSON.stringify({
-        sessionId: entry.sessionId,
-        nodeId: entry.nodeId,
-        action: entry.action,
-        state: entry.state,
-      })).digest('hex');
+    return entries.every((entry) => {
+      const computed = createHash('sha256')
+        .update(
+          JSON.stringify({
+            sessionId: entry.sessionId,
+            nodeId: entry.nodeId,
+            action: entry.action,
+            state: entry.state,
+          }),
+        )
+        .digest('hex');
       return computed === entry.checksum;
     });
   }

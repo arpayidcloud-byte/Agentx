@@ -23,7 +23,9 @@ export class JsonWorkflowSerializer implements IWorkflowSerializer {
       }
       return parsed as WorkflowDefinition;
     } catch (e) {
-      throw new Error(`Failed to deserialize workflow: ${e instanceof Error ? e.message : String(e)}`);
+      throw new Error(
+        `Failed to deserialize workflow: ${e instanceof Error ? e.message : String(e)}`,
+      );
     }
   }
 }

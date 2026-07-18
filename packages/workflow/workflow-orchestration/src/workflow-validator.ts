@@ -11,10 +11,13 @@ export class WorkflowValidator {
     if (graph.nodes.length === 0) {
       throw new WorkflowValidationError('Graph must have at least one node', 'validator');
     }
-    const nodeIds = new Set(graph.nodes.map(n => n.id));
+    const nodeIds = new Set(graph.nodes.map((n) => n.id));
     for (const edge of graph.edges) {
       if (!nodeIds.has(edge.source) || !nodeIds.has(edge.target)) {
-        throw new WorkflowValidationError(`Edge references missing node: ${edge.source} -> ${edge.target}`, 'validator');
+        throw new WorkflowValidationError(
+          `Edge references missing node: ${edge.source} -> ${edge.target}`,
+          'validator',
+        );
       }
     }
   }

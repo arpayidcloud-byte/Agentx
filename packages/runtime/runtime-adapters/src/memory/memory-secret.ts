@@ -3,7 +3,13 @@
  * @description Reference in-memory secret storage provider.
  */
 
-import { ISecretProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics } from '../interfaces.js';
+import {
+  ISecretProvider,
+  ProviderMetadata,
+  ProviderCapabilities,
+  ProviderHealth,
+  ProviderMetrics,
+} from '../interfaces.js';
 
 export class MemorySecretProvider implements ISecretProvider {
   private secrets = new Map<string, string>();
@@ -28,7 +34,12 @@ export class MemorySecretProvider implements ISecretProvider {
   }
 
   getMetrics(): ProviderMetrics {
-    return { totalRequests: this.total, successfulRequests: this.successes, failedRequests: 0, averageLatencyMs: 0 };
+    return {
+      totalRequests: this.total,
+      successfulRequests: this.successes,
+      failedRequests: 0,
+      averageLatencyMs: 0,
+    };
   }
 
   async getSecret(key: string): Promise<string | undefined> {

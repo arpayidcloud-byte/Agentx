@@ -7,13 +7,14 @@ export class NodeDiscoveryEngine {
   constructor(private registry: NodeRegistry) {}
 
   discover(region: string): NodeMetadata[] {
-    return this.registry.getAll()
-      .filter(n => n.status === 'ACTIVE' && n.metadata.region === region)
-      .map(n => n.metadata);
+    return this.registry
+      .getAll()
+      .filter((n) => n.status === 'ACTIVE' && n.metadata.region === region)
+      .map((n) => n.metadata);
   }
 
   discoverByCapability(capability: string): NodeMetadata[] {
-    return this.registry.findNodesByCapability(capability).map(n => n.metadata);
+    return this.registry.findNodesByCapability(capability).map((n) => n.metadata);
   }
 
   registerDiscovered(metadata: NodeMetadata): void {

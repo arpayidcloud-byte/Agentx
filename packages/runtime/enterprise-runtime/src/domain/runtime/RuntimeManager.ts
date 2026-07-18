@@ -7,18 +7,22 @@ export class RuntimeLifecycleManager {
 
   transition(newState: RuntimeState): void {
     const validTransitions: Record<RuntimeState, RuntimeState[]> = {
-      'CREATED': ['INITIALIZING'],
-      'INITIALIZING': ['READY', 'ERROR'],
-      'READY': ['RUNNING', 'STOPPING'],
-      'RUNNING': ['PAUSED', 'STOPPING', 'ERROR'],
-      'PAUSED': ['RUNNING', 'STOPPING'],
-      'STOPPING': ['STOPPED'],
-      'STOPPED': ['INITIALIZING'],
-      'ERROR': ['RECOVERING', 'STOPPING'],
-      'RECOVERING': ['RUNNING', 'ERROR'],
+      CREATED: ['INITIALIZING'],
+      INITIALIZING: ['READY', 'ERROR'],
+      READY: ['RUNNING', 'STOPPING'],
+      RUNNING: ['PAUSED', 'STOPPING', 'ERROR'],
+      PAUSED: ['RUNNING', 'STOPPING'],
+      STOPPING: ['STOPPED'],
+      STOPPED: ['INITIALIZING'],
+      ERROR: ['RECOVERING', 'STOPPING'],
+      RECOVERING: ['RUNNING', 'ERROR'],
     };
     if (!validTransitions[this.state]?.includes(newState)) {
-      throw new InvariantViolationError(`Invalid transition: ${this.state} -> ${newState}`, 'INVALID_TRANSITION', 'RuntimeLifecycleManager');
+      throw new InvariantViolationError(
+        `Invalid transition: ${this.state} -> ${newState}`,
+        'INVALID_TRANSITION',
+        'RuntimeLifecycleManager',
+      );
     }
     this.transitions.push({ from: this.state, to: newState, timestamp: new Date() });
     this.state = newState;
@@ -78,7 +82,7 @@ export class RuntimeSupervisor {
   }
 
   isHealthy(): boolean {
-    return this.checkAll().every(h => h.status !== 'UNHEALTHY');
+    return this.checkAll().every((h) => h.status !== 'UNHEALTHY');
   }
 }
 
@@ -98,7 +102,7 @@ export class RuntimeHealthManager {
   }
 
   isHealthy(): boolean {
-    return this.getAll().every(h => h.status !== 'UNHEALTHY');
+    return this.getAll().every((h) => h.status !== 'UNHEALTHY');
   }
 
   clear(): void {

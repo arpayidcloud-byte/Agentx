@@ -14,7 +14,9 @@ export class AgentXLoggerFactory implements LoggerFactory {
   }
 
   private loadFromEnv(): void {
-    const level = (process.env.AGENTX_LOG_LEVEL || 'info').toUpperCase() as LoggerConfiguration['level'];
+    const level = (
+      process.env.AGENTX_LOG_LEVEL || 'info'
+    ).toUpperCase() as LoggerConfiguration['level'];
     const format = (process.env.AGENTX_LOG_FORMAT || 'json') as LoggerConfiguration['format'];
 
     if (level) {

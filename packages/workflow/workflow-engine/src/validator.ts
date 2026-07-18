@@ -72,7 +72,9 @@ export function validateNodeConfig(node: WorkflowNode): void {
         throw new WorkflowValidationError(`Conditional node ${node.id} must have a condition`);
       }
       if (!node.config.trueBranch || !node.config.falseBranch) {
-        throw new WorkflowValidationError(`Conditional node ${node.id} must have both true and false branches`);
+        throw new WorkflowValidationError(
+          `Conditional node ${node.id} must have both true and false branches`,
+        );
       }
       break;
     case 'loop':
@@ -86,10 +88,7 @@ export function validateNodeConfig(node: WorkflowNode): void {
 /**
  * Validates edge configuration
  */
-export function validateEdges(
-  edges: WorkflowEdge[],
-  nodeIds: Set<string>
-): void {
+export function validateEdges(edges: WorkflowEdge[], nodeIds: Set<string>): void {
   for (const edge of edges) {
     if (!nodeIds.has(edge.source)) {
       throw new WorkflowValidationError(`Edge references non-existent source node: ${edge.source}`);

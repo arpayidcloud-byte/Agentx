@@ -22,7 +22,10 @@ export class ApprovalNotFoundError extends ApprovalError {
 /** Thrown when an approval request has already been processed */
 export class ApprovalAlreadyProcessedError extends ApprovalError {
   constructor(requestId: string) {
-    super(`Approval request '${requestId}' has already been processed`, 'APPROVAL_ALREADY_PROCESSED');
+    super(
+      `Approval request '${requestId}' has already been processed`,
+      'APPROVAL_ALREADY_PROCESSED',
+    );
   }
 }
 
@@ -43,7 +46,10 @@ export class ApprovalCancelledError extends ApprovalError {
 /** Thrown when double confirmation is required but not provided */
 export class ApprovalDoubleConfirmationRequiredError extends ApprovalError {
   constructor(requestId: string) {
-    super(`Double confirmation required for approval request '${requestId}'`, 'APPROVAL_DOUBLE_CONFIRMATION_REQUIRED');
+    super(
+      `Double confirmation required for approval request '${requestId}'`,
+      'APPROVAL_DOUBLE_CONFIRMATION_REQUIRED',
+    );
   }
 }
 

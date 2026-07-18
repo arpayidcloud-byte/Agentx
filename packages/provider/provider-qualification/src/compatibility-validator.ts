@@ -7,15 +7,30 @@ import { CompatibilityValidationError } from './errors.js';
 
 export class CompatibilityValidator {
   private components = [
-    'Runtime', 'WorkflowEngine', 'PlanningEngine', 'ContextEngine', 'MemoryEngine',
-    'KnowledgeEngine', 'ApprovalEngine', 'ToolSDK', 'AgentPlatform', 'Coordinator',
-    'Observability', 'Audit', 'Recovery', 'Supervisor', 'Registry'
+    'Runtime',
+    'WorkflowEngine',
+    'PlanningEngine',
+    'ContextEngine',
+    'MemoryEngine',
+    'KnowledgeEngine',
+    'ApprovalEngine',
+    'ToolSDK',
+    'AgentPlatform',
+    'Coordinator',
+    'Observability',
+    'Audit',
+    'Recovery',
+    'Supervisor',
+    'Registry',
   ];
 
   validate(componentList: string[]): boolean {
     for (const comp of componentList) {
       if (!this.components.includes(comp)) {
-        throw new CompatibilityValidationError(`Unsupported component compatibility: ${comp}`, 'compatibility-validator');
+        throw new CompatibilityValidationError(
+          `Unsupported component compatibility: ${comp}`,
+          'compatibility-validator',
+        );
       }
     }
     return true;

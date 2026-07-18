@@ -15,7 +15,7 @@ import { ApprovalClassification, ParsedCommand } from './interfaces.js';
  */
 export function classifyCommand(
   _parsed: ParsedCommand,
-  category: 'shell.build' | 'shell.exec'
+  category: 'shell.build' | 'shell.exec',
 ): ApprovalClassification {
   // shell.build is Potentially Destructive (Risk 50)
   if (category === 'shell.build') {

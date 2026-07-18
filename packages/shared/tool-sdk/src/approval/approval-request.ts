@@ -4,11 +4,7 @@
  * Creates and manages approval requests with proper state transitions.
  */
 
-import {
-  ApprovalRequest,
-  ApprovalState,
-  CreateApprovalRequestParams,
-} from './interfaces.js';
+import { ApprovalRequest, ApprovalState, CreateApprovalRequestParams } from './interfaces.js';
 import { classifyRiskLevel, createApprovalPolicy } from './approval-policy.js';
 
 /**
@@ -40,7 +36,8 @@ export function createApprovalRequest(params: CreateApprovalRequestParams): Appr
     riskScore: params.riskScore,
     riskLevel,
     state: 'WAITING',
-    requiresDoubleConfirmation: params.riskScore >= policy.doubleConfirmationThreshold && policy.requireDoubleConfirmation,
+    requiresDoubleConfirmation:
+      params.riskScore >= policy.doubleConfirmationThreshold && policy.requireDoubleConfirmation,
     firstConfirmationGiven: false,
     taskId: params.taskId,
     traceId: params.traceId,
@@ -62,7 +59,7 @@ export function createApprovalRequest(params: CreateApprovalRequestParams): Appr
 export function updateApprovalRequest(
   request: ApprovalRequest,
   newState: ApprovalState,
-  updates: Partial<ApprovalRequest> = {}
+  updates: Partial<ApprovalRequest> = {},
 ): ApprovalRequest {
   return {
     ...request,

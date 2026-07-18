@@ -7,15 +7,15 @@ export class FilesystemWriteTool {
     private readonly sandbox: ISandbox,
     private readonly atomicWriter: IAtomicWriter,
     private readonly validator: IFilesystemValidator,
-    private readonly policy: IFilesystemPolicy
+    private readonly policy: IFilesystemPolicy,
   ) {}
 
   public async write(requestPath: string, content: string): Promise<{ success: boolean }> {
     const realPath = await this.sandbox.validateWrite(requestPath);
     await this.sandbox.validateSymlinkEscape(realPath);
-    
+
     const contentBuffer = Buffer.from(content, 'utf-8');
-    
+
     if (this.validator.detectBinary(contentBuffer)) {
       throw new Error('Content contains binary data which cannot be written as text');
     }
@@ -25,7 +25,7 @@ export class FilesystemWriteTool {
     }
 
     this.policy.validateFileSize(contentBuffer.length);
-    
+
     const dir = path.dirname(realPath);
     try {
       await fs.mkdir(dir, { recursive: true });

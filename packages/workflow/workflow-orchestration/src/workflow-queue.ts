@@ -23,7 +23,7 @@ export class WorkflowQueue {
 
   cancel(taskId: string): boolean {
     const len = this.queue.length;
-    this.queue = this.queue.filter(t => t.id !== taskId);
+    this.queue = this.queue.filter((t) => t.id !== taskId);
     return this.queue.length < len;
   }
 }

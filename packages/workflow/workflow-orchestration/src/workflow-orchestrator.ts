@@ -54,7 +54,10 @@ export class WorkflowOrchestrator {
   public hooks = new WorkflowHookManager();
   public statisticsCollector = new WorkflowStatisticsCollector();
 
-  async executeWorkflow(goalId: string, subgoalCount: number): Promise<{ results: unknown[]; completed: boolean }> {
+  async executeWorkflow(
+    goalId: string,
+    subgoalCount: number,
+  ): Promise<{ results: unknown[]; completed: boolean }> {
     const session = new WorkflowSession(`trace-${Date.now()}`);
     await this.hooks.runBeforeWorkflow(session.id);
     this.events.publish('workflow.created', { workflowId: session.id, goalId });
@@ -106,7 +109,6 @@ export class WorkflowOrchestrator {
 
       await this.hooks.runAfterWorkflow(session.id, results);
       return { results, completed: true };
-
     } catch (err: any) {
       this.statisticsCollector.recordFailure();
       this.events.publish('workflow.failed', { workflowId: session.id, error: err.message });

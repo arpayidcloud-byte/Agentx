@@ -12,7 +12,11 @@ export class PatternEngine {
 
     for (const exp of experiences) {
       const pathKey = exp.reasoningTrace.join('->');
-      const existing = pathCounts.get(pathKey) || { count: 0, first: exp.timestamp, last: exp.timestamp };
+      const existing = pathCounts.get(pathKey) || {
+        count: 0,
+        first: exp.timestamp,
+        last: exp.timestamp,
+      };
       existing.count++;
       existing.last = exp.timestamp;
       pathCounts.set(pathKey, existing);

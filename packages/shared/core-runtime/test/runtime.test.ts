@@ -85,7 +85,9 @@ describe('Task State Machine', () => {
     task = TaskStateMachine.transition(task, TaskStatus.COMPLETED);
     expect(task.status).toBe(TaskStatus.COMPLETED);
 
-    expect(() => TaskStateMachine.transition(task, TaskStatus.RUNNING)).toThrow(IllegalStateTransitionError);
+    expect(() => TaskStateMachine.transition(task, TaskStatus.RUNNING)).toThrow(
+      IllegalStateTransitionError,
+    );
   });
 
   it('allows cancel from any state', () => {
@@ -131,7 +133,11 @@ describe('Retry Engine', () => {
     expect(linearDelay).toBeGreaterThanOrEqual(160);
     expect(linearDelay).toBeLessThanOrEqual(240);
 
-    const exponential = new RetryPolicy({ type: 'exponential', initialDelayMs: 100, backoffMultiplier: 2.0 });
+    const exponential = new RetryPolicy({
+      type: 'exponential',
+      initialDelayMs: 100,
+      backoffMultiplier: 2.0,
+    });
     const expDelay = exponential.calculateDelay(2);
     expect(expDelay).toBeGreaterThanOrEqual(320);
     expect(expDelay).toBeLessThanOrEqual(480);
@@ -153,7 +159,7 @@ describe('Retry Engine', () => {
 
   it('runs operations with retry and propagates failures', async () => {
     const policy = new RetryPolicy({ maxAttempts: 1, initialDelayMs: 5 });
-    
+
     const successVal = await policy.execute(async () => 'ok');
     expect(successVal).toBe('ok');
 
@@ -176,15 +182,21 @@ describe('Retry Engine', () => {
 
   it('propagates raw errors in execute loop when non-error is thrown', async () => {
     const policy = new RetryPolicy({ maxAttempts: 0 });
-    await expect(policy.execute(async () => { throw 'string_error'; })).rejects.toThrow('string_error');
+    await expect(
+      policy.execute(async () => {
+        throw 'string_error';
+      }),
+    ).rejects.toThrow('string_error');
   });
 
   it('aborts retry execution if cancellation is triggered', async () => {
     const policy = new RetryPolicy({ maxAttempts: 5, initialDelayMs: 1000 });
     const source = new CancellationSource();
     source.cancel('stop');
-    
-    await expect(policy.execute(async () => 'ok', source.token as any)).rejects.toThrow('Operation cancelled: stop');
+
+    await expect(policy.execute(async () => 'ok', source.token as any)).rejects.toThrow(
+      'Operation cancelled: stop',
+    );
   });
 });
 
@@ -192,11 +204,11 @@ describe('InMemoryEventBus', () => {
   it('implements publish, subscribe, request, reply, and broadcast', async () => {
     const bus = new InMemoryEventBus();
     const mockHandler = vi.fn();
-    
+
     await bus.subscribe('test.topic', mockHandler);
     await bus.publish('test.topic', { message: 'hello' }, 'trace-1');
-    
-    await new Promise(r => setTimeout(r, 10));
+
+    await new Promise((r) => setTimeout(r, 10));
     expect(mockHandler).toHaveBeenCalledTimes(1);
     expect(mockHandler.mock.calls[0][0].traceId).toBe('trace-1');
     expect(mockHandler.mock.calls[0][0].payload.message).toBe('hello');
@@ -211,7 +223,15 @@ describe('InMemoryEventBus', () => {
 
     // Duplicate event deduplication
     await bus.subscribe('dup.topic', mockHandler);
-    const eventEnv = { id: 'dup-1', topic: 'dup.topic', traceId: 't', timestamp: new Date(), version: '1', sourceModule: 't', payload: {} };
+    const eventEnv = {
+      id: 'dup-1',
+      topic: 'dup.topic',
+      traceId: 't',
+      timestamp: new Date(),
+      version: '1',
+      sourceModule: 't',
+      payload: {},
+    };
     await (bus as any).dispatch('dup.topic', eventEnv);
     await (bus as any).dispatch('dup.topic', eventEnv); // Redundant dispatch
     expect(mockHandler).toHaveBeenCalledTimes(2);
@@ -224,7 +244,7 @@ describe('InMemoryEventBus', () => {
       throw new Error('Handler crashed');
     });
     await bus.publish('error.topic', {}, 'tr');
-    await new Promise(r => setTimeout(r, 5));
+    await new Promise((r) => setTimeout(r, 5));
     expect(mockConsole).toHaveBeenCalled();
     mockConsole.mockRestore();
   });
@@ -234,7 +254,7 @@ describe('InMemoryEventBus', () => {
     const mockHandler = vi.fn();
     await bus.subscribe('test.broadcast', mockHandler);
     await bus.broadcast('test.broadcast', { message: 'hello' }, 'trace-1');
-    await new Promise(r => setTimeout(r, 10));
+    await new Promise((r) => setTimeout(r, 10));
     expect(mockHandler).toHaveBeenCalledTimes(1);
   });
 });
@@ -243,7 +263,7 @@ describe('BullMQEventBus', () => {
   it('publishes and subscribes using mocked BullMQ infrastructure', async () => {
     const bus = new BullMQEventBus();
     await bus.publish('topic-a', { test: 1 }, 'tr-1');
-    
+
     let received: any;
     await bus.subscribe('topic-a', async (event) => {
       received = event;
@@ -252,8 +272,10 @@ describe('BullMQEventBus', () => {
     // Manually trigger the mock worker handler to cover subscribe and deduplication
     const mockWorkerConstructor = vi.mocked(Worker);
     const handler = mockWorkerConstructor.mock.calls[0][1] as any;
-    
-    const mockJob = { data: { id: 'job-unique-1', topic: 'topic-a', traceId: 'tr-1', payload: { test: 1 } } };
+
+    const mockJob = {
+      data: { id: 'job-unique-1', topic: 'topic-a', traceId: 'tr-1', payload: { test: 1 } },
+    };
     await handler(mockJob);
     expect(received.payload.test).toBe(1);
 
@@ -269,17 +291,25 @@ describe('BullMQEventBus', () => {
 
   it('handles request/reply using mocked BullMQ infrastructure', async () => {
     const bus = new BullMQEventBus();
-    
+
     // Setup request/reply loop
     const requestPromise = bus.request<any, any>('service.test', { val: 42 }, 'tr-1', 100);
-    
+
     // Simulate a reply worker manually
     const mockWorkerConstructor = vi.mocked(Worker);
     const replyHandler = mockWorkerConstructor.mock.calls[0][1] as any;
-    
+
     // Retrieve replyTo channel
-    const mockJob = { data: { id: 'job-req-1', topic: 'service.test', traceId: 'tr-1', payload: { val: 42 }, metadata: { replyTo: 'service.test.reply.xxx' } } };
-    
+    const mockJob = {
+      data: {
+        id: 'job-req-1',
+        topic: 'service.test',
+        traceId: 'tr-1',
+        payload: { val: 42 },
+        metadata: { replyTo: 'service.test.reply.xxx' },
+      },
+    };
+
     await bus.reply('service.test', async (event) => {
       return { val: event.payload.val + 1 };
     });
@@ -290,25 +320,38 @@ describe('BullMQEventBus', () => {
 
     // Trigger error path in reply handler to cover catch block
     const mockConsole = vi.spyOn(console, 'error').mockImplementation(() => {});
-    await bus.reply('service.error', async () => { throw new Error('fail'); });
+    await bus.reply('service.error', async () => {
+      throw new Error('fail');
+    });
     const errWorkerHandler = mockWorkerConstructor.mock.calls[3][1] as any;
     await errWorkerHandler({ data: { id: 'job-err-1', topic: 'service.error', payload: {} } });
-    
+
     // Also test replyTo without publish
-    await errWorkerHandler({ data: { id: 'job-err-2', topic: 'service.error', payload: {}, metadata: { replyTo: undefined } } });
+    await errWorkerHandler({
+      data: {
+        id: 'job-err-2',
+        topic: 'service.error',
+        payload: {},
+        metadata: { replyTo: undefined },
+      },
+    });
 
     expect(mockConsole).toHaveBeenCalled();
     mockConsole.mockRestore();
 
     // Trigger request timeout path
-    await expect(bus.request('service.timeout', {}, 'tr-1', 1)).rejects.toThrow('Request timed out for topic service.timeout');
+    await expect(bus.request('service.timeout', {}, 'tr-1', 1)).rejects.toThrow(
+      'Request timed out for topic service.timeout',
+    );
 
     // Trigger broadcast
     await bus.broadcast('test.broadcast', { message: 'hello' }, 'trace-1');
 
     // Trigger double subscribe error
     await bus.subscribe('topic-dup', async () => {});
-    await expect(bus.subscribe('topic-dup', async () => {})).rejects.toThrow('Already subscribed to topic topic-dup');
+    await expect(bus.subscribe('topic-dup', async () => {})).rejects.toThrow(
+      'Already subscribed to topic topic-dup',
+    );
 
     // Clean up
     await bus.close();
@@ -324,9 +367,12 @@ describe('Scheduler', () => {
     bus = new InMemoryEventBus();
     const tasks = new Map<string, TaskModel>();
     repo = {
-      save: async (task) => { tasks.set(task.id, task); },
+      save: async (task) => {
+        tasks.set(task.id, task);
+      },
       findById: async (id) => tasks.get(id),
-      findByRootId: async (rootId) => Array.from(tasks.values()).filter(t => t.rootTaskId === rootId),
+      findByRootId: async (rootId) =>
+        Array.from(tasks.values()).filter((t) => t.rootTaskId === rootId),
     };
     scheduler = new Scheduler(bus, repo, { maxParallelAgents: 1 });
   });
@@ -355,7 +401,7 @@ describe('Scheduler', () => {
   it('handles pause, resume, and cancel operations', async () => {
     const t = createMockTask('t1');
     await scheduler.enqueue(t);
-    
+
     await scheduler.pause('t1');
     const paused = await repo.findById('t1');
     expect(paused?.status).toBe(TaskStatus.WAITING_APPROVAL);

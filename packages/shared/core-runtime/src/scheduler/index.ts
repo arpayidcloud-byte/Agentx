@@ -18,24 +18,28 @@ export class Scheduler implements IScheduler {
   constructor(
     private readonly eventBus: IEventBus,
     private readonly taskRepo: ITaskRepository,
-    config: SchedulerConfig = {}
+    config: SchedulerConfig = {},
   ) {
     this.maxParallel = config.maxParallelAgents ?? 10;
   }
 
   public async enqueue(task: TaskModel): Promise<void> {
-    if (task.status === TaskStatus.CREATED || task.status === TaskStatus.FAILED || task.status === TaskStatus.RETRYING) {
+    if (
+      task.status === TaskStatus.CREATED ||
+      task.status === TaskStatus.FAILED ||
+      task.status === TaskStatus.RETRYING
+    ) {
       task = TaskStateMachine.transition(task, TaskStatus.QUEUED);
       await this.taskRepo.save(task);
       await this.eventBus.publish(EventTopic.TASK_QUEUED, task, task.traceId, task.id);
-      
+
       this.inFlightTasks.set(task.id, task);
       await this.dispatch();
     }
   }
 
   public async pause(taskId: string): Promise<void> {
-    const task = this.inFlightTasks.get(taskId) || await this.taskRepo.findById(taskId);
+    const task = this.inFlightTasks.get(taskId) || (await this.taskRepo.findById(taskId));
     if (!task) throw new TaskNotFoundError(taskId);
 
     this.pausedTasks.add(taskId);
@@ -49,8 +53,8 @@ export class Scheduler implements IScheduler {
   public async resume(taskId: string): Promise<void> {
     if (!this.pausedTasks.has(taskId)) return;
     this.pausedTasks.delete(taskId);
-    
-    const task = this.inFlightTasks.get(taskId) || await this.taskRepo.findById(taskId);
+
+    const task = this.inFlightTasks.get(taskId) || (await this.taskRepo.findById(taskId));
     if (!task) throw new TaskNotFoundError(taskId);
 
     if (task.status === TaskStatus.WAITING_APPROVAL) {
@@ -62,22 +66,22 @@ export class Scheduler implements IScheduler {
   }
 
   public async cancel(taskId: string, reason: string): Promise<void> {
-    const task = this.inFlightTasks.get(taskId) || await this.taskRepo.findById(taskId);
+    const task = this.inFlightTasks.get(taskId) || (await this.taskRepo.findById(taskId));
     if (!task) throw new TaskNotFoundError(taskId);
 
     task.cancellation = {
       reason,
       requestedBy: 'operator',
-      timestamp: new Date()
+      timestamp: new Date(),
     };
     task.status = TaskStatus.CANCELLED;
     task.updatedAt = new Date();
     await this.taskRepo.save(task);
     await this.eventBus.publish(EventTopic.TASK_CANCELLED, task, task.traceId, task.id);
-    
+
     this.inFlightTasks.delete(taskId);
     this.pausedTasks.delete(taskId);
-    
+
     if (this.activeCount > 0) this.activeCount--;
     await this.dispatch();
   }
@@ -104,7 +108,7 @@ export class Scheduler implements IScheduler {
     task.updatedAt = new Date();
     await this.taskRepo.save(task);
     await this.eventBus.publish(EventTopic.TASK_COMPLETED, task, task.traceId, task.id);
-    
+
     this.inFlightTasks.delete(taskId);
     this.activeCount--;
     await this.dispatch();
@@ -118,7 +122,7 @@ export class Scheduler implements IScheduler {
     task.updatedAt = new Date();
     await this.taskRepo.save(task);
     await this.eventBus.publish(EventTopic.TASK_FAILED, task, task.traceId, task.id);
-    
+
     this.inFlightTasks.delete(taskId);
     this.activeCount--;
     await this.dispatch();

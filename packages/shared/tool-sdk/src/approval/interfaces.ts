@@ -7,7 +7,8 @@
 import { ToolCategory } from '../interfaces/index.js';
 
 /** @description Approval request states */
-export type ApprovalState = 'WAITING' | 'APPROVED' | 'REJECTED' | 'EXPIRED' | 'CANCELLED' | 'EXECUTED';
+export type ApprovalState =
+  'WAITING' | 'APPROVED' | 'REJECTED' | 'EXPIRED' | 'CANCELLED' | 'EXECUTED';
 
 /** @description Risk classification levels */
 export type RiskLevel = 'Safe' | 'PotentiallyDestructive' | 'Destructive';

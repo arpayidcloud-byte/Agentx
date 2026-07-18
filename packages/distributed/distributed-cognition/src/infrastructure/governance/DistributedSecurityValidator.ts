@@ -16,7 +16,9 @@ export class DistributedSecurityValidator {
     const tokenId = `st-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
     const now = new Date();
     const expiresAt = new Date(now.getTime() + ttlMs);
-    const checksum = createHash('sha256').update(JSON.stringify({ tokenId, nodeId, permissions, expiresAt })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ tokenId, nodeId, permissions, expiresAt }))
+      .digest('hex');
     const token: SecurityToken = Object.freeze({
       tokenId,
       nodeId,
@@ -33,12 +35,16 @@ export class DistributedSecurityValidator {
     const token = this.tokens.get(tokenId);
     if (!token) return false;
     if (new Date() > token.expiresAt) return false;
-    const computed = createHash('sha256').update(JSON.stringify({
-      tokenId: token.tokenId,
-      nodeId: token.nodeId,
-      permissions: token.permissions,
-      expiresAt: token.expiresAt,
-    })).digest('hex');
+    const computed = createHash('sha256')
+      .update(
+        JSON.stringify({
+          tokenId: token.tokenId,
+          nodeId: token.nodeId,
+          permissions: token.permissions,
+          expiresAt: token.expiresAt,
+        }),
+      )
+      .digest('hex');
     return computed === token.checksum;
   }
 
@@ -57,6 +63,6 @@ export class DistributedSecurityValidator {
   }
 
   getTokensByNode(nodeId: string): SecurityToken[] {
-    return Array.from(this.tokens.values()).filter(t => t.nodeId === nodeId);
+    return Array.from(this.tokens.values()).filter((t) => t.nodeId === nodeId);
   }
 }

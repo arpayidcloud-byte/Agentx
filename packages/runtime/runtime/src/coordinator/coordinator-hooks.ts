@@ -13,7 +13,7 @@ export class CoordinatorHookManager {
   }
 
   unregister(name: string): void {
-    this.hooks = this.hooks.filter(h => h.name !== name);
+    this.hooks = this.hooks.filter((h) => h.name !== name);
   }
 
   async executeBeforeExecution(session: CoordinatorSession): Promise<void> {
@@ -34,7 +34,11 @@ export class CoordinatorHookManager {
     }
   }
 
-  async executeOnRetry(session: CoordinatorSession, phase: ExecutionPhase, attempt: number): Promise<void> {
+  async executeOnRetry(
+    session: CoordinatorSession,
+    phase: ExecutionPhase,
+    attempt: number,
+  ): Promise<void> {
     for (const hook of this.hooks) {
       if (hook.onRetry) await hook.onRetry(session, phase, attempt);
     }

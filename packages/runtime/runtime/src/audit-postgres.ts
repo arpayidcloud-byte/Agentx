@@ -26,15 +26,15 @@ export class PostgresAuditStore implements IAuditStore {
   }
 
   async getByTraceId(traceId: string): Promise<AuditRecord[]> {
-    return Array.from(this.records.values()).filter(r => r.traceId === traceId);
+    return Array.from(this.records.values()).filter((r) => r.traceId === traceId);
   }
 
   async getBySessionId(sessionId: string): Promise<AuditRecord[]> {
-    return Array.from(this.records.values()).filter(r => r.sessionId === sessionId);
+    return Array.from(this.records.values()).filter((r) => r.sessionId === sessionId);
   }
 
   async getByWorkflowId(workflowId: string): Promise<AuditRecord[]> {
-    return Array.from(this.records.values()).filter(r => r.workflowId === workflowId);
+    return Array.from(this.records.values()).filter((r) => r.workflowId === workflowId);
   }
 
   async delete(id: string): Promise<void> {

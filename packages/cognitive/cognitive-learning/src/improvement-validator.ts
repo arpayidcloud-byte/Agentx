@@ -9,7 +9,10 @@ import { InvalidExperienceError } from './errors.js';
 export class ImprovementValidator {
   validate(improvement: Improvement): void {
     if (!improvement.id || !improvement.recommendation) {
-      throw new InvalidExperienceError('Improvement missing mandatory fields', 'improvement-validator');
+      throw new InvalidExperienceError(
+        'Improvement missing mandatory fields',
+        'improvement-validator',
+      );
     }
     if (improvement.priority < 0) {
       throw new InvalidExperienceError('Priority must be non-negative', 'improvement-validator');

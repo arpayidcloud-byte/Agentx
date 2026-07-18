@@ -65,7 +65,17 @@ describe('Compatibility Metrics Collector', () => {
 describe('Compatibility Audit Logger', () => {
   it('logs and clears records', () => {
     const logger = new CompatibilityAuditLogger();
-    logger.log({ id: '1', timestamp: new Date(), traceId: 't1', provider: 'p1', version: '1.0', tester: 'sys', environment: 'test', score: 100, status: 'PASS' });
+    logger.log({
+      id: '1',
+      timestamp: new Date(),
+      traceId: 't1',
+      provider: 'p1',
+      version: '1.0',
+      tester: 'sys',
+      environment: 'test',
+      score: 100,
+      status: 'PASS',
+    });
     expect(logger.getAll()).toHaveLength(1);
     logger.clear();
     expect(logger.getAll()).toHaveLength(0);
@@ -95,15 +105,18 @@ describe('API Compatibility', () => {
   it('detects added and removed methods', () => {
     const api = new APICompatibility();
     const changes = api.compare(['enqueue', 'dequeue'], ['enqueue', 'purge']);
-    expect(changes.find(c => c.type === 'removed')?.method).toBe('dequeue');
-    expect(changes.find(c => c.type === 'added')?.method).toBe('purge');
+    expect(changes.find((c) => c.type === 'removed')?.method).toBe('dequeue');
+    expect(changes.find((c) => c.type === 'added')?.method).toBe('purge');
   });
 });
 
 describe('Breaking Change Detector', () => {
   it('categorizes breaking changes', () => {
     const detector = new BreakingChangeDetector();
-    const changes = detector.detect([{ method: 'dequeue', type: 'removed' }, { method: 'purge', type: 'added' }]);
+    const changes = detector.detect([
+      { method: 'dequeue', type: 'removed' },
+      { method: 'purge', type: 'added' },
+    ]);
     expect(changes).toHaveLength(1);
   });
 });
@@ -140,7 +153,13 @@ describe('Release Policy', () => {
 describe('Compatibility Score Calculator', () => {
   it('evaluates cumulative compatibility score', () => {
     const calc = new CompatibilityScoreCalculator();
-    const score = calc.calculate({ api: 100, runtime: 100, feature: 100, performance: 100, security: 100 });
+    const score = calc.calculate({
+      api: 100,
+      runtime: 100,
+      feature: 100,
+      performance: 100,
+      security: 100,
+    });
     expect(score.overall).toBe(100);
   });
 });
@@ -157,7 +176,7 @@ describe('Release Registry', () => {
     registry.register(manifest);
     expect(registry.resolve('p1')).toBeDefined();
     expect(registry.isReleaseCompatible('p1')).toBe(true);
-    
+
     registry.clear();
     expect(registry.resolve('p1')).toBeUndefined();
   });
@@ -181,8 +200,13 @@ describe('Compatibility Matrix', () => {
 describe('Compatibility Engine Orchestration', () => {
   let engine: CompatibilityEngine;
   const manifest: ProviderManifest = {
-    id: 'memory-queue', name: 'Memory Queue', version: '1.0.0', type: 'queue',
-    capabilities: ['enqueue', 'dequeue'], dependencies: {}, supportedRuntimeVersions: ['1.0.0']
+    id: 'memory-queue',
+    name: 'Memory Queue',
+    version: '1.0.0',
+    type: 'queue',
+    capabilities: ['enqueue', 'dequeue'],
+    dependencies: {},
+    supportedRuntimeVersions: ['1.0.0'],
   };
 
   beforeEach(() => {
@@ -190,27 +214,41 @@ describe('Compatibility Engine Orchestration', () => {
   });
 
   it('validates and certifies compatible release', async () => {
-    const result = await engine.validateAndCertify(manifest, '1.0.0', 'Stable', ['enqueue', 'dequeue']);
+    const result = await engine.validateAndCertify(manifest, '1.0.0', 'Stable', [
+      'enqueue',
+      'dequeue',
+    ]);
     expect(result.certificate.status).toBe('VALID');
     expect(engine.registry.isReleaseCompatible('memory-queue')).toBe(true);
 
     // Test Development status coverage in the same isolated engine
-    const devResult = await engine.validateAndCertify({ ...manifest, id: 'test-dev', name: 'Test Dev' }, '1.0.0', 'Development', ['enqueue', 'dequeue']);
+    const devResult = await engine.validateAndCertify(
+      { ...manifest, id: 'test-dev', name: 'Test Dev' },
+      '1.0.0',
+      'Development',
+      ['enqueue', 'dequeue'],
+    );
     expect(devResult.manifest.releaseStatus).toBe('Development');
   });
 
   it('throws IncompatibleVersionError on runtime version mismatch', async () => {
-    await expect(engine.validateAndCertify(manifest, '2.0.0', 'Stable')).rejects.toThrow(IncompatibleVersionError);
+    await expect(engine.validateAndCertify(manifest, '2.0.0', 'Stable')).rejects.toThrow(
+      IncompatibleVersionError,
+    );
   });
 
   it('throws BreakingChangeError when breaking changes are detected', async () => {
-    await expect(engine.validateAndCertify(manifest, '1.0.0', 'Stable', ['enqueue', 'dequeue', 'purge'])).rejects.toThrow(BreakingChangeError);
+    await expect(
+      engine.validateAndCertify(manifest, '1.0.0', 'Stable', ['enqueue', 'dequeue', 'purge']),
+    ).rejects.toThrow(BreakingChangeError);
   });
 
   it('throws CertificationFailedError when policy is not met', async () => {
     // Override policy validation mock to force a failure
     vi.spyOn(engine['policy'], 'validateStatus').mockReturnValue(false);
-    await expect(engine.validateAndCertify(manifest, '1.0.0', 'Production')).rejects.toThrow(CertificationFailedError);
+    await expect(engine.validateAndCertify(manifest, '1.0.0', 'Production')).rejects.toThrow(
+      CertificationFailedError,
+    );
   });
 
   it('generates upgrade planner correctly', () => {

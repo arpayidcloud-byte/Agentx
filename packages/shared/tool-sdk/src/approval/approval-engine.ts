@@ -66,7 +66,7 @@ export class ApprovalEngine implements IApprovalEngine {
   async approve(
     requestId: string,
     operatorId: string,
-    confirmed: boolean = true
+    confirmed: boolean = true,
   ): Promise<ApprovalResult> {
     // Retrieve the request
     const request = await this.store.retrieve(requestId);
@@ -126,11 +126,7 @@ export class ApprovalEngine implements IApprovalEngine {
   }
 
   /** @inheritdoc */
-  async reject(
-    requestId: string,
-    operatorId: string,
-    reason?: string
-  ): Promise<ApprovalResult> {
+  async reject(requestId: string, operatorId: string, reason?: string): Promise<ApprovalResult> {
     const request = await this.store.retrieve(requestId);
     if (!request) {
       throw new ApprovalNotFoundError(requestId);
@@ -200,7 +196,7 @@ export class ApprovalEngine implements IApprovalEngine {
 
     if (request.state !== 'APPROVED') {
       throw new ApprovalValidationError(
-        `Cannot execute request '${requestId}' in state '${request.state}'`
+        `Cannot execute request '${requestId}' in state '${request.state}'`,
       );
     }
 

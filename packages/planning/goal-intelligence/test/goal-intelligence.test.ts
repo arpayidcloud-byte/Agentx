@@ -48,18 +48,36 @@ import {
 } from '../src/index.js';
 
 const sampleGoal = (overrides: Partial<Goal> = {}): Goal => ({
-  id: 'g1', title: 'Build Feature', description: 'Complete build', priority: 5,
-  maxDepth: 5, checksum: '', timestamp: new Date(), ...overrides,
+  id: 'g1',
+  title: 'Build Feature',
+  description: 'Complete build',
+  priority: 5,
+  maxDepth: 5,
+  checksum: '',
+  timestamp: new Date(),
+  ...overrides,
 });
 
 const sampleSubGoal = (overrides: Partial<SubGoal> = {}): SubGoal => ({
-  id: 'sg1', goalId: 'g1', title: 'Step 1', objective: 'Do step 1',
-  depth: 1, priority: 5, dependencies: [], status: 'PENDING', ...overrides,
+  id: 'sg1',
+  goalId: 'g1',
+  title: 'Step 1',
+  objective: 'Do step 1',
+  depth: 1,
+  priority: 5,
+  dependencies: [],
+  status: 'PENDING',
+  ...overrides,
 });
 
 const sampleChoice = (overrides: Partial<DecisionChoice> = {}): DecisionChoice => ({
-  id: 'c1', strategy: 'forward-chaining', confidence: 80, cost: 10, safety: 'SAFE',
-  metadata: {}, ...overrides,
+  id: 'c1',
+  strategy: 'forward-chaining',
+  confidence: 80,
+  cost: 10,
+  safety: 'SAFE',
+  metadata: {},
+  ...overrides,
 });
 
 const defaultBudget: PlanningBudget = { tokens: 1000, timeMs: 10000, cost: 5 };
@@ -69,7 +87,14 @@ const defaultBudget: PlanningBudget = { tokens: 1000, timeMs: 10000, cost: 5 };
 // ============================================================
 describe('Errors', () => {
   it('instantiates all error types', () => {
-    const errs = [GoalValidationError, DecompositionError, DecisionError, PlanningError, CycleDetectedError, BudgetExceededError];
+    const errs = [
+      GoalValidationError,
+      DecompositionError,
+      DecisionError,
+      PlanningError,
+      CycleDetectedError,
+      BudgetExceededError,
+    ];
     for (const ET of errs) {
       const e = new ET('msg', 'src');
       expect(e.message).toBe('msg');
@@ -176,7 +201,9 @@ describe('Goal Decomposer', () => {
   });
 
   it('rejects objectives exceeding maxDepth', () => {
-    expect(() => new GoalDecomposer().decompose(sampleGoal({ maxDepth: 1 }), 5)).toThrow(DecompositionError);
+    expect(() => new GoalDecomposer().decompose(sampleGoal({ maxDepth: 1 }), 5)).toThrow(
+      DecompositionError,
+    );
   });
 });
 
@@ -202,8 +229,22 @@ describe('SubGoal Manager', () => {
 describe('Objective Tree', () => {
   it('manages nodes and children', () => {
     const tree = new ObjectiveTree();
-    tree.addNode({ id: 'n1', goalId: 'g1', subgoalId: 's1', objective: 'obj1', children: ['n2'], metadata: {} });
-    tree.addNode({ id: 'n2', goalId: 'g1', subgoalId: 's2', objective: 'obj2', children: [], metadata: {} });
+    tree.addNode({
+      id: 'n1',
+      goalId: 'g1',
+      subgoalId: 's1',
+      objective: 'obj1',
+      children: ['n2'],
+      metadata: {},
+    });
+    tree.addNode({
+      id: 'n2',
+      goalId: 'g1',
+      subgoalId: 's2',
+      objective: 'obj2',
+      children: [],
+      metadata: {},
+    });
     expect(tree.getNode('n1')).toBeDefined();
     expect(tree.getChildren('n1')).toHaveLength(1);
     expect(tree.getAll()).toHaveLength(2);
@@ -412,7 +453,10 @@ describe('Strategy Scorer', () => {
 describe('Planning Engine', () => {
   it('generates plans from subgoals', () => {
     const pe = new PlanningEngine();
-    const subs = [sampleSubGoal({ id: 's1', dependencies: [] }), sampleSubGoal({ id: 's2', dependencies: ['s1'] })];
+    const subs = [
+      sampleSubGoal({ id: 's1', dependencies: [] }),
+      sampleSubGoal({ id: 's2', dependencies: ['s1'] }),
+    ];
     const plan = pe.generatePlan('g1', subs, defaultBudget);
     expect(plan.steps.length).toBe(2);
     expect(plan.checksum).toBeDefined();
@@ -431,8 +475,13 @@ describe('Planning Validator', () => {
   it('validates valid plans', () => {
     const pv = new PlanningValidator();
     const plan: PlanningPlan = {
-      id: 'p1', goalId: 'g1', steps: [{ id: 's1', subgoalId: 's1', strategy: 'seq', order: 1, parallel: false }],
-      totalEstimatedTime: 1000, budget: defaultBudget, checksum: '', timestamp: new Date(),
+      id: 'p1',
+      goalId: 'g1',
+      steps: [{ id: 's1', subgoalId: 's1', strategy: 'seq', order: 1, parallel: false }],
+      totalEstimatedTime: 1000,
+      budget: defaultBudget,
+      checksum: '',
+      timestamp: new Date(),
     };
     expect(() => pv.validatePlan(plan, [])).not.toThrow();
     expect(() => pv.validateBudget(plan, { tokens: 2000, timeMs: 20000, cost: 20 })).not.toThrow();
@@ -441,7 +490,13 @@ describe('Planning Validator', () => {
   it('rejects empty plans', () => {
     const pv = new PlanningValidator();
     const plan: PlanningPlan = {
-      id: 'p1', goalId: 'g1', steps: [], totalEstimatedTime: 0, budget: defaultBudget, checksum: '', timestamp: new Date(),
+      id: 'p1',
+      goalId: 'g1',
+      steps: [],
+      totalEstimatedTime: 0,
+      budget: defaultBudget,
+      checksum: '',
+      timestamp: new Date(),
     };
     expect(() => pv.validatePlan(plan, [])).toThrow(PlanningError);
   });
@@ -449,17 +504,32 @@ describe('Planning Validator', () => {
   it('rejects cycles', () => {
     const pv = new PlanningValidator();
     const plan: PlanningPlan = {
-      id: 'p1', goalId: 'g1', steps: [{ id: 's1', subgoalId: 's1', strategy: 'seq', order: 1, parallel: false }],
-      totalEstimatedTime: 0, budget: defaultBudget, checksum: '', timestamp: new Date(),
+      id: 'p1',
+      goalId: 'g1',
+      steps: [{ id: 's1', subgoalId: 's1', strategy: 'seq', order: 1, parallel: false }],
+      totalEstimatedTime: 0,
+      budget: defaultBudget,
+      checksum: '',
+      timestamp: new Date(),
     };
-    expect(() => pv.validatePlan(plan, [{ source: 'a', target: 'b', weight: 1 }, { source: 'b', target: 'a', weight: 1 }])).toThrow(CycleDetectedError);
+    expect(() =>
+      pv.validatePlan(plan, [
+        { source: 'a', target: 'b', weight: 1 },
+        { source: 'b', target: 'a', weight: 1 },
+      ]),
+    ).toThrow(CycleDetectedError);
   });
 
   it('rejects over budget plans', () => {
     const pv = new PlanningValidator();
     const plan: PlanningPlan = {
-      id: 'p1', goalId: 'g1', steps: [{ id: 's1', subgoalId: 's1', strategy: 'seq', order: 1, parallel: false }],
-      totalEstimatedTime: 0, budget: { tokens: 5000, timeMs: 20000, cost: 5 }, checksum: '', timestamp: new Date(),
+      id: 'p1',
+      goalId: 'g1',
+      steps: [{ id: 's1', subgoalId: 's1', strategy: 'seq', order: 1, parallel: false }],
+      totalEstimatedTime: 0,
+      budget: { tokens: 5000, timeMs: 20000, cost: 5 },
+      checksum: '',
+      timestamp: new Date(),
     };
     expect(() => pv.validateBudget(plan, defaultBudget)).toThrow(PlanningError);
   });
@@ -470,10 +540,20 @@ describe('Planning Validator', () => {
 // ============================================================
 describe('Checkpoint & Recovery', () => {
   let cm: PlanningCheckpointManager;
-  beforeEach(() => { cm = new PlanningCheckpointManager(); });
+  beforeEach(() => {
+    cm = new PlanningCheckpointManager();
+  });
 
   it('saves and loads checkpoints', () => {
-    const plan: PlanningPlan = { id: 'p1', goalId: 'g1', steps: [], totalEstimatedTime: 0, budget: defaultBudget, checksum: '', timestamp: new Date() };
+    const plan: PlanningPlan = {
+      id: 'p1',
+      goalId: 'g1',
+      steps: [],
+      totalEstimatedTime: 0,
+      budget: defaultBudget,
+      checksum: '',
+      timestamp: new Date(),
+    };
     const cp = cm.save('g1', plan);
     expect(cp.checksum).toBeDefined();
     expect(cm.load('g1')).toBeDefined();
@@ -481,7 +561,15 @@ describe('Checkpoint & Recovery', () => {
 
   it('recovery restores planning', () => {
     const rm = new PlanningRecoveryManager(cm);
-    cm.save('g1', { id: 'p1', goalId: 'g1', steps: [], totalEstimatedTime: 0, budget: defaultBudget, checksum: '', timestamp: new Date() });
+    cm.save('g1', {
+      id: 'p1',
+      goalId: 'g1',
+      steps: [],
+      totalEstimatedTime: 0,
+      budget: defaultBudget,
+      checksum: '',
+      timestamp: new Date(),
+    });
     const result = rm.recover('g1');
     expect(result.restored).toBe(true);
     expect(rm.recover('missing').restored).toBe(false);
@@ -505,7 +593,14 @@ describe('Events', () => {
 describe('Hooks', () => {
   it('executes all hook points', async () => {
     const hm = new GoalHookManager();
-    const hook = { beforeGoal: vi.fn(), afterGoal: vi.fn(), beforeDecision: vi.fn(), afterDecision: vi.fn(), beforePlanning: vi.fn(), afterPlanning: vi.fn() };
+    const hook = {
+      beforeGoal: vi.fn(),
+      afterGoal: vi.fn(),
+      beforeDecision: vi.fn(),
+      afterDecision: vi.fn(),
+      beforePlanning: vi.fn(),
+      afterPlanning: vi.fn(),
+    };
     hm.register(hook);
     await hm.runBeforeGoal('g1');
     await hm.runAfterGoal('g1', {});
@@ -548,7 +643,9 @@ describe('Metrics', () => {
 describe('Goal Engine Orchestration', () => {
   let engine: GoalEngine;
 
-  beforeEach(() => { engine = new GoalEngine(); });
+  beforeEach(() => {
+    engine = new GoalEngine();
+  });
 
   it('processes goals through full lifecycle', async () => {
     const result = await engine.processGoal('Build Feature', 'Complete the build', 2, 'balanced');
@@ -563,11 +660,21 @@ describe('Goal Engine Orchestration', () => {
   });
 
   it('handles decomposition beyond maxDepth', async () => {
-    await expect(engine.processGoal('Goal', 'Desc', 10, 'safe')).rejects.toThrow(DecompositionError);
+    await expect(engine.processGoal('Goal', 'Desc', 10, 'safe')).rejects.toThrow(
+      DecompositionError,
+    );
   });
 
   it('recovery loads checkpoints', () => {
-    engine.checkpointManager.save('g1', { id: 'p1', goalId: 'g1', steps: [], totalEstimatedTime: 0, budget: { tokens: 0, timeMs: 0, cost: 0 }, checksum: '', timestamp: new Date() });
+    engine.checkpointManager.save('g1', {
+      id: 'p1',
+      goalId: 'g1',
+      steps: [],
+      totalEstimatedTime: 0,
+      budget: { tokens: 0, timeMs: 0, cost: 0 },
+      checksum: '',
+      timestamp: new Date(),
+    });
     expect(engine.recoverPlanning('g1').restored).toBe(true);
     expect(engine.recoverPlanning('missing').restored).toBe(false);
   });

@@ -9,7 +9,11 @@ import { createHash } from 'crypto';
 export class RecoveryManager {
   private checkpoints = new Map<string, CollaborationCheckpoint>();
 
-  saveCheckpoint(sessionId: string, agentStates: Record<string, string>, sharedState: Record<string, unknown>): CollaborationCheckpoint {
+  saveCheckpoint(
+    sessionId: string,
+    agentStates: Record<string, string>,
+    sharedState: Record<string, unknown>,
+  ): CollaborationCheckpoint {
     const payload = JSON.stringify({ agentStates, sharedState });
     const checksum = createHash('sha256').update(payload).digest('hex');
     const cp: CollaborationCheckpoint = {

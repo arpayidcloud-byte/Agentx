@@ -33,10 +33,11 @@ export function createNonGitRepositoryInfo(path: string): GitRepositoryInfo {
 export function parseRepositoryInfo(
   rootPath: string,
   gitDir: string,
-  headContent?: string
+  headContent?: string,
 ): GitRepositoryInfo {
   const isBare = gitDir.endsWith('/.git') === false && gitDir !== '.git';
-  const isWorktree = gitDir.includes('.git/worktrees/') || (headContent?.includes('gitdir: ') ?? false);
+  const isWorktree =
+    gitDir.includes('.git/worktrees/') || (headContent?.includes('gitdir: ') ?? false);
 
   let currentBranch: string | undefined;
   let isDetachedHead = true;

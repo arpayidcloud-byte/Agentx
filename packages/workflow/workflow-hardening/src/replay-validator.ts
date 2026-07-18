@@ -11,11 +11,18 @@ export class ReplayValidator {
   validateDeterminism(results: ReplayResult[]): void {
     if (results.length < 2) return;
 
-    const baseChecksum = createHash('sha256').update(JSON.stringify(results[0].stepsExecuted)).digest('hex');
+    const baseChecksum = createHash('sha256')
+      .update(JSON.stringify(results[0].stepsExecuted))
+      .digest('hex');
     for (let i = 1; i < results.length; i++) {
-      const currentChecksum = createHash('sha256').update(JSON.stringify(results[i].stepsExecuted)).digest('hex');
+      const currentChecksum = createHash('sha256')
+        .update(JSON.stringify(results[i].stepsExecuted))
+        .digest('hex');
       if (baseChecksum !== currentChecksum) {
-        throw new ReplayMismatchError(`Replay ${i} produced different steps than base replay`, 'replay-validator');
+        throw new ReplayMismatchError(
+          `Replay ${i} produced different steps than base replay`,
+          'replay-validator',
+        );
       }
     }
   }

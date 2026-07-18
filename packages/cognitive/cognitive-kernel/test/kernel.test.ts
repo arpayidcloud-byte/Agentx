@@ -60,13 +60,7 @@ const defaultSession: SessionMetadata = {
 
 describe('Kernel Errors', () => {
   it('instantiates all error types correctly', () => {
-    const errs = [
-      SessionError,
-      CheckpointError,
-      LifecycleError,
-      SchedulerError,
-      DispatcherError,
-    ];
+    const errs = [SessionError, CheckpointError, LifecycleError, SchedulerError, DispatcherError];
 
     for (const Err of errs) {
       const e = new Err('msg', 'src');
@@ -213,7 +207,13 @@ describe('Kernel Dispatcher', () => {
     const engine: EngineContract = { id: 'e', name: 'e', execute: async () => 'output' };
     expect(await dispatcher.dispatch(engine, {})).toBe('output');
 
-    const failingEngine: EngineContract = { id: 'e', name: 'e', execute: async () => { throw new Error('fail'); } };
+    const failingEngine: EngineContract = {
+      id: 'e',
+      name: 'e',
+      execute: async () => {
+        throw new Error('fail');
+      },
+    };
     await expect(dispatcher.dispatch(failingEngine, {})).rejects.toThrow(DispatcherError);
   });
 });
@@ -320,15 +320,17 @@ describe('Cognitive Kernel Orchestration', () => {
 
   it('handles execution failures and recovers', async () => {
     await kernel.start();
-    
+
     // Register mock engine
     kernel.registry.register({
-      id: 'thinking', name: 'Thinking', execute: async () => ({ value: 'ok' })
+      id: 'thinking',
+      name: 'Thinking',
+      execute: async () => ({ value: 'ok' }),
     });
 
     // Execute successfully first to get a checkpoint
     await kernel.executeThinking(defaultSession, 'hello');
-    
+
     const recovered = await kernel.recoverSession(defaultSession.sessionId);
     expect(recovered.recovered).toBe(true);
     expect(kernel.lifecycle.getState()).toBe('WAITING');

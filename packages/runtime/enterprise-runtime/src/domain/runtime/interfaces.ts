@@ -1,4 +1,13 @@
-export type RuntimeState = 'CREATED' | 'INITIALIZING' | 'READY' | 'RUNNING' | 'PAUSED' | 'STOPPING' | 'STOPPED' | 'ERROR' | 'RECOVERING';
+export type RuntimeState =
+  | 'CREATED'
+  | 'INITIALIZING'
+  | 'READY'
+  | 'RUNNING'
+  | 'PAUSED'
+  | 'STOPPING'
+  | 'STOPPED'
+  | 'ERROR'
+  | 'RECOVERING';
 
 export interface RuntimeConfig {
   readonly runtimeId: string;

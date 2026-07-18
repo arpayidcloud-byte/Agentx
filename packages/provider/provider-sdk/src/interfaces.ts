@@ -96,7 +96,10 @@ export interface ToolResult {
 export interface CompletionRequest {
   systemPrompt: string;
   userPrompt: string;
-  context?: Array<{ role: 'user' | 'assistant'; content: string | ToolResult[] | NormalizedToolCall[] }>;
+  context?: Array<{
+    role: 'user' | 'assistant';
+    content: string | ToolResult[] | NormalizedToolCall[];
+  }>;
   tools?: NormalizedToolSpec[];
   maxTokens?: number;
   modelId?: ModelId;
@@ -123,7 +126,7 @@ export interface StreamingResponse {
 export interface Provider {
   readonly id: ProviderId;
   readonly capabilities: ProviderCapabilities;
-  
+
   complete(req: CompletionRequest): Promise<CompletionResponse>;
   stream?(req: CompletionRequest): Promise<StreamingResponse>;
   checkHealth(): Promise<ProviderStatus>;

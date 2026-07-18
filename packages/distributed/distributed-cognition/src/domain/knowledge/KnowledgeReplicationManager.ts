@@ -32,7 +32,7 @@ export class KnowledgeReplicationManager {
     const entry = this.entries.get(entryId);
     if (!entry) throw new Error(`Entry not found: ${entryId}`);
     const existing = this.replicas.get(entryId) || [];
-    const idx = existing.findIndex(r => r.nodeId === nodeId);
+    const idx = existing.findIndex((r) => r.nodeId === nodeId);
     const replica: KnowledgeReplica = Object.freeze({
       entryId,
       nodeId,

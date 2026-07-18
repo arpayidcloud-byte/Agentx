@@ -27,11 +27,21 @@ export abstract class BaseLogger implements ILogger {
     this.log('WARN', message, undefined, metadata, context);
   }
 
-  public error(message: string, error?: Error, metadata?: Record<string, unknown>, context?: LogContext): void {
+  public error(
+    message: string,
+    error?: Error,
+    metadata?: Record<string, unknown>,
+    context?: LogContext,
+  ): void {
     this.log('ERROR', message, error, metadata, context);
   }
 
-  public fatal(message: string, error?: Error, metadata?: Record<string, unknown>, context?: LogContext): void {
+  public fatal(
+    message: string,
+    error?: Error,
+    metadata?: Record<string, unknown>,
+    context?: LogContext,
+  ): void {
     this.log('FATAL', message, error, metadata, context);
   }
 
@@ -157,8 +167,8 @@ export class ConsoleLogger extends BaseLogger {
     const colorMap: Record<LogLevel, string> = {
       TRACE: '\x1b[90m', // grey
       DEBUG: '\x1b[36m', // cyan
-      INFO: '\x1b[32m',  // green
-      WARN: '\x1b[33m',  // yellow
+      INFO: '\x1b[32m', // green
+      WARN: '\x1b[33m', // yellow
       ERROR: '\x1b[31m', // red
       FATAL: '\x1b[41m\x1b[37m', // red background
     };
@@ -167,7 +177,9 @@ export class ConsoleLogger extends BaseLogger {
     const color = colorMap[entry.level] || '';
     const ctxString = entry.context ? ` [ctx:${JSON.stringify(entry.context)}]` : '';
     const metaString = entry.metadata ? ` [meta:${JSON.stringify(entry.metadata)}]` : '';
-    const errString = entry.error ? `\nError: ${entry.error.message}\n${entry.error.stack || ''}` : '';
+    const errString = entry.error
+      ? `\nError: ${entry.error.message}\n${entry.error.stack || ''}`
+      : '';
 
     const logLine = `${entry.timestamp} ${color}[${entry.level}]${reset} [${entry.module}] ${entry.message}${ctxString}${metaString}${errString}`;
 

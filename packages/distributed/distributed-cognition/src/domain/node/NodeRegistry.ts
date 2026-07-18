@@ -44,6 +44,6 @@ export class NodeRegistry {
   }
 
   findNodesByCapability(capability: string): NodeRegistration[] {
-    return this.getAll().filter(n => n.metadata.capabilities.includes(capability));
+    return this.getAll().filter((n) => n.metadata.capabilities.includes(capability));
   }
 }

@@ -23,7 +23,7 @@ export class DecisionTreeEngine {
         return path;
       }
 
-      const branch = node.branches.find(b => inputs[b.condition]);
+      const branch = node.branches.find((b) => inputs[b.condition]);
       if (!branch) {
         throw new IntegrityError(`No matching branch for node: ${node.id}`, 'decision-tree');
       }

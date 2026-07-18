@@ -25,7 +25,7 @@ import { QualityMetricsCollector } from './metrics.js';
 
 export class QualityEngine {
   public metrics = new QualityMetricsCollector();
-  
+
   private gates = new QualityGates();
   private rules = new QualityRules();
   private mutation = new MutationValidator();
@@ -65,7 +65,7 @@ export class QualityEngine {
       checksumData: string;
       expectedChecksum: string;
       dependencies: Record<string, string[]>;
-    }
+    },
   ): Promise<ProductionQualityReport> {
     this.gates.validate(coverage);
 
@@ -105,7 +105,7 @@ export class QualityEngine {
       scores,
       grade,
       passed ? 0 : 1,
-      extra.edgeCases.length
+      extra.edgeCases.length,
     );
 
     this.metrics.recordValidation(scores.overallScore, passed);

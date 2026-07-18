@@ -24,7 +24,7 @@ export function generateSessionId(): string {
  */
 export function createApprovalSession(
   operatorId: string,
-  ttlMs: number = 30 * 60 * 1000
+  ttlMs: number = 30 * 60 * 1000,
 ): ApprovalSession {
   const now = new Date();
   return {
@@ -53,10 +53,7 @@ export function isSessionValid(session: ApprovalSession): boolean {
  * @param requestId - The request ID to add
  * @returns Updated session
  */
-export function addRequestToSession(
-  session: ApprovalSession,
-  requestId: string
-): ApprovalSession {
+export function addRequestToSession(session: ApprovalSession, requestId: string): ApprovalSession {
   return {
     ...session,
     requestIds: [...session.requestIds, requestId],

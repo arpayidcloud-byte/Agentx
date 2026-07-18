@@ -24,7 +24,9 @@ export class ExecutionPlanner {
       capabilities: ['execution'],
       timeout: 30000,
     }));
-    const checksum = createHash('sha256').update(JSON.stringify({ planId, goalId: goal.goalId, steps: executionSteps })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ planId, goalId: goal.goalId, steps: executionSteps }))
+      .digest('hex');
     return Object.freeze({ planId, goalId: goal.goalId, steps: executionSteps, checksum });
   }
 }
@@ -43,9 +45,16 @@ export class AutonomousExecutor {
 
   execute(step: ExecutionStep): TaskResult {
     const taskId = `task-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ taskId, stepId: step.stepId, status: 'SUCCESS' })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ taskId, stepId: step.stepId, status: 'SUCCESS' }))
+      .digest('hex');
     const result: TaskResult = Object.freeze({
-      taskId, stepId: step.stepId, status: 'SUCCESS', output: { executed: true }, durationMs: 0, checksum,
+      taskId,
+      stepId: step.stepId,
+      status: 'SUCCESS',
+      output: { executed: true },
+      durationMs: 0,
+      checksum,
     });
     this.results.push(result);
     return result;
@@ -88,8 +97,16 @@ export class ProgressMonitor {
 
   record(goalId: string, totalSteps: number, completedSteps: number): ProgressSnapshot {
     const progress = totalSteps > 0 ? completedSteps / totalSteps : 0;
-    const checksum = createHash('sha256').update(JSON.stringify({ goalId, totalSteps, completedSteps, progress })).digest('hex');
-    const snapshot: ProgressSnapshot = Object.freeze({ goalId, totalSteps, completedSteps, progress, checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ goalId, totalSteps, completedSteps, progress }))
+      .digest('hex');
+    const snapshot: ProgressSnapshot = Object.freeze({
+      goalId,
+      totalSteps,
+      completedSteps,
+      progress,
+      checksum,
+    });
     this.snapshots.set(goalId, snapshot);
     return snapshot;
   }

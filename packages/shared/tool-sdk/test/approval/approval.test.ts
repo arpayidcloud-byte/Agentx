@@ -216,25 +216,29 @@ describe('InMemoryApprovalStore', () => {
   });
 
   it('lists all requests', async () => {
-    await store.store(createApprovalRequest({
-      category: 'fs.write',
-      operation: 'write file',
-      riskScore: 60,
-      riskLevel: 'PotentiallyDestructive',
-      taskId: 'task-1',
-      traceId: 'trace-1',
-      agentRole: 'coding',
-    }));
+    await store.store(
+      createApprovalRequest({
+        category: 'fs.write',
+        operation: 'write file',
+        riskScore: 60,
+        riskLevel: 'PotentiallyDestructive',
+        taskId: 'task-1',
+        traceId: 'trace-1',
+        agentRole: 'coding',
+      }),
+    );
 
-    await store.store(createApprovalRequest({
-      category: 'git.commit',
-      operation: 'commit',
-      riskScore: 80,
-      riskLevel: 'PotentiallyDestructive',
-      taskId: 'task-2',
-      traceId: 'trace-2',
-      agentRole: 'coding',
-    }));
+    await store.store(
+      createApprovalRequest({
+        category: 'git.commit',
+        operation: 'commit',
+        riskScore: 80,
+        riskLevel: 'PotentiallyDestructive',
+        taskId: 'task-2',
+        traceId: 'trace-2',
+        agentRole: 'coding',
+      }),
+    );
 
     const all = await store.list();
     expect(all).toHaveLength(2);
@@ -284,55 +288,65 @@ describe('ApprovalValidator', () => {
   });
 
   it('validates creation with valid params', () => {
-    expect(validator.validateCreation({
-      category: 'fs.write',
-      operation: 'write',
-      riskScore: 60,
-      taskId: 'task-1',
-      traceId: 'trace-1',
-      agentRole: 'coding',
-    })).toBe(true);
+    expect(
+      validator.validateCreation({
+        category: 'fs.write',
+        operation: 'write',
+        riskScore: 60,
+        taskId: 'task-1',
+        traceId: 'trace-1',
+        agentRole: 'coding',
+      }),
+    ).toBe(true);
   });
 
   it('rejects creation without category', () => {
-    expect(() => validator.validateCreation({
-      operation: 'write',
-      riskScore: 60,
-      taskId: 'task-1',
-      traceId: 'trace-1',
-      agentRole: 'coding',
-    })).toThrow(ApprovalValidationError);
+    expect(() =>
+      validator.validateCreation({
+        operation: 'write',
+        riskScore: 60,
+        taskId: 'task-1',
+        traceId: 'trace-1',
+        agentRole: 'coding',
+      }),
+    ).toThrow(ApprovalValidationError);
   });
 
   it('rejects creation without operation', () => {
-    expect(() => validator.validateCreation({
-      category: 'fs.write',
-      riskScore: 60,
-      taskId: 'task-1',
-      traceId: 'trace-1',
-      agentRole: 'coding',
-    })).toThrow(ApprovalValidationError);
+    expect(() =>
+      validator.validateCreation({
+        category: 'fs.write',
+        riskScore: 60,
+        taskId: 'task-1',
+        traceId: 'trace-1',
+        agentRole: 'coding',
+      }),
+    ).toThrow(ApprovalValidationError);
   });
 
   it('rejects creation with invalid risk score', () => {
-    expect(() => validator.validateCreation({
-      category: 'fs.write',
-      operation: 'write',
-      riskScore: -1,
-      taskId: 'task-1',
-      traceId: 'trace-1',
-      agentRole: 'coding',
-    })).toThrow(ApprovalValidationError);
+    expect(() =>
+      validator.validateCreation({
+        category: 'fs.write',
+        operation: 'write',
+        riskScore: -1,
+        taskId: 'task-1',
+        traceId: 'trace-1',
+        agentRole: 'coding',
+      }),
+    ).toThrow(ApprovalValidationError);
   });
 
   it('rejects creation without taskId', () => {
-    expect(() => validator.validateCreation({
-      category: 'fs.write',
-      operation: 'write',
-      riskScore: 60,
-      traceId: 'trace-1',
-      agentRole: 'coding',
-    })).toThrow(ApprovalValidationError);
+    expect(() =>
+      validator.validateCreation({
+        category: 'fs.write',
+        operation: 'write',
+        riskScore: 60,
+        traceId: 'trace-1',
+        agentRole: 'coding',
+      }),
+    ).toThrow(ApprovalValidationError);
   });
 
   it('validates action for waiting state', () => {
@@ -657,14 +671,18 @@ describe('Approval Audit Logger', () => {
   });
 
   it('clears events', () => {
-    logger.log(createApprovalCreatedEvent(createApprovalRequest({
-      category: 'fs.write',
-      operation: 'write',
-      riskScore: 60,
-      taskId: 'task-1',
-      traceId: 'trace-1',
-      agentRole: 'coding',
-    })));
+    logger.log(
+      createApprovalCreatedEvent(
+        createApprovalRequest({
+          category: 'fs.write',
+          operation: 'write',
+          riskScore: 60,
+          taskId: 'task-1',
+          traceId: 'trace-1',
+          agentRole: 'coding',
+        }),
+      ),
+    );
 
     logger.clear();
     expect(logger.getEvents()).toHaveLength(0);
@@ -766,7 +784,9 @@ describe('Approval Engine', () => {
   });
 
   it('throws on non-existent request', async () => {
-    await expect(engine.approve('non-existent', 'operator-1')).rejects.toThrow(ApprovalNotFoundError);
+    await expect(engine.approve('non-existent', 'operator-1')).rejects.toThrow(
+      ApprovalNotFoundError,
+    );
   });
 
   it('throws on already processed request', async () => {
@@ -781,7 +801,9 @@ describe('Approval Engine', () => {
     });
 
     await engine.approve(request.id, 'operator-1');
-    await expect(engine.approve(request.id, 'operator-1')).rejects.toThrow(ApprovalAlreadyProcessedError);
+    await expect(engine.approve(request.id, 'operator-1')).rejects.toThrow(
+      ApprovalAlreadyProcessedError,
+    );
   });
 
   it('throws on expired request', async () => {
@@ -1069,7 +1091,9 @@ describe('Approval Errors', () => {
     expect(new ApprovalAlreadyProcessedError('req-1').code).toBe('APPROVAL_ALREADY_PROCESSED');
     expect(new ApprovalExpiredError('req-1').code).toBe('APPROVAL_EXPIRED');
     expect(new ApprovalCancelledError('req-1').code).toBe('APPROVAL_CANCELLED');
-    expect(new ApprovalDoubleConfirmationRequiredError('req-1').code).toBe('APPROVAL_DOUBLE_CONFIRMATION_REQUIRED');
+    expect(new ApprovalDoubleConfirmationRequiredError('req-1').code).toBe(
+      'APPROVAL_DOUBLE_CONFIRMATION_REQUIRED',
+    );
     expect(new ApprovalValidationError('msg').code).toBe('APPROVAL_VALIDATION_ERROR');
     expect(new ApprovalExecutionError('req-1', 'reason').code).toBe('APPROVAL_EXECUTION_FAILED');
     expect(new ApprovalServiceUnavailableError().code).toBe('APPROVAL_SERVICE_UNAVAILABLE');
@@ -1088,60 +1112,72 @@ describe('Approval Manager', () => {
   });
 
   it('creates request with session', async () => {
-    const request = await manager.createRequest({
-      category: 'fs.write',
-      operation: 'write',
-      riskScore: 60,
-      riskLevel: 'PotentiallyDestructive',
-      taskId: 'task-1',
-      traceId: 'trace-1',
-      agentRole: 'coding',
-    }, 'operator-1');
+    const request = await manager.createRequest(
+      {
+        category: 'fs.write',
+        operation: 'write',
+        riskScore: 60,
+        riskLevel: 'PotentiallyDestructive',
+        taskId: 'task-1',
+        traceId: 'trace-1',
+        agentRole: 'coding',
+      },
+      'operator-1',
+    );
 
     expect(request.id).toBeDefined();
     expect(request.state).toBe('WAITING');
   });
 
   it('approves request', async () => {
-    const request = await manager.createRequest({
-      category: 'fs.write',
-      operation: 'write',
-      riskScore: 60,
-      riskLevel: 'PotentiallyDestructive',
-      taskId: 'task-1',
-      traceId: 'trace-1',
-      agentRole: 'coding',
-    }, 'operator-1');
+    const request = await manager.createRequest(
+      {
+        category: 'fs.write',
+        operation: 'write',
+        riskScore: 60,
+        riskLevel: 'PotentiallyDestructive',
+        taskId: 'task-1',
+        traceId: 'trace-1',
+        agentRole: 'coding',
+      },
+      'operator-1',
+    );
 
     const result = await manager.approve(request.id, 'operator-1');
     expect(result.approved).toBe(true);
   });
 
   it('rejects request', async () => {
-    const request = await manager.createRequest({
-      category: 'fs.write',
-      operation: 'write',
-      riskScore: 60,
-      riskLevel: 'PotentiallyDestructive',
-      taskId: 'task-1',
-      traceId: 'trace-1',
-      agentRole: 'coding',
-    }, 'operator-1');
+    const request = await manager.createRequest(
+      {
+        category: 'fs.write',
+        operation: 'write',
+        riskScore: 60,
+        riskLevel: 'PotentiallyDestructive',
+        taskId: 'task-1',
+        traceId: 'trace-1',
+        agentRole: 'coding',
+      },
+      'operator-1',
+    );
 
     const result = await manager.reject(request.id, 'operator-1');
     expect(result.approved).toBe(false);
   });
 
   it('cancels request', async () => {
-    const request = await manager.createRequest({
-      category: 'fs.write',
-      operation: 'write',
-      riskScore: 60,
-      riskLevel: 'PotentiallyDestructive',
-      taskId: 'task-1',
-      traceId: 'trace-1',
-      agentRole: 'coding',
-    }, 'operator-1');
+    const request = await manager.createRequest(
+      {
+        category: 'fs.write',
+        operation: 'write',
+        riskScore: 60,
+        riskLevel: 'PotentiallyDestructive',
+        taskId: 'task-1',
+        traceId: 'trace-1',
+        agentRole: 'coding',
+      },
+      'operator-1',
+    );
 
     const result = await manager.cancel(request.id, 'operator-1');
     expect(result.approved).toBe(false);
@@ -1164,15 +1200,18 @@ describe('Approval Manager Expiration', () => {
   });
 
   it('checks expirations', async () => {
-    await manager.createRequest({
-      category: 'fs.write',
-      operation: 'write',
-      riskScore: 60,
-      riskLevel: 'PotentiallyDestructive',
-      taskId: 'task-1',
-      traceId: 'trace-1',
-      agentRole: 'coding',
-    }, 'operator-1');
+    await manager.createRequest(
+      {
+        category: 'fs.write',
+        operation: 'write',
+        riskScore: 60,
+        riskLevel: 'PotentiallyDestructive',
+        taskId: 'task-1',
+        traceId: 'trace-1',
+        agentRole: 'coding',
+      },
+      'operator-1',
+    );
 
     const expired = await manager.checkExpirations();
     expect(Array.isArray(expired)).toBe(true);

@@ -37,7 +37,7 @@ export class AgentDirectory {
   discover(requiredCapabilities: string[]): CapabilityMatch {
     const matchedAgents: string[] = [];
     for (const [agentId, entry] of this.entries) {
-      if (requiredCapabilities.every(cap => entry.capabilities.includes(cap))) {
+      if (requiredCapabilities.every((cap) => entry.capabilities.includes(cap))) {
         matchedAgents.push(agentId);
       }
     }
@@ -52,7 +52,7 @@ export class AgentDirectory {
   getAllCapabilities(): string[] {
     const caps = new Set<string>();
     for (const entry of this.entries.values()) {
-      entry.capabilities.forEach(c => caps.add(c));
+      entry.capabilities.forEach((c) => caps.add(c));
     }
     return Array.from(caps);
   }

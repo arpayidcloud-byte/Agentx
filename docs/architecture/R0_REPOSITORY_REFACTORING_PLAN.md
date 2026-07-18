@@ -22,6 +22,7 @@ Additionally, `runtime-adapters` depends on `runtime` and `runtime-production`, 
 ### A2. Flattened Package Namespace
 
 All 38 packages sit in a single flat `packages/` directory. This makes it impossible to:
+
 - Identify bounded contexts at a glance
 - Enforce layer boundaries via directory conventions
 - Understand ownership by inspection
@@ -29,13 +30,13 @@ All 38 packages sit in a single flat `packages/` directory. This makes it imposs
 
 ### A3. Massive Duplication
 
-| Duplicated Concept | Count | Packages |
-|---|---|---|
-| CheckpointManager | 15 | cognitive-learning, cognitive-kernel, reasoning-algorithms, reasoning-framework, goal-intelligence, multi-agent-collaboration, distributed-cognition, workflow-engine, workflow-orchestration, runtime, autonomous-cognition, etc. |
-| EventBus | 10 | core-runtime, cognitive-kernel, cognitive-learning, reasoning-algorithms, goal-intelligence, multi-agent-collaboration, multi-agent-reasoning, workflow-orchestration, distributed-cognition, autonomous-cognition |
-| HookManager | 11 | cognitive-learning, goal-intelligence, reasoning-algorithms, reasoning-framework, multi-agent-collaboration, multi-agent-reasoning, workflow-orchestration, workflow-engine, cognitive-kernel, runtime |
-| RecoveryManager | 9 | cognitive-learning, cognitive-kernel, reasoning-algorithms, reasoning-framework, goal-intelligence, multi-agent-collaboration, multi-agent-reasoning, workflow-orchestration, distributed-cognition |
-| Error hierarchy | 35 | Every non-stub package |
+| Duplicated Concept | Count | Packages                                                                                                                                                                                                                           |
+| ------------------ | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CheckpointManager  | 15    | cognitive-learning, cognitive-kernel, reasoning-algorithms, reasoning-framework, goal-intelligence, multi-agent-collaboration, distributed-cognition, workflow-engine, workflow-orchestration, runtime, autonomous-cognition, etc. |
+| EventBus           | 10    | core-runtime, cognitive-kernel, cognitive-learning, reasoning-algorithms, goal-intelligence, multi-agent-collaboration, multi-agent-reasoning, workflow-orchestration, distributed-cognition, autonomous-cognition                 |
+| HookManager        | 11    | cognitive-learning, goal-intelligence, reasoning-algorithms, reasoning-framework, multi-agent-collaboration, multi-agent-reasoning, workflow-orchestration, workflow-engine, cognitive-kernel, runtime                             |
+| RecoveryManager    | 9     | cognitive-learning, cognitive-kernel, reasoning-algorithms, reasoning-framework, goal-intelligence, multi-agent-collaboration, multi-agent-reasoning, workflow-orchestration, distributed-cognition                                |
+| Error hierarchy    | 35    | Every non-stub package                                                                                                                                                                                                             |
 
 ### A4. Near-Identical Packages
 
@@ -47,15 +48,16 @@ All 38 packages sit in a single flat `packages/` directory. This makes it imposs
 
 ### A5. Stub/Placeholder Packages
 
-| Package | Content | Recommendation |
-|---|---|---|
-| `auth` | `export const dummy = true;` | REMOVE |
-| `plugin-sdk` | `export const dummy = true;` | REMOVE |
-| `shared-config` | `export const dummy = true;` (re-exports tsconfig) | REMOVE |
+| Package         | Content                                            | Recommendation |
+| --------------- | -------------------------------------------------- | -------------- |
+| `auth`          | `export const dummy = true;`                       | REMOVE         |
+| `plugin-sdk`    | `export const dummy = true;`                       | REMOVE         |
+| `shared-config` | `export const dummy = true;` (re-exports tsconfig) | REMOVE         |
 
 ### A6. Inconsistent Naming
 
 Three different names for consensus:
+
 - `ConsensusEngine` (multi-agent-collaboration)
 - `ConsensusManager` (multi-agent-reasoning)
 - `DistributedConsensusEngine` (distributed-cognition)
@@ -64,6 +66,7 @@ Seven different names for recovery managers:
 `RecoveryManager`, `CollaborationRecoveryManager`, `PlanningRecoveryManager`, `KernelRecoveryManager`, `ReasoningRecoveryManager`, `LearningRecoveryManager`, `DistributedRecoveryManager`
 
 Runtime naming is confusing:
+
 - `core-runtime` — low-level task model + state machine
 - `runtime` — top-level orchestrator
 - `runtime-production` — production infrastructure primitives
@@ -85,6 +88,7 @@ Without directory-based bounded contexts, package ownership is ambiguous. The fl
 ### A10. Future Scalability Problems
 
 At 38 packages, the flat structure is already hard to navigate. At 100+ packages, it becomes unmanageable. The current structure provides no mechanism for:
+
 - Independent team ownership
 - Per-domain CI pipelines
 - Selective builds
@@ -186,46 +190,46 @@ agentx/
 
 ## C. Package Analysis (KEEP/MOVE/MERGE/SPLIT/RENAME/REMOVE)
 
-| # | Current Package | Action | Target | Rationale |
-|---|---|---|---|---|
-| 1 | `shared` | KEEP | `packages/shared/@agentx/shared` | Foundation layer, no changes needed |
-| 2 | `core-runtime` | KEEP | `packages/runtime/@agentx/core-runtime` | Core primitives, stable |
-| 3 | `secrets` | KEEP | `packages/runtime/@agentx/secrets` | Foundation, no changes |
-| 4 | `memory-engine` | KEEP | `packages/runtime/@agentx/memory-engine` | Foundation, no changes |
-| 5 | `context-engine` | KEEP | `packages/runtime/@agentx/context-engine` | Foundation, no changes |
-| 6 | `knowledge-engine` | KEEP | `packages/runtime/@agentx/knowledge-engine` | Foundation, no changes |
-| 7 | `cognitive-contracts` | KEEP | `packages/cognitive/@agentx/cognitive-contracts` | Core cognitive types |
-| 8 | `cognitive-kernel` | KEEP | `packages/cognitive/@agentx/cognitive-kernel` | Core cognitive OS |
-| 9 | `cognitive-learning` | KEEP | `packages/cognitive/@agentx/cognitive-learning` | Core learning system |
-| 10 | `autonomous-cognition` | KEEP | `packages/cognitive/@agentx/autonomous-cognition` | Core self-improvement |
-| 11 | `reasoning-framework` | KEEP | `packages/reasoning/@agentx/reasoning-framework` | Core reasoning pipeline |
-| 12 | `reasoning-algorithms` | KEEP | `packages/reasoning/@agentx/reasoning-algorithms` | Core algorithms |
-| 13 | `workflow-engine` | KEEP | `packages/workflow/@agentx/workflow-engine` | Core workflow execution |
-| 14 | `workflow-orchestration` | KEEP | `packages/workflow/@agentx/workflow-orchestration` | Workflow scheduling |
-| 15 | `workflow-hardening` | KEEP | `packages/workflow/@agentx/workflow-hardening` | Workflow integrity |
-| 16 | `agent-platform` | KEEP | `packages/agent/@agentx/agent-platform` | Core agent orchestration |
-| 17 | `goal-intelligence` | KEEP | `packages/planning/@agentx/goal-intelligence` | Goal decomposition |
-| 18 | `distributed-cognition` | KEEP | `packages/distributed/@agentx/distributed-cognition` | Distributed systems |
-| 19 | `provider-sdk` | KEEP | `packages/provider/@agentx/provider-sdk` | Provider foundation |
-| 20 | `native-providers` | KEEP | `packages/provider/@agentx/native-providers` | Vendor integrations |
-| 21 | `provider-release` | KEEP | `packages/provider/@agentx/provider-release` | Versioning |
-| 22 | `production-quality` | KEEP | `packages/quality/@agentx/production-quality` | Quality gates |
-| 23 | `architecture-sdk` | KEEP | `packages/quality/@agentx/architecture-sdk` | Architecture management |
-| 24 | `developer-platform` | KEEP | `packages/platform/@agentx/developer-platform` | Dev platform |
-| 25 | `multi-agent-collaboration` | **MERGE** | → `packages/agent/@agentx/multi-agent` | 90%+ overlap with multi-agent-reasoning |
-| 26 | `multi-agent-reasoning` | **MERGE** | → `packages/agent/@agentx/multi-agent` | DDD structure becomes canonical |
-| 27 | `provider-qualification` | **MERGE** | → `packages/provider/@agentx/provider-qualification` | Merge vendor-certification into this |
-| 28 | `vendor-certification` | **MERGE** | → `packages/provider/@agentx/provider-qualification` | Merge into provider-qualification |
-| 29 | `planning-engine` | **REMOVE** | (absorbed by goal-intelligence) | Redundant — goal-intelligence has complete PlanningEngine |
-| 30 | `tool-sdk` | **SPLIT** | → tool-core + tool-filesystem + tool-git + tool-shell + tool-approval | 73 files, 4 unrelated domains |
-| 31 | `auth` | **REMOVE** | (stub, no implementation) | Placeholder with `export const dummy = true` |
-| 32 | `plugin-sdk` | **REMOVE** | (stub, no implementation) | Placeholder with `export const dummy = true` |
-| 33 | `shared-config` | **REMOVE** | (stub, only re-exports tsconfig) | tsconfig should live in root config |
-| 34 | `handbook-lint` | MOVE | `tooling/handbook-lint/` | Tooling, not a package |
-| 35 | `runtime` | **RENAME** | → `runtime-orchestrator` | Clarify role as top-level orchestrator |
-| 36 | `runtime-adapters` | KEEP | `packages/runtime/@agentx/runtime-adapters` | Move to correct layer |
-| 37 | `runtime-production` | KEEP | `packages/runtime/@agentx/runtime-production` | Move to correct layer |
-| 38 | `enterprise-runtime` | KEEP | `packages/runtime/@agentx/enterprise-runtime` | Move to correct layer |
+| #   | Current Package             | Action     | Target                                                                | Rationale                                                 |
+| --- | --------------------------- | ---------- | --------------------------------------------------------------------- | --------------------------------------------------------- |
+| 1   | `shared`                    | KEEP       | `packages/shared/@agentx/shared`                                      | Foundation layer, no changes needed                       |
+| 2   | `core-runtime`              | KEEP       | `packages/runtime/@agentx/core-runtime`                               | Core primitives, stable                                   |
+| 3   | `secrets`                   | KEEP       | `packages/runtime/@agentx/secrets`                                    | Foundation, no changes                                    |
+| 4   | `memory-engine`             | KEEP       | `packages/runtime/@agentx/memory-engine`                              | Foundation, no changes                                    |
+| 5   | `context-engine`            | KEEP       | `packages/runtime/@agentx/context-engine`                             | Foundation, no changes                                    |
+| 6   | `knowledge-engine`          | KEEP       | `packages/runtime/@agentx/knowledge-engine`                           | Foundation, no changes                                    |
+| 7   | `cognitive-contracts`       | KEEP       | `packages/cognitive/@agentx/cognitive-contracts`                      | Core cognitive types                                      |
+| 8   | `cognitive-kernel`          | KEEP       | `packages/cognitive/@agentx/cognitive-kernel`                         | Core cognitive OS                                         |
+| 9   | `cognitive-learning`        | KEEP       | `packages/cognitive/@agentx/cognitive-learning`                       | Core learning system                                      |
+| 10  | `autonomous-cognition`      | KEEP       | `packages/cognitive/@agentx/autonomous-cognition`                     | Core self-improvement                                     |
+| 11  | `reasoning-framework`       | KEEP       | `packages/reasoning/@agentx/reasoning-framework`                      | Core reasoning pipeline                                   |
+| 12  | `reasoning-algorithms`      | KEEP       | `packages/reasoning/@agentx/reasoning-algorithms`                     | Core algorithms                                           |
+| 13  | `workflow-engine`           | KEEP       | `packages/workflow/@agentx/workflow-engine`                           | Core workflow execution                                   |
+| 14  | `workflow-orchestration`    | KEEP       | `packages/workflow/@agentx/workflow-orchestration`                    | Workflow scheduling                                       |
+| 15  | `workflow-hardening`        | KEEP       | `packages/workflow/@agentx/workflow-hardening`                        | Workflow integrity                                        |
+| 16  | `agent-platform`            | KEEP       | `packages/agent/@agentx/agent-platform`                               | Core agent orchestration                                  |
+| 17  | `goal-intelligence`         | KEEP       | `packages/planning/@agentx/goal-intelligence`                         | Goal decomposition                                        |
+| 18  | `distributed-cognition`     | KEEP       | `packages/distributed/@agentx/distributed-cognition`                  | Distributed systems                                       |
+| 19  | `provider-sdk`              | KEEP       | `packages/provider/@agentx/provider-sdk`                              | Provider foundation                                       |
+| 20  | `native-providers`          | KEEP       | `packages/provider/@agentx/native-providers`                          | Vendor integrations                                       |
+| 21  | `provider-release`          | KEEP       | `packages/provider/@agentx/provider-release`                          | Versioning                                                |
+| 22  | `production-quality`        | KEEP       | `packages/quality/@agentx/production-quality`                         | Quality gates                                             |
+| 23  | `architecture-sdk`          | KEEP       | `packages/quality/@agentx/architecture-sdk`                           | Architecture management                                   |
+| 24  | `developer-platform`        | KEEP       | `packages/platform/@agentx/developer-platform`                        | Dev platform                                              |
+| 25  | `multi-agent-collaboration` | **MERGE**  | → `packages/agent/@agentx/multi-agent`                                | 90%+ overlap with multi-agent-reasoning                   |
+| 26  | `multi-agent-reasoning`     | **MERGE**  | → `packages/agent/@agentx/multi-agent`                                | DDD structure becomes canonical                           |
+| 27  | `provider-qualification`    | **MERGE**  | → `packages/provider/@agentx/provider-qualification`                  | Merge vendor-certification into this                      |
+| 28  | `vendor-certification`      | **MERGE**  | → `packages/provider/@agentx/provider-qualification`                  | Merge into provider-qualification                         |
+| 29  | `planning-engine`           | **REMOVE** | (absorbed by goal-intelligence)                                       | Redundant — goal-intelligence has complete PlanningEngine |
+| 30  | `tool-sdk`                  | **SPLIT**  | → tool-core + tool-filesystem + tool-git + tool-shell + tool-approval | 73 files, 4 unrelated domains                             |
+| 31  | `auth`                      | **REMOVE** | (stub, no implementation)                                             | Placeholder with `export const dummy = true`              |
+| 32  | `plugin-sdk`                | **REMOVE** | (stub, no implementation)                                             | Placeholder with `export const dummy = true`              |
+| 33  | `shared-config`             | **REMOVE** | (stub, only re-exports tsconfig)                                      | tsconfig should live in root config                       |
+| 34  | `handbook-lint`             | MOVE       | `tooling/handbook-lint/`                                              | Tooling, not a package                                    |
+| 35  | `runtime`                   | **RENAME** | → `runtime-orchestrator`                                              | Clarify role as top-level orchestrator                    |
+| 36  | `runtime-adapters`          | KEEP       | `packages/runtime/@agentx/runtime-adapters`                           | Move to correct layer                                     |
+| 37  | `runtime-production`        | KEEP       | `packages/runtime/@agentx/runtime-production`                         | Move to correct layer                                     |
+| 38  | `enterprise-runtime`        | KEEP       | `packages/runtime/@agentx/enterprise-runtime`                         | Move to correct layer                                     |
 
 ---
 
@@ -285,14 +289,14 @@ agentx/
 
 ## E. Risk Assessment
 
-| Risk | Likelihood | Impact | Mitigation |
-|---|---|---|---|
-| Breaking workspace:* references | High | Medium | Update all package.json imports in single pass |
-| Breaking tsconfig paths | High | Medium | Update `tsconfig.json` project references |
-| Breaking import statements in source | Medium | Low | TypeScript compiler catches all breakages |
-| Breaking test imports | Medium | Low | Run full test suite after each phase |
-| Losing commit history on moves | Low | Low | Use `git mv` for all moves |
-| Breaking CI pipeline | Medium | Low | CI runs after each phase |
+| Risk                                 | Likelihood | Impact | Mitigation                                     |
+| ------------------------------------ | ---------- | ------ | ---------------------------------------------- |
+| Breaking workspace:* references      | High       | Medium | Update all package.json imports in single pass |
+| Breaking tsconfig paths              | High       | Medium | Update `tsconfig.json` project references      |
+| Breaking import statements in source | Medium     | Low    | TypeScript compiler catches all breakages      |
+| Breaking test imports                | Medium     | Low    | Run full test suite after each phase           |
+| Losing commit history on moves       | Low        | Low    | Use `git mv` for all moves                     |
+| Breaking CI pipeline                 | Medium     | Low    | CI runs after each phase                       |
 
 **Key Principle:** Each phase is independently committable. The repository must remain buildable and testable after each phase.
 
@@ -472,41 +476,41 @@ agentx/
 
 ## H. Implementation Order
 
-| Phase | Description | Estimated Effort | Risk |
-|---|---|---|---|
-| **Phase 1** | Remove stubs (auth, plugin-sdk, shared-config) | 1 hour | Very Low |
-| **Phase 2** | Move handbook-lint to tooling/ | 30 min | Very Low |
-| **Phase 3** | Create domain directories + move packages (no renames) | 4 hours | Low |
-| **Phase 4** | Rename runtime → runtime-orchestrator | 2 hours | Medium |
-| **Phase 5** | Merge multi-agent-collaboration + multi-agent-reasoning | 8 hours | Medium |
-| **Phase 6** | Merge vendor-certification + provider-qualification | 6 hours | Medium |
-| **Phase 7** | Remove planning-engine (verify goal-intelligence covers it) | 2 hours | Low |
-| **Phase 8** | Split tool-sdk into 5 packages | 8 hours | Medium |
-| **Phase 9** | Create cognitive-infra shared package | 12 hours | Medium |
-| **Phase 10** | Restructure docs/ | 4 hours | Very Low |
-| **Phase 11** | Update all workspace references + tsconfig | 4 hours | Medium |
-| **Phase 12** | Fix circular dependency (agent-platform ↔ provider-sdk) | 6 hours | High |
-| **Phase 13** | Full regression test | 4 hours | Medium |
-| **Total** | | **~56 hours** | |
+| Phase        | Description                                                 | Estimated Effort | Risk     |
+| ------------ | ----------------------------------------------------------- | ---------------- | -------- |
+| **Phase 1**  | Remove stubs (auth, plugin-sdk, shared-config)              | 1 hour           | Very Low |
+| **Phase 2**  | Move handbook-lint to tooling/                              | 30 min           | Very Low |
+| **Phase 3**  | Create domain directories + move packages (no renames)      | 4 hours          | Low      |
+| **Phase 4**  | Rename runtime → runtime-orchestrator                       | 2 hours          | Medium   |
+| **Phase 5**  | Merge multi-agent-collaboration + multi-agent-reasoning     | 8 hours          | Medium   |
+| **Phase 6**  | Merge vendor-certification + provider-qualification         | 6 hours          | Medium   |
+| **Phase 7**  | Remove planning-engine (verify goal-intelligence covers it) | 2 hours          | Low      |
+| **Phase 8**  | Split tool-sdk into 5 packages                              | 8 hours          | Medium   |
+| **Phase 9**  | Create cognitive-infra shared package                       | 12 hours         | Medium   |
+| **Phase 10** | Restructure docs/                                           | 4 hours          | Very Low |
+| **Phase 11** | Update all workspace references + tsconfig                  | 4 hours          | Medium   |
+| **Phase 12** | Fix circular dependency (agent-platform ↔ provider-sdk)     | 6 hours          | High     |
+| **Phase 13** | Full regression test                                        | 4 hours          | Medium   |
+| **Total**    |                                                             | **~56 hours**    |          |
 
 ---
 
 ## I. Estimated Migration Effort
 
-| Category | Packages Affected | Hours |
-|---|---|---|
-| Package moves (directory restructure) | 38 | 4 |
-| Package mergers | 3 pairs | 14 |
-| Package splits | 1 (tool-sdk) | 8 |
-| Package renames | 1 (runtime) | 2 |
-| Package removals | 3 stubs | 1 |
-| Shared infra extraction | 1 new package | 12 |
-| Import path updates | ~200 files | 4 |
-| tsconfig updates | 1 | 1 |
-| CI/CD updates | 1 | 2 |
-| Documentation restructuring | 65 files | 4 |
-| Regression testing | 38 packages | 4 |
-| **Total** | | **~56 hours** |
+| Category                              | Packages Affected | Hours         |
+| ------------------------------------- | ----------------- | ------------- |
+| Package moves (directory restructure) | 38                | 4             |
+| Package mergers                       | 3 pairs           | 14            |
+| Package splits                        | 1 (tool-sdk)      | 8             |
+| Package renames                       | 1 (runtime)       | 2             |
+| Package removals                      | 3 stubs           | 1             |
+| Shared infra extraction               | 1 new package     | 12            |
+| Import path updates                   | ~200 files        | 4             |
+| tsconfig updates                      | 1                 | 1             |
+| CI/CD updates                         | 1                 | 2             |
+| Documentation restructuring           | 65 files          | 4             |
+| Regression testing                    | 38 packages       | 4             |
+| **Total**                             |                   | **~56 hours** |
 
 ---
 
@@ -532,15 +536,16 @@ The `agent-platform → provider-sdk → provider-qualification → agent-platfo
 
 ### Scalability Assessment
 
-| Constraint | Current | After R0 | At 100+ packages |
-|---|---|---|---|
-| Flat namespace | 38 packages, hard to navigate | 34 packages in 13 domain directories | Domain directories scale linearly |
-| Ownership | Ambiguous | One team per domain directory | Clear CODEOWNERS per domain |
-| CI pipeline | Single | Can add per-domain pipelines | Domain-level CI/CD |
-| Version domain | Global 0.1.0 | Per-package versions possible | Independent versioning |
-| Build selection | Full rebuild | Domain-level builds | Selective builds |
+| Constraint      | Current                       | After R0                             | At 100+ packages                  |
+| --------------- | ----------------------------- | ------------------------------------ | --------------------------------- |
+| Flat namespace  | 38 packages, hard to navigate | 34 packages in 13 domain directories | Domain directories scale linearly |
+| Ownership       | Ambiguous                     | One team per domain directory        | Clear CODEOWNERS per domain       |
+| CI pipeline     | Single                        | Can add per-domain pipelines         | Domain-level CI/CD                |
+| Version domain  | Global 0.1.0                  | Per-package versions possible        | Independent versioning            |
+| Build selection | Full rebuild                  | Domain-level builds                  | Selective builds                  |
 
 The proposed structure will scale to 100+ packages and 500+ contributors because:
+
 1. Domain directories provide natural team boundaries
 2. Layer rules prevent accidental coupling
 3. Each domain can be owned by a separate team
@@ -556,6 +561,7 @@ No external vendor dependencies are introduced. All 8 external packages (`bullmq
 ## R0 Repository Refactoring Plan — COMPLETE
 
 **Next Steps:**
+
 1. Architecture Review Approval
 2. Execute Phase 1 (stub removal) — 1 hour
 3. Execute Phase 3 (directory restructure) — 4 hours

@@ -17,7 +17,7 @@ describe('Memory Engine', () => {
     const mem = await engine.store({ content: 'test content', importance: 5 });
     expect(mem.id).toBeDefined();
     expect(mem.content).toBe('test content');
-    
+
     const results = await engine.retrieve('test');
     expect(results).toHaveLength(1);
     expect(results[0].id).toBe(mem.id);
@@ -41,7 +41,7 @@ describe('Memory Engine', () => {
     await engine.forget(mem.id);
     const results = await engine.retrieve('delete');
     expect(results).toHaveLength(0);
-    
+
     // Ignore non-existent
     await expect(engine.forget('missing')).resolves.not.toThrow();
   });
@@ -49,7 +49,7 @@ describe('Memory Engine', () => {
   it('cleans up expired memory', async () => {
     vi.useFakeTimers();
     await engine.store({ content: 'temp', ttl: 1 });
-    
+
     vi.advanceTimersByTime(2000); // 2 seconds
     const results = await engine.retrieve('temp');
     expect(results).toHaveLength(0);
@@ -59,9 +59,9 @@ describe('Memory Engine', () => {
   it('compacts memory by removing low importance working memory', async () => {
     await engine.store({ content: 'low', importance: 1, type: 'working' });
     await engine.store({ content: 'high', importance: 8, type: 'working' });
-    
+
     await engine.compact();
-    
+
     const results = await engine.retrieve('');
     expect(results).toHaveLength(1);
     expect(results[0].content).toBe('high');
@@ -70,7 +70,7 @@ describe('Memory Engine', () => {
   it('provides metrics', async () => {
     await engine.store({ content: 'A', importance: 4 });
     await engine.store({ content: 'B', importance: 8 });
-    
+
     const metrics = engine.getMetrics();
     expect(metrics.totalMemories).toBe(2);
     expect(metrics.averageImportance).toBe(6);

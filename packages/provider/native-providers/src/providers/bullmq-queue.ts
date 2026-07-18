@@ -3,7 +3,13 @@
  * @description Native BullMQ provider wrapper (Stub implementation for architecture validation).
  */
 
-import { IQueueProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics } from '@agentx/runtime-adapters';
+import {
+  IQueueProvider,
+  ProviderMetadata,
+  ProviderCapabilities,
+  ProviderHealth,
+  ProviderMetrics,
+} from '@agentx/runtime-adapters';
 import { IConfigurationProvider, INativeProvider } from '../interfaces.js';
 import { ConfigurationError } from '../errors.js';
 
@@ -33,7 +39,7 @@ export class BullMQQueueProvider implements IQueueProvider, INativeProvider {
   }
 
   async getHealth() {
-    return { status: this.connected ? 'UP' : 'DOWN' as const, latencyMs: 5 };
+    return { status: this.connected ? 'UP' : ('DOWN' as const), latencyMs: 5 };
   }
 
   getMetadata(): ProviderMetadata {
@@ -45,7 +51,12 @@ export class BullMQQueueProvider implements IQueueProvider, INativeProvider {
   }
 
   async healthCheck(): Promise<ProviderHealth> {
-    return { healthy: this.connected, latencyMs: 5, lastChecked: new Date(), status: this.connected ? 'ACTIVE' : 'DOWN' };
+    return {
+      healthy: this.connected,
+      latencyMs: 5,
+      lastChecked: new Date(),
+      status: this.connected ? 'ACTIVE' : 'DOWN',
+    };
   }
 
   getMetrics(): ProviderMetrics {
@@ -72,7 +83,9 @@ export class BullMQQueueProvider implements IQueueProvider, INativeProvider {
 
   async deadLetter(topic: string, messageId: string): Promise<void> {}
 
-  async getDepth(topic: string): Promise<number> { return 0; }
+  async getDepth(topic: string): Promise<number> {
+    return 0;
+  }
 
   async purge(topic: string): Promise<void> {}
 }

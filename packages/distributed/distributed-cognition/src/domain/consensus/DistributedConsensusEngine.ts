@@ -28,7 +28,9 @@ export class DistributedConsensusEngine {
 
   propose(proposerNode: string, content: Record<string, unknown>): DistributedProposal {
     const proposalId = `dp-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ proposalId, proposerNode, content })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ proposalId, proposerNode, content }))
+      .digest('hex');
     const proposal: DistributedProposal = Object.freeze({
       proposalId,
       proposerNode,
@@ -45,7 +47,8 @@ export class DistributedConsensusEngine {
   castVote(proposalId: string, nodeId: string, vote: boolean, reason: string): ConsensusVote {
     if (!this.proposals.has(proposalId)) throw new Error(`Proposal not found: ${proposalId}`);
     const existingVotes = this.getVotesInvariant(proposalId);
-    if (existingVotes.some(v => v.nodeId === nodeId)) throw new Error(`Node already voted: ${nodeId}`);
+    if (existingVotes.some((v) => v.nodeId === nodeId))
+      throw new Error(`Node already voted: ${nodeId}`);
     const voteEntry: ConsensusVote = Object.freeze({
       proposalId,
       nodeId,
@@ -62,8 +65,8 @@ export class DistributedConsensusEngine {
     const allVotes = this.getVotesInvariant(proposalId);
     if (allVotes.length < quorum) throw new Error(`Quorum not met: ${allVotes.length}/${quorum}`);
     const voteMap = new Map<string, boolean>();
-    allVotes.forEach(v => voteMap.set(v.nodeId, v.vote));
-    const accepted = allVotes.filter(v => v.vote).length > allVotes.length / 2;
+    allVotes.forEach((v) => voteMap.set(v.nodeId, v.vote));
+    const accepted = allVotes.filter((v) => v.vote).length > allVotes.length / 2;
     const result: ConsensusResult = Object.freeze({
       proposalId,
       accepted,

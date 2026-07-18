@@ -36,7 +36,7 @@ export class AuditStore {
    * @returns Filtered records
    */
   getByTraceId(traceId: string): AuditRecord[] {
-    return this.records.filter(r => r.traceId === traceId);
+    return this.records.filter((r) => r.traceId === traceId);
   }
 
   /**
@@ -45,7 +45,7 @@ export class AuditStore {
    * @returns Filtered records
    */
   getBySessionId(sessionId: string): AuditRecord[] {
-    return this.records.filter(r => r.sessionId === sessionId);
+    return this.records.filter((r) => r.sessionId === sessionId);
   }
 
   /**
@@ -54,7 +54,7 @@ export class AuditStore {
    * @returns Filtered records
    */
   getByWorkflowId(workflowId: string): AuditRecord[] {
-    return this.records.filter(r => r.workflowId === workflowId);
+    return this.records.filter((r) => r.workflowId === workflowId);
   }
 
   /**

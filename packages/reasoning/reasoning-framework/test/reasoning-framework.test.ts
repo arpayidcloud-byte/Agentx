@@ -46,7 +46,12 @@ import {
 } from '../src/index.js';
 
 const defaultSession: ReasoningSession = {
-  id: 's1', traceId: 't1', correlationId: 'c1', status: 'ACTIVE', startedAt: new Date(), metadata: {}
+  id: 's1',
+  traceId: 't1',
+  correlationId: 'c1',
+  status: 'ACTIVE',
+  startedAt: new Date(),
+  metadata: {},
 };
 
 const emptyGraph: ReasoningGraph = {
@@ -57,7 +62,13 @@ const emptyGraph: ReasoningGraph = {
 
 describe('Errors', () => {
   it('instantiates all error types', () => {
-    const errs = [PipelineError, StrategyError, GraphIntegrityError, ValidationError, CheckpointError];
+    const errs = [
+      PipelineError,
+      StrategyError,
+      GraphIntegrityError,
+      ValidationError,
+      CheckpointError,
+    ];
     for (const Err of errs) {
       const e = new Err('msg', 'src');
       expect(e.message).toBe('msg');
@@ -183,8 +194,26 @@ describe('Reasoning Strategy and Registry', () => {
 describe('Reasoning Policy', () => {
   it('validates max depth constraints', () => {
     const policy = new ReasoningPolicy();
-    expect(policy.validate({ sessionId: 's1', traceId: 't1', goalId: 'g1', depth: 3, maxDepth: 5, metadata: {} })).toBe(true);
-    expect(policy.validate({ sessionId: 's1', traceId: 't1', goalId: 'g1', depth: 6, maxDepth: 5, metadata: {} })).toBe(false);
+    expect(
+      policy.validate({
+        sessionId: 's1',
+        traceId: 't1',
+        goalId: 'g1',
+        depth: 3,
+        maxDepth: 5,
+        metadata: {},
+      }),
+    ).toBe(true);
+    expect(
+      policy.validate({
+        sessionId: 's1',
+        traceId: 't1',
+        goalId: 'g1',
+        depth: 6,
+        maxDepth: 5,
+        metadata: {},
+      }),
+    ).toBe(false);
   });
 });
 
@@ -198,7 +227,9 @@ describe('Reasoning Dispatcher', () => {
     // Fail dispatch path
     const failingStrategy = {
       ...strategy,
-      execute: async () => { throw new Error('dispatch failed'); }
+      execute: async () => {
+        throw new Error('dispatch failed');
+      },
     } as any;
     await expect(dispatcher.dispatch(failingStrategy, emptyGraph)).rejects.toThrow(StrategyError);
   });
@@ -225,7 +256,13 @@ describe('Reasoning Checkpoint Manager', () => {
 describe('Reasoning Recovery Manager', () => {
   it('restores from snapshot correctly', () => {
     const manager = new ReasoningRecoveryManager();
-    const result = manager.recover({ id: '1', sessionId: 's1', timestamp: new Date(), snapshot: { val: 1 }, checksum: '' });
+    const result = manager.recover({
+      id: '1',
+      sessionId: 's1',
+      timestamp: new Date(),
+      snapshot: { val: 1 },
+      checksum: '',
+    });
     expect(result.val).toBe(1);
   });
 });
@@ -248,14 +285,14 @@ describe('Reasoning Validator', () => {
     const goodGraph: ReasoningGraph = {
       nodes: [{ id: 'n1', label: 'N', type: 'fact', metadata: {} }],
       edges: [{ id: 'e1', sourceId: 'n1', targetId: 'n1', type: 'supports', weight: 1 }],
-      checksum: ''
+      checksum: '',
     };
     expect(() => validator.validateGraph(goodGraph)).not.toThrow();
 
     const badGraph: ReasoningGraph = {
       nodes: [{ id: 'n1', label: 'N', type: 'fact', metadata: {} }],
       edges: [{ id: 'e1', sourceId: 'n1', targetId: 'n2', type: 'supports', weight: 1 }],
-      checksum: ''
+      checksum: '',
     };
     expect(() => validator.validateGraph(badGraph)).toThrow(GraphIntegrityError);
   });
@@ -269,10 +306,24 @@ describe('Module Wrappers', () => {
     const ctx = createPipelineContext('s1', 't1');
     expect(ctx.sessionId).toBe('s1');
 
-    const rCtxManager = new ReasoningContextManager({ sessionId: 's1', traceId: 't1', goalId: 'g1', depth: 1, maxDepth: 5, metadata: {} });
+    const rCtxManager = new ReasoningContextManager({
+      sessionId: 's1',
+      traceId: 't1',
+      goalId: 'g1',
+      depth: 1,
+      maxDepth: 5,
+      metadata: {},
+    });
     expect(rCtxManager.getContext().sessionId).toBe('s1');
 
-    const rSessionManager = new ReasoningSessionManager({ id: 's1', traceId: 't1', correlationId: 'c1', status: 'ACTIVE', startedAt: new Date(), metadata: {} });
+    const rSessionManager = new ReasoningSessionManager({
+      id: 's1',
+      traceId: 't1',
+      correlationId: 'c1',
+      status: 'ACTIVE',
+      startedAt: new Date(),
+      metadata: {},
+    });
     expect(rSessionManager.getSession().id).toBe('s1');
 
     const traceManager = new PipelineTraceManager();
@@ -284,7 +335,7 @@ describe('Module Wrappers', () => {
     const auditManager = new ReasoningAuditManager();
     auditManager.log('t1', 's1', 'test', {});
     expect(auditManager.getRecords()).toHaveLength(1);
-    
+
     const stats = new ReasoningStatistics(new PipelineMetrics());
     stats.getStats();
   });

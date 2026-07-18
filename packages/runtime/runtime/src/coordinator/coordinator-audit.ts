@@ -14,7 +14,7 @@ export class CoordinatorAuditLogger {
     action: string,
     phase: ExecutionPhase,
     result: 'success' | 'failure' | 'cancelled',
-    metadata: Record<string, unknown> = {}
+    metadata: Record<string, unknown> = {},
   ): CoordinatorAuditRecord {
     const record: CoordinatorAuditRecord = {
       id: `coord-audit-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,

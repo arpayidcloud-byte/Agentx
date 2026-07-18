@@ -34,7 +34,12 @@ export class WorkflowReplayEngine {
     return result;
   }
 
-  async partialReplay(sessionId: string, steps: string[], startStep: number, endStep: number): Promise<ReplayResult> {
+  async partialReplay(
+    sessionId: string,
+    steps: string[],
+    startStep: number,
+    endStep: number,
+  ): Promise<ReplayResult> {
     const start = Date.now();
     const sliced = steps.slice(startStep, endStep);
     const result: ReplayResult = {
@@ -52,7 +57,10 @@ export class WorkflowReplayEngine {
     return result;
   }
 
-  async replayFromCheckpoint(sessionId: string, checkpointData: Record<string, unknown>): Promise<ReplayResult> {
+  async replayFromCheckpoint(
+    sessionId: string,
+    checkpointData: Record<string, unknown>,
+  ): Promise<ReplayResult> {
     const start = Date.now();
     const result: ReplayResult = {
       sessionId,
@@ -69,7 +77,11 @@ export class WorkflowReplayEngine {
     return result;
   }
 
-  async replayUntilStep(sessionId: string, steps: string[], untilStep: number): Promise<ReplayResult> {
+  async replayUntilStep(
+    sessionId: string,
+    steps: string[],
+    untilStep: number,
+  ): Promise<ReplayResult> {
     const start = Date.now();
     const sliced = steps.slice(0, untilStep);
     const result: ReplayResult = {

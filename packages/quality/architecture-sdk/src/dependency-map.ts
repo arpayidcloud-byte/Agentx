@@ -8,7 +8,11 @@ import { DependencyNode } from './interfaces.js';
 export class DependencyMap {
   private nodes: DependencyNode[] = [];
 
-  addDependency(source: string, target: string, type: 'required' | 'optional' | 'peer' | 'dev' = 'required'): void {
+  addDependency(
+    source: string,
+    target: string,
+    type: 'required' | 'optional' | 'peer' | 'dev' = 'required',
+  ): void {
     this.nodes.push({ source, target, type });
   }
 

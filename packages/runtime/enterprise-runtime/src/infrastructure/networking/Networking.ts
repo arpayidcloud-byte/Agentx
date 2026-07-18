@@ -13,7 +13,9 @@ export class APIGateway {
 
   addRoute(path: string, method: string, target: string): GatewayRoute {
     const routeId = `route-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ routeId, path, method, target })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ routeId, path, method, target }))
+      .digest('hex');
     const route: GatewayRoute = Object.freeze({ routeId, path, method, target, checksum });
     this.routes.set(routeId, route);
     return route;
@@ -44,8 +46,16 @@ export class RESTGateway {
 
   register(path: string, handler: string): GatewayRoute {
     const routeId = `rest-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ routeId, path, handler })).digest('hex');
-    const route: GatewayRoute = Object.freeze({ routeId, path, method: 'REST', target: handler, checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ routeId, path, handler }))
+      .digest('hex');
+    const route: GatewayRoute = Object.freeze({
+      routeId,
+      path,
+      method: 'REST',
+      target: handler,
+      checksum,
+    });
     this.routes.set(routeId, route);
     return route;
   }
@@ -90,8 +100,16 @@ export class EventStreaming {
 
   publish(topic: string, data: Record<string, unknown>): StreamEvent {
     const eventId = `ev-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ eventId, topic, data })).digest('hex');
-    const event: StreamEvent = Object.freeze({ eventId, topic, data: { ...data }, timestamp: new Date(), checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ eventId, topic, data }))
+      .digest('hex');
+    const event: StreamEvent = Object.freeze({
+      eventId,
+      topic,
+      data: { ...data },
+      timestamp: new Date(),
+      checksum,
+    });
     const existing = this.streams.get(topic) ?? [];
     existing.push(event);
     this.streams.set(topic, existing);
@@ -121,8 +139,16 @@ export class InternalServiceBus {
 
   publish(type: string, payload: Record<string, unknown>): BusMessage {
     const messageId = `bus-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ messageId, type, payload })).digest('hex');
-    const msg: BusMessage = Object.freeze({ messageId, type, payload: { ...payload }, timestamp: new Date(), checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ messageId, type, payload }))
+      .digest('hex');
+    const msg: BusMessage = Object.freeze({
+      messageId,
+      type,
+      payload: { ...payload },
+      timestamp: new Date(),
+      checksum,
+    });
     this.log.push(msg);
     const fns = this.handlers.get(type) ?? [];
     for (const fn of fns) fn(msg);

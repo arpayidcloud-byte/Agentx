@@ -3,7 +3,13 @@
  * @description Native Redis lock, lease, and idempotency provider wrapper (Stub implementation).
  */
 
-import { ILockProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics } from '@agentx/runtime-adapters';
+import {
+  ILockProvider,
+  ProviderMetadata,
+  ProviderCapabilities,
+  ProviderHealth,
+  ProviderMetrics,
+} from '@agentx/runtime-adapters';
 import { IConfigurationProvider, INativeProvider } from '../interfaces.js';
 import { ConfigurationError } from '../errors.js';
 
@@ -34,7 +40,7 @@ export class RedisLockProvider implements ILockProvider, INativeProvider {
   }
 
   async getHealth() {
-    return { status: this.connected ? 'UP' : 'DOWN' as const, latencyMs: 2 };
+    return { status: this.connected ? 'UP' : ('DOWN' as const), latencyMs: 2 };
   }
 
   getMetadata(): ProviderMetadata {
@@ -46,7 +52,12 @@ export class RedisLockProvider implements ILockProvider, INativeProvider {
   }
 
   async healthCheck(): Promise<ProviderHealth> {
-    return { healthy: this.connected, latencyMs: 2, lastChecked: new Date(), status: this.connected ? 'ACTIVE' : 'DOWN' };
+    return {
+      healthy: this.connected,
+      latencyMs: 2,
+      lastChecked: new Date(),
+      status: this.connected ? 'ACTIVE' : 'DOWN',
+    };
   }
 
   getMetrics(): ProviderMetrics {

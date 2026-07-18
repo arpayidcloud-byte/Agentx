@@ -6,14 +6,7 @@
 import { TaskModel, TaskStatus } from '@agentx/core-runtime';
 
 export type AgentRole =
-  | 'planner'
-  | 'architect'
-  | 'coder'
-  | 'reviewer'
-  | 'tester'
-  | 'security'
-  | 'documentation'
-  | 'qa';
+  'planner' | 'architect' | 'coder' | 'reviewer' | 'tester' | 'security' | 'documentation' | 'qa';
 
 export interface AgentPoolConfig {
   minAgents: number;
@@ -54,7 +47,16 @@ export interface SubAgentHeartbeat {
 
 export interface AgentMessage {
   id: string;
-  topic: 'TaskAssigned' | 'TaskStarted' | 'TaskCompleted' | 'TaskFailed' | 'TaskMerged' | 'TaskRetried' | 'TaskCancelled' | 'AgentSpawned' | 'AgentDestroyed';
+  topic:
+    | 'TaskAssigned'
+    | 'TaskStarted'
+    | 'TaskCompleted'
+    | 'TaskFailed'
+    | 'TaskMerged'
+    | 'TaskRetried'
+    | 'TaskCancelled'
+    | 'AgentSpawned'
+    | 'AgentDestroyed';
   senderId: string;
   receiverId?: string;
   taskId: string;

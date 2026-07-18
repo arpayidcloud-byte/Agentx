@@ -191,25 +191,49 @@ describe('InMemoryAuditStore', () => {
   });
 
   it('filters by trace ID', async () => {
-    await store.record(createAuditRecord({ traceId: 'trace-1', workflowId: 'wf-1', sessionId: 's1', result: 'success' }));
-    await store.record(createAuditRecord({ traceId: 'trace-2', workflowId: 'wf-1', sessionId: 's2', result: 'success' }));
+    await store.record(
+      createAuditRecord({
+        traceId: 'trace-1',
+        workflowId: 'wf-1',
+        sessionId: 's1',
+        result: 'success',
+      }),
+    );
+    await store.record(
+      createAuditRecord({
+        traceId: 'trace-2',
+        workflowId: 'wf-1',
+        sessionId: 's2',
+        result: 'success',
+      }),
+    );
     expect(await store.getByTraceId('trace-1')).toHaveLength(1);
   });
 
   it('filters by session ID', async () => {
-    await store.record(createAuditRecord({ traceId: 't1', sessionId: 's1', workflowId: 'wf-1', result: 'success' }));
-    await store.record(createAuditRecord({ traceId: 't2', sessionId: 's2', workflowId: 'wf-1', result: 'success' }));
+    await store.record(
+      createAuditRecord({ traceId: 't1', sessionId: 's1', workflowId: 'wf-1', result: 'success' }),
+    );
+    await store.record(
+      createAuditRecord({ traceId: 't2', sessionId: 's2', workflowId: 'wf-1', result: 'success' }),
+    );
     expect(await store.getBySessionId('s1')).toHaveLength(1);
   });
 
   it('filters by workflow ID', async () => {
-    await store.record(createAuditRecord({ traceId: 't1', sessionId: 's1', workflowId: 'wf-1', result: 'success' }));
-    await store.record(createAuditRecord({ traceId: 't2', sessionId: 's2', workflowId: 'wf-2', result: 'success' }));
+    await store.record(
+      createAuditRecord({ traceId: 't1', sessionId: 's1', workflowId: 'wf-1', result: 'success' }),
+    );
+    await store.record(
+      createAuditRecord({ traceId: 't2', sessionId: 's2', workflowId: 'wf-2', result: 'success' }),
+    );
     expect(await store.getByWorkflowId('wf-1')).toHaveLength(1);
   });
 
   it('clears all records', async () => {
-    await store.record(createAuditRecord({ traceId: 't1', sessionId: 's1', workflowId: 'wf-1', result: 'success' }));
+    await store.record(
+      createAuditRecord({ traceId: 't1', sessionId: 's1', workflowId: 'wf-1', result: 'success' }),
+    );
     await store.delete('t1'); // or we can mock/test delete
     // since there's no clear() on InMemoryAuditStore, let's test delete instead:
     const records = await store.getAll();
@@ -236,7 +260,7 @@ describe('Runtime Metrics (Legacy)', () => {
     collector.incrementRetryCount();
     collector.incrementCheckpointCount();
     collector.setSuccessRate(1, 1);
-    
+
     // Test the additional getters/setters if any
     const metrics = collector.getMetrics();
     expect(metrics.workflowTimeMs).toBe(100);
@@ -246,7 +270,9 @@ describe('Runtime Metrics (Legacy)', () => {
 describe('RuntimeAudit (Legacy)', () => {
   it('records and clears audit entries', () => {
     const store = new LegacyAuditStore();
-    store.record(createAuditRecord({ traceId: 't1', sessionId: 's1', workflowId: 'w1', result: 'success' }));
+    store.record(
+      createAuditRecord({ traceId: 't1', sessionId: 's1', workflowId: 'w1', result: 'success' }),
+    );
     expect(store.getAll()).toHaveLength(1);
     expect(store.getByTraceId('t1')).toHaveLength(1);
     expect(store.getBySessionId('s1')).toHaveLength(1);
@@ -350,7 +376,12 @@ describe('RuntimeHealthService', () => {
   });
 
   it('registers and checks components', async () => {
-    checker.registerCheck('test', async () => ({ component: 'test', healthy: true, latencyMs: 10, lastChecked: new Date() }));
+    checker.registerCheck('test', async () => ({
+      component: 'test',
+      healthy: true,
+      latencyMs: 10,
+      lastChecked: new Date(),
+    }));
     const status = await checker.checkComponent('test');
     expect(status.healthy).toBe(true);
     expect(status.latencyMs).toBe(10);
@@ -362,22 +393,52 @@ describe('RuntimeHealthService', () => {
   });
 
   it('checks all components', async () => {
-    checker.registerCheck('a', async () => ({ component: 'a', healthy: true, latencyMs: 0, lastChecked: new Date() }));
-    checker.registerCheck('b', async () => ({ component: 'b', healthy: false, latencyMs: 0, lastChecked: new Date() }));
+    checker.registerCheck('a', async () => ({
+      component: 'a',
+      healthy: true,
+      latencyMs: 0,
+      lastChecked: new Date(),
+    }));
+    checker.registerCheck('b', async () => ({
+      component: 'b',
+      healthy: false,
+      latencyMs: 0,
+      lastChecked: new Date(),
+    }));
     const report = await checker.checkAll();
     expect(report.components).toHaveLength(2);
   });
 
   it('reports unhealthy when any component is unhealthy', async () => {
-    checker.registerCheck('good', async () => ({ component: 'good', healthy: true, latencyMs: 0, lastChecked: new Date() }));
-    checker.registerCheck('bad', async () => ({ component: 'bad', healthy: false, latencyMs: 0, lastChecked: new Date() }));
+    checker.registerCheck('good', async () => ({
+      component: 'good',
+      healthy: true,
+      latencyMs: 0,
+      lastChecked: new Date(),
+    }));
+    checker.registerCheck('bad', async () => ({
+      component: 'bad',
+      healthy: false,
+      latencyMs: 0,
+      lastChecked: new Date(),
+    }));
     const report = await checker.checkAll();
     expect(report.overall).toBe(false);
   });
 
   it('reports healthy when all components are healthy', async () => {
-    checker.registerCheck('a', async () => ({ component: 'a', healthy: true, latencyMs: 0, lastChecked: new Date() }));
-    checker.registerCheck('b', async () => ({ component: 'b', healthy: true, latencyMs: 0, lastChecked: new Date() }));
+    checker.registerCheck('a', async () => ({
+      component: 'a',
+      healthy: true,
+      latencyMs: 0,
+      lastChecked: new Date(),
+    }));
+    checker.registerCheck('b', async () => ({
+      component: 'b',
+      healthy: true,
+      latencyMs: 0,
+      lastChecked: new Date(),
+    }));
     const report = await checker.checkAll();
     expect(report.overall).toBe(true);
   });
@@ -738,7 +799,6 @@ describe('Runtime', () => {
     } catch (e) {
       // Expected
     }
-
   });
 });
 

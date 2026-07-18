@@ -15,7 +15,10 @@ import { detectInjectionPatterns } from './command-parser.js';
  * @param config - The shell sandbox configuration
  * @returns ValidationResult with validity and reasons
  */
-export function validateCommand(parsed: ParsedCommand, config: ShellSandboxConfig): ValidationResult {
+export function validateCommand(
+  parsed: ParsedCommand,
+  config: ShellSandboxConfig,
+): ValidationResult {
   const reasons: string[] = [];
 
   // 1. Check if program is blocked (highest priority)

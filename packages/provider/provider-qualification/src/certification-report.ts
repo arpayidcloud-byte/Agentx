@@ -17,14 +17,38 @@ export class CertificationReportBuilder {
   private rank!: ProviderRank;
   private timestamp: Date = new Date();
 
-  setId(id: string) { this.qualificationId = id; return this; }
-  setProvider(id: string) { this.providerId = id; return this; }
-  setName(name: string) { this.name = name; return this; }
-  setVersion(version: string) { this.version = version; return this; }
-  setInterfaces(interfaces: string[]) { this.supportedInterfaces = interfaces; return this; }
-  setMatrix(matrix: Record<string, boolean>) { this.compatibilityMatrix = matrix; return this; }
-  setScores(scores: QualificationScore) { this.scores = scores; return this; }
-  setRank(rank: ProviderRank) { this.rank = rank; return this; }
+  setId(id: string) {
+    this.qualificationId = id;
+    return this;
+  }
+  setProvider(id: string) {
+    this.providerId = id;
+    return this;
+  }
+  setName(name: string) {
+    this.name = name;
+    return this;
+  }
+  setVersion(version: string) {
+    this.version = version;
+    return this;
+  }
+  setInterfaces(interfaces: string[]) {
+    this.supportedInterfaces = interfaces;
+    return this;
+  }
+  setMatrix(matrix: Record<string, boolean>) {
+    this.compatibilityMatrix = matrix;
+    return this;
+  }
+  setScores(scores: QualificationScore) {
+    this.scores = scores;
+    return this;
+  }
+  setRank(rank: ProviderRank) {
+    this.rank = rank;
+    return this;
+  }
 
   build(): CertificationReport {
     const report: CertificationReport = {
@@ -36,7 +60,12 @@ export class CertificationReportBuilder {
       compatibilityMatrix: this.compatibilityMatrix,
       scores: this.scores,
       rank: this.rank,
-      status: this.scores.overallScore >= 60 ? 'PASS' : this.scores.overallScore >= 40 ? 'WARNING' : 'FAILED',
+      status:
+        this.scores.overallScore >= 60
+          ? 'PASS'
+          : this.scores.overallScore >= 40
+            ? 'WARNING'
+            : 'FAILED',
       timestamp: this.timestamp,
       checksum: '',
     };

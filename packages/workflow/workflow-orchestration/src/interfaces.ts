@@ -3,7 +3,21 @@
  * @description Types for Autonomous Workflow Execution & Multi-Goal Orchestration.
  */
 
-export type WorkflowState = 'CREATED' | 'BUILDING' | 'VALIDATING' | 'READY' | 'SCHEDULING' | 'DISPATCHING' | 'EXECUTING' | 'MONITORING' | 'CHECKPOINTING' | 'REPLANNING' | 'COMPLETED' | 'FAILED' | 'PAUSED' | 'CANCELLED';
+export type WorkflowState =
+  | 'CREATED'
+  | 'BUILDING'
+  | 'VALIDATING'
+  | 'READY'
+  | 'SCHEDULING'
+  | 'DISPATCHING'
+  | 'EXECUTING'
+  | 'MONITORING'
+  | 'CHECKPOINTING'
+  | 'REPLANNING'
+  | 'COMPLETED'
+  | 'FAILED'
+  | 'PAUSED'
+  | 'CANCELLED';
 
 export interface WorkflowGraph {
   id: string;

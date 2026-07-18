@@ -15,7 +15,9 @@ export class DistributedConfigurationManager {
   set(key: string, value: unknown, sourceNode: string): ConfigEntry {
     const existing = this.configs.get(key);
     const version = existing ? existing.version + 1 : 1;
-    const checksum = createHash('sha256').update(JSON.stringify({ key, value, sourceNode, version })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ key, value, sourceNode, version }))
+      .digest('hex');
     const entry: ConfigEntry = Object.freeze({
       key,
       value: typeof value === 'object' ? JSON.parse(JSON.stringify(value)) : value,
@@ -56,12 +58,16 @@ export class DistributedConfigurationManager {
   validate(key: string): boolean {
     const entry = this.configs.get(key);
     if (!entry) return false;
-    const computed = createHash('sha256').update(JSON.stringify({
-      key: entry.key,
-      value: entry.value,
-      sourceNode: entry.sourceNode,
-      version: entry.version,
-    })).digest('hex');
+    const computed = createHash('sha256')
+      .update(
+        JSON.stringify({
+          key: entry.key,
+          value: entry.value,
+          sourceNode: entry.sourceNode,
+          version: entry.version,
+        }),
+      )
+      .digest('hex');
     return computed === entry.checksum;
   }
 }

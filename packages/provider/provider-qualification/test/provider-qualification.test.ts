@@ -42,7 +42,7 @@ describe('Qualification Errors', () => {
       expect(e.source).toBe('src');
       expect(e.code).toBeDefined();
     }
-    
+
     const base = new QualificationError('msg', 'code', 'src');
     expect(base.message).toBe('msg');
     expect(base.source).toBe('src');
@@ -63,7 +63,18 @@ describe('Qualification Metrics Collector', () => {
 describe('Qualification Audit Logger', () => {
   it('logs and clears records', () => {
     const logger = new QualificationAuditLogger();
-    logger.log({ id: '1', timestamp: new Date(), traceId: 't1', provider: 'p1', version: '1.0', executionTimeMs: 10, tester: 'sys', environment: 'test', score: 100, decision: 'PASS' });
+    logger.log({
+      id: '1',
+      timestamp: new Date(),
+      traceId: 't1',
+      provider: 'p1',
+      version: '1.0',
+      executionTimeMs: 10,
+      tester: 'sys',
+      environment: 'test',
+      score: 100,
+      decision: 'PASS',
+    });
     expect(logger.getAll()).toHaveLength(1);
     logger.clear();
     expect(logger.getAll()).toHaveLength(0);
@@ -85,7 +96,7 @@ describe('Contract Validator', () => {
   it('validates provider interface implementations', () => {
     const validator = new ContractValidator();
     const provider = new MemoryQueueProvider();
-    
+
     expect(() => validator.validate(provider, ['enqueue', 'dequeue'])).not.toThrow();
     expect(() => validator.validate(provider, ['missingMethod'])).toThrow(ContractValidationError);
   });
@@ -143,7 +154,13 @@ describe('Stress Engine', () => {
 describe('Provider Score Calculator', () => {
   it('calculates aggregate scores', () => {
     const calculator = new ProviderScoreCalculator();
-    const score = calculator.calculate({ contract: 100, compatibility: 100, performance: 100, reliability: 100, security: 100 });
+    const score = calculator.calculate({
+      contract: 100,
+      compatibility: 100,
+      performance: 100,
+      reliability: 100,
+      security: 100,
+    });
     expect(score.overallScore).toBe(100);
   });
 });
@@ -162,7 +179,14 @@ describe('Provider Ranking', () => {
 describe('Certification Report Builder', () => {
   it('builds immutable report with checksum', () => {
     const builder = new CertificationReportBuilder();
-    const score = { contractScore: 100, compatibilityScore: 100, performanceScore: 100, reliabilityScore: 100, securityScore: 100, overallScore: 100 };
+    const score = {
+      contractScore: 100,
+      compatibilityScore: 100,
+      performanceScore: 100,
+      reliabilityScore: 100,
+      securityScore: 100,
+      overallScore: 100,
+    };
     const report = builder
       .setId('id1')
       .setProvider('p1')
@@ -173,17 +197,20 @@ describe('Certification Report Builder', () => {
       .setScores(score)
       .setRank('GOLD')
       .build();
-    
+
     expect(report.checksum).toBeDefined();
     expect(report.status).toBe('PASS');
   });
 
   it('sets appropriate status based on score', () => {
     const builder = new CertificationReportBuilder();
-    
-    let report = builder.setScores({} as any).setScores({ overallScore: 50 } as any).build();
+
+    let report = builder
+      .setScores({} as any)
+      .setScores({ overallScore: 50 } as any)
+      .build();
     expect(report.status).toBe('WARNING');
-    
+
     report = builder.setScores({ overallScore: 30 } as any).build();
     expect(report.status).toBe('FAILED');
   });
@@ -211,7 +238,7 @@ describe('Qualification Registry', () => {
     registry.register(report);
     expect(registry.resolve('p1')).toBeDefined();
     expect(registry.isCertified('p1')).toBe(true);
-    
+
     registry.unregister('p1');
     expect(registry.resolve('p1')).toBeUndefined();
   });
@@ -255,18 +282,28 @@ describe('Qualification Engine', () => {
       expect(e).toBeInstanceOf(QualificationError);
     }
     expect(engine.metrics.getMetrics().rejectedProviders).toBe(1);
-    expect(engine.events.getEvents().find(e => e.type === 'qualification.failed')).toBeDefined();
+    expect(engine.events.getEvents().find((e) => e.type === 'qualification.failed')).toBeDefined();
   });
 
   it('covers WARNING and REJECTED status branches', async () => {
     vi.spyOn(engine['scoreCalculator'], 'calculate').mockReturnValue({
-      contractScore: 50, compatibilityScore: 50, performanceScore: 50, reliabilityScore: 50, securityScore: 50, overallScore: 50
+      contractScore: 50,
+      compatibilityScore: 50,
+      performanceScore: 50,
+      reliabilityScore: 50,
+      securityScore: 50,
+      overallScore: 50,
     });
     const report = await engine.qualify(provider, ['enqueue']);
     expect(report.status).toBe('WARNING');
 
     vi.spyOn(engine['scoreCalculator'], 'calculate').mockReturnValue({
-      contractScore: 30, compatibilityScore: 30, performanceScore: 30, reliabilityScore: 30, securityScore: 30, overallScore: 30
+      contractScore: 30,
+      compatibilityScore: 30,
+      performanceScore: 30,
+      reliabilityScore: 30,
+      securityScore: 30,
+      overallScore: 30,
     });
     const failedReport = await engine.qualify(provider, ['enqueue']);
     expect(failedReport.status).toBe('FAILED');

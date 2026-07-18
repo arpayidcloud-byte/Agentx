@@ -26,7 +26,7 @@ export class CriticalPathAnalyzer {
       } else {
         blockingTasks.push(step.id);
       }
-      slackTime[step.id] = Math.max(0, step.order * 1000 - (step.dependencies.length * 500));
+      slackTime[step.id] = Math.max(0, step.order * 1000 - step.dependencies.length * 500);
     }
 
     const executionLayers: string[][] = [];
@@ -49,7 +49,7 @@ export class CriticalPathAnalyzer {
       blockingTasks,
       slackTime,
       longestChain: steps.length,
-      parallelBranches: steps.filter(s => s.parallel).length,
+      parallelBranches: steps.filter((s) => s.parallel).length,
       executionLayers,
     };
   }

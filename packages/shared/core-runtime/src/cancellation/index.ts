@@ -2,7 +2,7 @@ export interface ICancellationToken {
   readonly signal: AbortSignal;
   readonly reason: string;
   readonly isCancelled: boolean;
-  
+
   cancel(reason: string): void;
   checkCancellation(): void;
   fork(): ICancellationToken;

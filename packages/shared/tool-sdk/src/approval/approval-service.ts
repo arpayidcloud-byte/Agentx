@@ -53,7 +53,11 @@ export class ApprovalService {
    * @param confirmed - Whether double confirmation is given
    * @returns ApprovalResult
    */
-  async approve(requestId: string, operatorId: string, confirmed?: boolean): Promise<ApprovalResult> {
+  async approve(
+    requestId: string,
+    operatorId: string,
+    confirmed?: boolean,
+  ): Promise<ApprovalResult> {
     return this.engine.approve(requestId, operatorId, confirmed);
   }
 

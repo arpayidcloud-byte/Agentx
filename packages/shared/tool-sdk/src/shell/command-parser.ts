@@ -93,8 +93,13 @@ export function parseCommand(command: string): ParsedCommand {
     workingDirectory: workingDirectory || undefined,
     envOverrides,
     hasPipe: detectedPatterns.includes('pipe'),
-    hasRedirection: detectedPatterns.includes('redirection') || detectedPatterns.includes('append redirection') || detectedPatterns.includes('input redirection'),
-    hasSubshell: detectedPatterns.includes('command substitution') || detectedPatterns.includes('backtick substitution'),
+    hasRedirection:
+      detectedPatterns.includes('redirection') ||
+      detectedPatterns.includes('append redirection') ||
+      detectedPatterns.includes('input redirection'),
+    hasSubshell:
+      detectedPatterns.includes('command substitution') ||
+      detectedPatterns.includes('backtick substitution'),
     rawCommand,
   };
 }
@@ -172,9 +177,22 @@ export function detectDangerousPatterns(command: string): string[] {
  * @returns Array of injection pattern names
  */
 export function detectInjectionPatterns(command: string): string[] {
-  return detectDangerousPatterns(command).filter(name =>
-    ['semicolon', 'logical AND', 'logical OR', 'command substitution', 'backtick substitution',
-     'bash -c', 'sh -c', 'eval', 'exec', 'source', 'curl | bash', 'wget | bash',
-     'curl | sh', 'wget | sh'].includes(name)
+  return detectDangerousPatterns(command).filter((name) =>
+    [
+      'semicolon',
+      'logical AND',
+      'logical OR',
+      'command substitution',
+      'backtick substitution',
+      'bash -c',
+      'sh -c',
+      'eval',
+      'exec',
+      'source',
+      'curl | bash',
+      'wget | bash',
+      'curl | sh',
+      'wget | sh',
+    ].includes(name),
   );
 }

@@ -12,7 +12,7 @@ export class ExecutionReservationManager {
   reserve(
     type: 'worker' | 'token' | 'provider' | 'tool' | 'memory' | 'cost',
     capacity: number,
-    durationMs: number
+    durationMs: number,
   ): ExecutionReservation {
     const expiresAt = new Date(Date.now() + durationMs);
     const reservation: ExecutionReservation = {

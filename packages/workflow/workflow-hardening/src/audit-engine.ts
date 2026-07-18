@@ -19,7 +19,13 @@ export interface AuditEntry {
 export class WorkflowAuditEngine {
   private entries: AuditEntry[] = [];
 
-  log(type: string, workflowId: string, sessionId: string, action: string, metadata: Record<string, unknown>): AuditEntry {
+  log(
+    type: string,
+    workflowId: string,
+    sessionId: string,
+    action: string,
+    metadata: Record<string, unknown>,
+  ): AuditEntry {
     const payload = JSON.stringify({ type, workflowId, sessionId, action, metadata });
     const entry: AuditEntry = {
       id: `audit-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,

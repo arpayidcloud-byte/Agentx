@@ -38,7 +38,7 @@ export class ProcessManager {
       signal?: AbortSignal;
       onStdout?: (data: string) => void;
       onStderr?: (data: string) => void;
-    }
+    },
   ): Promise<CollectedOutput> {
     return new Promise<CollectedOutput>((resolve) => {
       this.startTime = Date.now();

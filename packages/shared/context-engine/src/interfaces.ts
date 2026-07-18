@@ -4,7 +4,10 @@
  */
 
 export interface IContextEngine {
-  createContext(scope: ContextScope, initialData?: Record<string, unknown>): Promise<ContextSnapshot>;
+  createContext(
+    scope: ContextScope,
+    initialData?: Record<string, unknown>,
+  ): Promise<ContextSnapshot>;
   updateContext(contextId: string, updates: Record<string, unknown>): Promise<ContextSnapshot>;
   getContext(contextId: string): Promise<ContextSnapshot | undefined>;
   mergeContexts(sourceIds: string[], targetScope: ContextScope): Promise<ContextSnapshot>;
@@ -12,7 +15,7 @@ export interface IContextEngine {
   validateContext(contextId: string): Promise<boolean>;
 }
 
-export type ContextScope = 
+export type ContextScope =
   | 'global'
   | 'workflow'
   | 'task'

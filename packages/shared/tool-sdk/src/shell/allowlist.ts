@@ -10,21 +10,60 @@ import { ShellSandboxConfig } from './interfaces.js';
 
 /** Default allowed programs per Volume 7 */
 const DEFAULT_ALLOWED_PROGRAMS = [
-  'pnpm', 'npm', 'node', 'git', 'cargo', 'rustc', 'go', 'python', 'python3',
-  'uv', 'pytest', 'docker', 'docker-compose', 'turbo', 'nx', 'biome', 'eslint', 'prettier'
+  'pnpm',
+  'npm',
+  'node',
+  'git',
+  'cargo',
+  'rustc',
+  'go',
+  'python',
+  'python3',
+  'uv',
+  'pytest',
+  'docker',
+  'docker-compose',
+  'turbo',
+  'nx',
+  'biome',
+  'eslint',
+  'prettier',
 ];
 
 /** Default blocked programs per Volume 7 */
 const DEFAULT_BLOCKED_PROGRAMS = [
-  'rm', 'mkfs', 'shutdown', 'reboot', 'systemctl', 'sudo', 'passwd', 'useradd',
-  'chmod', 'chown', 'iptables', 'mount', 'umount', 'dd', 'killall', 'kill',
-  'curl', 'wget', 'scp', 'ssh'
+  'rm',
+  'mkfs',
+  'shutdown',
+  'reboot',
+  'systemctl',
+  'sudo',
+  'passwd',
+  'useradd',
+  'chmod',
+  'chown',
+  'iptables',
+  'mount',
+  'umount',
+  'dd',
+  'killall',
+  'kill',
+  'curl',
+  'wget',
+  'scp',
+  'ssh',
 ];
 
 /** Default dangerous flags */
 const DEFAULT_DANGEROUS_FLAGS = [
-  '--force', '-f', '--no-preserve-root', '--recursive', '-r',
-  '--system', '--global', '--unsafe-perm'
+  '--force',
+  '-f',
+  '--no-preserve-root',
+  '--recursive',
+  '-r',
+  '--system',
+  '--global',
+  '--unsafe-perm',
 ];
 
 /**

@@ -9,7 +9,7 @@ import { createHash } from 'crypto';
 export class ChecksumValidator {
   validate(data: string, expectedChecksum: string): ValidationResult {
     const computed = createHash('sha256').update(data).digest('hex');
-    
+
     if (computed !== expectedChecksum) {
       return {
         passed: false,

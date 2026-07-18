@@ -56,8 +56,13 @@ describe('SDK Errors', () => {
 
 describe('PSCK SDK Integration', () => {
   const manifest: ProviderManifest = {
-    id: 'memory-queue', name: 'Memory Queue', version: '1.0', type: 'queue',
-    author: 'test', capabilities: [], dependencies: {}
+    id: 'memory-queue',
+    name: 'Memory Queue',
+    version: '1.0',
+    type: 'queue',
+    author: 'test',
+    capabilities: [],
+    dependencies: {},
   };
 
   it('validates and runs suite', async () => {
@@ -70,7 +75,9 @@ describe('PSCK SDK Integration', () => {
 
   it('fails validation against mismatched ID', async () => {
     const psck = new PSCK();
-    await expect(psck.validateAndRun(new MemoryQueueProvider(), { ...manifest, id: 'wrong-id' })).rejects.toThrow(ValidationFailedError);
+    await expect(
+      psck.validateAndRun(new MemoryQueueProvider(), { ...manifest, id: 'wrong-id' }),
+    ).rejects.toThrow(ValidationFailedError);
   });
 });
 
@@ -104,11 +111,26 @@ describe('Provider Runner', () => {
     const report = await runner.runSuite({
       getMetadata: () => ({ id: 'bad', name: 'Bad', type: '', version: '1' }),
       getCapabilities: () => ({}),
-      healthCheck: async () => ({ healthy: true, latencyMs: 0, lastChecked: new Date(), status: 'ACTIVE' }),
-      getMetrics: () => ({ totalRequests: 0, successfulRequests: 0, failedRequests: 0, averageLatencyMs: 0 }),
-      enqueue: async () => {}, dequeue: async () => undefined, peek: async () => undefined,
-      ack: async () => {}, retry: async () => {}, deadLetter: async () => {},
-      getDepth: async () => 0, purge: async () => {},
+      healthCheck: async () => ({
+        healthy: true,
+        latencyMs: 0,
+        lastChecked: new Date(),
+        status: 'ACTIVE',
+      }),
+      getMetrics: () => ({
+        totalRequests: 0,
+        successfulRequests: 0,
+        failedRequests: 0,
+        averageLatencyMs: 0,
+      }),
+      enqueue: async () => {},
+      dequeue: async () => undefined,
+      peek: async () => undefined,
+      ack: async () => {},
+      retry: async () => {},
+      deadLetter: async () => {},
+      getDepth: async () => 0,
+      purge: async () => {},
     });
     expect(report.status).toBe('FAIL');
   });
@@ -133,7 +155,18 @@ describe('CLI and Reporter', () => {
     expect(await cli.execute(['unknown'])).toContain('Unknown');
 
     const reporter = new ProviderReporter();
-    const md = reporter.generateMarkdown({ providerId: 'p1', status: 'PASS', contract: { passed: true, durationMs: 0, details: {} }, compatibility: { passed: true, durationMs: 0, details: {} }, benchmark: { passed: true, durationMs: 0, details: {} }, stress: { passed: true, durationMs: 0, details: {} }, chaos: { passed: true, durationMs: 0, details: {} }, security: { passed: true, durationMs: 0, details: {} }, timestamp: new Date(), checksum: '' });
+    const md = reporter.generateMarkdown({
+      providerId: 'p1',
+      status: 'PASS',
+      contract: { passed: true, durationMs: 0, details: {} },
+      compatibility: { passed: true, durationMs: 0, details: {} },
+      benchmark: { passed: true, durationMs: 0, details: {} },
+      stress: { passed: true, durationMs: 0, details: {} },
+      chaos: { passed: true, durationMs: 0, details: {} },
+      security: { passed: true, durationMs: 0, details: {} },
+      timestamp: new Date(),
+      checksum: '',
+    });
     expect(md).toContain('PASS');
   });
 });
@@ -152,13 +185,41 @@ describe('Scaffolder and Generator', () => {
 describe('Validators and Version', () => {
   it('validates manifest schemas', () => {
     const validator = new SchemaValidator();
-    expect(() => validator.validateManifest({ id: '', name: '', version: '', type: '', author: '', capabilities: [], dependencies: {} })).toThrow(ValidationFailedError);
-    validator.validateManifest({ id: 'p1', name: 'P1', version: '1.0', type: 'q', author: 't', capabilities: [], dependencies: {} });
+    expect(() =>
+      validator.validateManifest({
+        id: '',
+        name: '',
+        version: '',
+        type: '',
+        author: '',
+        capabilities: [],
+        dependencies: {},
+      }),
+    ).toThrow(ValidationFailedError);
+    validator.validateManifest({
+      id: 'p1',
+      name: 'P1',
+      version: '1.0',
+      type: 'q',
+      author: 't',
+      capabilities: [],
+      dependencies: {},
+    });
   });
 
   it('validates provider against manifest', () => {
     const validator = new ProviderValidator();
-    expect(validator.validate(new MemoryQueueProvider(), { id: 'memory-queue', name: 'Mem', version: '1', type: 'q', author: 't', capabilities: [], dependencies: {} })).toBe(true);
+    expect(
+      validator.validate(new MemoryQueueProvider(), {
+        id: 'memory-queue',
+        name: 'Mem',
+        version: '1',
+        type: 'q',
+        author: 't',
+        capabilities: [],
+        dependencies: {},
+      }),
+    ).toBe(true);
   });
 
   it('checks semantic versioning compatibility', () => {

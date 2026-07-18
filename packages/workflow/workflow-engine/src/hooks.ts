@@ -13,7 +13,7 @@ export class WorkflowHookManager {
   }
 
   public unregister(hookName: string): void {
-    this.hooks = this.hooks.filter(h => h.name !== hookName);
+    this.hooks = this.hooks.filter((h) => h.name !== hookName);
   }
 
   public async executeBeforeHooks(workflow: any): Promise<void> {

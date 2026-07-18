@@ -58,10 +58,23 @@ export {
 } from './errors.js';
 
 // Repository detection
-export { createNonGitRepositoryInfo, parseRepositoryInfo, isWithinWorkspace } from './repository.js';
+export {
+  createNonGitRepositoryInfo,
+  parseRepositoryInfo,
+  isWithinWorkspace,
+} from './repository.js';
 
 // Validation
-export { validateStatusOutput, validateBranchName, validateRef, validateCommitMessage, detectDangerousFlags, isForceOperation, isOrphanBranch, isEmptyCommit } from './validator.js';
+export {
+  validateStatusOutput,
+  validateBranchName,
+  validateRef,
+  validateCommitMessage,
+  detectDangerousFlags,
+  isForceOperation,
+  isOrphanBranch,
+  isEmptyCommit,
+} from './validator.js';
 
 // Sandbox
 export { GitSandbox } from './sandbox.js';
@@ -86,4 +99,9 @@ export { GitResetTool } from './git-reset.js';
 export { classifyGitOperation } from './approval.js';
 
 // Audit
-export { GitAuditEmitter, createGitInvokedEvent, createGitFinishedEvent, createGitFailedEvent } from './audit.js';
+export {
+  GitAuditEmitter,
+  createGitInvokedEvent,
+  createGitFinishedEvent,
+  createGitFailedEvent,
+} from './audit.js';

@@ -4,7 +4,11 @@
  */
 
 export class CollaborationError extends Error {
-  constructor(message: string, public readonly code: string, public readonly source: string) {
+  constructor(
+    message: string,
+    public readonly code: string,
+    public readonly source: string,
+  ) {
     super(message);
     this.name = 'CollaborationError';
   }

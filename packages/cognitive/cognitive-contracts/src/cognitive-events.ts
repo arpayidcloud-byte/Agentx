@@ -22,7 +22,7 @@ export function createCognitiveEvent(
   workflowId: string,
   correlationId: string,
   source: string,
-  payload: Record<string, unknown> = {}
+  payload: Record<string, unknown> = {},
 ): CognitiveEvent {
   return {
     type,

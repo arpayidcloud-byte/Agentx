@@ -26,6 +26,6 @@ export class SubGoalManager {
   }
 
   getByGoal(goalId: string): SubGoal[] {
-    return Array.from(this.subgoals.values()).filter(s => s.goalId === goalId);
+    return Array.from(this.subgoals.values()).filter((s) => s.goalId === goalId);
   }
 }

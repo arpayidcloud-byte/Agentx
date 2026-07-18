@@ -9,9 +9,12 @@ import { ValidationError } from './errors.js';
 export class ProviderHealthAudit {
   async run(provider: IProvider): Promise<AuditResult> {
     const health = await provider.healthCheck();
-    
+
     if (!health.healthy) {
-      throw new ValidationError(`Provider health check failed: ${provider.getMetadata().id}`, 'health-audit');
+      throw new ValidationError(
+        `Provider health check failed: ${provider.getMetadata().id}`,
+        'health-audit',
+      );
     }
 
     return {

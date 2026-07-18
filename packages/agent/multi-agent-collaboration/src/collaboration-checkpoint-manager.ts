@@ -9,7 +9,11 @@ import { createHash } from 'crypto';
 export class CollaborationCheckpointManager {
   private checkpoints = new Map<string, CollaborationCheckpoint>();
 
-  save(sessionId: string, agentStates: Record<string, string>, sharedState: Record<string, unknown>): CollaborationCheckpoint {
+  save(
+    sessionId: string,
+    agentStates: Record<string, string>,
+    sharedState: Record<string, unknown>,
+  ): CollaborationCheckpoint {
     const payload = JSON.stringify({ agentStates, sharedState });
     const cp: CollaborationCheckpoint = {
       id: `ccp-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,

@@ -16,7 +16,9 @@ export class LearningSession {
   constructor(traceId: string) {
     this.traceId = traceId;
     this.id = `learn-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    this.checksum = createHash('sha256').update(`${this.id}:${traceId}:${Date.now()}`).digest('hex');
+    this.checksum = createHash('sha256')
+      .update(`${this.id}:${traceId}:${Date.now()}`)
+      .digest('hex');
   }
 
   markComplete(): void {

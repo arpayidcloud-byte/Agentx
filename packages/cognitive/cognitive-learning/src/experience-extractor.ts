@@ -11,7 +11,7 @@ export class ExperienceExtractor {
     const patterns: Pattern[] = [];
 
     // Detect repeated failures
-    const failures = experiences.filter(e => e.outcome === 'failure');
+    const failures = experiences.filter((e) => e.outcome === 'failure');
     if (failures.length >= 2) {
       patterns.push({
         id: `pat-${Date.now()}`,
@@ -25,7 +25,7 @@ export class ExperienceExtractor {
     }
 
     // Detect repeated successes
-    const successes = experiences.filter(e => e.outcome === 'success');
+    const successes = experiences.filter((e) => e.outcome === 'success');
     if (successes.length >= 2) {
       patterns.push({
         id: `pat-${Date.now()}`,

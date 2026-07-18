@@ -14,8 +14,16 @@ export class AuthenticationManager {
   issue(subject: string, roles: string[], ttlMs: number = 3600000): AuthToken {
     const tokenId = `auth-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
     const expiresAt = new Date(Date.now() + ttlMs);
-    const checksum = createHash('sha256').update(JSON.stringify({ tokenId, subject, roles, expiresAt })).digest('hex');
-    const token: AuthToken = Object.freeze({ tokenId, subject, roles: [...roles], expiresAt, checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ tokenId, subject, roles, expiresAt }))
+      .digest('hex');
+    const token: AuthToken = Object.freeze({
+      tokenId,
+      subject,
+      roles: [...roles],
+      expiresAt,
+      checksum,
+    });
     this.tokens.set(tokenId, token);
     return token;
   }
@@ -52,7 +60,9 @@ export class AuthorizationManager {
 
   grant(role: string, resource: string, action: string): Permission {
     const permissionId = `perm-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ permissionId, role, resource, action })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ permissionId, role, resource, action }))
+      .digest('hex');
     const perm: Permission = Object.freeze({ permissionId, role, resource, action, checksum });
     this.permissions.set(permissionId, perm);
     return perm;
@@ -86,7 +96,9 @@ export class RBACEngine {
 
   addRole(role: string, permissions: string[]): RBACRule {
     const ruleId = `rbac-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ ruleId, role, permissions })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ ruleId, role, permissions }))
+      .digest('hex');
     const rule: RBACRule = Object.freeze({ ruleId, role, permissions: [...permissions], checksum });
     this.rules.set(ruleId, rule);
     return rule;
@@ -100,7 +112,7 @@ export class RBACEngine {
   }
 
   getRoles(): string[] {
-    return [...new Set(Array.from(this.rules.values()).map(r => r.role))];
+    return [...new Set(Array.from(this.rules.values()).map((r) => r.role))];
   }
 
   getAll(): RBACRule[] {
@@ -124,8 +136,17 @@ export class APIKeyManager {
     const keyId = `ak-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
     const key = `key-${Date.now()}-${Math.random().toString(36).substring(2, 14)}`;
     const expiresAt = new Date(Date.now() + ttlMs);
-    const checksum = createHash('sha256').update(JSON.stringify({ keyId, key, tenantId, expiresAt })).digest('hex');
-    const apiKey: APIKey = Object.freeze({ keyId, key, tenantId, createdAt: new Date(), expiresAt, checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ keyId, key, tenantId, expiresAt }))
+      .digest('hex');
+    const apiKey: APIKey = Object.freeze({
+      keyId,
+      key,
+      tenantId,
+      createdAt: new Date(),
+      expiresAt,
+      checksum,
+    });
     this.keys.set(keyId, apiKey);
     return apiKey;
   }
@@ -141,7 +162,7 @@ export class APIKeyManager {
   }
 
   getByTenant(tenantId: string): APIKey[] {
-    return Array.from(this.keys.values()).filter(k => k.tenantId === tenantId);
+    return Array.from(this.keys.values()).filter((k) => k.tenantId === tenantId);
   }
 
   getAll(): APIKey[] {
@@ -165,8 +186,17 @@ export class TokenManager {
     const tokenId = `tok-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
     const now = new Date();
     const expiresAt = new Date(now.getTime() + ttlMs);
-    const checksum = createHash('sha256').update(JSON.stringify({ tokenId, type, subject, expiresAt })).digest('hex');
-    const token: TokenEntry = Object.freeze({ tokenId, type, subject, issuedAt: now, expiresAt, checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ tokenId, type, subject, expiresAt }))
+      .digest('hex');
+    const token: TokenEntry = Object.freeze({
+      tokenId,
+      type,
+      subject,
+      issuedAt: now,
+      expiresAt,
+      checksum,
+    });
     this.tokens.set(tokenId, token);
     return token;
   }
@@ -198,14 +228,21 @@ export class SecretRotation {
 
   rotate(secretKey: string): RotationEntry {
     const rotationId = `rot-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ rotationId, secretKey })).digest('hex');
-    const entry: RotationEntry = Object.freeze({ rotationId, secretKey, rotatedAt: new Date(), checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ rotationId, secretKey }))
+      .digest('hex');
+    const entry: RotationEntry = Object.freeze({
+      rotationId,
+      secretKey,
+      rotatedAt: new Date(),
+      checksum,
+    });
     this.rotations.push(entry);
     return entry;
   }
 
   getRotations(secretKey: string): RotationEntry[] {
-    return this.rotations.filter(r => r.secretKey === secretKey);
+    return this.rotations.filter((r) => r.secretKey === secretKey);
   }
 
   getAll(): RotationEntry[] {
@@ -227,15 +264,24 @@ export class AuditLogging {
 
   log(actor: string, action: string, resource: string): AuditLogEntry {
     const logId = `alog-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ logId, actor, action, resource })).digest('hex');
-    const entry: AuditLogEntry = Object.freeze({ logId, actor, action, resource, timestamp: new Date(), checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ logId, actor, action, resource }))
+      .digest('hex');
+    const entry: AuditLogEntry = Object.freeze({
+      logId,
+      actor,
+      action,
+      resource,
+      timestamp: new Date(),
+      checksum,
+    });
     this.entries.push(entry);
     return entry;
   }
 
   query(actor?: string, action?: string): AuditLogEntry[] {
-    return this.entries.filter(e =>
-      (!actor || e.actor === actor) && (!action || e.action === action)
+    return this.entries.filter(
+      (e) => (!actor || e.actor === actor) && (!action || e.action === action),
     );
   }
 

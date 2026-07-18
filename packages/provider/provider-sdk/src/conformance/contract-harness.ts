@@ -11,7 +11,7 @@ export class ContractHarness {
     const start = Date.now();
     const meta = provider.getMetadata();
     const passed = !!meta.id && !!meta.type && !!meta.name;
-    
+
     return {
       passed,
       durationMs: Date.now() - start,

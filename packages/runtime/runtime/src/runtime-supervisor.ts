@@ -16,8 +16,16 @@ export class RuntimeSupervisor {
 
   private registerDefaultChecks(): void {
     const components = [
-      'planning', 'workflow', 'memory', 'knowledge', 'context',
-      'approval', 'toolSDK', 'agentPool', 'eventBus', 'metrics'
+      'planning',
+      'workflow',
+      'memory',
+      'knowledge',
+      'context',
+      'approval',
+      'toolSDK',
+      'agentPool',
+      'eventBus',
+      'metrics',
     ];
     for (const component of components) {
       this.healthChecker.register(component, () => defaultHealthCheck(component));

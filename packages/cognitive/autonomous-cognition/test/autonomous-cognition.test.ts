@@ -6,26 +6,71 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import {
   InvariantViolationError,
-  GoalIntakeEngine, GoalAnalyzer, GoalDecomposer, GoalPrioritizer, GoalScheduler,
-  Goal, GoalAnalysis, GoalDecomposition,
-  ExecutionPlanner, AutonomousExecutor, TaskCoordinator, ProgressMonitor,
-  ExecutionCheckpointManager, ExecutionReplayEngine,
-  ExecutionPlan, TaskResult, ProgressSnapshot, Checkpoint, ReplayEntry,
-  DecisionEngine, ReflectionEngine, SelfEvaluationEngine, SelfImprovementEngine,
-  AdaptivePlanningEngine, StrategyOptimizer, FailureAnalyzer, RecoveryPlanner,
-  Decision, Reflection, SelfEvaluation, ImprovementRecord, Strategy,
-  FailureRecord, RecoveryPlan,
-  KnowledgeFeedbackEngine, LearningMemoryManager, ExperienceRepository,
-  FeedbackEntry, MemoryEntry, Experience,
-  PolicyValidator, SafetyValidator, ConstraintValidator, ResourceOptimizer,
+  GoalIntakeEngine,
+  GoalAnalyzer,
+  GoalDecomposer,
+  GoalPrioritizer,
+  GoalScheduler,
+  Goal,
+  GoalAnalysis,
+  GoalDecomposition,
+  ExecutionPlanner,
+  AutonomousExecutor,
+  TaskCoordinator,
+  ProgressMonitor,
+  ExecutionCheckpointManager,
+  ExecutionReplayEngine,
+  ExecutionPlan,
+  TaskResult,
+  ProgressSnapshot,
+  Checkpoint,
+  ReplayEntry,
+  DecisionEngine,
+  ReflectionEngine,
+  SelfEvaluationEngine,
+  SelfImprovementEngine,
+  AdaptivePlanningEngine,
+  StrategyOptimizer,
+  FailureAnalyzer,
+  RecoveryPlanner,
+  Decision,
+  Reflection,
+  SelfEvaluation,
+  ImprovementRecord,
+  Strategy,
+  FailureRecord,
+  RecoveryPlan,
+  KnowledgeFeedbackEngine,
+  LearningMemoryManager,
+  ExperienceRepository,
+  FeedbackEntry,
+  MemoryEntry,
+  Experience,
+  PolicyValidator,
+  SafetyValidator,
+  ConstraintValidator,
+  ResourceOptimizer,
   ValidationResult,
-  ExecutionMetricsCollector, ExecutionAuditManager, ExecutionTraceManager, ExecutionEventBus,
-  MetricPoint, AuditEntry, TraceSpan, ExecutionEvent, EventListener,
+  ExecutionMetricsCollector,
+  ExecutionAuditManager,
+  ExecutionTraceManager,
+  ExecutionEventBus,
+  MetricPoint,
+  AuditEntry,
+  TraceSpan,
+  ExecutionEvent,
+  EventListener,
 } from '../src/index.js';
 
 const makeGoal = (id: string, title = 'Test Goal', priority = 5): Goal => ({
-  goalId: id, title, description: 'desc', priority, state: 'INTAKE',
-  createdAt: new Date(), metadata: {}, checksum: 'test',
+  goalId: id,
+  title,
+  description: 'desc',
+  priority,
+  state: 'INTAKE',
+  createdAt: new Date(),
+  metadata: {},
+  checksum: 'test',
 });
 
 // ============================================================================
@@ -47,7 +92,9 @@ describe('InvariantViolationError', () => {
 // ============================================================================
 describe('GoalIntakeEngine', () => {
   let engine: GoalIntakeEngine;
-  beforeEach(() => { engine = new GoalIntakeEngine(); });
+  beforeEach(() => {
+    engine = new GoalIntakeEngine();
+  });
 
   it('intakes goals', () => {
     const goal = engine.intake('title', 'desc', 5);
@@ -148,7 +195,9 @@ describe('GoalPrioritizer', () => {
 // ============================================================================
 describe('GoalScheduler', () => {
   let scheduler: GoalScheduler;
-  beforeEach(() => { scheduler = new GoalScheduler(); });
+  beforeEach(() => {
+    scheduler = new GoalScheduler();
+  });
 
   it('schedules and dequeues by priority', () => {
     scheduler.schedule(makeGoal('g1', 'a', 1));
@@ -186,7 +235,12 @@ describe('ExecutionPlanner', () => {
 describe('AutonomousExecutor', () => {
   it('executes steps', () => {
     const executor = new AutonomousExecutor();
-    const result = executor.execute({ stepId: 's1', action: 'do', capabilities: [], timeout: 1000 });
+    const result = executor.execute({
+      stepId: 's1',
+      action: 'do',
+      capabilities: [],
+      timeout: 1000,
+    });
     expect(result.status).toBe('SUCCESS');
     expect(executor.getResults()).toHaveLength(1);
   });
@@ -197,7 +251,9 @@ describe('AutonomousExecutor', () => {
 // ============================================================================
 describe('TaskCoordinator', () => {
   let coordinator: TaskCoordinator;
-  beforeEach(() => { coordinator = new TaskCoordinator(); });
+  beforeEach(() => {
+    coordinator = new TaskCoordinator();
+  });
 
   it('assigns and retrieves tasks', () => {
     coordinator.assign('p1', ['s1', 's2']);
@@ -246,7 +302,9 @@ describe('ProgressMonitor', () => {
 // ============================================================================
 describe('ExecutionCheckpointManager', () => {
   let cm: ExecutionCheckpointManager;
-  beforeEach(() => { cm = new ExecutionCheckpointManager(); });
+  beforeEach(() => {
+    cm = new ExecutionCheckpointManager();
+  });
 
   it('saves and loads checkpoints', () => {
     const cp = cm.save('g1', { data: 1 }, 1);
@@ -279,7 +337,9 @@ describe('ExecutionCheckpointManager', () => {
 // ============================================================================
 describe('ExecutionReplayEngine', () => {
   let replay: ExecutionReplayEngine;
-  beforeEach(() => { replay = new ExecutionReplayEngine(); });
+  beforeEach(() => {
+    replay = new ExecutionReplayEngine();
+  });
 
   it('records and retrieves entries', () => {
     replay.record('g1', 'action1', { data: 1 });
@@ -374,7 +434,9 @@ describe('SelfEvaluationEngine', () => {
 // ============================================================================
 describe('SelfImprovementEngine', () => {
   let engine: SelfImprovementEngine;
-  beforeEach(() => { engine = new SelfImprovementEngine(); });
+  beforeEach(() => {
+    engine = new SelfImprovementEngine();
+  });
 
   it('creates improvement records', () => {
     const record = engine.improve('g1', 'reason', 'old', 'new', 0.9);
@@ -403,7 +465,9 @@ describe('SelfImprovementEngine', () => {
 // ============================================================================
 describe('AdaptivePlanningEngine', () => {
   let engine: AdaptivePlanningEngine;
-  beforeEach(() => { engine = new AdaptivePlanningEngine(); });
+  beforeEach(() => {
+    engine = new AdaptivePlanningEngine();
+  });
 
   it('registers and retrieves strategies', () => {
     engine.registerStrategy({ strategyId: 's1', name: 'Test', rules: ['r1'], checksum: 'c' });
@@ -430,7 +494,9 @@ describe('AdaptivePlanningEngine', () => {
 // ============================================================================
 describe('StrategyOptimizer', () => {
   let optimizer: StrategyOptimizer;
-  beforeEach(() => { optimizer = new StrategyOptimizer(); });
+  beforeEach(() => {
+    optimizer = new StrategyOptimizer();
+  });
 
   it('records and computes average', () => {
     optimizer.record('s1', 0.9);
@@ -482,7 +548,9 @@ describe('RecoveryPlanner', () => {
 // ============================================================================
 describe('KnowledgeFeedbackEngine', () => {
   let engine: KnowledgeFeedbackEngine;
-  beforeEach(() => { engine = new KnowledgeFeedbackEngine(); });
+  beforeEach(() => {
+    engine = new KnowledgeFeedbackEngine();
+  });
 
   it('records feedback', () => {
     const entry = engine.record('g1', 'success', ['lesson1']);
@@ -503,7 +571,9 @@ describe('KnowledgeFeedbackEngine', () => {
 // ============================================================================
 describe('LearningMemoryManager', () => {
   let mem: LearningMemoryManager;
-  beforeEach(() => { mem = new LearningMemoryManager(); });
+  beforeEach(() => {
+    mem = new LearningMemoryManager();
+  });
 
   it('stores and retrieves values', () => {
     mem.store('k1', { data: 1 }, 'src');
@@ -538,7 +608,9 @@ describe('LearningMemoryManager', () => {
 // ============================================================================
 describe('ExperienceRepository', () => {
   let repo: ExperienceRepository;
-  beforeEach(() => { repo = new ExperienceRepository(); });
+  beforeEach(() => {
+    repo = new ExperienceRepository();
+  });
 
   it('records experiences', () => {
     const exp = repo.record('g1', 'action', 'result', 0.9);
@@ -605,7 +677,9 @@ describe('ConstraintValidator', () => {
 // ============================================================================
 describe('ResourceOptimizer', () => {
   let ro: ResourceOptimizer;
-  beforeEach(() => { ro = new ResourceOptimizer(); });
+  beforeEach(() => {
+    ro = new ResourceOptimizer();
+  });
 
   it('allocates and releases resources', () => {
     ro.allocate('cpu', 4);
@@ -625,7 +699,9 @@ describe('ResourceOptimizer', () => {
 // ============================================================================
 describe('ExecutionMetricsCollector', () => {
   let metrics: ExecutionMetricsCollector;
-  beforeEach(() => { metrics = new ExecutionMetricsCollector(); });
+  beforeEach(() => {
+    metrics = new ExecutionMetricsCollector();
+  });
 
   it('records and queries metrics', () => {
     metrics.record('cpu', 0.5);
@@ -657,7 +733,9 @@ describe('ExecutionMetricsCollector', () => {
 // ============================================================================
 describe('ExecutionAuditManager', () => {
   let audit: ExecutionAuditManager;
-  beforeEach(() => { audit = new ExecutionAuditManager(); });
+  beforeEach(() => {
+    audit = new ExecutionAuditManager();
+  });
 
   it('logs entries', () => {
     const entry = audit.log('t1', 'g1', 'action', {});
@@ -690,7 +768,9 @@ describe('ExecutionAuditManager', () => {
 // ============================================================================
 describe('ExecutionTraceManager', () => {
   let trace: ExecutionTraceManager;
-  beforeEach(() => { trace = new ExecutionTraceManager(); });
+  beforeEach(() => {
+    trace = new ExecutionTraceManager();
+  });
 
   it('starts and finishes spans', () => {
     const spanId = trace.startSpan('t1', 'g1', 'op1');
@@ -723,17 +803,31 @@ describe('ExecutionTraceManager', () => {
 // ============================================================================
 describe('ExecutionEventBus', () => {
   let bus: ExecutionEventBus;
-  beforeEach(() => { bus = new ExecutionEventBus(); });
+  beforeEach(() => {
+    bus = new ExecutionEventBus();
+  });
 
   it('publishes and subscribes', () => {
     const fn = vi.fn();
     bus.subscribe('test', fn);
-    bus.publish({ eventType: 'test', goalId: 'g1', payload: {}, timestamp: new Date(), checksum: 'c' });
+    bus.publish({
+      eventType: 'test',
+      goalId: 'g1',
+      payload: {},
+      timestamp: new Date(),
+      checksum: 'c',
+    });
     expect(fn).toHaveBeenCalled();
   });
 
   it('logs events', () => {
-    bus.publish({ eventType: 'test', goalId: 'g1', payload: {}, timestamp: new Date(), checksum: 'c' });
+    bus.publish({
+      eventType: 'test',
+      goalId: 'g1',
+      payload: {},
+      timestamp: new Date(),
+      checksum: 'c',
+    });
     expect(bus.getLog()).toHaveLength(1);
   });
 
@@ -741,7 +835,13 @@ describe('ExecutionEventBus', () => {
     const fn = vi.fn();
     bus.subscribe('test', fn);
     bus.unsubscribe('test');
-    bus.publish({ eventType: 'test', goalId: 'g1', payload: {}, timestamp: new Date(), checksum: 'c' });
+    bus.publish({
+      eventType: 'test',
+      goalId: 'g1',
+      payload: {},
+      timestamp: new Date(),
+      checksum: 'c',
+    });
     expect(fn).not.toHaveBeenCalled();
   });
 

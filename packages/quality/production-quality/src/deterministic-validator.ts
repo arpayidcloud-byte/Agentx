@@ -16,7 +16,10 @@ export class DeterministicValidator {
 
     for (let i = 1; i < outputs.length; i++) {
       if (hash(outputs[i]) !== firstHash) {
-        throw new DeterministicError(`Non-deterministic output detected at run ${i}`, 'deterministic-validator');
+        throw new DeterministicError(
+          `Non-deterministic output detected at run ${i}`,
+          'deterministic-validator',
+        );
       }
     }
 

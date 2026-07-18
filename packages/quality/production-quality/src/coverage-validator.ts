@@ -24,7 +24,10 @@ export class CoverageValidator {
     }
 
     if (failures.length > 0) {
-      throw new QualityGateError(`Coverage thresholds not satisfied: ${failures.join(', ')}`, 'coverage-validator');
+      throw new QualityGateError(
+        `Coverage thresholds not satisfied: ${failures.join(', ')}`,
+        'coverage-validator',
+      );
     }
 
     return {

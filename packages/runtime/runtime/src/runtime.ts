@@ -16,7 +16,11 @@ import { createBootstrapConfig, BootstrapOptions } from './runtime-bootstrap.js'
 import { RuntimeError } from './errors.js';
 import { IEventBus } from '@agentx/core-runtime';
 import { IRuntimePipeline } from './runtime-executor.js';
-import { ProductionExecutionCoordinator, CoordinatorSession, CoordinatorConfig } from './coordinator/index.js';
+import {
+  ProductionExecutionCoordinator,
+  CoordinatorSession,
+  CoordinatorConfig,
+} from './coordinator/index.js';
 
 export class Runtime {
   private lifecycle: RuntimeLifecycle;
@@ -30,7 +34,11 @@ export class Runtime {
   private sessions = new Map<string, RuntimeSession>();
   private coordinator: ProductionExecutionCoordinator;
 
-  constructor(private eventBus: IEventBus, pipeline: IRuntimePipeline, options: BootstrapOptions = {}) {
+  constructor(
+    private eventBus: IEventBus,
+    pipeline: IRuntimePipeline,
+    options: BootstrapOptions = {},
+  ) {
     const bootstrap = createBootstrapConfig(options);
     this.runtimeConfig = bootstrap.config;
     this.lifecycle = new RuntimeLifecycle();
@@ -64,11 +72,15 @@ export class Runtime {
     return session;
   }
 
-  async executeGoal(sessionId: string, goal: string, _context: Record<string, unknown> = {}): Promise<unknown> {
+  async executeGoal(
+    sessionId: string,
+    goal: string,
+    _context: Record<string, unknown> = {},
+  ): Promise<unknown> {
     const session = this.sessions.get(sessionId);
     if (!session) throw new RuntimeError('Session not found', 'SESSION_NOT_FOUND', 'runtime');
     const execSession = createExecutionSession(session.traceId, goal);
-    
+
     const coordSession: CoordinatorSession = {
       id: sessionId,
       traceId: session.traceId,
@@ -81,7 +93,7 @@ export class Runtime {
 
     try {
       await this.coordinator.execute(coordSession);
-      
+
       const result = await this.executor.execute(execSession, this.runtimeConfig);
       const currentState = this.lifecycle.getState();
       if (currentState === 'RUNNING') {
@@ -91,10 +103,17 @@ export class Runtime {
       return result;
     } catch (error) {
       const currentState = this.lifecycle.getState();
-      if (currentState !== 'FAILED' && currentState !== 'COMPLETED' && currentState !== 'CANCELLED') {
+      if (
+        currentState !== 'FAILED' &&
+        currentState !== 'COMPLETED' &&
+        currentState !== 'CANCELLED'
+      ) {
         this.lifecycle.transition('FAILED');
       }
-      await this.hookManager.executeOnError(session, error instanceof Error ? error : new Error(String(error)));
+      await this.hookManager.executeOnError(
+        session,
+        error instanceof Error ? error : new Error(String(error)),
+      );
       throw error;
     }
   }

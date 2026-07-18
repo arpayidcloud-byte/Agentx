@@ -5,26 +5,57 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import {
-  NodeRegistry, NodeCapabilityRegistry, NodeDiscoveryEngine, NodeHealthMonitor,
-  NodeMetadata, NodeRegistration, NodeHealth, NodeStatus,
-  ClusterMembershipManager, ClusterCoordinator, ClusterConfig, ClusterState,
-  DistributedScheduler, DistributedTaskDispatcher, SchedulePolicy, DistributedTask, TaskMigration,
-  CrossNodeCollaborationManager, CollaborationMessage,
+  NodeRegistry,
+  NodeCapabilityRegistry,
+  NodeDiscoveryEngine,
+  NodeHealthMonitor,
+  NodeMetadata,
+  NodeRegistration,
+  NodeHealth,
+  NodeStatus,
+  ClusterMembershipManager,
+  ClusterCoordinator,
+  ClusterConfig,
+  ClusterState,
+  DistributedScheduler,
+  DistributedTaskDispatcher,
+  SchedulePolicy,
+  DistributedTask,
+  TaskMigration,
+  CrossNodeCollaborationManager,
+  CollaborationMessage,
   DistributedConsensusEngine,
-  KnowledgeReplicationManager, KnowledgeSynchronizationEngine, KnowledgeEntry, SyncResult,
+  KnowledgeReplicationManager,
+  KnowledgeSynchronizationEngine,
+  KnowledgeEntry,
+  SyncResult,
   DistributedMemoryCoordinator,
-  InterNodeMessageBus, ReliableMessageQueue, DistributedEventBus, DistributedEvent,
-  DistributedCheckpointManager, DistributedCheckpoint,
-  DistributedRecoveryManager, RecoveryPlan,
-  DistributedReplayEngine, ReplayEntry,
-  DistributedAuditManager, AuditEntry,
-  DistributedMetricsCollector, MetricPoint,
-  DistributedTraceManager, TraceSpan,
-  DistributedConfigurationManager, ConfigEntry,
-  DistributedSecurityValidator, SecurityToken,
-  DistributedIntegrityValidator, IntegrityRecord,
-  DistributedVersionManager, VersionInfo,
-  DistributedCompatibilityValidator, CompatibilityCheck,
+  InterNodeMessageBus,
+  ReliableMessageQueue,
+  DistributedEventBus,
+  DistributedEvent,
+  DistributedCheckpointManager,
+  DistributedCheckpoint,
+  DistributedRecoveryManager,
+  RecoveryPlan,
+  DistributedReplayEngine,
+  ReplayEntry,
+  DistributedAuditManager,
+  AuditEntry,
+  DistributedMetricsCollector,
+  MetricPoint,
+  DistributedTraceManager,
+  TraceSpan,
+  DistributedConfigurationManager,
+  ConfigEntry,
+  DistributedSecurityValidator,
+  SecurityToken,
+  DistributedIntegrityValidator,
+  IntegrityRecord,
+  DistributedVersionManager,
+  VersionInfo,
+  DistributedCompatibilityValidator,
+  CompatibilityCheck,
   DistributedWorkflowCoordinator,
   DistributedGoalCoordinator,
   DistributedLearningSynchronizer,
@@ -33,17 +64,48 @@ import {
   DistributedConflictResolver,
 } from '../src/index.js';
 
-const makeNodeMeta = (id: string, region = 'us-east-1', caps: string[] = ['compute']): NodeMetadata => ({
-  nodeId: id, name: `Node ${id}`, version: '1.0', capabilities: caps, priority: 5, maxSlots: 10, region,
+const makeNodeMeta = (
+  id: string,
+  region = 'us-east-1',
+  caps: string[] = ['compute'],
+): NodeMetadata => ({
+  nodeId: id,
+  name: `Node ${id}`,
+  version: '1.0',
+  capabilities: caps,
+  priority: 5,
+  maxSlots: 10,
+  region,
 });
 
-const makeKnowledgeEntry = (id: string, key: string, version: number, sourceNode: string): KnowledgeEntry => ({
-  entryId: id, key, value: { data: `val-${version}` }, sourceNode, version, timestamp: new Date(),
+const makeKnowledgeEntry = (
+  id: string,
+  key: string,
+  version: number,
+  sourceNode: string,
+): KnowledgeEntry => ({
+  entryId: id,
+  key,
+  value: { data: `val-${version}` },
+  sourceNode,
+  version,
+  timestamp: new Date(),
   checksum: 'test-checksum',
 });
 
-const makeCollabMessage = (id: string, from: string, to: string, type: CollaborationMessage['type'] = 'HEARTBEAT'): CollaborationMessage => ({
-  messageId: id, fromNode: from, toNode: to, type, payload: {}, timestamp: new Date(), checksum: 'msg-checksum',
+const makeCollabMessage = (
+  id: string,
+  from: string,
+  to: string,
+  type: CollaborationMessage['type'] = 'HEARTBEAT',
+): CollaborationMessage => ({
+  messageId: id,
+  fromNode: from,
+  toNode: to,
+  type,
+  payload: {},
+  timestamp: new Date(),
+  checksum: 'msg-checksum',
 });
 
 // ============================================================================
@@ -51,7 +113,9 @@ const makeCollabMessage = (id: string, from: string, to: string, type: Collabora
 // ============================================================================
 describe('NodeRegistry', () => {
   let registry: NodeRegistry;
-  beforeEach(() => { registry = new NodeRegistry(); });
+  beforeEach(() => {
+    registry = new NodeRegistry();
+  });
 
   it('registers and retrieves nodes', () => {
     registry.register(makeNodeMeta('n1'));
@@ -103,7 +167,9 @@ describe('NodeRegistry', () => {
 // ============================================================================
 describe('NodeCapabilityRegistry', () => {
   let capReg: NodeCapabilityRegistry;
-  beforeEach(() => { capReg = new NodeCapabilityRegistry(); });
+  beforeEach(() => {
+    capReg = new NodeCapabilityRegistry();
+  });
 
   it('registers and retrieves capabilities', () => {
     capReg.register('n1', [{ name: 'compute', version: '1.0', weight: 10 }]);
@@ -125,7 +191,10 @@ describe('NodeCapabilityRegistry', () => {
   });
 
   it('sorts capabilities by weight descending', () => {
-    capReg.register('n1', [{ name: 'a', version: '1', weight: 1 }, { name: 'b', version: '1', weight: 10 }]);
+    capReg.register('n1', [
+      { name: 'a', version: '1', weight: 1 },
+      { name: 'b', version: '1', weight: 10 },
+    ]);
     expect(capReg.getCapabilities('n1')?.capabilities[0].name).toBe('b');
   });
 });
@@ -177,10 +246,20 @@ describe('NodeDiscoveryEngine', () => {
 // ============================================================================
 describe('NodeHealthMonitor', () => {
   let monitor: NodeHealthMonitor;
-  beforeEach(() => { monitor = new NodeHealthMonitor(); });
+  beforeEach(() => {
+    monitor = new NodeHealthMonitor();
+  });
 
   it('records and retrieves health', () => {
-    const health: NodeHealth = { nodeId: 'n1', cpuUsage: 0.5, memoryUsage: 0.3, latencyMs: 10, errorRate: 0, lastCheck: new Date(), status: 'HEALTHY' };
+    const health: NodeHealth = {
+      nodeId: 'n1',
+      cpuUsage: 0.5,
+      memoryUsage: 0.3,
+      latencyMs: 10,
+      errorRate: 0,
+      lastCheck: new Date(),
+      status: 'HEALTHY',
+    };
     monitor.recordHealth(health);
     expect(monitor.getLatestHealth('n1')).toBeDefined();
   });
@@ -190,27 +269,67 @@ describe('NodeHealthMonitor', () => {
   });
 
   it('evaluates status as HEALTHY', () => {
-    monitor.recordHealth({ nodeId: 'n1', cpuUsage: 0.5, memoryUsage: 0.5, latencyMs: 10, errorRate: 0, lastCheck: new Date(), status: 'HEALTHY' });
+    monitor.recordHealth({
+      nodeId: 'n1',
+      cpuUsage: 0.5,
+      memoryUsage: 0.5,
+      latencyMs: 10,
+      errorRate: 0,
+      lastCheck: new Date(),
+      status: 'HEALTHY',
+    });
     expect(monitor.evaluateStatus('n1')).toBe('HEALTHY');
   });
 
   it('evaluates status as DEGRADED on high CPU', () => {
-    monitor.recordHealth({ nodeId: 'n1', cpuUsage: 0.95, memoryUsage: 0.5, latencyMs: 10, errorRate: 0, lastCheck: new Date(), status: 'HEALTHY' });
+    monitor.recordHealth({
+      nodeId: 'n1',
+      cpuUsage: 0.95,
+      memoryUsage: 0.5,
+      latencyMs: 10,
+      errorRate: 0,
+      lastCheck: new Date(),
+      status: 'HEALTHY',
+    });
     expect(monitor.evaluateStatus('n1')).toBe('DEGRADED');
   });
 
   it('evaluates status as DEGRADED on high memory', () => {
-    monitor.recordHealth({ nodeId: 'n1', cpuUsage: 0.5, memoryUsage: 0.95, latencyMs: 10, errorRate: 0, lastCheck: new Date(), status: 'HEALTHY' });
+    monitor.recordHealth({
+      nodeId: 'n1',
+      cpuUsage: 0.5,
+      memoryUsage: 0.95,
+      latencyMs: 10,
+      errorRate: 0,
+      lastCheck: new Date(),
+      status: 'HEALTHY',
+    });
     expect(monitor.evaluateStatus('n1')).toBe('DEGRADED');
   });
 
   it('evaluates status as UNHEALTHY on high latency', () => {
-    monitor.recordHealth({ nodeId: 'n1', cpuUsage: 0.5, memoryUsage: 0.5, latencyMs: 2000, errorRate: 0, lastCheck: new Date(), status: 'HEALTHY' });
+    monitor.recordHealth({
+      nodeId: 'n1',
+      cpuUsage: 0.5,
+      memoryUsage: 0.5,
+      latencyMs: 2000,
+      errorRate: 0,
+      lastCheck: new Date(),
+      status: 'HEALTHY',
+    });
     expect(monitor.evaluateStatus('n1')).toBe('UNHEALTHY');
   });
 
   it('evaluates status as UNHEALTHY on high error rate', () => {
-    monitor.recordHealth({ nodeId: 'n1', cpuUsage: 0.5, memoryUsage: 0.5, latencyMs: 10, errorRate: 0.5, lastCheck: new Date(), status: 'HEALTHY' });
+    monitor.recordHealth({
+      nodeId: 'n1',
+      cpuUsage: 0.5,
+      memoryUsage: 0.5,
+      latencyMs: 10,
+      errorRate: 0.5,
+      lastCheck: new Date(),
+      status: 'HEALTHY',
+    });
     expect(monitor.evaluateStatus('n1')).toBe('UNHEALTHY');
   });
 
@@ -219,19 +338,51 @@ describe('NodeHealthMonitor', () => {
   });
 
   it('maintains health history', () => {
-    monitor.recordHealth({ nodeId: 'n1', cpuUsage: 0.5, memoryUsage: 0.5, latencyMs: 10, errorRate: 0, lastCheck: new Date(), status: 'HEALTHY' });
-    monitor.recordHealth({ nodeId: 'n1', cpuUsage: 0.6, memoryUsage: 0.6, latencyMs: 20, errorRate: 0, lastCheck: new Date(), status: 'HEALTHY' });
+    monitor.recordHealth({
+      nodeId: 'n1',
+      cpuUsage: 0.5,
+      memoryUsage: 0.5,
+      latencyMs: 10,
+      errorRate: 0,
+      lastCheck: new Date(),
+      status: 'HEALTHY',
+    });
+    monitor.recordHealth({
+      nodeId: 'n1',
+      cpuUsage: 0.6,
+      memoryUsage: 0.6,
+      latencyMs: 20,
+      errorRate: 0,
+      lastCheck: new Date(),
+      status: 'HEALTHY',
+    });
     expect(monitor.getHealthHistory('n1')).toHaveLength(2);
   });
 
   it('removes node health', () => {
-    monitor.recordHealth({ nodeId: 'n1', cpuUsage: 0.5, memoryUsage: 0.5, latencyMs: 10, errorRate: 0, lastCheck: new Date(), status: 'HEALTHY' });
+    monitor.recordHealth({
+      nodeId: 'n1',
+      cpuUsage: 0.5,
+      memoryUsage: 0.5,
+      latencyMs: 10,
+      errorRate: 0,
+      lastCheck: new Date(),
+      status: 'HEALTHY',
+    });
     monitor.removeNode('n1');
     expect(monitor.getLatestHealth('n1')).toBeUndefined();
   });
 
   it('clears all health', () => {
-    monitor.recordHealth({ nodeId: 'n1', cpuUsage: 0.5, memoryUsage: 0.5, latencyMs: 10, errorRate: 0, lastCheck: new Date(), status: 'HEALTHY' });
+    monitor.recordHealth({
+      nodeId: 'n1',
+      cpuUsage: 0.5,
+      memoryUsage: 0.5,
+      latencyMs: 10,
+      errorRate: 0,
+      lastCheck: new Date(),
+      status: 'HEALTHY',
+    });
     monitor.clear();
     expect(monitor.getLatestHealth('n1')).toBeUndefined();
   });
@@ -242,17 +393,33 @@ describe('NodeHealthMonitor', () => {
 // ============================================================================
 describe('ClusterMembershipManager', () => {
   let cmm: ClusterMembershipManager;
-  beforeEach(() => { cmm = new ClusterMembershipManager(); });
+  beforeEach(() => {
+    cmm = new ClusterMembershipManager();
+  });
 
   it('creates and joins clusters', () => {
-    cmm.createCluster({ clusterId: 'c1', name: 'Test', minNodes: 1, maxNodes: 5, heartbeatIntervalMs: 1000, failureThreshold: 3 });
+    cmm.createCluster({
+      clusterId: 'c1',
+      name: 'Test',
+      minNodes: 1,
+      maxNodes: 5,
+      heartbeatIntervalMs: 1000,
+      failureThreshold: 3,
+    });
     expect(cmm.listClusters()).toEqual(['c1']);
     cmm.joinCluster('c1', 'n1');
     expect(cmm.getMembers('c1')).toHaveLength(1);
   });
 
   it('throws on duplicate cluster creation', () => {
-    const config: ClusterConfig = { clusterId: 'c1', name: 'Test', minNodes: 1, maxNodes: 5, heartbeatIntervalMs: 1000, failureThreshold: 3 };
+    const config: ClusterConfig = {
+      clusterId: 'c1',
+      name: 'Test',
+      minNodes: 1,
+      maxNodes: 5,
+      heartbeatIntervalMs: 1000,
+      failureThreshold: 3,
+    };
     cmm.createCluster(config);
     expect(() => cmm.createCluster(config)).toThrow('already exists');
   });
@@ -262,19 +429,40 @@ describe('ClusterMembershipManager', () => {
   });
 
   it('throws on duplicate node in cluster', () => {
-    cmm.createCluster({ clusterId: 'c1', name: 'T', minNodes: 1, maxNodes: 5, heartbeatIntervalMs: 1000, failureThreshold: 3 });
+    cmm.createCluster({
+      clusterId: 'c1',
+      name: 'T',
+      minNodes: 1,
+      maxNodes: 5,
+      heartbeatIntervalMs: 1000,
+      failureThreshold: 3,
+    });
     cmm.joinCluster('c1', 'n1');
     expect(() => cmm.joinCluster('c1', 'n1')).toThrow('already in cluster');
   });
 
   it('throws when cluster is full', () => {
-    cmm.createCluster({ clusterId: 'c1', name: 'T', minNodes: 1, maxNodes: 1, heartbeatIntervalMs: 1000, failureThreshold: 3 });
+    cmm.createCluster({
+      clusterId: 'c1',
+      name: 'T',
+      minNodes: 1,
+      maxNodes: 1,
+      heartbeatIntervalMs: 1000,
+      failureThreshold: 3,
+    });
     cmm.joinCluster('c1', 'n1');
     expect(() => cmm.joinCluster('c1', 'n2')).toThrow('Cluster full');
   });
 
   it('leaves cluster', () => {
-    cmm.createCluster({ clusterId: 'c1', name: 'T', minNodes: 1, maxNodes: 5, heartbeatIntervalMs: 1000, failureThreshold: 3 });
+    cmm.createCluster({
+      clusterId: 'c1',
+      name: 'T',
+      minNodes: 1,
+      maxNodes: 5,
+      heartbeatIntervalMs: 1000,
+      failureThreshold: 3,
+    });
     cmm.joinCluster('c1', 'n1');
     cmm.leaveCluster('c1', 'n1');
     expect(cmm.getMembers('c1')).toHaveLength(0);
@@ -285,7 +473,14 @@ describe('ClusterMembershipManager', () => {
   });
 
   it('gets config', () => {
-    const config: ClusterConfig = { clusterId: 'c1', name: 'T', minNodes: 1, maxNodes: 5, heartbeatIntervalMs: 1000, failureThreshold: 3 };
+    const config: ClusterConfig = {
+      clusterId: 'c1',
+      name: 'T',
+      minNodes: 1,
+      maxNodes: 5,
+      heartbeatIntervalMs: 1000,
+      failureThreshold: 3,
+    };
     cmm.createCluster(config);
     expect(cmm.getConfig('c1')).toBeDefined();
     expect(cmm.getConfig('missing')).toBeUndefined();
@@ -297,7 +492,9 @@ describe('ClusterMembershipManager', () => {
 // ============================================================================
 describe('ClusterCoordinator', () => {
   let coordinator: ClusterCoordinator;
-  beforeEach(() => { coordinator = new ClusterCoordinator(); });
+  beforeEach(() => {
+    coordinator = new ClusterCoordinator();
+  });
 
   it('initializes cluster', () => {
     const state = coordinator.initialize('c1', ['n1', 'n2']);
@@ -368,7 +565,9 @@ describe('ClusterCoordinator', () => {
 // ============================================================================
 describe('DistributedScheduler', () => {
   let scheduler: DistributedScheduler;
-  beforeEach(() => { scheduler = new DistributedScheduler(); });
+  beforeEach(() => {
+    scheduler = new DistributedScheduler();
+  });
 
   it('enqueues tasks', () => {
     const task = scheduler.enqueue('g1', 5);
@@ -480,7 +679,9 @@ describe('DistributedTaskDispatcher', () => {
 // ============================================================================
 describe('CrossNodeCollaborationManager', () => {
   let manager: CrossNodeCollaborationManager;
-  beforeEach(() => { manager = new CrossNodeCollaborationManager(); });
+  beforeEach(() => {
+    manager = new CrossNodeCollaborationManager();
+  });
 
   it('initiates collaboration session', () => {
     const session = manager.initiate('n1', 'g1', ['n2', 'n3']);
@@ -526,7 +727,9 @@ describe('CrossNodeCollaborationManager', () => {
 // ============================================================================
 describe('DistributedConsensusEngine', () => {
   let engine: DistributedConsensusEngine;
-  beforeEach(() => { engine = new DistributedConsensusEngine(); });
+  beforeEach(() => {
+    engine = new DistributedConsensusEngine();
+  });
 
   it('proposes', () => {
     const proposal = engine.propose('n1', { decision: 'approve' });
@@ -592,7 +795,9 @@ describe('DistributedConsensusEngine', () => {
 // ============================================================================
 describe('KnowledgeReplicationManager', () => {
   let km: KnowledgeReplicationManager;
-  beforeEach(() => { km = new KnowledgeReplicationManager(); });
+  beforeEach(() => {
+    km = new KnowledgeReplicationManager();
+  });
 
   it('stores and retrieves entries', () => {
     const entry = makeKnowledgeEntry('e1', 'k1', 1, 'n1');
@@ -638,7 +843,9 @@ describe('KnowledgeReplicationManager', () => {
 // ============================================================================
 describe('KnowledgeSynchronizationEngine', () => {
   let sync: KnowledgeSynchronizationEngine;
-  beforeEach(() => { sync = new KnowledgeSynchronizationEngine(); });
+  beforeEach(() => {
+    sync = new KnowledgeSynchronizationEngine();
+  });
 
   it('syncs when local is newer', () => {
     const local = makeKnowledgeEntry('e1', 'k1', 2, 'n1');
@@ -685,7 +892,9 @@ describe('KnowledgeSynchronizationEngine', () => {
 // ============================================================================
 describe('DistributedMemoryCoordinator', () => {
   let mem: DistributedMemoryCoordinator;
-  beforeEach(() => { mem = new DistributedMemoryCoordinator(); });
+  beforeEach(() => {
+    mem = new DistributedMemoryCoordinator();
+  });
 
   it('sets and gets values', () => {
     mem.set('k1', { data: 1 }, 'n1');
@@ -737,7 +946,9 @@ describe('DistributedMemoryCoordinator', () => {
 // ============================================================================
 describe('InterNodeMessageBus', () => {
   let bus: InterNodeMessageBus;
-  beforeEach(() => { bus = new InterNodeMessageBus(); });
+  beforeEach(() => {
+    bus = new InterNodeMessageBus();
+  });
 
   it('publishes to subscribers', () => {
     const fn = vi.fn();
@@ -777,7 +988,9 @@ describe('InterNodeMessageBus', () => {
 // ============================================================================
 describe('ReliableMessageQueue', () => {
   let queue: ReliableMessageQueue;
-  beforeEach(() => { queue = new ReliableMessageQueue(2); });
+  beforeEach(() => {
+    queue = new ReliableMessageQueue(2);
+  });
 
   it('enqueues and dequeues', () => {
     queue.enqueue(makeCollabMessage('m1', 'n1', 'n2'));
@@ -823,18 +1036,32 @@ describe('ReliableMessageQueue', () => {
 // ============================================================================
 describe('DistributedEventBus', () => {
   let eventBus: DistributedEventBus;
-  beforeEach(() => { eventBus = new DistributedEventBus(); });
+  beforeEach(() => {
+    eventBus = new DistributedEventBus();
+  });
 
   it('publishes and subscribes', () => {
     const fn = vi.fn();
     eventBus.subscribe('test', fn);
-    const event: DistributedEvent = { eventType: 'test', sourceNode: 'n1', payload: {}, timestamp: new Date(), checksum: 'c' };
+    const event: DistributedEvent = {
+      eventType: 'test',
+      sourceNode: 'n1',
+      payload: {},
+      timestamp: new Date(),
+      checksum: 'c',
+    };
     eventBus.publish(event);
     expect(fn).toHaveBeenCalled();
   });
 
   it('logs events', () => {
-    const event: DistributedEvent = { eventType: 'test', sourceNode: 'n1', payload: {}, timestamp: new Date(), checksum: 'c' };
+    const event: DistributedEvent = {
+      eventType: 'test',
+      sourceNode: 'n1',
+      payload: {},
+      timestamp: new Date(),
+      checksum: 'c',
+    };
     eventBus.publish(event);
     expect(eventBus.getEventLog()).toHaveLength(1);
   });
@@ -843,7 +1070,13 @@ describe('DistributedEventBus', () => {
     const fn = vi.fn();
     eventBus.subscribe('test', fn);
     eventBus.unsubscribe('test');
-    const event: DistributedEvent = { eventType: 'test', sourceNode: 'n1', payload: {}, timestamp: new Date(), checksum: 'c' };
+    const event: DistributedEvent = {
+      eventType: 'test',
+      sourceNode: 'n1',
+      payload: {},
+      timestamp: new Date(),
+      checksum: 'c',
+    };
     eventBus.publish(event);
     expect(fn).not.toHaveBeenCalled();
   });
@@ -866,7 +1099,9 @@ describe('DistributedEventBus', () => {
 // ============================================================================
 describe('DistributedCheckpointManager', () => {
   let cm: DistributedCheckpointManager;
-  beforeEach(() => { cm = new DistributedCheckpointManager(); });
+  beforeEach(() => {
+    cm = new DistributedCheckpointManager();
+  });
 
   it('saves and loads checkpoints', () => {
     const cp = cm.save('n1', 's1', { data: 1 }, 1);
@@ -963,7 +1198,9 @@ describe('DistributedRecoveryManager', () => {
 // ============================================================================
 describe('DistributedReplayEngine', () => {
   let replay: DistributedReplayEngine;
-  beforeEach(() => { replay = new DistributedReplayEngine(); });
+  beforeEach(() => {
+    replay = new DistributedReplayEngine();
+  });
 
   it('records entries', () => {
     const entry = replay.record('s1', 'n1', 'action1', { data: 1 });
@@ -998,7 +1235,9 @@ describe('DistributedReplayEngine', () => {
 // ============================================================================
 describe('DistributedAuditManager', () => {
   let audit: DistributedAuditManager;
-  beforeEach(() => { audit = new DistributedAuditManager(); });
+  beforeEach(() => {
+    audit = new DistributedAuditManager();
+  });
 
   it('logs entries', () => {
     const entry = audit.log('t1', 'n1', 's1', 'action', { data: 1 });
@@ -1032,7 +1271,9 @@ describe('DistributedAuditManager', () => {
 // ============================================================================
 describe('DistributedMetricsCollector', () => {
   let metrics: DistributedMetricsCollector;
-  beforeEach(() => { metrics = new DistributedMetricsCollector(); });
+  beforeEach(() => {
+    metrics = new DistributedMetricsCollector();
+  });
 
   it('records metrics', () => {
     metrics.record('cpu', 0.5, 'n1');
@@ -1075,11 +1316,21 @@ describe('DistributedMetricsCollector', () => {
 // ============================================================================
 describe('DistributedTraceManager', () => {
   let trace: DistributedTraceManager;
-  beforeEach(() => { trace = new DistributedTraceManager(); });
+  beforeEach(() => {
+    trace = new DistributedTraceManager();
+  });
 
   it('starts and finishes spans', () => {
     const spanId = trace.startSpan('t1', 'n1', 'op1');
-    const span = trace.finishSpan(spanId, 't1', 'n1', 'op1', new Date(Date.now() - 100), null, 'OK');
+    const span = trace.finishSpan(
+      spanId,
+      't1',
+      'n1',
+      'op1',
+      new Date(Date.now() - 100),
+      null,
+      'OK',
+    );
     expect(span.spanId).toBe(spanId);
     expect(span.durationMs).toBeGreaterThanOrEqual(100);
     expect(span.checksum).toBeDefined();
@@ -1118,7 +1369,9 @@ describe('DistributedTraceManager', () => {
 // ============================================================================
 describe('DistributedConfigurationManager', () => {
   let config: DistributedConfigurationManager;
-  beforeEach(() => { config = new DistributedConfigurationManager(); });
+  beforeEach(() => {
+    config = new DistributedConfigurationManager();
+  });
 
   it('sets and gets config', () => {
     config.set('k1', { value: 1 }, 'n1');
@@ -1170,7 +1423,9 @@ describe('DistributedConfigurationManager', () => {
 // ============================================================================
 describe('DistributedSecurityValidator', () => {
   let sec: DistributedSecurityValidator;
-  beforeEach(() => { sec = new DistributedSecurityValidator(); });
+  beforeEach(() => {
+    sec = new DistributedSecurityValidator();
+  });
 
   it('issues and validates tokens', () => {
     const token = sec.issueToken('n1', ['read', 'write']);
@@ -1218,7 +1473,9 @@ describe('DistributedSecurityValidator', () => {
 // ============================================================================
 describe('DistributedIntegrityValidator', () => {
   let iv: DistributedIntegrityValidator;
-  beforeEach(() => { iv = new DistributedIntegrityValidator(); });
+  beforeEach(() => {
+    iv = new DistributedIntegrityValidator();
+  });
 
   it('validates integrity', () => {
     const record = iv.validate('task', 't1', { data: 1 });
@@ -1257,15 +1514,27 @@ describe('DistributedIntegrityValidator', () => {
 // ============================================================================
 describe('DistributedVersionManager', () => {
   let vm: DistributedVersionManager;
-  beforeEach(() => { vm = new DistributedVersionManager(); });
+  beforeEach(() => {
+    vm = new DistributedVersionManager();
+  });
 
   it('registers versions', () => {
-    vm.register({ packageName: 'pkg', version: '1.0.0', compatibleVersions: ['0.9.0'], deprecatedVersions: [] });
+    vm.register({
+      packageName: 'pkg',
+      version: '1.0.0',
+      compatibleVersions: ['0.9.0'],
+      deprecatedVersions: [],
+    });
     expect(vm.getVersion('pkg')).toBeDefined();
   });
 
   it('validates compatible version', () => {
-    vm.register({ packageName: 'pkg', version: '1.0.0', compatibleVersions: ['0.9.0'], deprecatedVersions: [] });
+    vm.register({
+      packageName: 'pkg',
+      version: '1.0.0',
+      compatibleVersions: ['0.9.0'],
+      deprecatedVersions: [],
+    });
     expect(vm.isCompatible('pkg', '1.0.0')).toBe(true);
     expect(vm.isCompatible('pkg', '0.9.0')).toBe(true);
     expect(vm.isCompatible('pkg', '0.8.0')).toBe(false);
@@ -1273,12 +1542,22 @@ describe('DistributedVersionManager', () => {
   });
 
   it('rejects deprecated versions', () => {
-    vm.register({ packageName: 'pkg', version: '1.0.0', compatibleVersions: ['0.9.0'], deprecatedVersions: ['0.9.0'] });
+    vm.register({
+      packageName: 'pkg',
+      version: '1.0.0',
+      compatibleVersions: ['0.9.0'],
+      deprecatedVersions: ['0.9.0'],
+    });
     expect(vm.isCompatible('pkg', '0.9.0')).toBe(false);
   });
 
   it('deprecates versions', () => {
-    vm.register({ packageName: 'pkg', version: '1.0.0', compatibleVersions: ['0.9.0'], deprecatedVersions: [] });
+    vm.register({
+      packageName: 'pkg',
+      version: '1.0.0',
+      compatibleVersions: ['0.9.0'],
+      deprecatedVersions: [],
+    });
     vm.deprecate('pkg', '0.9.0');
     expect(vm.isCompatible('pkg', '0.9.0')).toBe(false);
   });
@@ -1288,8 +1567,18 @@ describe('DistributedVersionManager', () => {
   });
 
   it('gets all versions', () => {
-    vm.register({ packageName: 'a', version: '1.0.0', compatibleVersions: [], deprecatedVersions: [] });
-    vm.register({ packageName: 'b', version: '2.0.0', compatibleVersions: [], deprecatedVersions: [] });
+    vm.register({
+      packageName: 'a',
+      version: '1.0.0',
+      compatibleVersions: [],
+      deprecatedVersions: [],
+    });
+    vm.register({
+      packageName: 'b',
+      version: '2.0.0',
+      compatibleVersions: [],
+      deprecatedVersions: [],
+    });
     expect(vm.getAll()).toHaveLength(2);
   });
 });
@@ -1306,25 +1595,45 @@ describe('DistributedCompatibilityValidator', () => {
   });
 
   it('validates compatible version', () => {
-    vm.register({ packageName: 'pkg', version: '1.0.0', compatibleVersions: ['0.9.0'], deprecatedVersions: [] });
+    vm.register({
+      packageName: 'pkg',
+      version: '1.0.0',
+      compatibleVersions: ['0.9.0'],
+      deprecatedVersions: [],
+    });
     const check = cv.validate('pkg', '0.9.0');
     expect(check.compatible).toBe(true);
   });
 
   it('validates all versions', () => {
-    vm.register({ packageName: 'pkg', version: '1.0.0', compatibleVersions: ['0.9.0'], deprecatedVersions: [] });
+    vm.register({
+      packageName: 'pkg',
+      version: '1.0.0',
+      compatibleVersions: ['0.9.0'],
+      deprecatedVersions: [],
+    });
     const checks = cv.validateAll();
     expect(checks.length).toBeGreaterThanOrEqual(1);
   });
 
   it('gets checks', () => {
-    vm.register({ packageName: 'pkg', version: '1.0.0', compatibleVersions: [], deprecatedVersions: [] });
+    vm.register({
+      packageName: 'pkg',
+      version: '1.0.0',
+      compatibleVersions: [],
+      deprecatedVersions: [],
+    });
     cv.validate('pkg', '1.0.0');
     expect(cv.getChecks()).toHaveLength(1);
   });
 
   it('gets failures', () => {
-    vm.register({ packageName: 'pkg', version: '1.0.0', compatibleVersions: ['0.8.0'], deprecatedVersions: ['0.8.0'] });
+    vm.register({
+      packageName: 'pkg',
+      version: '1.0.0',
+      compatibleVersions: ['0.8.0'],
+      deprecatedVersions: ['0.8.0'],
+    });
     cv.validate('pkg', '0.8.0');
     expect(cv.getFailures()).toHaveLength(1);
   });
@@ -1359,7 +1668,10 @@ describe('DistributedWorkflowCoordinator', () => {
 
   it('assigns tasks', () => {
     const tasks = coordinator.scheduleTasks('g1', 2);
-    coordinator.assignTasks(tasks.map(t => t.taskId), 'n1');
+    coordinator.assignTasks(
+      tasks.map((t) => t.taskId),
+      'n1',
+    );
     expect(scheduler.getTasksByNode('n1')).toHaveLength(2);
   });
 
@@ -1552,7 +1864,9 @@ describe('DistributedResourceAllocator', () => {
 // ============================================================================
 describe('DistributedConflictResolver', () => {
   let cr: DistributedConflictResolver;
-  beforeEach(() => { cr = new DistributedConflictResolver(); });
+  beforeEach(() => {
+    cr = new DistributedConflictResolver();
+  });
 
   it('detects conflicts', () => {
     expect(cr.detect('k1', 'n1', 'a', 'n2', 'b')).toBe(true);
@@ -1598,7 +1912,10 @@ describe('Distributed Cognition Integration', () => {
     expect(plan.taskCount).toBe(3);
 
     const tasks = coordinator.scheduleTasks('goal-1', 3);
-    coordinator.assignTasks(tasks.map(t => t.taskId), 'n1');
+    coordinator.assignTasks(
+      tasks.map((t) => t.taskId),
+      'n1',
+    );
 
     checkpointMgr.save('n1', 'session-1', { progress: 50 }, 1);
     const checkpoint = checkpointMgr.load('session-1');
@@ -1627,7 +1944,14 @@ describe('Branch Coverage Edge Cases', () => {
 
   it('ClusterMembershipManager: memberships undefined for cluster', () => {
     const cmm = new ClusterMembershipManager();
-    cmm.createCluster({ clusterId: 'c1', name: 'T', minNodes: 1, maxNodes: 5, heartbeatIntervalMs: 1000, failureThreshold: 3 });
+    cmm.createCluster({
+      clusterId: 'c1',
+      name: 'T',
+      minNodes: 1,
+      maxNodes: 5,
+      heartbeatIntervalMs: 1000,
+      failureThreshold: 3,
+    });
     cmm.leaveCluster('c1', 'nonexistent');
     expect(cmm.getMembers('c1')).toHaveLength(0);
   });
@@ -1663,7 +1987,15 @@ describe('Branch Coverage Edge Cases', () => {
   it('NodeHealthMonitor: truncates history exceeding maxHistory', () => {
     const monitor = new NodeHealthMonitor();
     for (let i = 0; i < 105; i++) {
-      monitor.recordHealth({ nodeId: 'n1', cpuUsage: 0.5, memoryUsage: 0.5, latencyMs: 10, errorRate: 0, lastCheck: new Date(), status: 'HEALTHY' });
+      monitor.recordHealth({
+        nodeId: 'n1',
+        cpuUsage: 0.5,
+        memoryUsage: 0.5,
+        latencyMs: 10,
+        errorRate: 0,
+        lastCheck: new Date(),
+        status: 'HEALTHY',
+      });
     }
     expect(monitor.getHealthHistory('n1')).toHaveLength(100);
   });
@@ -1703,7 +2035,14 @@ describe('Branch Coverage Edge Cases', () => {
 
   it('ClusterMembershipManager: joinCluster with no existing members array', () => {
     const cmm = new ClusterMembershipManager();
-    cmm.createCluster({ clusterId: 'c1', name: 'T', minNodes: 1, maxNodes: 5, heartbeatIntervalMs: 1000, failureThreshold: 3 });
+    cmm.createCluster({
+      clusterId: 'c1',
+      name: 'T',
+      minNodes: 1,
+      maxNodes: 5,
+      heartbeatIntervalMs: 1000,
+      failureThreshold: 3,
+    });
     const membership = cmm.joinCluster('c1', 'n1');
     expect(membership.status).toBe('ACTIVE');
   });
@@ -1718,7 +2057,15 @@ describe('Branch Coverage Edge Cases', () => {
 
   it('NodeHealthMonitor: evaluateStatus with healthy low values', () => {
     const monitor = new NodeHealthMonitor();
-    monitor.recordHealth({ nodeId: 'n1', cpuUsage: 0.3, memoryUsage: 0.3, latencyMs: 5, errorRate: 0, lastCheck: new Date(), status: 'HEALTHY' });
+    monitor.recordHealth({
+      nodeId: 'n1',
+      cpuUsage: 0.3,
+      memoryUsage: 0.3,
+      latencyMs: 5,
+      errorRate: 0,
+      lastCheck: new Date(),
+      status: 'HEALTHY',
+    });
     expect(monitor.evaluateStatus('n1')).toBe('HEALTHY');
   });
 
@@ -1754,7 +2101,14 @@ describe('Branch Coverage Edge Cases', () => {
 
   it('ClusterMembershipManager: joinCluster triggers memberships.get || [] branch', () => {
     const cmm = new ClusterMembershipManager();
-    cmm.createCluster({ clusterId: 'c1', name: 'T', minNodes: 1, maxNodes: 5, heartbeatIntervalMs: 1000, failureThreshold: 3 });
+    cmm.createCluster({
+      clusterId: 'c1',
+      name: 'T',
+      minNodes: 1,
+      maxNodes: 5,
+      heartbeatIntervalMs: 1000,
+      failureThreshold: 3,
+    });
     cmm.joinCluster('c1', 'n1');
     cmm.leaveCluster('c1', 'n1');
     expect(cmm.getMembers('c1')).toHaveLength(0);

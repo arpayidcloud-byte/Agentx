@@ -62,8 +62,18 @@ import {
 const DEFAULT_GIT_CONFIG: GitSandboxConfig = {
   workspaceRoot: '/root/agentx/workspace',
   allowedOperations: [
-    'git.status', 'git.diff', 'git.log', 'git.branch', 'git.show', 'git.revparse', 'git.lsfiles',
-    'git.add', 'git.restore', 'git.checkout', 'git.commit', 'git.reset',
+    'git.status',
+    'git.diff',
+    'git.log',
+    'git.branch',
+    'git.show',
+    'git.revparse',
+    'git.lsfiles',
+    'git.add',
+    'git.restore',
+    'git.checkout',
+    'git.commit',
+    'git.reset',
   ],
   blockedOperations: [],
   allowForceOperations: false,
@@ -122,7 +132,11 @@ describe('Repository Detection', () => {
   });
 
   it('parses worktree', () => {
-    const info = parseRepositoryInfo('/root/agentx', '/root/agentx/.git/worktrees/feature', 'ref: refs/heads/feature');
+    const info = parseRepositoryInfo(
+      '/root/agentx',
+      '/root/agentx/.git/worktrees/feature',
+      'ref: refs/heads/feature',
+    );
     expect(info.isWorktree).toBe(true);
   });
 
@@ -446,14 +460,28 @@ describe('Audit Events', () => {
   });
 
   it('emits git-specific audit events', () => {
-    const event = createGitInvokedEvent('git.status', '/root/agentx', 'main', 'task-1', 'trace-1', 'coding');
+    const event = createGitInvokedEvent(
+      'git.status',
+      '/root/agentx',
+      'main',
+      'task-1',
+      'trace-1',
+      'coding',
+    );
     emitter.emitGitEvent(event);
     expect(emitter.getEvents()).toHaveLength(1);
     expect(emitter.getEvents()[0].eventType).toBe('tool.invoked');
   });
 
   it('creates git invoked event', () => {
-    const event = createGitInvokedEvent('git.status', '/root/agentx', 'main', 'task-1', 'trace-1', 'coding');
+    const event = createGitInvokedEvent(
+      'git.status',
+      '/root/agentx',
+      'main',
+      'task-1',
+      'trace-1',
+      'coding',
+    );
     expect(event.eventType).toBe('tool.invoked');
     expect(event.operation).toBe('git.status');
     expect(event.repository).toBe('/root/agentx');
@@ -461,7 +489,17 @@ describe('Audit Events', () => {
   });
 
   it('creates git finished event', () => {
-    const event = createGitFinishedEvent('git.status', '/root/agentx', 'main', 'abc123', 0, 100, 'task-1', 'trace-1', 'coding');
+    const event = createGitFinishedEvent(
+      'git.status',
+      '/root/agentx',
+      'main',
+      'abc123',
+      0,
+      100,
+      'task-1',
+      'trace-1',
+      'coding',
+    );
     expect(event.eventType).toBe('tool.finished');
     expect(event.exitCode).toBe(0);
     expect(event.durationMs).toBe(100);
@@ -475,8 +513,12 @@ describe('Audit Events', () => {
   });
 
   it('filters events by operation', () => {
-    emitter.emitGitEvent(createGitInvokedEvent('git.status', '/root/agentx', 'main', 'task-1', 'trace-1', 'coding'));
-    emitter.emitGitEvent(createGitInvokedEvent('git.diff', '/root/agentx', 'main', 'task-2', 'trace-2', 'coding'));
+    emitter.emitGitEvent(
+      createGitInvokedEvent('git.status', '/root/agentx', 'main', 'task-1', 'trace-1', 'coding'),
+    );
+    emitter.emitGitEvent(
+      createGitInvokedEvent('git.diff', '/root/agentx', 'main', 'task-2', 'trace-2', 'coding'),
+    );
 
     const statusEvents = emitter.getEventsByOperation('git.status');
     expect(statusEvents.length).toBeGreaterThanOrEqual(1);

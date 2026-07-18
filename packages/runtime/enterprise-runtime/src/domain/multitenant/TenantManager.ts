@@ -22,9 +22,16 @@ export class MultiTenantManager {
 
   create(name: string, plan: string, quota: TenantQuota): TenantEntry {
     const tenantId = `tenant-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ tenantId, name, plan, quota })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ tenantId, name, plan, quota }))
+      .digest('hex');
     const entry: TenantEntry = Object.freeze({
-      tenantId, name, plan, quota: { ...quota }, createdAt: new Date(), checksum,
+      tenantId,
+      name,
+      plan,
+      quota: { ...quota },
+      createdAt: new Date(),
+      checksum,
     });
     this.tenants.set(tenantId, entry);
     return entry;
@@ -36,8 +43,15 @@ export class MultiTenantManager {
 
   updateQuota(tenantId: string, quota: TenantQuota): TenantEntry {
     const existing = this.tenants.get(tenantId);
-    if (!existing) throw new InvariantViolationError(`Tenant not found: ${tenantId}`, 'TENANT_NOT_FOUND', 'MultiTenantManager');
-    const checksum = createHash('sha256').update(JSON.stringify({ ...existing, quota })).digest('hex');
+    if (!existing)
+      throw new InvariantViolationError(
+        `Tenant not found: ${tenantId}`,
+        'TENANT_NOT_FOUND',
+        'MultiTenantManager',
+      );
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ ...existing, quota }))
+      .digest('hex');
     const updated: TenantEntry = Object.freeze({ ...existing, quota: { ...quota }, checksum });
     this.tenants.set(tenantId, updated);
     return updated;
@@ -65,9 +79,15 @@ export class WorkspaceManager {
 
   create(tenantId: string, name: string): WorkspaceEntry {
     const workspaceId = `ws-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ workspaceId, tenantId, name })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ workspaceId, tenantId, name }))
+      .digest('hex');
     const entry: WorkspaceEntry = Object.freeze({
-      workspaceId, tenantId, name, createdAt: new Date(), checksum,
+      workspaceId,
+      tenantId,
+      name,
+      createdAt: new Date(),
+      checksum,
     });
     this.workspaces.set(workspaceId, entry);
     return entry;
@@ -78,7 +98,7 @@ export class WorkspaceManager {
   }
 
   getByTenant(tenantId: string): WorkspaceEntry[] {
-    return Array.from(this.workspaces.values()).filter(w => w.tenantId === tenantId);
+    return Array.from(this.workspaces.values()).filter((w) => w.tenantId === tenantId);
   }
 
   delete(workspaceId: string): boolean {
@@ -106,9 +126,16 @@ export class SessionManager {
     const sessionId = `sess-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
     const now = new Date();
     const expiresAt = new Date(now.getTime() + ttlMs);
-    const checksum = createHash('sha256').update(JSON.stringify({ sessionId, tenantId, userId })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ sessionId, tenantId, userId }))
+      .digest('hex');
     const entry: SessionEntry = Object.freeze({
-      sessionId, tenantId, userId, createdAt: now, expiresAt, checksum,
+      sessionId,
+      tenantId,
+      userId,
+      createdAt: now,
+      expiresAt,
+      checksum,
     });
     this.sessions.set(sessionId, entry);
     return entry;

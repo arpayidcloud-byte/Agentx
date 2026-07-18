@@ -42,7 +42,7 @@ export class MemoryCheckpointStore implements ICheckpointStore {
 
   async delete(checkpointId: string): Promise<void> {
     for (const [wfId, list] of this.checkpoints.entries()) {
-      const filtered = list.filter(cp => cp.id !== checkpointId);
+      const filtered = list.filter((cp) => cp.id !== checkpointId);
       if (filtered.length < list.length) {
         this.checkpoints.set(wfId, filtered);
         return;

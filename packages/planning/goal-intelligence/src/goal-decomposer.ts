@@ -13,7 +13,10 @@ export class GoalDecomposer {
       throw new DecompositionError('Must decompose into at least one subgoal', 'decomposer');
     }
     if (objectiveCount > goal.maxDepth) {
-      throw new DecompositionError(`Decomposition exceeds maxDepth of ${goal.maxDepth}`, 'decomposer');
+      throw new DecompositionError(
+        `Decomposition exceeds maxDepth of ${goal.maxDepth}`,
+        'decomposer',
+      );
     }
 
     const subgoals: SubGoal[] = [];

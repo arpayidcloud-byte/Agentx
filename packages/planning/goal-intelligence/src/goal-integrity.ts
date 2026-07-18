@@ -15,7 +15,7 @@ export class GoalIntegrityValidator {
 
   validatePlanningConsistency(plan: PlanningPlan): boolean {
     if (plan.steps.length === 0) return false;
-    const stepIds = new Set(plan.steps.map(s => s.id));
+    const stepIds = new Set(plan.steps.map((s) => s.id));
     if (stepIds.size !== plan.steps.length) return false;
     for (const step of plan.steps) {
       for (const dep of step.dependencies || []) {

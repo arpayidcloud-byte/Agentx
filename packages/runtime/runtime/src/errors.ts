@@ -4,7 +4,11 @@
  */
 
 export class RuntimeError extends Error {
-  constructor(message: string, public readonly code: string, public readonly source: string) {
+  constructor(
+    message: string,
+    public readonly code: string,
+    public readonly source: string,
+  ) {
     super(message);
     this.name = this.constructor.name;
     Object.setPrototypeOf(this, new.target.prototype);

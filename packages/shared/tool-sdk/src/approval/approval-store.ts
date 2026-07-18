@@ -43,6 +43,6 @@ export class InMemoryApprovalStore implements IApprovalStore {
 
   /** @inheritdoc */
   async listByState(state: ApprovalState): Promise<ApprovalRequest[]> {
-    return Array.from(this.requests.values()).filter(r => r.state === state);
+    return Array.from(this.requests.values()).filter((r) => r.state === state);
   }
 }

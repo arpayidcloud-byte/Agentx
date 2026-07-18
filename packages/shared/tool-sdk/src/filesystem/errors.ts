@@ -38,6 +38,9 @@ export class InvalidEncodingError extends SandboxViolationError {
 
 export class AtomicWriteError extends ToolError {
   constructor(message: string, originalError?: Error) {
-    super(`Atomic write operation failed: ${message} (Original: ${originalError?.message})`, 'ATOMIC_WRITE_ERROR');
+    super(
+      `Atomic write operation failed: ${message} (Original: ${originalError?.message})`,
+      'ATOMIC_WRITE_ERROR',
+    );
   }
 }

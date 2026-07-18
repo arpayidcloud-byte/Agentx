@@ -7,7 +7,11 @@ import { WorkflowCertificate, WorkflowState } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class WorkflowCertificationEngine {
-  async certify(workflowId: string, state: WorkflowState, version: string): Promise<WorkflowCertificate> {
+  async certify(
+    workflowId: string,
+    state: WorkflowState,
+    version: string,
+  ): Promise<WorkflowCertificate> {
     const issues: string[] = [];
     const start = Date.now();
 
@@ -25,7 +29,9 @@ export class WorkflowCertificationEngine {
       score,
       status: allPassed ? 'CERTIFIED' : 'REJECTED',
       issues,
-      checksum: createHash('sha256').update(JSON.stringify({ workflowId, version, score })).digest('hex'),
+      checksum: createHash('sha256')
+        .update(JSON.stringify({ workflowId, version, score }))
+        .digest('hex'),
       issuedAt: new Date(),
     };
 

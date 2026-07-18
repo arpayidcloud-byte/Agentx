@@ -11,7 +11,7 @@ export class DecisionEngine {
       throw new Error('No decision choices provided');
     }
 
-    const safe = choices.filter(c => c.safety === 'SAFE');
+    const safe = choices.filter((c) => c.safety === 'SAFE');
     if (safe.length === 0) {
       const bestUnsafe = [...choices].sort((a, b) => b.confidence - a.confidence);
       return bestUnsafe[0];

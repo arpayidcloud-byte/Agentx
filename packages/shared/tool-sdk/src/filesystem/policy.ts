@@ -14,15 +14,15 @@ export class FilesystemPolicy implements IFilesystemPolicy {
 
   public isAllowed(realPath: string): boolean {
     const pathParts = realPath.split('/').filter(Boolean);
-    
+
     if (!this.config.allowHiddenFiles) {
-      const hasHiddenPart = pathParts.some(part => part.startsWith('.'));
+      const hasHiddenPart = pathParts.some((part) => part.startsWith('.'));
       if (hasHiddenPart) {
         return false;
       }
     }
 
-    return this.config.allow.some(pattern => this.matchesPattern(realPath, pattern));
+    return this.config.allow.some((pattern) => this.matchesPattern(realPath, pattern));
   }
 
   public validateFileSize(sizeBytes: number): void {
@@ -35,7 +35,7 @@ export class FilesystemPolicy implements IFilesystemPolicy {
     // Normalize both paths to relative from workspace root
     const normalizedPath = filePath.replace(/^\//, '');
     const normalizedPattern = pattern.replace(/^\//, '');
-    
+
     const patternParts = normalizedPattern.split('/');
     const pathParts = normalizedPath.split('/');
 

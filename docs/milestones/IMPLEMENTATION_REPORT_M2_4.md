@@ -4,31 +4,31 @@
 
 ### `packages/tool-sdk/src/git/` (18 file)
 
-| File | Deskripsi |
-|------|-----------|
-| `interfaces.ts` | Tipe data & kontrak antarmuka: `GitRepositoryInfo`, `GitSandboxConfig`, `GitOperation`, `GitExecutionRequest`, `GitExecutionResult`, `GitStatusOutput`, `GitDiffOutput`, `GitLogOutput`, `GitBranchOutput`, `GitAuditEvent`, `GitApprovalClassification` |
-| `errors.ts` | Hierarki error: `GitRepositoryNotFoundError`, `GitWorkspaceEscapeError`, `GitInvalidBranchError`, `GitInvalidRefError`, `GitForceNotAllowedError`, `GitTimeoutError`, `GitEmptyCommitError`, `GitOrphanBranchError` |
-| `repository.ts` | Deteksi repository: `createNonGitRepositoryInfo`, `parseRepositoryInfo`, `isWithinWorkspace` |
-| `validator.ts` | Validasi branch name, ref, commit message, dangerous flags detection |
-| `sandbox.ts` | `GitSandbox` — workspace jail enforcement, operation validation |
-| `executor.ts` | `GitExecutor` — pipeline eksekusi git via `child_process.spawn()` |
-| `git-status.ts` | `GitStatusTool` — read-only status query dengan parsing |
-| `git-diff.ts` | `GitDiffTool` — read-only diff query dengan parsing |
-| `git-log.ts` | `GitLogTool` — read-only log query dengan parsing |
-| `git-branch.ts` | `GitBranchTool` — read-only branch listing |
-| `git-add.ts` | `GitAddTool` — stage changes (Potentially Destructive) |
-| `git-checkout.ts` | `GitCheckoutTool` — switch branches (Potentially Destructive) |
-| `git-commit.ts` | `GitCommitTool` — create commits (Potentially Destructive) |
-| `git-restore.ts` | `GitRestoreTool` — restore files (Potentially Destructive) |
-| `git-reset.ts` | `GitResetTool` — reset history (Destructive) |
-| `approval.ts` | `classifyGitOperation` — klasifikasi risiko berdasarkan operasi |
-| `audit.ts` | `GitAuditEmitter` — audit trail untuk git operations |
-| `index.ts` | Barrel exports |
+| File              | Deskripsi                                                                                                                                                                                                                                                |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `interfaces.ts`   | Tipe data & kontrak antarmuka: `GitRepositoryInfo`, `GitSandboxConfig`, `GitOperation`, `GitExecutionRequest`, `GitExecutionResult`, `GitStatusOutput`, `GitDiffOutput`, `GitLogOutput`, `GitBranchOutput`, `GitAuditEvent`, `GitApprovalClassification` |
+| `errors.ts`       | Hierarki error: `GitRepositoryNotFoundError`, `GitWorkspaceEscapeError`, `GitInvalidBranchError`, `GitInvalidRefError`, `GitForceNotAllowedError`, `GitTimeoutError`, `GitEmptyCommitError`, `GitOrphanBranchError`                                      |
+| `repository.ts`   | Deteksi repository: `createNonGitRepositoryInfo`, `parseRepositoryInfo`, `isWithinWorkspace`                                                                                                                                                             |
+| `validator.ts`    | Validasi branch name, ref, commit message, dangerous flags detection                                                                                                                                                                                     |
+| `sandbox.ts`      | `GitSandbox` — workspace jail enforcement, operation validation                                                                                                                                                                                          |
+| `executor.ts`     | `GitExecutor` — pipeline eksekusi git via `child_process.spawn()`                                                                                                                                                                                        |
+| `git-status.ts`   | `GitStatusTool` — read-only status query dengan parsing                                                                                                                                                                                                  |
+| `git-diff.ts`     | `GitDiffTool` — read-only diff query dengan parsing                                                                                                                                                                                                      |
+| `git-log.ts`      | `GitLogTool` — read-only log query dengan parsing                                                                                                                                                                                                        |
+| `git-branch.ts`   | `GitBranchTool` — read-only branch listing                                                                                                                                                                                                               |
+| `git-add.ts`      | `GitAddTool` — stage changes (Potentially Destructive)                                                                                                                                                                                                   |
+| `git-checkout.ts` | `GitCheckoutTool` — switch branches (Potentially Destructive)                                                                                                                                                                                            |
+| `git-commit.ts`   | `GitCommitTool` — create commits (Potentially Destructive)                                                                                                                                                                                               |
+| `git-restore.ts`  | `GitRestoreTool` — restore files (Potentially Destructive)                                                                                                                                                                                               |
+| `git-reset.ts`    | `GitResetTool` — reset history (Destructive)                                                                                                                                                                                                             |
+| `approval.ts`     | `classifyGitOperation` — klasifikasi risiko berdasarkan operasi                                                                                                                                                                                          |
+| `audit.ts`        | `GitAuditEmitter` — audit trail untuk git operations                                                                                                                                                                                                     |
+| `index.ts`        | Barrel exports                                                                                                                                                                                                                                           |
 
 ### `packages/tool-sdk/test/git/` (1 file)
 
-| File | Deskripsi |
-|------|-----------|
+| File          | Deskripsi    |
+| ------------- | ------------ |
 | `git.test.ts` | 74 test case |
 
 ---
@@ -146,10 +146,10 @@ sequenceDiagram
     S->>V: validateArgs()
     S->>S: isWithinWorkspace()
     S-->>E: GitRepositoryInfo
-    
+
     E->>AE: emit(tool.invoked)
     E->>P: spawn('git', args, { cwd })
-    
+
     alt Normal Exit
         P-->>E: { stdout, stderr, exitCode }
         E->>AE: emit(tool.finished)
@@ -205,20 +205,20 @@ flowchart TD
 
 ## 6. Alur Approval
 
-| Operasi | Risk Score | Klasifikasi | Membutuhkan Approval |
-|---------|-----------|-------------|---------------------|
-| git.status | 10 | Safe | Tidak |
-| git.diff | 10 | Safe | Tidak |
-| git.log | 10 | Safe | Tidak |
-| git.branch | 10 | Safe | Tidak |
-| git.show | 10 | Safe | Tidak |
-| git.revparse | 10 | Safe | Tidak |
-| git.lsfiles | 10 | Safe | Tidak |
-| git.add | 40 | PotentiallyDestructive | Ya |
-| git.restore | 60 | PotentiallyDestructive | Ya |
-| git.checkout | 70 | PotentiallyDestructive | Ya |
-| git.commit | 80 | PotentiallyDestructive | Ya |
-| git.reset | 95 | Destructive | Ya (ADR-0005) |
+| Operasi      | Risk Score | Klasifikasi            | Membutuhkan Approval |
+| ------------ | ---------- | ---------------------- | -------------------- |
+| git.status   | 10         | Safe                   | Tidak                |
+| git.diff     | 10         | Safe                   | Tidak                |
+| git.log      | 10         | Safe                   | Tidak                |
+| git.branch   | 10         | Safe                   | Tidak                |
+| git.show     | 10         | Safe                   | Tidak                |
+| git.revparse | 10         | Safe                   | Tidak                |
+| git.lsfiles  | 10         | Safe                   | Tidak                |
+| git.add      | 40         | PotentiallyDestructive | Ya                   |
+| git.restore  | 60         | PotentiallyDestructive | Ya                   |
+| git.checkout | 70         | PotentiallyDestructive | Ya                   |
+| git.commit   | 80         | PotentiallyDestructive | Ya                   |
+| git.reset    | 95         | Destructive            | Ya (ADR-0005)        |
 
 ---
 
@@ -233,9 +233,9 @@ sequenceDiagram
     Note over E: Mulai Eksekusi
     E->>AE: emitGitEvent(tool.invoked)
     AE->>L: { eventType, operation, repository, branch, agentRole }
-    
+
     E->>E: spawn git command
-    
+
     alt Sukses
         E->>AE: emitGitEvent(tool.finished)
         AE->>L: { exitCode, durationMs, commitHash }
@@ -249,51 +249,52 @@ sequenceDiagram
 
 ## 8. Daftar Keamanan
 
-| Persyaratan | Status | Referensi |
-|-------------|--------|-----------|
-| Semua operasi dalam workspaceRoot | ✅ | Volume 7 Bab 5 |
-| Tidak mengakses ~/.gitconfig | ✅ | Volume 7 Bab 5 |
-| Tidak mengakses ~/.ssh | ✅ | Volume 7 Bab 5 |
-| Tidak membaca credential git | ✅ | Volume 7 Bab 5 |
-| Tidak mengikuti symlink keluar workspace | ✅ | Volume 7 Bab 5 |
-| child_process.spawn() ONLY | ✅ | Volume 7 Bab 5 |
-| Tidak menggunakan exec()/execSync() | ✅ | Volume 7 Bab 5 |
-| Tidak menggunakan shell=true | ✅ | Volume 7 Bab 5 |
-| Force operations membutuhkan izin | ✅ | ADR-0005 |
-| Orphan branch membutuhkan izin | ✅ | ADR-0005 |
-| Empty commit membutuhkan izin | ✅ | Volume 7 |
-| Audit trail lengkap | ✅ | Volume 2, Volume 13 |
-| Structured logging | ✅ | Volume 13 |
-| Workspace jail enforcement | ✅ | Volume 7 Bab 5 |
+| Persyaratan                              | Status | Referensi           |
+| ---------------------------------------- | ------ | ------------------- |
+| Semua operasi dalam workspaceRoot        | ✅     | Volume 7 Bab 5      |
+| Tidak mengakses ~/.gitconfig             | ✅     | Volume 7 Bab 5      |
+| Tidak mengakses ~/.ssh                   | ✅     | Volume 7 Bab 5      |
+| Tidak membaca credential git             | ✅     | Volume 7 Bab 5      |
+| Tidak mengikuti symlink keluar workspace | ✅     | Volume 7 Bab 5      |
+| child_process.spawn() ONLY               | ✅     | Volume 7 Bab 5      |
+| Tidak menggunakan exec()/execSync()      | ✅     | Volume 7 Bab 5      |
+| Tidak menggunakan shell=true             | ✅     | Volume 7 Bab 5      |
+| Force operations membutuhkan izin        | ✅     | ADR-0005            |
+| Orphan branch membutuhkan izin           | ✅     | ADR-0005            |
+| Empty commit membutuhkan izin            | ✅     | Volume 7            |
+| Audit trail lengkap                      | ✅     | Volume 2, Volume 13 |
+| Structured logging                       | ✅     | Volume 13           |
+| Workspace jail enforcement               | ✅     | Volume 7 Bab 5      |
 
 ---
 
 ## 9. Mapping RFC / ADR
 
-| Dokumen | Pemetaan |
-|---------|----------|
-| **Volume 7 Bab 5** | Seluruh validasi operasi, sandboxing, permission |
-| **Volume 2** | Event audit (`tool.invoked`, `tool.finished`, `tool.failed`) |
-| **Volume 13** | Structured logging untuk audit events |
-| **ADR-0005** | git.reset = Risk 95 (Destructive), git.add = Risk 40 |
-| **RFC-0027** | Manifest validation untuk git tools |
-| **RFC-0042** | TypeScript strict mode, JSDoc pada semua API |
-| **Constitution Principle 3** | Provider-agnostic — tidak ada vendor SDK |
-| **Constitution Principle 7** | Fail-closed: setiap validasi gagal sebelum I/O |
-| **Threat T-002** | Workspace escape prevention |
+| Dokumen                      | Pemetaan                                                     |
+| ---------------------------- | ------------------------------------------------------------ |
+| **Volume 7 Bab 5**           | Seluruh validasi operasi, sandboxing, permission             |
+| **Volume 2**                 | Event audit (`tool.invoked`, `tool.finished`, `tool.failed`) |
+| **Volume 13**                | Structured logging untuk audit events                        |
+| **ADR-0005**                 | git.reset = Risk 95 (Destructive), git.add = Risk 40         |
+| **RFC-0027**                 | Manifest validation untuk git tools                          |
+| **RFC-0042**                 | TypeScript strict mode, JSDoc pada semua API                 |
+| **Constitution Principle 3** | Provider-agnostic — tidak ada vendor SDK                     |
+| **Constitution Principle 7** | Fail-closed: setiap validasi gagal sebelum I/O               |
+| **Threat T-002**             | Workspace escape prevention                                  |
 
 ---
 
 ## 10. Coverage
 
-| Metrik | Nilai |
-|--------|-------|
+| Metrik         | Nilai  |
+| -------------- | ------ |
 | **Statements** | 85.66% |
-| **Branches** | 89.06% |
-| **Functions** | 81.46% |
-| **Lines** | 85.66% |
+| **Branches**   | 89.06% |
+| **Functions**  | 81.46% |
+| **Lines**      | 85.66% |
 
 ### Kategori Test (74 test)
+
 - ✅ Repository Detection (7 test)
 - ✅ Branch Validation (2 test)
 - ✅ Dangerous Flags Detection (7 test)
@@ -313,12 +314,12 @@ sequenceDiagram
 
 ## 11. Pekerjaan Tersisa
 
-| Item | Milestone | Referensi |
-|------|-----------|-----------|
-| Integration test dengan git repository nyata | M2.4 Integration | Volume 7 |
-| Audit event emission ke Event Bus | M2.5 | Volume 2, Volume 13 |
-| Approval gate untuk destructive operations | M2.5 | Volume 5, Volume 7 |
-| Plugin execution sandbox | M3.x | Volume 8 |
+| Item                                         | Milestone        | Referensi           |
+| -------------------------------------------- | ---------------- | ------------------- |
+| Integration test dengan git repository nyata | M2.4 Integration | Volume 7            |
+| Audit event emission ke Event Bus            | M2.5             | Volume 2, Volume 13 |
+| Approval gate untuk destructive operations   | M2.5             | Volume 5, Volume 7  |
+| Plugin execution sandbox                     | M3.x             | Volume 8            |
 
 ---
 

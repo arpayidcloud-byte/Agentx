@@ -43,7 +43,7 @@ export class InMemoryCheckpointManager implements ICheckpointManager {
   /** @inheritdoc */
   async delete(checkpointId: string): Promise<void> {
     for (const [workflowId, list] of this.checkpoints.entries()) {
-      const filtered = list.filter(cp => cp.id !== checkpointId);
+      const filtered = list.filter((cp) => cp.id !== checkpointId);
       if (filtered.length < list.length) {
         this.checkpoints.set(workflowId, filtered);
         return;
@@ -60,7 +60,7 @@ export function createSnapshot(
   workflowId: string,
   nodeStates: Map<string, any>,
   results: Map<string, any>,
-  version: number
+  version: number,
 ): ExecutionSnapshot {
   return {
     workflowId,
@@ -74,9 +74,7 @@ export function createSnapshot(
 /**
  * Restores state from snapshot
  */
-export function restoreFromSnapshot(
-  snapshot: ExecutionSnapshot
-): {
+export function restoreFromSnapshot(snapshot: ExecutionSnapshot): {
   nodeStates: Map<string, any>;
   results: Map<string, any>;
 } {

@@ -43,7 +43,8 @@ export class LearningMetricsCollector {
       reflectionsCreated: this.reflectionsCreated,
       adaptationsGenerated: this.adaptationsGenerated,
       improvementsGenerated: this.improvementsGenerated,
-      averageConfidenceDelta: this.learningRuns > 0 ? this.totalConfidenceDelta / this.learningRuns : 0,
+      averageConfidenceDelta:
+        this.learningRuns > 0 ? this.totalConfidenceDelta / this.learningRuns : 0,
       successRate: this.learningRuns > 0 ? (this.totalSuccesses / this.learningRuns) * 100 : 0,
       failureRate: this.learningRuns > 0 ? (this.totalFailures / this.learningRuns) * 100 : 0,
     };

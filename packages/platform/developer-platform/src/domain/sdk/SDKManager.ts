@@ -15,8 +15,18 @@ export class SDKRegistry {
 
   register(name: string, language: string, version: string): SDKEntry {
     const sdkId = `sdk-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ sdkId, name, language, version })).digest('hex');
-    const entry: SDKEntry = Object.freeze({ sdkId, name, language, version, status: 'PUBLISHED', publishedAt: new Date(), checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ sdkId, name, language, version }))
+      .digest('hex');
+    const entry: SDKEntry = Object.freeze({
+      sdkId,
+      name,
+      language,
+      version,
+      status: 'PUBLISHED',
+      publishedAt: new Date(),
+      checksum,
+    });
     this.sdks.set(sdkId, entry);
     return entry;
   }
@@ -26,7 +36,7 @@ export class SDKRegistry {
   }
 
   findByLanguage(language: string): SDKEntry[] {
-    return Array.from(this.sdks.values()).filter(s => s.language === language);
+    return Array.from(this.sdks.values()).filter((s) => s.language === language);
   }
 
   deprecate(sdkId: string): void {
@@ -54,7 +64,9 @@ export class SDKGenerator {
     const codeId = `gen-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
     const content = `// Generated ${language} SDK for ${sdkId}`;
     const filename = `agentx-${language}.ts`;
-    const checksum = createHash('sha256').update(JSON.stringify({ codeId, sdkId, language, content })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ codeId, sdkId, language, content }))
+      .digest('hex');
     return Object.freeze({ codeId, sdkId, content, filename, checksum });
   }
 }
@@ -78,8 +90,16 @@ export class APISpecManager {
 
   create(title: string, version: string, endpoints: APIEndpoint[]): APISpec {
     const specId = `spec-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ specId, title, version, endpoints })).digest('hex');
-    const spec: APISpec = Object.freeze({ specId, title, version, endpoints: [...endpoints], checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ specId, title, version, endpoints }))
+      .digest('hex');
+    const spec: APISpec = Object.freeze({
+      specId,
+      title,
+      version,
+      endpoints: [...endpoints],
+      checksum,
+    });
     this.specs.set(specId, spec);
     return spec;
   }
@@ -104,8 +124,13 @@ export interface OpenAPIDocument {
 export class OpenAPIGenerator {
   generate(spec: APISpec, format: 'JSON' | 'YAML'): OpenAPIDocument {
     const documentId = `oa-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const content = format === 'JSON' ? JSON.stringify({ openapi: '3.0.0', info: { title: spec.title, version: spec.version } }) : `openapi: 3.0.0`;
-    const checksum = createHash('sha256').update(JSON.stringify({ documentId, specId: spec.specId, format, content })).digest('hex');
+    const content =
+      format === 'JSON'
+        ? JSON.stringify({ openapi: '3.0.0', info: { title: spec.title, version: spec.version } })
+        : `openapi: 3.0.0`;
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ documentId, specId: spec.specId, format, content }))
+      .digest('hex');
     return Object.freeze({ documentId, specId: spec.specId, format, content, checksum });
   }
 }
@@ -122,7 +147,9 @@ export class ClientGenerator {
   generate(language: string, specId: string): ClientCode {
     const clientId = `cli-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
     const content = `// Generated ${language} client`;
-    const checksum = createHash('sha256').update(JSON.stringify({ clientId, language, specId })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ clientId, language, specId }))
+      .digest('hex');
     return Object.freeze({ clientId, language, specId, content, checksum });
   }
 }
@@ -140,7 +167,9 @@ export class CLIEngine {
 
   register(name: string, description: string, handler: string): CLICommand {
     const commandId = `cmd-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ commandId, name, description, handler })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ commandId, name, description, handler }))
+      .digest('hex');
     const cmd: CLICommand = Object.freeze({ commandId, name, description, handler, checksum });
     this.commands.set(commandId, cmd);
     return cmd;

@@ -20,7 +20,9 @@ export class DistributedResourceAllocator {
     if (!existing) throw new Error(`Node not found: ${nodeId}`);
 
     const allocationId = `ra-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ allocationId, nodeId, resourceType, amount })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ allocationId, nodeId, resourceType, amount }))
+      .digest('hex');
     const allocation: ResourceAllocation = Object.freeze({
       allocationId,
       nodeId,
@@ -43,7 +45,7 @@ export class DistributedResourceAllocator {
   release(allocationId: string, nodeId: string): boolean {
     const nodeAllocations = this.allocations.get(nodeId);
     if (!nodeAllocations) return false;
-    const idx = nodeAllocations.findIndex(a => a.allocationId === allocationId);
+    const idx = nodeAllocations.findIndex((a) => a.allocationId === allocationId);
     if (idx >= 0) {
       nodeAllocations.splice(idx, 1);
       return true;
@@ -54,7 +56,7 @@ export class DistributedResourceAllocator {
   getTotalAllocated(nodeId: string, resourceType: string): number {
     const nodeAllocations = this.allocations.get(nodeId) || [];
     return nodeAllocations
-      .filter(a => a.resourceType === resourceType)
+      .filter((a) => a.resourceType === resourceType)
       .reduce((sum, a) => sum + a.amount, 0);
   }
 }

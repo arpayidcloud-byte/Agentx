@@ -35,13 +35,23 @@ import {
 const MockValidProvider: IProvider = {
   getMetadata: () => ({ id: 'p1', name: 'Provider One', version: '1.0.0', type: 'queue' }),
   getCapabilities: () => ({ priorityQueue: true }),
-  healthCheck: async () => ({ healthy: true, latencyMs: 10, lastChecked: new Date(), status: 'UP' }),
+  healthCheck: async () => ({
+    healthy: true,
+    latencyMs: 10,
+    lastChecked: new Date(),
+    status: 'UP',
+  }),
 };
 
 const MockUnhealthyProvider: IProvider = {
   getMetadata: () => ({ id: 'p_bad', name: 'Bad Provider', version: '1.0.0', type: 'queue' }),
   getCapabilities: () => ({}),
-  healthCheck: async () => ({ healthy: false, latencyMs: 0, lastChecked: new Date(), status: 'DOWN' }),
+  healthCheck: async () => ({
+    healthy: false,
+    latencyMs: 0,
+    lastChecked: new Date(),
+    status: 'DOWN',
+  }),
 };
 
 describe('Certification Errors', () => {
@@ -97,7 +107,9 @@ describe('Provider Audits', () => {
   });
 
   it('detects unhealthy provider', async () => {
-    await expect(new ProviderHealthAudit().run(MockUnhealthyProvider)).rejects.toThrow(ValidationError);
+    await expect(new ProviderHealthAudit().run(MockUnhealthyProvider)).rejects.toThrow(
+      ValidationError,
+    );
   });
 });
 
@@ -111,8 +123,16 @@ describe('Validators and Score', () => {
   it('calculates readiness score', () => {
     const calc = new ProviderReadinessScore();
     const score = calc.calculate({
-      performance: 100, reliability: 100, availability: 100, recovery: 100, security: 100,
-      resourceEfficiency: 100, compatibility: 100, maintainability: 100, documentation: 100, observability: 100
+      performance: 100,
+      reliability: 100,
+      availability: 100,
+      recovery: 100,
+      security: 100,
+      resourceEfficiency: 100,
+      compatibility: 100,
+      maintainability: 100,
+      documentation: 100,
+      observability: 100,
     });
     expect(score.overall).toBe(100);
   });
@@ -128,7 +148,16 @@ describe('Validators and Score', () => {
 describe('Registry and History', () => {
   it('manages registry correctly', () => {
     const registry = new ProviderRegistry();
-    const cert = { providerId: 'p1', providerVersion: '1', score: 100, grade: 'Production', signature: 'sig', issuedAt: new Date(), certificationVersion: '1.0', id: '1' };
+    const cert = {
+      providerId: 'p1',
+      providerVersion: '1',
+      score: 100,
+      grade: 'Production',
+      signature: 'sig',
+      issuedAt: new Date(),
+      certificationVersion: '1.0',
+      id: '1',
+    };
     registry.register(cert);
     expect(registry.isRegistered('p1')).toBe(true);
     expect(() => registry.register(cert)).toThrow(IntegrityError);
@@ -149,7 +178,7 @@ describe('Signature and Checksum', () => {
   it('generates signatures and checksums', () => {
     const sig = new PlatformSignature();
     expect(sig.sign('test')).toContain('sig-');
-    
+
     const cs = new ChecksumGenerator();
     expect(cs.generate('data')).toBeDefined();
   });

@@ -16,6 +16,9 @@ export function createContext(traceId: string, sessionId: string): RuntimeContex
   return { traceId, sessionId, metadata: {} };
 }
 
-export function extendContext(ctx: RuntimeContext, updates: Partial<RuntimeContext>): RuntimeContext {
+export function extendContext(
+  ctx: RuntimeContext,
+  updates: Partial<RuntimeContext>,
+): RuntimeContext {
   return { ...ctx, ...updates, metadata: { ...ctx.metadata, ...updates.metadata } };
 }

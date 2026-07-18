@@ -3,11 +3,22 @@
  * @description Creates immutable certification reports.
  */
 
-import { ProviderMetadata, ReadinessScore, ProviderGrade, CertificationReport } from './interfaces.js';
+import {
+  ProviderMetadata,
+  ReadinessScore,
+  ProviderGrade,
+  CertificationReport,
+} from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class ReportGenerator {
-  generate(provider: ProviderMetadata, score: ReadinessScore, grade: ProviderGrade, runtimeVersion: string, platformVersion: string): CertificationReport {
+  generate(
+    provider: ProviderMetadata,
+    score: ReadinessScore,
+    grade: ProviderGrade,
+    runtimeVersion: string,
+    platformVersion: string,
+  ): CertificationReport {
     const report: CertificationReport = {
       id: `rpt-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,
       provider,

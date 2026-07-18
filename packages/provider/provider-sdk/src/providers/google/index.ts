@@ -7,10 +7,7 @@ import {
   ProviderConfiguration,
 } from '../../interfaces.js';
 import { CredentialResolver } from '../../conformance/credential-resolver.js';
-import {
-  ProviderInvalidCredentialsError,
-  ProviderError,
-} from '../../errors.js';
+import { ProviderInvalidCredentialsError, ProviderError } from '../../errors.js';
 
 export interface GoogleProviderConfig extends ProviderConfiguration {
   credentialResolver: CredentialResolver;
@@ -45,9 +42,15 @@ export class GoogleProvider extends BaseProvider {
     if (req.context) {
       for (const msg of req.context) {
         if (typeof msg.content === 'string') {
-          contents.push({ role: msg.role === 'assistant' ? 'model' : 'user', parts: [{ text: msg.content }] });
+          contents.push({
+            role: msg.role === 'assistant' ? 'model' : 'user',
+            parts: [{ text: msg.content }],
+          });
         } else {
-          contents.push({ role: msg.role === 'assistant' ? 'model' : 'user', parts: [{ text: JSON.stringify(msg.content) }] });
+          contents.push({
+            role: msg.role === 'assistant' ? 'model' : 'user',
+            parts: [{ text: JSON.stringify(msg.content) }],
+          });
         }
       }
     }
@@ -56,18 +59,22 @@ export class GoogleProvider extends BaseProvider {
     // Simplified tool mapping
     let tools;
     if (req.tools && req.tools.length > 0) {
-      tools = [{
-        functionDeclarations: req.tools.map(t => ({
-          name: t.name,
-          description: t.description,
-          parameters: t.parameters,
-        }))
-      }];
+      tools = [
+        {
+          functionDeclarations: req.tools.map((t) => ({
+            name: t.name,
+            description: t.description,
+            parameters: t.parameters,
+          })),
+        },
+      ];
     }
 
     const response = await model.generateContent({
       contents,
-      systemInstruction: req.systemPrompt ? { role: 'system', parts: [{ text: req.systemPrompt }] } : undefined,
+      systemInstruction: req.systemPrompt
+        ? { role: 'system', parts: [{ text: req.systemPrompt }] }
+        : undefined,
       tools: tools as any,
       generationConfig: {
         maxOutputTokens: req.maxTokens,
@@ -110,7 +117,11 @@ export class GoogleProvider extends BaseProvider {
   protected mapError(error: unknown): Error {
     const msg = error instanceof Error ? error.message : String(error);
     if (msg.includes('API key not valid')) {
-      return new ProviderInvalidCredentialsError(this.id, msg, error instanceof Error ? error : undefined);
+      return new ProviderInvalidCredentialsError(
+        this.id,
+        msg,
+        error instanceof Error ? error : undefined,
+      );
     }
     // Google SDK errors are less strongly typed, using message inspection
     return new ProviderError(msg, this.id, error instanceof Error ? error : undefined);

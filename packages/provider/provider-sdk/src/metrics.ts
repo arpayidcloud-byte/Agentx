@@ -80,7 +80,7 @@ export class CostCalculator {
     providerId: string,
     modelId: string,
     latencyMs: number,
-    usage: TokenUsage
+    usage: TokenUsage,
   ): ProviderMetrics {
     return {
       traceId,

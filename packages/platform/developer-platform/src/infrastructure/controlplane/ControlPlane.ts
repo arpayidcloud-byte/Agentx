@@ -13,8 +13,16 @@ export class RemoteRuntimeManager {
 
   execute(action: string, target: string): RemoteCommand {
     const commandId = `rrm-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ commandId, action, target })).digest('hex');
-    const cmd: RemoteCommand = Object.freeze({ commandId, action, target, status: 'COMPLETED', checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ commandId, action, target }))
+      .digest('hex');
+    const cmd: RemoteCommand = Object.freeze({
+      commandId,
+      action,
+      target,
+      status: 'COMPLETED',
+      checksum,
+    });
     this.commands.push(cmd);
     return cmd;
   }
@@ -36,8 +44,15 @@ export class RemoteConfiguration {
 
   set(key: string, value: unknown): RemoteConfig {
     const configId = `rc-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ configId, key, value })).digest('hex');
-    const config: RemoteConfig = Object.freeze({ configId, key, value: typeof value === 'object' ? JSON.parse(JSON.stringify(value)) : value, checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ configId, key, value }))
+      .digest('hex');
+    const config: RemoteConfig = Object.freeze({
+      configId,
+      key,
+      value: typeof value === 'object' ? JSON.parse(JSON.stringify(value)) : value,
+      checksum,
+    });
     this.configs.set(configId, config);
     return config;
   }
@@ -64,8 +79,16 @@ export class RemoteDeployment {
 
   deploy(target: string, version: string): DeploymentEntry {
     const deploymentId = `rd-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ deploymentId, target, version })).digest('hex');
-    const entry: DeploymentEntry = Object.freeze({ deploymentId, target, version, status: 'DEPLOYED', checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ deploymentId, target, version }))
+      .digest('hex');
+    const entry: DeploymentEntry = Object.freeze({
+      deploymentId,
+      target,
+      version,
+      status: 'DEPLOYED',
+      checksum,
+    });
     this.deployments.set(deploymentId, entry);
     return entry;
   }
@@ -92,8 +115,16 @@ export class RemoteUpgrade {
 
   upgrade(fromVersion: string, toVersion: string): UpgradeEntry {
     const upgradeId = `ru-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ upgradeId, fromVersion, toVersion })).digest('hex');
-    const entry: UpgradeEntry = Object.freeze({ upgradeId, fromVersion, toVersion, status: 'COMPLETED', checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ upgradeId, fromVersion, toVersion }))
+      .digest('hex');
+    const entry: UpgradeEntry = Object.freeze({
+      upgradeId,
+      fromVersion,
+      toVersion,
+      status: 'COMPLETED',
+      checksum,
+    });
     this.upgrades.push(entry);
     return entry;
   }
@@ -115,8 +146,15 @@ export class RemoteDiagnostics {
 
   run(component: string, findings: string[]): DiagnosticEntry {
     const diagnosticId = `rdiag-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ diagnosticId, component, findings })).digest('hex');
-    const entry: DiagnosticEntry = Object.freeze({ diagnosticId, component, findings: [...findings], checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ diagnosticId, component, findings }))
+      .digest('hex');
+    const entry: DiagnosticEntry = Object.freeze({
+      diagnosticId,
+      component,
+      findings: [...findings],
+      checksum,
+    });
     this.diagnostics.push(entry);
     return entry;
   }

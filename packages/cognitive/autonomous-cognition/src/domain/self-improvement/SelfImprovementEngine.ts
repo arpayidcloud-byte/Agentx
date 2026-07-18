@@ -37,7 +37,7 @@ export class StrategyOptimizer {
   }
 
   getAverageScore(strategyId: string): number {
-    const scores = this.history.filter(h => h.strategyId === strategyId).map(h => h.score);
+    const scores = this.history.filter((h) => h.strategyId === strategyId).map((h) => h.score);
     return scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
   }
 
@@ -50,7 +50,10 @@ export class StrategyOptimizer {
     let best: string | undefined;
     let bestScore = -1;
     for (const [id, total] of averages) {
-      if (total > bestScore) { bestScore = total; best = id; }
+      if (total > bestScore) {
+        bestScore = total;
+        best = id;
+      }
     }
     return best;
   }
@@ -68,8 +71,17 @@ export interface FailureRecord {
 export class FailureAnalyzer {
   analyze(stepId: string, error: string): FailureRecord {
     const failureId = `fa-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ failureId, stepId, error })).digest('hex');
-    return Object.freeze({ failureId, stepId, error, rootCause: 'analyzed', suggestedFix: 'retry', checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ failureId, stepId, error }))
+      .digest('hex');
+    return Object.freeze({
+      failureId,
+      stepId,
+      error,
+      rootCause: 'analyzed',
+      suggestedFix: 'retry',
+      checksum,
+    });
   }
 }
 
@@ -84,8 +96,16 @@ export interface RecoveryPlan {
 export class RecoveryPlanner {
   plan(goalId: string, failedSteps: string[]): RecoveryPlan {
     const planId = `rp-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const recoveryActions = failedSteps.map(s => `retry-${s}`);
-    const checksum = createHash('sha256').update(JSON.stringify({ planId, goalId, failedSteps })).digest('hex');
-    return Object.freeze({ planId, goalId, failedSteps: [...failedSteps], recoveryActions, checksum });
+    const recoveryActions = failedSteps.map((s) => `retry-${s}`);
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ planId, goalId, failedSteps }))
+      .digest('hex');
+    return Object.freeze({
+      planId,
+      goalId,
+      failedSteps: [...failedSteps],
+      recoveryActions,
+      checksum,
+    });
   }
 }

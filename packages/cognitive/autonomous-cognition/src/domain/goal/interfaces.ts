@@ -1,4 +1,13 @@
-export type GoalState = 'INTAKE' | 'ANALYZING' | 'DECOMPOSED' | 'PRIORITIZED' | 'SCHEDULED' | 'EXECUTING' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
+export type GoalState =
+  | 'INTAKE'
+  | 'ANALYZING'
+  | 'DECOMPOSED'
+  | 'PRIORITIZED'
+  | 'SCHEDULED'
+  | 'EXECUTING'
+  | 'COMPLETED'
+  | 'FAILED'
+  | 'CANCELLED';
 
 export interface Goal {
   readonly goalId: string;

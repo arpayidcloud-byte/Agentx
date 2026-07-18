@@ -36,7 +36,7 @@ export class ClusterMembershipManager {
     const config = this.configs.get(clusterId);
     if (!config) throw new Error(`Cluster not found: ${clusterId}`);
     const members = this.getMembersInvariant(clusterId);
-    if (members.some(m => m.nodeId === nodeId)) {
+    if (members.some((m) => m.nodeId === nodeId)) {
       throw new Error(`Node already in cluster: ${nodeId}`);
     }
     if (members.length >= config.maxNodes) {
@@ -55,7 +55,7 @@ export class ClusterMembershipManager {
   leaveCluster(clusterId: string, nodeId: string): void {
     const members = this.memberships.get(clusterId);
     if (!members) return;
-    const idx = members.findIndex(m => m.nodeId === nodeId);
+    const idx = members.findIndex((m) => m.nodeId === nodeId);
     if (idx >= 0) members.splice(idx, 1);
   }
 

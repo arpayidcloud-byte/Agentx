@@ -1,4 +1,10 @@
-import { IPlanningEngine, ExecutionPlan, PlannedTask, ValidationResult, PlanMetrics } from './interfaces.js';
+import {
+  IPlanningEngine,
+  ExecutionPlan,
+  PlannedTask,
+  ValidationResult,
+  PlanMetrics,
+} from './interfaces.js';
 import { IEventBus } from '@agentx/core-runtime';
 
 export class PlanningEngine implements IPlanningEngine {
@@ -6,7 +12,7 @@ export class PlanningEngine implements IPlanningEngine {
     totalPlansCreated: 0,
     totalPlansOptimized: 0,
     averageTasksPerPlan: 0,
-    averageRiskScore: 0
+    averageRiskScore: 0,
   };
 
   constructor(private eventBus: IEventBus) {}
@@ -19,15 +25,15 @@ export class PlanningEngine implements IPlanningEngine {
         description: `Analyze: ${goal}`,
         assignedAgent: 'planner',
         requiredTools: ['fs.read'],
-        estimatedDurationMs: 1000
+        estimatedDurationMs: 1000,
       },
       {
         id: `t_${Math.random().toString(36).substring(2, 9)}`,
         description: `Execute: ${goal}`,
         assignedAgent: 'coder',
         requiredTools: ['fs.read', 'fs.write'],
-        estimatedDurationMs: 5000
-      }
+        estimatedDurationMs: 5000,
+      },
     ];
 
     const plan: ExecutionPlan = {
@@ -39,12 +45,12 @@ export class PlanningEngine implements IPlanningEngine {
       estimatedTokens: 1000,
       riskScore: 40, // Base risk due to fs.write
       createdAt: new Date(),
-      metadata: context
+      metadata: context,
     };
 
     this.updateMetrics(plan, true);
     await this.eventBus.publish('plan.created', plan, `trace_${plan.id}`);
-    
+
     return plan;
   }
 
@@ -54,9 +60,9 @@ export class PlanningEngine implements IPlanningEngine {
       ...plan,
       estimatedCostUsd: plan.estimatedCostUsd * 0.9,
       estimatedTokens: Math.floor(plan.estimatedTokens * 0.9),
-      metadata: { ...plan.metadata, optimized: true }
+      metadata: { ...plan.metadata, optimized: true },
     };
-    
+
     this.metrics.totalPlansOptimized++;
     await this.eventBus.publish('plan.optimized', optimized, `trace_${optimized.id}`);
     return optimized;
@@ -68,7 +74,7 @@ export class PlanningEngine implements IPlanningEngine {
 
     if (!plan.goal) errors.push('Goal is required');
     if (plan.tasks.length === 0) errors.push('Plan must have at least one task');
-    
+
     if (plan.riskScore >= 90) {
       warnings.push('High risk score, requires double confirmation');
     }
@@ -76,7 +82,7 @@ export class PlanningEngine implements IPlanningEngine {
     return {
       isValid: errors.length === 0,
       errors,
-      warnings
+      warnings,
     };
   }
 
@@ -84,11 +90,11 @@ export class PlanningEngine implements IPlanningEngine {
     let explanation = `Plan for: ${plan.goal}\n`;
     explanation += `Tasks: ${plan.tasks.length}\n`;
     explanation += `Estimated Cost: $${plan.estimatedCostUsd}\n\n`;
-    
+
     for (const task of plan.tasks) {
       explanation += `- [${task.assignedAgent}] ${task.description}\n`;
     }
-    
+
     return explanation;
   }
 
@@ -100,12 +106,14 @@ export class PlanningEngine implements IPlanningEngine {
     if (isNew) {
       const prevTotal = this.metrics.totalPlansCreated;
       this.metrics.totalPlansCreated++;
-      
-      this.metrics.averageTasksPerPlan = 
-        ((this.metrics.averageTasksPerPlan * prevTotal) + plan.tasks.length) / this.metrics.totalPlansCreated;
-        
-      this.metrics.averageRiskScore = 
-        ((this.metrics.averageRiskScore * prevTotal) + plan.riskScore) / this.metrics.totalPlansCreated;
+
+      this.metrics.averageTasksPerPlan =
+        (this.metrics.averageTasksPerPlan * prevTotal + plan.tasks.length) /
+        this.metrics.totalPlansCreated;
+
+      this.metrics.averageRiskScore =
+        (this.metrics.averageRiskScore * prevTotal + plan.riskScore) /
+        this.metrics.totalPlansCreated;
     }
   }
 }

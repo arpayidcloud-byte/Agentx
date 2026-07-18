@@ -15,11 +15,21 @@ export class WorkflowSession {
   constructor(traceId: string) {
     this.id = `wf-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
     this.traceId = traceId;
-    this.checksum = createHash('sha256').update(`${this.id}:${traceId}:${Date.now()}`).digest('hex');
+    this.checksum = createHash('sha256')
+      .update(`${this.id}:${traceId}:${Date.now()}`)
+      .digest('hex');
   }
 
-  markComplete(): void { this.status = 'COMPLETED'; }
-  markFailed(): void { this.status = 'FAILED'; }
-  markCancelled(): void { this.status = 'CANCELLED'; }
-  markPaused(): void { this.status = 'PAUSED'; }
+  markComplete(): void {
+    this.status = 'COMPLETED';
+  }
+  markFailed(): void {
+    this.status = 'FAILED';
+  }
+  markCancelled(): void {
+    this.status = 'CANCELLED';
+  }
+  markPaused(): void {
+    this.status = 'PAUSED';
+  }
 }

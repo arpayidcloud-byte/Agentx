@@ -48,7 +48,11 @@ import {
 } from '../src/index.js';
 
 const makeAgent = (id: string, capabilities: string[] = ['compute']): AgentMetadata => ({
-  id, name: `Agent ${id}`, version: '1.0', capabilities, priority: 5,
+  id,
+  name: `Agent ${id}`,
+  version: '1.0',
+  capabilities,
+  priority: 5,
 });
 
 // ============================================================================
@@ -56,7 +60,14 @@ const makeAgent = (id: string, capabilities: string[] = ['compute']): AgentMetad
 // ============================================================================
 describe('Collaboration Errors', () => {
   it('instantiates all collaboration error types', () => {
-    const ErrTypes = [AgentError, DelegationError, CollaborationConsensusError, ConflictError, SharedMemoryError, CircularDelegationError];
+    const ErrTypes = [
+      AgentError,
+      DelegationError,
+      CollaborationConsensusError,
+      ConflictError,
+      SharedMemoryError,
+      CircularDelegationError,
+    ];
     for (const Err of ErrTypes) {
       const e = new Err('msg', 'src');
       expect(e.message).toBe('msg');
@@ -110,7 +121,9 @@ describe('Collaboration Errors', () => {
 // ============================================================================
 describe('AgentRegistry', () => {
   let registry: AgentRegistry;
-  beforeEach(() => { registry = new AgentRegistry(); });
+  beforeEach(() => {
+    registry = new AgentRegistry();
+  });
 
   it('registers, heartbeats, and manages agents', () => {
     registry.register(makeAgent('a1'));
@@ -153,7 +166,9 @@ describe('AgentRegistry', () => {
 // ============================================================================
 describe('AgentDirectory', () => {
   let dir: AgentDirectory;
-  beforeEach(() => { dir = new AgentDirectory(); });
+  beforeEach(() => {
+    dir = new AgentDirectory();
+  });
 
   it('discovers agents by capabilities', () => {
     dir.register('a1', ['compute', 'gpu'], 5, 2);
@@ -362,8 +377,24 @@ describe('TaskDelegationEngine', () => {
 describe('CollaborationScheduler', () => {
   it('queues and dequeues tasks by priority descending', () => {
     const sched = new CollaborationScheduler();
-    const t1: TaskDelegation = { taskId: 't1', agentId: 'a1', goalId: 'g1', priority: 1, timeout: 1000, status: 'ASSIGNED' as const, metadata: {} };
-    const t2: TaskDelegation = { taskId: 't2', agentId: 'a1', goalId: 'g1', priority: 10, timeout: 1000, status: 'ASSIGNED' as const, metadata: {} };
+    const t1: TaskDelegation = {
+      taskId: 't1',
+      agentId: 'a1',
+      goalId: 'g1',
+      priority: 1,
+      timeout: 1000,
+      status: 'ASSIGNED' as const,
+      metadata: {},
+    };
+    const t2: TaskDelegation = {
+      taskId: 't2',
+      agentId: 'a1',
+      goalId: 'g1',
+      priority: 10,
+      timeout: 1000,
+      status: 'ASSIGNED' as const,
+      metadata: {},
+    };
     sched.schedule(t1);
     sched.schedule(t2);
     expect(sched.getQueueSize()).toBe(2);
@@ -378,8 +409,24 @@ describe('CollaborationScheduler', () => {
 
   it('handles equal priorities', () => {
     const sched = new CollaborationScheduler();
-    sched.schedule({ taskId: 't1', agentId: 'a1', goalId: 'g1', priority: 5, timeout: 1000, status: 'ASSIGNED' as const, metadata: {} });
-    sched.schedule({ taskId: 't2', agentId: 'a1', goalId: 'g1', priority: 5, timeout: 1000, status: 'ASSIGNED' as const, metadata: {} });
+    sched.schedule({
+      taskId: 't1',
+      agentId: 'a1',
+      goalId: 'g1',
+      priority: 5,
+      timeout: 1000,
+      status: 'ASSIGNED' as const,
+      metadata: {},
+    });
+    sched.schedule({
+      taskId: 't2',
+      agentId: 'a1',
+      goalId: 'g1',
+      priority: 5,
+      timeout: 1000,
+      status: 'ASSIGNED' as const,
+      metadata: {},
+    });
     expect(sched.getQueueSize()).toBe(2);
   });
 });
@@ -739,8 +786,16 @@ describe('CollaborationHookManager', () => {
   it('executes hooks in registration order', async () => {
     const hm = new CollaborationHookManager();
     const order: number[] = [];
-    hm.register({ beforeCollaboration: async () => { order.push(1); } });
-    hm.register({ beforeCollaboration: async () => { order.push(2); } });
+    hm.register({
+      beforeCollaboration: async () => {
+        order.push(1);
+      },
+    });
+    hm.register({
+      beforeCollaboration: async () => {
+        order.push(2);
+      },
+    });
     await hm.runBeforeCollaboration('s1');
     expect(order).toEqual([1, 2]);
   });
@@ -756,10 +811,12 @@ describe('CollaborationEventBus', () => {
     bus.subscribe('test', fn);
     bus.publish('test', { key: 'value' });
     expect(fn).toHaveBeenCalledTimes(1);
-    expect(fn).toHaveBeenCalledWith(expect.objectContaining({
-      type: 'test',
-      payload: { key: 'value' },
-    }));
+    expect(fn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: 'test',
+        payload: { key: 'value' },
+      }),
+    );
   });
 
   it('does not call listeners for other event types', () => {
@@ -795,10 +852,12 @@ describe('CollaborationEventBus', () => {
     const fn = vi.fn();
     bus.subscribe('test', fn);
     bus.publish('test');
-    expect(fn).toHaveBeenCalledWith(expect.objectContaining({
-      type: 'test',
-      payload: {},
-    }));
+    expect(fn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: 'test',
+        payload: {},
+      }),
+    );
   });
 });
 
@@ -808,7 +867,9 @@ describe('CollaborationEventBus', () => {
 describe('ReasoningOrchestrator', () => {
   let orchestrator: ReasoningOrchestrator;
 
-  beforeEach(() => { orchestrator = new ReasoningOrchestrator(); });
+  beforeEach(() => {
+    orchestrator = new ReasoningOrchestrator();
+  });
 
   it('starts collaboration session successfully', async () => {
     const session = await orchestrator.startCollaboration('g1', ['a1', 'a2']);
@@ -858,8 +919,13 @@ describe('ReasoningOrchestrator', () => {
 describe('Type Definitions', () => {
   it('validates CollaborationSession shape', () => {
     const session: CollaborationSession = {
-      id: 's1', traceId: 't1', goalId: 'g1', participants: ['a1'],
-      status: 'ACTIVE', startedAt: new Date(), checksum: 'abc',
+      id: 's1',
+      traceId: 't1',
+      goalId: 'g1',
+      participants: ['a1'],
+      status: 'ACTIVE',
+      startedAt: new Date(),
+      checksum: 'abc',
     };
     expect(session.status).toBe('ACTIVE');
     const failed: CollaborationSession = { ...session, status: 'FAILED' as const };
@@ -870,8 +936,13 @@ describe('Type Definitions', () => {
 
   it('validates TaskDelegation shape', () => {
     const d: TaskDelegation = {
-      taskId: 't1', agentId: 'a1', goalId: 'g1', priority: 5,
-      timeout: 10000, status: 'PENDING', metadata: { key: 'val' },
+      taskId: 't1',
+      agentId: 'a1',
+      goalId: 'g1',
+      priority: 5,
+      timeout: 10000,
+      status: 'PENDING',
+      metadata: { key: 'val' },
     };
     expect(d.status).toBe('PENDING');
     const executing: TaskDelegation = { ...d, status: 'EXECUTING' as const };
@@ -880,33 +951,48 @@ describe('Type Definitions', () => {
 
   it('validates CollaborationCheckpoint shape', () => {
     const cp: CollaborationCheckpoint = {
-      id: 'cp1', sessionId: 's1',
-      agentStates: { a1: 'idle' }, sharedState: {},
-      timestamp: new Date(), checksum: 'abc',
+      id: 'cp1',
+      sessionId: 's1',
+      agentStates: { a1: 'idle' },
+      sharedState: {},
+      timestamp: new Date(),
+      checksum: 'abc',
     };
     expect(cp.agentStates.a1).toBe('idle');
   });
 
   it('validates AuditEntry shape', () => {
     const entry: AuditEntry = {
-      id: 'aud-1', traceId: 't1', sessionId: 's1', action: 'test',
-      timestamp: new Date(), metadata: { x: 1 }, checksum: 'abc',
+      id: 'aud-1',
+      traceId: 't1',
+      sessionId: 's1',
+      action: 'test',
+      timestamp: new Date(),
+      metadata: { x: 1 },
+      checksum: 'abc',
     };
     expect(entry.action).toBe('test');
   });
 
   it('validates CollaborationPlan shape', () => {
     const plan: CollaborationPlan = {
-      id: 'plan-1', goalId: 'g1', agentIds: ['a1'],
-      phases: ['plan'], estimatedDuration: 1000,
-      checksum: 'abc', timestamp: new Date(),
+      id: 'plan-1',
+      goalId: 'g1',
+      agentIds: ['a1'],
+      phases: ['plan'],
+      estimatedDuration: 1000,
+      checksum: 'abc',
+      timestamp: new Date(),
     };
     expect(plan.phases).toHaveLength(1);
   });
 
   it('validates ConsensusRound shape', () => {
     const round: ConsensusRound = {
-      id: 'r1', proposalId: 'p1', votes: { a1: true }, status: 'PENDING',
+      id: 'r1',
+      proposalId: 'p1',
+      votes: { a1: true },
+      status: 'PENDING',
     };
     expect(round.status).toBe('PENDING');
     const resolved: ConsensusRound = { ...round, status: 'RESOLVED' as const };
@@ -924,7 +1010,10 @@ describe('Type Definitions', () => {
 
   it('validates SharedContext shape', () => {
     const ctx: SharedContext = {
-      sessionId: 's1', data: { key: 'val' }, version: 1, checksum: 'abc',
+      sessionId: 's1',
+      data: { key: 'val' },
+      version: 1,
+      checksum: 'abc',
     };
     expect(ctx.version).toBe(1);
   });
@@ -966,8 +1055,24 @@ describe('Type Definitions', () => {
 describe('Edge Cases', () => {
   it('CollaborationScheduler respects priority inversion', () => {
     const sched = new CollaborationScheduler();
-    const high: TaskDelegation = { taskId: 'h', agentId: 'a1', goalId: 'g1', priority: 100, timeout: 1000, status: 'ASSIGNED' as const, metadata: {} };
-    const low: TaskDelegation = { taskId: 'l', agentId: 'a1', goalId: 'g1', priority: 1, timeout: 1000, status: 'ASSIGNED' as const, metadata: {} };
+    const high: TaskDelegation = {
+      taskId: 'h',
+      agentId: 'a1',
+      goalId: 'g1',
+      priority: 100,
+      timeout: 1000,
+      status: 'ASSIGNED' as const,
+      metadata: {},
+    };
+    const low: TaskDelegation = {
+      taskId: 'l',
+      agentId: 'a1',
+      goalId: 'g1',
+      priority: 1,
+      timeout: 1000,
+      status: 'ASSIGNED' as const,
+      metadata: {},
+    };
     sched.schedule(low);
     sched.schedule(high);
     expect(sched.dequeue()?.taskId).toBe('h');

@@ -42,7 +42,7 @@ export const executeWithRetry = async <T>(
   action: () => Promise<T>,
   policy: RetryPolicy,
   providerId: string,
-  circuitBreaker?: CircuitBreaker
+  circuitBreaker?: CircuitBreaker,
 ): Promise<T> => {
   let attempt = 0;
   let lastError: Error | undefined;
@@ -58,7 +58,7 @@ export const executeWithRetry = async <T>(
       return result;
     } catch (e: unknown) {
       lastError = e instanceof Error ? e : new Error(String(e));
-      
+
       const isRetryable =
         e instanceof ProviderRateLimitError ||
         e instanceof ProviderTimeoutError ||
@@ -77,7 +77,7 @@ export const executeWithRetry = async <T>(
       // Exponential backoff
       const delay = Math.min(
         policy.initialDelayMs * Math.pow(policy.backoffMultiplier, attempt),
-        policy.maxDelayMs || Infinity
+        policy.maxDelayMs || Infinity,
       );
 
       // Add jitter (±10%)

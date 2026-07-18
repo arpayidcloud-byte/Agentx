@@ -68,7 +68,10 @@ export class WorkflowIntelligenceMetricsCollector {
       replanningCount: this.replanningCount,
       conflictCount: this.conflictCount,
       recoveryCount: this.recoveryCount,
-      successRate: this.tasksExecuted > 0 ? ((this.tasksExecuted - this.tasksFailed) / this.tasksExecuted) * 100 : 0,
+      successRate:
+        this.tasksExecuted > 0
+          ? ((this.tasksExecuted - this.tasksFailed) / this.tasksExecuted) * 100
+          : 0,
       failureRate: this.tasksExecuted > 0 ? (this.tasksFailed / this.tasksExecuted) * 100 : 0,
       averageWorkflowDepth: 2,
       averageWorkflowWidth: 1,

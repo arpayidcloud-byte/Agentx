@@ -13,7 +13,7 @@ export class ReportGenerator {
     score: ValidationScore,
     grade: QualityGrade,
     failures: number,
-    edgeCases: number
+    edgeCases: number,
   ): ProductionQualityReport {
     const report: ProductionQualityReport = {
       id: `report-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,

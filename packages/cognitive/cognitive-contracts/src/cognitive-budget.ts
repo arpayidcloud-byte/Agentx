@@ -19,7 +19,10 @@ export class CognitiveBudgetManager {
     const current = this.consumption[type] || 0;
 
     if (current + amount > limit) {
-      throw new BudgetExceededError(`Budget exceeded for ${type}: ${current + amount} > ${limit}`, 'budget-manager');
+      throw new BudgetExceededError(
+        `Budget exceeded for ${type}: ${current + amount} > ${limit}`,
+        'budget-manager',
+      );
     }
     this.consumption[type] = current + amount;
   }

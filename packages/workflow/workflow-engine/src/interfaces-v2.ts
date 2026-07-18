@@ -4,7 +4,15 @@
  * These interfaces extend M3.1 without breaking existing API.
  */
 
-import { WorkflowDefinition, WorkflowNode, WorkflowState, NodeState, WorkflowMetrics, ExecutionSnapshot, Checkpoint } from './interfaces.js';
+import {
+  WorkflowDefinition,
+  WorkflowNode,
+  WorkflowState,
+  NodeState,
+  WorkflowMetrics,
+  ExecutionSnapshot,
+  Checkpoint,
+} from './interfaces.js';
 
 /** @description Execution planner output */
 export interface ExecutionPlan {

@@ -18,7 +18,7 @@ export class QualityRules {
   calculateScore(results: { [key: string]: number }): ValidationScore {
     const arr = Object.values(results);
     const overall = arr.reduce((a, b) => a + b, 0) / arr.length;
-    
+
     return {
       coverageScore: results.coverage || 0,
       deterministicScore: results.deterministic || 0,

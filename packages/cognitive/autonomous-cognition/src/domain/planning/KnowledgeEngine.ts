@@ -13,14 +13,22 @@ export class KnowledgeFeedbackEngine {
 
   record(goalId: string, outcome: string, lessons: string[]): FeedbackEntry {
     const entryId = `kf-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ goalId, outcome, lessons })).digest('hex');
-    const entry: FeedbackEntry = Object.freeze({ entryId, goalId, outcome, lessonsLearned: [...lessons], checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ goalId, outcome, lessons }))
+      .digest('hex');
+    const entry: FeedbackEntry = Object.freeze({
+      entryId,
+      goalId,
+      outcome,
+      lessonsLearned: [...lessons],
+      checksum,
+    });
     this.entries.push(entry);
     return entry;
   }
 
   getByGoal(goalId: string): FeedbackEntry[] {
-    return this.entries.filter(e => e.goalId === goalId);
+    return this.entries.filter((e) => e.goalId === goalId);
   }
 
   getAll(): FeedbackEntry[] {
@@ -41,10 +49,16 @@ export class LearningMemoryManager {
   private entries = new Map<string, MemoryEntry>();
 
   store(key: string, value: unknown, source: string, ttlMs: number = 600000): MemoryEntry {
-    const checksum = createHash('sha256').update(JSON.stringify({ key, value, source })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ key, value, source }))
+      .digest('hex');
     const entry: MemoryEntry = Object.freeze({
-      key, value: typeof value === 'object' ? JSON.parse(JSON.stringify(value)) : value,
-      source, ttlMs, timestamp: new Date(), checksum,
+      key,
+      value: typeof value === 'object' ? JSON.parse(JSON.stringify(value)) : value,
+      source,
+      ttlMs,
+      timestamp: new Date(),
+      checksum,
     });
     this.entries.set(key, entry);
     return entry;
@@ -84,14 +98,24 @@ export class ExperienceRepository {
 
   record(goalId: string, action: string, result: string, score: number): Experience {
     const experienceId = `exp-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ goalId, action, result, score })).digest('hex');
-    const exp: Experience = Object.freeze({ experienceId, goalId, action, result, score, timestamp: new Date(), checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ goalId, action, result, score }))
+      .digest('hex');
+    const exp: Experience = Object.freeze({
+      experienceId,
+      goalId,
+      action,
+      result,
+      score,
+      timestamp: new Date(),
+      checksum,
+    });
     this.experiences.push(exp);
     return exp;
   }
 
   getByGoal(goalId: string): Experience[] {
-    return this.experiences.filter(e => e.goalId === goalId);
+    return this.experiences.filter((e) => e.goalId === goalId);
   }
 
   getAll(): Experience[] {

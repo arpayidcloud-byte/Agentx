@@ -31,7 +31,7 @@ export function createRuntimeEvent(
   type: RuntimeEventType,
   runtimeId: string,
   traceId: string,
-  payload: Record<string, unknown> = {}
+  payload: Record<string, unknown> = {},
 ): RuntimeEvent {
   return { type, runtimeId, traceId, timestamp: new Date(), payload };
 }

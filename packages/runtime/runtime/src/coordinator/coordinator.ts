@@ -40,7 +40,7 @@ export class ProductionExecutionCoordinator {
 
   constructor(
     private eventBus: IEventBus,
-    private config: CoordinatorConfig
+    private config: CoordinatorConfig,
   ) {
     this.concurrency = new ConcurrencyController({
       maxWorkers: this.config.maxParallelExecutions,
@@ -82,13 +82,21 @@ export class ProductionExecutionCoordinator {
     };
 
     const schedule = this.scheduler.schedule(ticket);
-    this.auditLogger.log(session.id, session.traceId, 'schedule', 'PLANNING', 'success', { schedule });
+    this.auditLogger.log(session.id, session.traceId, 'schedule', 'PLANNING', 'success', {
+      schedule,
+    });
 
     // Use schedule, ticket, executionPhase to cover unused variables
     const _schedule = schedule;
     const _ticket = ticket;
     const _phase: ExecutionPhase = 'PLANNING';
-    const _reservation: ExecutionReservation = { id: 'r1', type: 'worker', capacity: 1, used: 0, expiresAt: new Date() };
+    const _reservation: ExecutionReservation = {
+      id: 'r1',
+      type: 'worker',
+      capacity: 1,
+      used: 0,
+      expiresAt: new Date(),
+    };
     const _sched: ExecutionSchedule = _schedule;
     console.log(_schedule, _ticket, _phase, _reservation, _sched);
 
@@ -108,16 +116,28 @@ export class ProductionExecutionCoordinator {
       this.stateMachine.transition('COMPLETED');
 
       await this.hookManager.executeAfterExecution(session, result);
-      await this.eventBus.publish('coordinator.finished', { sessionId: session.id, result }, session.traceId);
-      
-      this.auditLogger.log(session.id, session.traceId, 'execute', 'COMPLETION', 'success', { result });
+      await this.eventBus.publish(
+        'coordinator.finished',
+        { sessionId: session.id, result },
+        session.traceId,
+      );
+
+      this.auditLogger.log(session.id, session.traceId, 'execute', 'COMPLETION', 'success', {
+        result,
+      });
       return result;
     } catch (err: any) {
       this.metricsCollector.incrementFailed(Date.now() - startTime);
       this.stateMachine.transition('FAILED');
-      await this.eventBus.publish('coordinator.failed', { sessionId: session.id, error: err.message }, session.traceId);
-      
-      this.auditLogger.log(session.id, session.traceId, 'execute', 'COMPLETION', 'failure', { error: err.message });
+      await this.eventBus.publish(
+        'coordinator.failed',
+        { sessionId: session.id, error: err.message },
+        session.traceId,
+      );
+
+      this.auditLogger.log(session.id, session.traceId, 'execute', 'COMPLETION', 'failure', {
+        error: err.message,
+      });
       throw err;
     }
   }
@@ -162,7 +182,9 @@ export class ProductionExecutionCoordinator {
     return {
       uptimeMs: Date.now() - this.uptimeStart,
       totalSessions: this.sessions.size,
-      averageExecutionTimeMs: this.metricsCollector.getMetrics().executionTimeMs / Math.max(1, this.metricsCollector.getMetrics().completedExecutions),
+      averageExecutionTimeMs:
+        this.metricsCollector.getMetrics().executionTimeMs /
+        Math.max(1, this.metricsCollector.getMetrics().completedExecutions),
       currentQueueSize: this.scheduler.getQueueSize(),
     };
   }

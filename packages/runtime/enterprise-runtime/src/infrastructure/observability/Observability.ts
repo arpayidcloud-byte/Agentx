@@ -12,14 +12,22 @@ export class StructuredLogging {
   private entries: LogEntry[] = [];
 
   log(level: string, message: string, metadata: Record<string, unknown> = {}): LogEntry {
-    const checksum = createHash('sha256').update(JSON.stringify({ level, message, metadata })).digest('hex');
-    const entry: LogEntry = Object.freeze({ level, message, metadata: { ...metadata }, timestamp: new Date(), checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ level, message, metadata }))
+      .digest('hex');
+    const entry: LogEntry = Object.freeze({
+      level,
+      message,
+      metadata: { ...metadata },
+      timestamp: new Date(),
+      checksum,
+    });
     this.entries.push(entry);
     return entry;
   }
 
   getEntries(level?: string): LogEntry[] {
-    if (level) return this.entries.filter(e => e.level === level);
+    if (level) return this.entries.filter((e) => e.level === level);
     return [...this.entries];
   }
 
@@ -39,13 +47,18 @@ export class MetricsCollector {
   private metrics: MetricEntry[] = [];
 
   record(name: string, value: number, tags: Record<string, string> = {}): MetricEntry {
-    const entry: MetricEntry = Object.freeze({ name, value, timestamp: new Date(), tags: { ...tags } });
+    const entry: MetricEntry = Object.freeze({
+      name,
+      value,
+      timestamp: new Date(),
+      tags: { ...tags },
+    });
     this.metrics.push(entry);
     return entry;
   }
 
   query(name: string): MetricEntry[] {
-    return this.metrics.filter(m => m.name === name);
+    return this.metrics.filter((m) => m.name === name);
   }
 
   aggregate(name: string): { sum: number; count: number; avg: number } {
@@ -82,22 +95,48 @@ export class DistributedTracing {
     return `span-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
   }
 
-  finishSpan(spanId: string, traceId: string, operation: string, startTime: Date, status: 'OK' | 'ERROR'): TraceSpan {
+  finishSpan(
+    spanId: string,
+    traceId: string,
+    operation: string,
+    startTime: Date,
+    status: 'OK' | 'ERROR',
+  ): TraceSpan {
     const endTime = new Date();
     const durationMs = endTime.getTime() - startTime.getTime();
-    const checksum = createHash('sha256').update(JSON.stringify({ traceId, operation, spanId, durationMs })).digest('hex');
-    const span: TraceSpan = Object.freeze({ spanId, traceId, operation, startTime, endTime, durationMs, status, checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ traceId, operation, spanId, durationMs }))
+      .digest('hex');
+    const span: TraceSpan = Object.freeze({
+      spanId,
+      traceId,
+      operation,
+      startTime,
+      endTime,
+      durationMs,
+      status,
+      checksum,
+    });
     this.spans.push(span);
     return span;
   }
 
   getSpans(traceId: string): TraceSpan[] {
-    return this.spans.filter(s => s.traceId === traceId);
+    return this.spans.filter((s) => s.traceId === traceId);
   }
 
   validateTrace(traceId: string): boolean {
-    return this.getSpans(traceId).every(s => {
-      const computed = createHash('sha256').update(JSON.stringify({ traceId: s.traceId, operation: s.operation, spanId: s.spanId, durationMs: s.durationMs })).digest('hex');
+    return this.getSpans(traceId).every((s) => {
+      const computed = createHash('sha256')
+        .update(
+          JSON.stringify({
+            traceId: s.traceId,
+            operation: s.operation,
+            spanId: s.spanId,
+            durationMs: s.durationMs,
+          }),
+        )
+        .digest('hex');
       return computed === s.checksum;
     });
   }
@@ -113,8 +152,17 @@ export interface HealthCheckResult {
 export class HealthEndpoint {
   private results: HealthCheckResult[] = [];
 
-  check(component: string, status: 'UP' | 'DOWN' | 'DEGRADED', latencyMs: number): HealthCheckResult {
-    const result: HealthCheckResult = Object.freeze({ component, status, latencyMs, timestamp: new Date() });
+  check(
+    component: string,
+    status: 'UP' | 'DOWN' | 'DEGRADED',
+    latencyMs: number,
+  ): HealthCheckResult {
+    const result: HealthCheckResult = Object.freeze({
+      component,
+      status,
+      latencyMs,
+      timestamp: new Date(),
+    });
     this.results.push(result);
     return result;
   }
@@ -124,7 +172,7 @@ export class HealthEndpoint {
   }
 
   isHealthy(): boolean {
-    return this.results.every(r => r.status !== 'DOWN');
+    return this.results.every((r) => r.status !== 'DOWN');
   }
 }
 
@@ -136,7 +184,7 @@ export class ReadinessProbe {
   }
 
   isReady(): boolean {
-    return this.checks.size > 0 && Array.from(this.checks.values()).every(v => v);
+    return this.checks.size > 0 && Array.from(this.checks.values()).every((v) => v);
   }
 
   getComponents(): Array<{ component: string; ready: boolean }> {
@@ -168,8 +216,15 @@ export class DiagnosticEngine {
 
   run(component: string, findings: string[]): DiagnosticResult {
     const diagnosticId = `diag-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ diagnosticId, component, findings })).digest('hex');
-    const result: DiagnosticResult = Object.freeze({ diagnosticId, component, findings: [...findings], checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ diagnosticId, component, findings }))
+      .digest('hex');
+    const result: DiagnosticResult = Object.freeze({
+      diagnosticId,
+      component,
+      findings: [...findings],
+      checksum,
+    });
     this.results.push(result);
     return result;
   }

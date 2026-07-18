@@ -15,7 +15,10 @@ export class ExperienceStore {
       throw new InvalidExperienceError('Experience missing mandatory fields', 'experience-store');
     }
     const payload = JSON.stringify(exp);
-    const stored: Experience = { ...exp, checksum: createHash('sha256').update(payload).digest('hex') };
+    const stored: Experience = {
+      ...exp,
+      checksum: createHash('sha256').update(payload).digest('hex'),
+    };
     this.experiences.push(Object.freeze(stored));
   }
 
@@ -24,7 +27,7 @@ export class ExperienceStore {
   }
 
   getByOutcome(outcome: 'success' | 'failure' | 'partial'): Experience[] {
-    return this.experiences.filter(e => e.outcome === outcome);
+    return this.experiences.filter((e) => e.outcome === outcome);
   }
 
   count(): number {

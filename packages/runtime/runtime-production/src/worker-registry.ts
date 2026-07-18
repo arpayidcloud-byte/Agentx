@@ -35,7 +35,7 @@ export class WorkerRegistry {
   listWorkers(): WorkerMetadata[] {
     const threshold = 10000; // 10 seconds timeout
     const now = Date.now();
-    
+
     // Purge expired workers
     for (const [id, worker] of this.workers.entries()) {
       if (now - worker.lastHeartbeat.getTime() > threshold) {

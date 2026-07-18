@@ -42,7 +42,7 @@ export class QualificationEngine {
 
     try {
       this.contractValidator.validate(provider, requiredMethods);
-      
+
       const compMatrix: Record<string, boolean> = {
         Runtime: true,
         WorkflowEngine: true,
@@ -78,8 +78,10 @@ export class QualificationEngine {
         .build();
 
       this.metrics.totalQualificationTimeMs += Date.now() - startMs;
-      this.metrics.averagePerformanceScore = (this.metrics.averagePerformanceScore + score.performanceScore) / 2;
-      this.metrics.averageReliabilityScore = (this.metrics.averageReliabilityScore + score.reliabilityScore) / 2;
+      this.metrics.averagePerformanceScore =
+        (this.metrics.averagePerformanceScore + score.performanceScore) / 2;
+      this.metrics.averageReliabilityScore =
+        (this.metrics.averageReliabilityScore + score.reliabilityScore) / 2;
 
       this.audit.log({
         id: `aud-${traceId}`,
@@ -101,11 +103,19 @@ export class QualificationEngine {
         this.registry.register(report);
       } else if (report.status === 'WARNING') {
         this.metrics.warningCount++;
-        this.events.emit('provider.rejected', { traceId, providerId: provider.getMetadata().id, reason: 'warning' });
+        this.events.emit('provider.rejected', {
+          traceId,
+          providerId: provider.getMetadata().id,
+          reason: 'warning',
+        });
       } else {
         this.metrics.rejectedProviders++;
         this.metrics.failureCount++;
-        this.events.emit('provider.rejected', { traceId, providerId: provider.getMetadata().id, reason: 'failed' });
+        this.events.emit('provider.rejected', {
+          traceId,
+          providerId: provider.getMetadata().id,
+          reason: 'failed',
+        });
       }
 
       this.snapshotManager.create(report);

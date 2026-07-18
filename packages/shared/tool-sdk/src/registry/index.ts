@@ -53,7 +53,7 @@ export class ToolRegistry implements IToolRegistry {
   public findByCategory(category: ToolCategory): ITool[] {
     const names = this.categories.get(category);
     if (!names) return [];
-    
+
     const result: ITool[] = [];
     for (const name of names) {
       const tool = this.tools.get(name);

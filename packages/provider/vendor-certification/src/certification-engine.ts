@@ -3,7 +3,12 @@
  * @description Master orchestrator for provider certification.
  */
 
-import { IProvider, CertificationConfig, CertificationReport, CertificationCertificate } from './interfaces.js';
+import {
+  IProvider,
+  CertificationConfig,
+  CertificationReport,
+  CertificationCertificate,
+} from './interfaces.js';
 import { ProviderValidator } from './provider-validator.js';
 import { ProviderHealthAudit } from './provider-health-audit.js';
 import { ProviderPerformanceAudit } from './provider-performance-audit.js';
@@ -38,9 +43,12 @@ export class CertificationEngine {
   private certGenerator = new ProviderCertificate();
   private reportGen = new ReportGenerator();
 
-  async certify(provider: IProvider, config: CertificationConfig): Promise<CertificationCertificate> {
+  async certify(
+    provider: IProvider,
+    config: CertificationConfig,
+  ): Promise<CertificationCertificate> {
     this.validator.validate(provider);
-    
+
     await this.healthAudit.run(provider);
     const perf = await this.perfAudit.run(provider);
     await this.secAudit.run(provider);
@@ -65,13 +73,22 @@ export class CertificationEngine {
     const grade = this.grader.getGrade(score.overall);
 
     if (grade === 'Rejected' || grade === 'Experimental') {
-      throw new CertificationError(`Provider grade '${grade}' does not meet minimum production standards`, 'certification-engine');
+      throw new CertificationError(
+        `Provider grade '${grade}' does not meet minimum production standards`,
+        'certification-engine',
+      );
     }
 
     const certificate = this.certGenerator.generate(provider.getMetadata(), score.overall, grade);
     this.registry.register(certificate);
 
-    const report = this.reportGen.generate(provider.getMetadata(), score, grade, config.runtimeVersion, config.platformVersion);
+    const report = this.reportGen.generate(
+      provider.getMetadata(),
+      score,
+      grade,
+      config.runtimeVersion,
+      config.platformVersion,
+    );
     this.history.add(report);
 
     return certificate;

@@ -35,7 +35,10 @@ export class AnthropicProvider extends BaseProvider {
     this.credentialResolver = config.credentialResolver;
   }
 
-  protected async doComplete(req: CompletionRequest, signal: AbortSignal): Promise<CompletionResponse> {
+  protected async doComplete(
+    req: CompletionRequest,
+    signal: AbortSignal,
+  ): Promise<CompletionResponse> {
     const apiKey = await this.credentialResolver.resolve('provider.anthropic.api_key');
     const client = new Anthropic({ apiKey });
 
@@ -55,26 +58,31 @@ export class AnthropicProvider extends BaseProvider {
 
     messages.push({ role: 'user', content: req.userPrompt });
 
-    const tools: Anthropic.Tool[] | undefined = req.tools?.map(t => ({
+    const tools: Anthropic.Tool[] | undefined = req.tools?.map((t) => ({
       name: t.name,
       description: t.description,
       input_schema: t.parameters as Anthropic.Tool.InputSchema,
     }));
 
-    const response = await client.messages.create({
-      model: req.modelId || this.config.defaultModelId,
-      max_tokens: req.maxTokens || 4096,
-      system: req.systemPrompt,
-      messages,
-      tools,
-      temperature: req.temperature,
-    }, { signal });
+    const response = await client.messages.create(
+      {
+        model: req.modelId || this.config.defaultModelId,
+        max_tokens: req.maxTokens || 4096,
+        system: req.systemPrompt,
+        messages,
+        tools,
+        temperature: req.temperature,
+      },
+      { signal },
+    );
 
-    const textBlocks = response.content.filter(b => b.type === 'text') as Anthropic.TextBlock[];
-    const text = textBlocks.map(b => b.text).join('\n');
+    const textBlocks = response.content.filter((b) => b.type === 'text') as Anthropic.TextBlock[];
+    const text = textBlocks.map((b) => b.text).join('\n');
 
-    const toolUseBlocks = response.content.filter(b => b.type === 'tool_use') as Anthropic.ToolUseBlock[];
-    const toolCalls = toolUseBlocks.map(b => ({
+    const toolUseBlocks = response.content.filter(
+      (b) => b.type === 'tool_use',
+    ) as Anthropic.ToolUseBlock[];
+    const toolCalls = toolUseBlocks.map((b) => ({
       toolName: b.name,
       arguments: b.input as Record<string, unknown>,
       callId: b.id,
@@ -96,13 +104,25 @@ export class AnthropicProvider extends BaseProvider {
 
   protected mapError(error: unknown): Error {
     if (error instanceof Anthropic.AuthenticationError) {
-      return new ProviderInvalidCredentialsError(this.id, error.message, error instanceof Error ? error : undefined);
+      return new ProviderInvalidCredentialsError(
+        this.id,
+        error.message,
+        error instanceof Error ? error : undefined,
+      );
     }
     if (error instanceof Anthropic.RateLimitError) {
-      return new ProviderRateLimitError(this.id, error.message, error instanceof Error ? error : undefined);
+      return new ProviderRateLimitError(
+        this.id,
+        error.message,
+        error instanceof Error ? error : undefined,
+      );
     }
     if (error instanceof Anthropic.APIConnectionTimeoutError) {
-      return new ProviderTimeoutError(this.id, error.message, error instanceof Error ? error : undefined);
+      return new ProviderTimeoutError(
+        this.id,
+        error.message,
+        error instanceof Error ? error : undefined,
+      );
     }
     if (error instanceof Anthropic.APIError) {
       return new ProviderError(error.message, this.id, error instanceof Error ? error : undefined);

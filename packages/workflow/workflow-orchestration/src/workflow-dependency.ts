@@ -17,6 +17,6 @@ export class WorkflowDependencyManager {
   }
 
   hasDependency(taskId: string): boolean {
-    return this.edges.some(e => e.target === taskId);
+    return this.edges.some((e) => e.target === taskId);
   }
 }

@@ -11,24 +11,29 @@ export class TaskSplitter {
   public decomposeTask(
     _goal: string,
     _context: unknown,
-    _globalBudget: ResourceAllocation
+    _globalBudget: ResourceAllocation,
   ): TaskGraphNode[] {
     // Deterministic stub implementation.
     // In production, this uses an LLM call with a low temperature or specific prompt format.
     const nodes: TaskGraphNode[] = [];
-    
+
     // Always returns same graph structure for tests
     const plannerNode = this.createStubNode('t1', 'plan', 'planner', []);
     const architectNode = this.createStubNode('t2', 'architect', 'architect', ['t1']);
     const coderNode = this.createStubNode('t3', 'code', 'coder', ['t2']);
     const reviewerNode = this.createStubNode('t4', 'review', 'reviewer', ['t3']);
-    
+
     nodes.push(plannerNode, architectNode, coderNode, reviewerNode);
-    
+
     return nodes;
   }
 
-  private createStubNode(id: string, goal: string, role: string, dependsOn: string[]): TaskGraphNode {
+  private createStubNode(
+    id: string,
+    goal: string,
+    role: string,
+    dependsOn: string[],
+  ): TaskGraphNode {
     return {
       task: {
         id,
@@ -58,8 +63,8 @@ export class TaskSplitter {
 
 export class DependencyAnalyzer {
   public validateGraph(nodes: TaskGraphNode[]): void {
-    const nodeIds = new Set(nodes.map(n => n.task.id));
-    
+    const nodeIds = new Set(nodes.map((n) => n.task.id));
+
     // Check duplicates
     if (nodeIds.size !== nodes.length) {
       throw new DependencyGraphError('Duplicate tasks found in graph');
@@ -85,7 +90,7 @@ export class DependencyAnalyzer {
       visited.add(nodeId);
       recStack.add(nodeId);
 
-      const node = nodes.find(n => n.task.id === nodeId);
+      const node = nodes.find((n) => n.task.id === nodeId);
       if (node) {
         for (const dep of node.task.dependsOn) {
           if (checkCycle(dep)) return true;

@@ -9,7 +9,10 @@ import { ValidationError } from './errors.js';
 export class DeveloperValidator {
   validate(pkg: PackageMetadata, frozenStatus: Record<string, boolean>): void {
     if (pkg.status === 'active' && frozenStatus[pkg.id]) {
-      throw new ValidationError(`Package ${pkg.id} is frozen and cannot be active`, 'developer-validator');
+      throw new ValidationError(
+        `Package ${pkg.id} is frozen and cannot be active`,
+        'developer-validator',
+      );
     }
   }
 }

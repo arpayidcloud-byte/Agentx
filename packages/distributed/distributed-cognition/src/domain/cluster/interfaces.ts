@@ -1,6 +1,7 @@
 /** Cluster domain interfaces and types. */
 
-export type ClusterStatus = 'FORMING' | 'ACTIVE' | 'REBALANCING' | 'SPLIT' | 'DISSOLVING' | 'DISSOLVED';
+export type ClusterStatus =
+  'FORMING' | 'ACTIVE' | 'REBALANCING' | 'SPLIT' | 'DISSOLVING' | 'DISSOLVED';
 
 export interface ClusterConfig {
   readonly clusterId: string;

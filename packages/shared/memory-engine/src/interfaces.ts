@@ -11,14 +11,8 @@ export interface IMemoryEngine {
   getMetrics(): MemoryMetrics;
 }
 
-export type MemoryType = 
-  | 'working'
-  | 'short_term'
-  | 'long_term'
-  | 'session'
-  | 'workflow'
-  | 'agent'
-  | 'shared';
+export type MemoryType =
+  'working' | 'short_term' | 'long_term' | 'session' | 'workflow' | 'agent' | 'shared';
 
 export interface Memory {
   id: string;

@@ -13,7 +13,9 @@ export class DeveloperPortal {
 
   createPage(title: string, content: string, type: string): PortalPage {
     const pageId = `dp-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ pageId, title, content, type })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ pageId, title, content, type }))
+      .digest('hex');
     const page: PortalPage = Object.freeze({ pageId, title, content, type, checksum });
     this.pages.set(pageId, page);
     return page;
@@ -41,8 +43,16 @@ export class APIExplorer {
 
   addEndpoint(method: string, path: string, description: string): ExplorerEndpoint {
     const endpointId = `ae-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ endpointId, method, path, description })).digest('hex');
-    const endpoint: ExplorerEndpoint = Object.freeze({ endpointId, method, path, description, checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ endpointId, method, path, description }))
+      .digest('hex');
+    const endpoint: ExplorerEndpoint = Object.freeze({
+      endpointId,
+      method,
+      path,
+      description,
+      checksum,
+    });
     this.endpoints.set(endpointId, endpoint);
     return endpoint;
   }
@@ -69,8 +79,16 @@ export class InteractivePlayground {
 
   createSession(language: string, code: string): PlaygroundSession {
     const sessionId = `pg-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ sessionId, language, code })).digest('hex');
-    const session: PlaygroundSession = Object.freeze({ sessionId, language, code, createdAt: new Date(), checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ sessionId, language, code }))
+      .digest('hex');
+    const session: PlaygroundSession = Object.freeze({
+      sessionId,
+      language,
+      code,
+      createdAt: new Date(),
+      checksum,
+    });
     this.sessions.set(sessionId, session);
     return session;
   }
@@ -97,7 +115,9 @@ export class TemplateLibrary {
 
   add(name: string, language: string, content: string): TemplateEntry {
     const templateId = `tpl-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ templateId, name, language, content })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ templateId, name, language, content }))
+      .digest('hex');
     const entry: TemplateEntry = Object.freeze({ templateId, name, language, content, checksum });
     this.templates.set(templateId, entry);
     return entry;
@@ -108,7 +128,7 @@ export class TemplateLibrary {
   }
 
   getByLanguage(language: string): TemplateEntry[] {
-    return Array.from(this.templates.values()).filter(t => t.language === language);
+    return Array.from(this.templates.values()).filter((t) => t.language === language);
   }
 
   getAll(): TemplateEntry[] {
@@ -129,8 +149,16 @@ export class DashboardBuilder {
 
   addWidget(title: string, type: string, config: Record<string, unknown>): DashboardWidget {
     const widgetId = `wgt-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ widgetId, title, type, config })).digest('hex');
-    const widget: DashboardWidget = Object.freeze({ widgetId, title, type, config: { ...config }, checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ widgetId, title, type, config }))
+      .digest('hex');
+    const widget: DashboardWidget = Object.freeze({
+      widgetId,
+      title,
+      type,
+      config: { ...config },
+      checksum,
+    });
     this.widgets.set(widgetId, widget);
     return widget;
   }
@@ -157,8 +185,16 @@ export class ReportGenerator {
 
   generate(title: string, type: string, data: Record<string, unknown>): ReportEntry {
     const reportId = `rpt-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ reportId, title, type, data })).digest('hex');
-    const report: ReportEntry = Object.freeze({ reportId, title, type, data: { ...data }, checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ reportId, title, type, data }))
+      .digest('hex');
+    const report: ReportEntry = Object.freeze({
+      reportId,
+      title,
+      type,
+      data: { ...data },
+      checksum,
+    });
     this.reports.set(reportId, report);
     return report;
   }
@@ -185,14 +221,22 @@ export class RuntimeAnalytics {
 
   record(metric: string, value: number): AnalyticsEntry {
     const analyticsId = `ra-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ analyticsId, metric, value })).digest('hex');
-    const entry: AnalyticsEntry = Object.freeze({ analyticsId, metric, value, timestamp: new Date(), checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ analyticsId, metric, value }))
+      .digest('hex');
+    const entry: AnalyticsEntry = Object.freeze({
+      analyticsId,
+      metric,
+      value,
+      timestamp: new Date(),
+      checksum,
+    });
     this.entries.push(entry);
     return entry;
   }
 
   query(metric: string): AnalyticsEntry[] {
-    return this.entries.filter(e => e.metric === metric);
+    return this.entries.filter((e) => e.metric === metric);
   }
 
   getAll(): AnalyticsEntry[] {

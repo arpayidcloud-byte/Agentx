@@ -8,7 +8,12 @@ import { spawn } from 'child_process';
 import { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
 import { GitSandbox } from './sandbox.js';
 import { createTimeoutController } from '../shell/timeout.js';
-import { ShellAuditEmitter, createToolInvokedEvent, createToolFinishedEvent, createToolFailedEvent } from '../shell/audit.js';
+import {
+  ShellAuditEmitter,
+  createToolInvokedEvent,
+  createToolFinishedEvent,
+  createToolFailedEvent,
+} from '../shell/audit.js';
 import { GitTimeoutError } from './errors.js';
 
 /**
@@ -44,8 +49,8 @@ export class GitExecutor {
           'git.read' as any,
           request.taskId,
           request.traceId,
-          request.agentRole
-        )
+          request.agentRole,
+        ),
       );
 
       // 3. Create timeout controller
@@ -74,8 +79,8 @@ export class GitExecutor {
           output.stderr.length,
           request.taskId,
           request.traceId,
-          request.agentRole
-        )
+          request.agentRole,
+        ),
       );
 
       return {
@@ -99,8 +104,8 @@ export class GitExecutor {
           request.taskId,
           request.traceId,
           request.agentRole,
-          error instanceof Error ? error.message : String(error)
-        )
+          error instanceof Error ? error.message : String(error),
+        ),
       );
 
       return {
@@ -188,7 +193,7 @@ export class GitExecutor {
     command: string,
     args: string[],
     cwd: string,
-    signal?: AbortSignal
+    signal?: AbortSignal,
   ): Promise<{ stdout: string; stderr: string; exitCode: number; durationMs: number }> {
     return new Promise((resolve, reject) => {
       const startTime = Date.now();

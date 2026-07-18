@@ -15,7 +15,7 @@ export function createCoordinatorEvent(
   type: string,
   sessionId: string,
   traceId: string,
-  payload: Record<string, any> = {}
+  payload: Record<string, any> = {},
 ): CoordinatorEvent {
   return {
     type,

@@ -10,7 +10,10 @@ export class ContractValidator {
   validate(provider: IProvider, requiredMethods: string[]): void {
     for (const method of requiredMethods) {
       if (typeof (provider as any)[method] !== 'function') {
-        throw new ContractValidationError(`Provider ${provider.getMetadata().id} missing method: ${method}`, 'contract-validator');
+        throw new ContractValidationError(
+          `Provider ${provider.getMetadata().id} missing method: ${method}`,
+          'contract-validator',
+        );
       }
     }
   }

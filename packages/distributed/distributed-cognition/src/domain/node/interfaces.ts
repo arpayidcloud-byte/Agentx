@@ -1,6 +1,14 @@
 /** Node domain interfaces and types. */
 
-export type NodeStatus = 'REGISTERED' | 'ACTIVE' | 'HEALTHY' | 'DEGRADED' | 'UNHEALTHY' | 'OFFLINE' | 'DRAINING' | 'REJOINING';
+export type NodeStatus =
+  | 'REGISTERED'
+  | 'ACTIVE'
+  | 'HEALTHY'
+  | 'DEGRADED'
+  | 'UNHEALTHY'
+  | 'OFFLINE'
+  | 'DRAINING'
+  | 'REJOINING';
 
 export interface NodeMetadata {
   readonly nodeId: string;

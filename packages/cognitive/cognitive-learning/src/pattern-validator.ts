@@ -12,7 +12,10 @@ export class PatternValidator {
       throw new InvalidPatternError('Pattern missing mandatory fields', 'pattern-validator');
     }
     if (pattern.occurrenceCount < 1) {
-      throw new InvalidPatternError('Pattern must have positive occurrence count', 'pattern-validator');
+      throw new InvalidPatternError(
+        'Pattern must have positive occurrence count',
+        'pattern-validator',
+      );
     }
   }
 }

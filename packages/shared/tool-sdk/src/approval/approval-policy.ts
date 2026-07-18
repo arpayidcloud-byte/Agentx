@@ -21,7 +21,7 @@ const DEFAULT_POLICY_CONFIG: ApprovalPolicyConfig = {
  * @returns Merged ApprovalPolicyConfig
  */
 export function createApprovalPolicy(
-  config: Partial<ApprovalPolicyConfig> = {}
+  config: Partial<ApprovalPolicyConfig> = {},
 ): ApprovalPolicyConfig {
   return { ...DEFAULT_POLICY_CONFIG, ...config };
 }
@@ -52,7 +52,10 @@ export function requiresManualApproval(riskScore: number, policy: ApprovalPolicy
  * @param policy - Policy configuration
  * @returns true if double confirmation is required
  */
-export function requiresDoubleConfirmation(riskScore: number, policy: ApprovalPolicyConfig): boolean {
+export function requiresDoubleConfirmation(
+  riskScore: number,
+  policy: ApprovalPolicyConfig,
+): boolean {
   return riskScore >= policy.doubleConfirmationThreshold && policy.requireDoubleConfirmation;
 }
 

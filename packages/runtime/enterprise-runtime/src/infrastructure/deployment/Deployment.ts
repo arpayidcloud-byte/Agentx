@@ -11,9 +11,22 @@ export interface ContainerConfig {
 export class DockerRuntime {
   private containers = new Map<string, ContainerConfig>();
 
-  create(image: string, tag: string, ports: number[], env: Record<string, string>): ContainerConfig {
-    const checksum = createHash('sha256').update(JSON.stringify({ image, tag, ports, env })).digest('hex');
-    const config: ContainerConfig = Object.freeze({ image, tag, ports: [...ports], env: { ...env }, checksum });
+  create(
+    image: string,
+    tag: string,
+    ports: number[],
+    env: Record<string, string>,
+  ): ContainerConfig {
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ image, tag, ports, env }))
+      .digest('hex');
+    const config: ContainerConfig = Object.freeze({
+      image,
+      tag,
+      ports: [...ports],
+      env: { ...env },
+      checksum,
+    });
     this.containers.set(image, config);
     return config;
   }
@@ -40,8 +53,16 @@ export class KubernetesRuntime {
 
   deploy(name: string, replicas: number, image: string): KubernetesDeployment {
     const deploymentId = `k8s-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ deploymentId, name, replicas, image })).digest('hex');
-    const deployment: KubernetesDeployment = Object.freeze({ deploymentId, name, replicas, image, checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ deploymentId, name, replicas, image }))
+      .digest('hex');
+    const deployment: KubernetesDeployment = Object.freeze({
+      deploymentId,
+      name,
+      replicas,
+      image,
+      checksum,
+    });
     this.deployments.set(deploymentId, deployment);
     return deployment;
   }
@@ -117,8 +138,16 @@ export class AutoscalingSupport {
 
   setPolicy(minReplicas: number, maxReplicas: number, targetCpuPercent: number): AutoscalingPolicy {
     const policyId = `as-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ policyId, minReplicas, maxReplicas, targetCpuPercent })).digest('hex');
-    const policy: AutoscalingPolicy = Object.freeze({ policyId, minReplicas, maxReplicas, targetCpuPercent, checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ policyId, minReplicas, maxReplicas, targetCpuPercent }))
+      .digest('hex');
+    const policy: AutoscalingPolicy = Object.freeze({
+      policyId,
+      minReplicas,
+      maxReplicas,
+      targetCpuPercent,
+      checksum,
+    });
     this.policies.set(policyId, policy);
     return policy;
   }
@@ -144,7 +173,9 @@ export class HighAvailabilitySupport {
 
   configure(enabled: boolean, replicas: number): HAConfig {
     const configId = `ha-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ configId, enabled, replicas })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ configId, enabled, replicas }))
+      .digest('hex');
     this.config = Object.freeze({ configId, enabled, replicas, checksum });
     return this.config;
   }
@@ -181,7 +212,9 @@ export interface RollingUpgradePlan {
 export class RollingUpgradeSupport {
   plan(fromVersion: string, toVersion: string, batchSize: number): RollingUpgradePlan {
     const planId = `ru-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ planId, fromVersion, toVersion, batchSize })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ planId, fromVersion, toVersion, batchSize }))
+      .digest('hex');
     return Object.freeze({ planId, fromVersion, toVersion, batchSize, checksum });
   }
 }

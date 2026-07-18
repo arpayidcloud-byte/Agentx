@@ -14,7 +14,7 @@ export class ConsensusEngine {
       votes[agentId] = true;
     }
 
-    const approved = Object.values(votes).every(v => v);
+    const approved = Object.values(votes).every((v) => v);
     const result: ConsensusResult = {
       proposalId: request.proposalId,
       approved,

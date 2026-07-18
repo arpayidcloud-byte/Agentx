@@ -14,7 +14,10 @@ export class ProviderVersionValidator {
     const runtimeMajor = parseInt(runtimeVersion.split('.')[0], 10);
 
     if (providerMajor !== runtimeMajor) {
-      throw new VersionMismatchError(`Provider version ${meta.version} incompatible with Runtime ${runtimeVersion}`, 'version-validator');
+      throw new VersionMismatchError(
+        `Provider version ${meta.version} incompatible with Runtime ${runtimeVersion}`,
+        'version-validator',
+      );
     }
 
     return {

@@ -4,8 +4,15 @@
  */
 
 export type LearningState =
-  | 'CREATED' | 'COLLECTING' | 'EXTRACTING' | 'PATTERN_ANALYSIS'
-  | 'REFLECTION' | 'ADAPTATION' | 'VALIDATION' | 'CHECKPOINTING' | 'COMPLETED';
+  | 'CREATED'
+  | 'COLLECTING'
+  | 'EXTRACTING'
+  | 'PATTERN_ANALYSIS'
+  | 'REFLECTION'
+  | 'ADAPTATION'
+  | 'VALIDATION'
+  | 'CHECKPOINTING'
+  | 'COMPLETED';
 
 export interface Experience {
   id: string;
@@ -22,7 +29,12 @@ export interface Experience {
 
 export interface Pattern {
   id: string;
-  type: 'repeated_failure' | 'repeated_success' | 'frequent_path' | 'common_conflict' | 'common_recovery';
+  type:
+    | 'repeated_failure'
+    | 'repeated_success'
+    | 'frequent_path'
+    | 'common_conflict'
+    | 'common_recovery';
   signature: string;
   occurrenceCount: number;
   firstSeen: Date;

@@ -20,7 +20,7 @@ const DEFAULT_RESOURCE_LIMITS: ResourceLimitsConfig = {
  * @returns Merged ResourceLimitsConfig
  */
 export function createResourceLimits(
-  config: Partial<ResourceLimitsConfig> = {}
+  config: Partial<ResourceLimitsConfig> = {},
 ): ResourceLimitsConfig {
   return { ...DEFAULT_RESOURCE_LIMITS, ...config };
 }
@@ -45,7 +45,9 @@ export function validateOutputSize(outputSize: number, config: ResourceLimitsCon
  */
 export function validateExecutionTime(executionTimeMs: number, config: ResourceLimitsConfig): void {
   if (executionTimeMs > config.maxExecutionTimeMs) {
-    throw new Error(`Execution time ${executionTimeMs}ms exceeds limit of ${config.maxExecutionTimeMs}ms`);
+    throw new Error(
+      `Execution time ${executionTimeMs}ms exceeds limit of ${config.maxExecutionTimeMs}ms`,
+    );
   }
 }
 

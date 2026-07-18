@@ -4,12 +4,7 @@
  * Implements audit trail for approval lifecycle events.
  */
 
-import {
-  ApprovalEventType,
-  ApprovalAuditEvent,
-  ApprovalRequest,
-} from './interfaces.js';
-
+import { ApprovalEventType, ApprovalAuditEvent, ApprovalRequest } from './interfaces.js';
 
 /**
  * Creates an approval audit event
@@ -21,7 +16,7 @@ import {
 export function createApprovalAuditEvent(
   eventType: ApprovalEventType,
   request: ApprovalRequest,
-  durationMs?: number
+  durationMs?: number,
 ): ApprovalAuditEvent {
   return {
     eventType,
@@ -81,7 +76,7 @@ export function createApprovalExpiredEvent(request: ApprovalRequest): ApprovalAu
  */
 export function createApprovalExecutedEvent(
   request: ApprovalRequest,
-  durationMs: number
+  durationMs: number,
 ): ApprovalAuditEvent {
   return createApprovalAuditEvent('approval.executed', request, durationMs);
 }

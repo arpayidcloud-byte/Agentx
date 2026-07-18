@@ -45,8 +45,15 @@ describe('AuditStore', () => {
 
   it('records and retrieves audit entries', async () => {
     const record: AuditRecord = {
-      id: 'audit-1', traceId: 't1', correlationId: 'c1', sessionId: 's1',
-      workflowId: 'w1', timestamp: new Date(), durationMs: 100, result: 'success', metadata: {},
+      id: 'audit-1',
+      traceId: 't1',
+      correlationId: 'c1',
+      sessionId: 's1',
+      workflowId: 'w1',
+      timestamp: new Date(),
+      durationMs: 100,
+      result: 'success',
+      metadata: {},
     };
     await store.record(record);
     const all = await store.getAll();
@@ -55,29 +62,99 @@ describe('AuditStore', () => {
   });
 
   it('filters by trace ID', async () => {
-    await store.record({ id: 'a1', traceId: 't1', correlationId: 'c1', sessionId: 's1', workflowId: 'w1', timestamp: new Date(), durationMs: 100, result: 'success', metadata: {} });
-    await store.record({ id: 'a2', traceId: 't2', correlationId: 'c2', sessionId: 's2', workflowId: 'w2', timestamp: new Date(), durationMs: 200, result: 'failure', metadata: {} });
+    await store.record({
+      id: 'a1',
+      traceId: 't1',
+      correlationId: 'c1',
+      sessionId: 's1',
+      workflowId: 'w1',
+      timestamp: new Date(),
+      durationMs: 100,
+      result: 'success',
+      metadata: {},
+    });
+    await store.record({
+      id: 'a2',
+      traceId: 't2',
+      correlationId: 'c2',
+      sessionId: 's2',
+      workflowId: 'w2',
+      timestamp: new Date(),
+      durationMs: 200,
+      result: 'failure',
+      metadata: {},
+    });
     const t1 = await store.getByTraceId('t1');
     expect(t1).toHaveLength(1);
     expect(t1[0].id).toBe('a1');
   });
 
   it('filters by session ID', async () => {
-    await store.record({ id: 'a1', traceId: 't1', correlationId: 'c1', sessionId: 's1', workflowId: 'w1', timestamp: new Date(), durationMs: 100, result: 'success', metadata: {} });
-    await store.record({ id: 'a2', traceId: 't2', correlationId: 'c2', sessionId: 's2', workflowId: 'w2', timestamp: new Date(), durationMs: 200, result: 'failure', metadata: {} });
+    await store.record({
+      id: 'a1',
+      traceId: 't1',
+      correlationId: 'c1',
+      sessionId: 's1',
+      workflowId: 'w1',
+      timestamp: new Date(),
+      durationMs: 100,
+      result: 'success',
+      metadata: {},
+    });
+    await store.record({
+      id: 'a2',
+      traceId: 't2',
+      correlationId: 'c2',
+      sessionId: 's2',
+      workflowId: 'w2',
+      timestamp: new Date(),
+      durationMs: 200,
+      result: 'failure',
+      metadata: {},
+    });
     const s1 = await store.getBySessionId('s1');
     expect(s1).toHaveLength(1);
   });
 
   it('filters by workflow ID', async () => {
-    await store.record({ id: 'a1', traceId: 't1', correlationId: 'c1', sessionId: 's1', workflowId: 'w1', timestamp: new Date(), durationMs: 100, result: 'success', metadata: {} });
-    await store.record({ id: 'a2', traceId: 't2', correlationId: 'c2', sessionId: 's2', workflowId: 'w2', timestamp: new Date(), durationMs: 200, result: 'failure', metadata: {} });
+    await store.record({
+      id: 'a1',
+      traceId: 't1',
+      correlationId: 'c1',
+      sessionId: 's1',
+      workflowId: 'w1',
+      timestamp: new Date(),
+      durationMs: 100,
+      result: 'success',
+      metadata: {},
+    });
+    await store.record({
+      id: 'a2',
+      traceId: 't2',
+      correlationId: 'c2',
+      sessionId: 's2',
+      workflowId: 'w2',
+      timestamp: new Date(),
+      durationMs: 200,
+      result: 'failure',
+      metadata: {},
+    });
     const w1 = await store.getByWorkflowId('w1');
     expect(w1).toHaveLength(1);
   });
 
   it('deletes audit records', async () => {
-    await store.record({ id: 'a1', traceId: 't1', correlationId: 'c1', sessionId: 's1', workflowId: 'w1', timestamp: new Date(), durationMs: 100, result: 'success', metadata: {} });
+    await store.record({
+      id: 'a1',
+      traceId: 't1',
+      correlationId: 'c1',
+      sessionId: 's1',
+      workflowId: 'w1',
+      timestamp: new Date(),
+      durationMs: 100,
+      result: 'success',
+      metadata: {},
+    });
     await store.delete('a1');
     const all = await store.getAll();
     expect(all).toHaveLength(0);
@@ -97,8 +174,13 @@ describe('CheckpointStore', () => {
 
   it('saves and loads checkpoints', async () => {
     const checkpoint: Checkpoint = {
-      id: 'cp-1', workflowId: 'w1', snapshot: { data: 'test' },
-      createdAt: new Date(), version: 1, checksum: 'abc', metadata: {},
+      id: 'cp-1',
+      workflowId: 'w1',
+      snapshot: { data: 'test' },
+      createdAt: new Date(),
+      version: 1,
+      checksum: 'abc',
+      metadata: {},
     };
     await store.save(checkpoint);
     const loaded = await store.load('w1');
@@ -106,8 +188,24 @@ describe('CheckpointStore', () => {
   });
 
   it('lists checkpoints', async () => {
-    await store.save({ id: 'cp-1', workflowId: 'w1', snapshot: {}, createdAt: new Date(), version: 1, checksum: 'a', metadata: {} });
-    await store.save({ id: 'cp-2', workflowId: 'w1', snapshot: {}, createdAt: new Date(), version: 2, checksum: 'b', metadata: {} });
+    await store.save({
+      id: 'cp-1',
+      workflowId: 'w1',
+      snapshot: {},
+      createdAt: new Date(),
+      version: 1,
+      checksum: 'a',
+      metadata: {},
+    });
+    await store.save({
+      id: 'cp-2',
+      workflowId: 'w1',
+      snapshot: {},
+      createdAt: new Date(),
+      version: 2,
+      checksum: 'b',
+      metadata: {},
+    });
     const list = await store.list('w1');
     expect(list).toHaveLength(2);
   });
@@ -118,7 +216,15 @@ describe('CheckpointStore', () => {
   });
 
   it('deletes checkpoints', async () => {
-    await store.save({ id: 'cp-1', workflowId: 'w1', snapshot: {}, createdAt: new Date(), version: 1, checksum: 'a', metadata: {} });
+    await store.save({
+      id: 'cp-1',
+      workflowId: 'w1',
+      snapshot: {},
+      createdAt: new Date(),
+      version: 1,
+      checksum: 'a',
+      metadata: {},
+    });
     await store.delete('cp-1');
     const loaded = await store.load('w1');
     expect(loaded).toBeUndefined();
@@ -133,9 +239,15 @@ describe('ExecutionPipeline', () => {
   let auditStore: InMemoryAuditStore;
   let pipeline: ExecutionPipeline;
   const config: RuntimeConfig = {
-    tokenBudget: 500000, costBudget: 100, maxParallelAgents: 10, maxWorkflows: 50,
-    maxTools: 100, maxMemory: 1024 * 1024 * 100, maxContextTokens: 100000,
-    defaultTimeoutMs: 60000, checkpointIntervalMs: 30000,
+    tokenBudget: 500000,
+    costBudget: 100,
+    maxParallelAgents: 10,
+    maxWorkflows: 50,
+    maxTools: 100,
+    maxMemory: 1024 * 1024 * 100,
+    maxContextTokens: 100000,
+    defaultTimeoutMs: 60000,
+    checkpointIntervalMs: 30000,
   };
 
   beforeEach(() => {
@@ -144,7 +256,11 @@ describe('ExecutionPipeline', () => {
   });
 
   it('executes goal successfully and records audit', async () => {
-    const result = await pipeline.execute({ id: 'session-1', traceId: 'trace-1', goal: 'build feature' });
+    const result = await pipeline.execute({
+      id: 'session-1',
+      traceId: 'trace-1',
+      goal: 'build feature',
+    });
     expect(result.success).toBe(true);
     expect(result.metrics.executionTimeMs).toBeGreaterThanOrEqual(0);
     expect(result.audit.result).toBe('success');
@@ -173,8 +289,15 @@ describe('PostgresAuditStore', () => {
 
   it('records and retrieves audit entries', async () => {
     const record: AuditRecord = {
-      id: 'audit-1', traceId: 't1', correlationId: 'c1', sessionId: 's1',
-      workflowId: 'w1', timestamp: new Date(), durationMs: 100, result: 'success', metadata: {},
+      id: 'audit-1',
+      traceId: 't1',
+      correlationId: 'c1',
+      sessionId: 's1',
+      workflowId: 'w1',
+      timestamp: new Date(),
+      durationMs: 100,
+      result: 'success',
+      metadata: {},
     };
     await store.record(record);
     const all = await store.getAll();
@@ -182,28 +305,98 @@ describe('PostgresAuditStore', () => {
   });
 
   it('filters by trace ID', async () => {
-    await store.record({ id: 'a1', traceId: 't1', correlationId: 'c1', sessionId: 's1', workflowId: 'w1', timestamp: new Date(), durationMs: 100, result: 'success', metadata: {} });
-    await store.record({ id: 'a2', traceId: 't2', correlationId: 'c2', sessionId: 's2', workflowId: 'w2', timestamp: new Date(), durationMs: 200, result: 'failure', metadata: {} });
+    await store.record({
+      id: 'a1',
+      traceId: 't1',
+      correlationId: 'c1',
+      sessionId: 's1',
+      workflowId: 'w1',
+      timestamp: new Date(),
+      durationMs: 100,
+      result: 'success',
+      metadata: {},
+    });
+    await store.record({
+      id: 'a2',
+      traceId: 't2',
+      correlationId: 'c2',
+      sessionId: 's2',
+      workflowId: 'w2',
+      timestamp: new Date(),
+      durationMs: 200,
+      result: 'failure',
+      metadata: {},
+    });
     const t1 = await store.getByTraceId('t1');
     expect(t1).toHaveLength(1);
   });
 
   it('filters by session ID', async () => {
-    await store.record({ id: 'a1', traceId: 't1', correlationId: 'c1', sessionId: 's1', workflowId: 'w1', timestamp: new Date(), durationMs: 100, result: 'success', metadata: {} });
-    await store.record({ id: 'a2', traceId: 't2', correlationId: 'c2', sessionId: 's2', workflowId: 'w2', timestamp: new Date(), durationMs: 200, result: 'failure', metadata: {} });
+    await store.record({
+      id: 'a1',
+      traceId: 't1',
+      correlationId: 'c1',
+      sessionId: 's1',
+      workflowId: 'w1',
+      timestamp: new Date(),
+      durationMs: 100,
+      result: 'success',
+      metadata: {},
+    });
+    await store.record({
+      id: 'a2',
+      traceId: 't2',
+      correlationId: 'c2',
+      sessionId: 's2',
+      workflowId: 'w2',
+      timestamp: new Date(),
+      durationMs: 200,
+      result: 'failure',
+      metadata: {},
+    });
     const s1 = await store.getBySessionId('s1');
     expect(s1).toHaveLength(1);
   });
 
   it('filters by workflow ID', async () => {
-    await store.record({ id: 'a1', traceId: 't1', correlationId: 'c1', sessionId: 's1', workflowId: 'w1', timestamp: new Date(), durationMs: 100, result: 'success', metadata: {} });
-    await store.record({ id: 'a2', traceId: 't2', correlationId: 'c2', sessionId: 's2', workflowId: 'w2', timestamp: new Date(), durationMs: 200, result: 'failure', metadata: {} });
+    await store.record({
+      id: 'a1',
+      traceId: 't1',
+      correlationId: 'c1',
+      sessionId: 's1',
+      workflowId: 'w1',
+      timestamp: new Date(),
+      durationMs: 100,
+      result: 'success',
+      metadata: {},
+    });
+    await store.record({
+      id: 'a2',
+      traceId: 't2',
+      correlationId: 'c2',
+      sessionId: 's2',
+      workflowId: 'w2',
+      timestamp: new Date(),
+      durationMs: 200,
+      result: 'failure',
+      metadata: {},
+    });
     const w1 = await store.getByWorkflowId('w1');
     expect(w1).toHaveLength(1);
   });
 
   it('deletes audit records', async () => {
-    await store.record({ id: 'a1', traceId: 't1', correlationId: 'c1', sessionId: 's1', workflowId: 'w1', timestamp: new Date(), durationMs: 100, result: 'success', metadata: {} });
+    await store.record({
+      id: 'a1',
+      traceId: 't1',
+      correlationId: 'c1',
+      sessionId: 's1',
+      workflowId: 'w1',
+      timestamp: new Date(),
+      durationMs: 100,
+      result: 'success',
+      metadata: {},
+    });
     await store.delete('a1');
     const all = await store.getAll();
     expect(all).toHaveLength(0);
@@ -272,12 +465,26 @@ describe('ObservabilityManager', () => {
 
   it('aggregates metrics from audit store', async () => {
     await auditStore.record({
-      id: 'a1', traceId: 't1', correlationId: 'c1', sessionId: 's1',
-      workflowId: 'w1', timestamp: new Date(), durationMs: 100, result: 'success', metadata: {},
+      id: 'a1',
+      traceId: 't1',
+      correlationId: 'c1',
+      sessionId: 's1',
+      workflowId: 'w1',
+      timestamp: new Date(),
+      durationMs: 100,
+      result: 'success',
+      metadata: {},
     });
     await auditStore.record({
-      id: 'a2', traceId: 't2', correlationId: 'c2', sessionId: 's2',
-      workflowId: 'w2', timestamp: new Date(), durationMs: 200, result: 'failure', metadata: {},
+      id: 'a2',
+      traceId: 't2',
+      correlationId: 'c2',
+      sessionId: 's2',
+      workflowId: 'w2',
+      timestamp: new Date(),
+      durationMs: 200,
+      result: 'failure',
+      metadata: {},
     });
 
     const metrics = await manager.getAggregatedMetrics();
@@ -359,7 +566,10 @@ describe('RuntimeHealthService', () => {
 
   it('checks registered components', async () => {
     service.registerCheck('test', async () => ({
-      component: 'test', healthy: true, latencyMs: 10, lastChecked: new Date(),
+      component: 'test',
+      healthy: true,
+      latencyMs: 10,
+      lastChecked: new Date(),
     }));
     const result = await service.checkComponent('test');
     expect(result.healthy).toBe(true);
@@ -373,15 +583,30 @@ describe('RuntimeHealthService', () => {
   });
 
   it('checks all components', async () => {
-    service.registerCheck('a', async () => ({ component: 'a', healthy: true, latencyMs: 0, lastChecked: new Date() }));
-    service.registerCheck('b', async () => ({ component: 'b', healthy: false, latencyMs: 0, lastChecked: new Date() }));
+    service.registerCheck('a', async () => ({
+      component: 'a',
+      healthy: true,
+      latencyMs: 0,
+      lastChecked: new Date(),
+    }));
+    service.registerCheck('b', async () => ({
+      component: 'b',
+      healthy: false,
+      latencyMs: 0,
+      lastChecked: new Date(),
+    }));
     const report = await service.checkAll();
     expect(report.components).toHaveLength(2);
     expect(report.overall).toBe(false);
   });
 
   it('returns last results', async () => {
-    service.registerCheck('test', async () => ({ component: 'test', healthy: true, latencyMs: 0, lastChecked: new Date() }));
+    service.registerCheck('test', async () => ({
+      component: 'test',
+      healthy: true,
+      latencyMs: 0,
+      lastChecked: new Date(),
+    }));
     await service.checkComponent('test');
     const lastResults = service.getLastResults();
     expect(lastResults.has('test')).toBe(true);
@@ -506,9 +731,9 @@ describe('RuntimeBootstrap V2', () => {
 
   it('handles bootstrap failures', async () => {
     const bootstrap = new RuntimeBootstrap();
-    const di = await bootstrap.bootstrap({ 
+    const di = await bootstrap.bootstrap({
       auditStore: {} as any,
-      checkpointStore: {} as any
+      checkpointStore: {} as any,
     } as any);
     expect(di.has('auditStore')).toBe(true);
     expect(bootstrap.getDI()).toBeDefined();
@@ -525,9 +750,15 @@ describe('RuntimeIntegration', () => {
   beforeEach(() => {
     integration = new RuntimeIntegration({
       config: {
-        tokenBudget: 500000, costBudget: 100, maxParallelAgents: 10, maxWorkflows: 50,
-        maxTools: 100, maxMemory: 1024 * 1024 * 100, maxContextTokens: 100000,
-        defaultTimeoutMs: 60000, checkpointIntervalMs: 30000,
+        tokenBudget: 500000,
+        costBudget: 100,
+        maxParallelAgents: 10,
+        maxWorkflows: 50,
+        maxTools: 100,
+        maxMemory: 1024 * 1024 * 100,
+        maxContextTokens: 100000,
+        defaultTimeoutMs: 60000,
+        checkpointIntervalMs: 30000,
       },
       auditStore: new InMemoryAuditStore(),
     });

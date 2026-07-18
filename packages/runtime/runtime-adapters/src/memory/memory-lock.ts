@@ -3,7 +3,13 @@
  * @description Reference in-memory distributed lock provider.
  */
 
-import { ILockProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics } from '../interfaces.js';
+import {
+  ILockProvider,
+  ProviderMetadata,
+  ProviderCapabilities,
+  ProviderHealth,
+  ProviderMetrics,
+} from '../interfaces.js';
 
 export class MemoryLockProvider implements ILockProvider {
   private locks = new Map<string, { id: string; expiresAt: number }>();
@@ -28,7 +34,12 @@ export class MemoryLockProvider implements ILockProvider {
   }
 
   getMetrics(): ProviderMetrics {
-    return { totalRequests: this.total, successfulRequests: this.successes, failedRequests: 0, averageLatencyMs: 0 };
+    return {
+      totalRequests: this.total,
+      successfulRequests: this.successes,
+      failedRequests: 0,
+      averageLatencyMs: 0,
+    };
   }
 
   async acquire(key: string, ttlMs: number): Promise<string> {

@@ -11,8 +11,13 @@ export class ReasoningFramework {
 
   async executeReasoning(session: ReasoningSession, graph: ReasoningGraph): Promise<void> {
     const stages: PipelineStageName[] = [
-      'NORMALIZATION', 'CONTEXT_BUILD', 'GRAPH_BUILD',
-      'VALIDATION', 'READY', 'EXECUTION', 'CHECKPOINT'
+      'NORMALIZATION',
+      'CONTEXT_BUILD',
+      'GRAPH_BUILD',
+      'VALIDATION',
+      'READY',
+      'EXECUTION',
+      'CHECKPOINT',
     ];
     await this.pipeline.execute(session, stages);
   }

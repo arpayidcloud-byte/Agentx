@@ -1,4 +1,9 @@
-import { RuntimeLifecycleManager, RuntimeStateManager, RuntimeSupervisor, RuntimeHealthManager } from '../../domain/runtime/RuntimeManager.js';
+import {
+  RuntimeLifecycleManager,
+  RuntimeStateManager,
+  RuntimeSupervisor,
+  RuntimeHealthManager,
+} from '../../domain/runtime/RuntimeManager.js';
 import { ServiceRegistry, PluginManager } from '../../domain/service/ServiceManager.js';
 import { ConfigurationManager } from '../../domain/config/ConfigManager.js';
 import { MultiTenantManager } from '../../domain/multitenant/TenantManager.js';
@@ -30,7 +35,9 @@ export class RuntimeOrchestrator {
 export class RuntimeBootstrapper {
   bootstrap(config: Record<string, unknown>): { runtimeId: string; checksum: string } {
     const runtimeId = `rt-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ runtimeId, config })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ runtimeId, config }))
+      .digest('hex');
     return { runtimeId, checksum };
   }
 }
@@ -38,8 +45,10 @@ export class RuntimeBootstrapper {
 export class ServiceCoordinator {
   constructor(private registry: ServiceRegistry) {}
 
-  registerAll(services: Array<{ name: string; version: string }>): Array<{ serviceId: string; name: string }> {
-    return services.map(s => {
+  registerAll(
+    services: Array<{ name: string; version: string }>,
+  ): Array<{ serviceId: string; name: string }> {
+    return services.map((s) => {
       const entry = this.registry.register(s.name, s.version);
       return { serviceId: entry.serviceId, name: entry.name };
     });
@@ -55,8 +64,10 @@ export class ServiceCoordinator {
 export class PluginCoordinator {
   constructor(private pluginManager: PluginManager) {}
 
-  loadAll(plugins: Array<{ name: string; version: string }>): Array<{ pluginId: string; name: string }> {
-    return plugins.map(p => {
+  loadAll(
+    plugins: Array<{ name: string; version: string }>,
+  ): Array<{ pluginId: string; name: string }> {
+    return plugins.map((p) => {
       const entry = this.pluginManager.load(p.name, p.version);
       return { pluginId: entry.pluginId, name: entry.name };
     });
@@ -85,7 +96,7 @@ export class ConfigurationCoordinator {
   }
 
   exportAll(): Array<{ key: string; value: unknown }> {
-    return this.configManager.getAll().map(e => ({ key: e.key, value: e.value }));
+    return this.configManager.getAll().map((e) => ({ key: e.key, value: e.value }));
   }
 }
 
@@ -94,7 +105,10 @@ export class TenantCoordinator {
 
   provision(name: string, plan: string, maxServices: number): string {
     const tenant = this.tenantManager.create(name, plan, {
-      maxServices, maxPlugins: 10, maxRequestsPerSecond: 1000, storageMb: 1024,
+      maxServices,
+      maxPlugins: 10,
+      maxRequestsPerSecond: 1000,
+      storageMb: 1024,
     });
     return tenant.tenantId;
   }
@@ -115,7 +129,9 @@ export interface MigrationPlan {
 export class RuntimeMigrationCoordinator {
   plan(fromVersion: string, toVersion: string, steps: string[]): MigrationPlan {
     const planId = `mig-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ planId, fromVersion, toVersion, steps })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ planId, fromVersion, toVersion, steps }))
+      .digest('hex');
     return Object.freeze({ planId, fromVersion, toVersion, steps: [...steps], checksum });
   }
 }
@@ -131,7 +147,15 @@ export interface UpgradePlan {
 export class RuntimeUpgradeCoordinator {
   plan(currentVersion: string, targetVersion: string): UpgradePlan {
     const planId = `upg-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ planId, currentVersion, targetVersion })).digest('hex');
-    return Object.freeze({ planId, currentVersion, targetVersion, rollbackAvailable: true, checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ planId, currentVersion, targetVersion }))
+      .digest('hex');
+    return Object.freeze({
+      planId,
+      currentVersion,
+      targetVersion,
+      rollbackAvailable: true,
+      checksum,
+    });
   }
 }

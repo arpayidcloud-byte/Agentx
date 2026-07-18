@@ -23,7 +23,10 @@ export class DependencyValidator {
     }
 
     if (failures.length > 0) {
-      throw new DependencyError(`Dependency validation failed: ${failures.join(', ')}`, 'dependency-validator');
+      throw new DependencyError(
+        `Dependency validation failed: ${failures.join(', ')}`,
+        'dependency-validator',
+      );
     }
 
     return {

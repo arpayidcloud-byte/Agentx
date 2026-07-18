@@ -9,68 +9,69 @@
 
 ## 1. Quality Gate Report
 
-| Gate | Result |
-|------|--------|
-| TypeScript Strict | ✅ PASS (0 errors) |
-| Statements | ✅ 100% |
-| Branches | ✅ 100% |
-| Functions | ✅ 100% |
-| Lines | ✅ 100% |
-| Dead Code | ✅ 0 |
-| Unreachable Branches | ✅ 0 |
-| Non-null Assertions | ✅ 0 |
-| `any` Usage | ✅ 0 |
-| `ts-ignore` | ✅ 0 |
-| Circular Dependencies | ✅ 0 |
-| Architecture Violations | ✅ 0 |
-| Public API Regression | ✅ 0 |
-| Dependency Regression | ✅ 0 |
+| Gate                    | Result             |
+| ----------------------- | ------------------ |
+| TypeScript Strict       | ✅ PASS (0 errors) |
+| Statements              | ✅ 100%            |
+| Branches                | ✅ 100%            |
+| Functions               | ✅ 100%            |
+| Lines                   | ✅ 100%            |
+| Dead Code               | ✅ 0               |
+| Unreachable Branches    | ✅ 0               |
+| Non-null Assertions     | ✅ 0               |
+| `any` Usage             | ✅ 0               |
+| `ts-ignore`             | ✅ 0               |
+| Circular Dependencies   | ✅ 0               |
+| Architecture Violations | ✅ 0               |
+| Public API Regression   | ✅ 0               |
+| Dependency Regression   | ✅ 0               |
 
 ---
 
 ## 2. Workspace Regression Report
 
-| Package | Tests | Status |
-|---------|-------|--------|
-| @agentx/cognitive-contracts | 13 | ✅ PASS |
-| @agentx/cognitive-kernel | 24 | ✅ PASS |
-| @agentx/reasoning-framework | 21 | ✅ PASS |
-| @agentx/workflow-orchestration | 54 | ✅ PASS |
-| @agentx/multi-agent-reasoning | 102 | ✅ PASS |
-| @agentx/distributed-cognition | 233 | ✅ PASS |
-| @agentx/autonomous-cognition | 92 | ✅ PASS |
-| @agentx/enterprise-runtime | 139 | ✅ PASS |
-| **Total** | **678** | **ALL PASS** |
+| Package                        | Tests   | Status       |
+| ------------------------------ | ------- | ------------ |
+| @agentx/cognitive-contracts    | 13      | ✅ PASS      |
+| @agentx/cognitive-kernel       | 24      | ✅ PASS      |
+| @agentx/reasoning-framework    | 21      | ✅ PASS      |
+| @agentx/workflow-orchestration | 54      | ✅ PASS      |
+| @agentx/multi-agent-reasoning  | 102     | ✅ PASS      |
+| @agentx/distributed-cognition  | 233     | ✅ PASS      |
+| @agentx/autonomous-cognition   | 92      | ✅ PASS      |
+| @agentx/enterprise-runtime     | 139     | ✅ PASS      |
+| **Total**                      | **678** | **ALL PASS** |
 
 ---
 
 ## 3. Architecture Freeze Report
 
-| Principle | Status |
-|-----------|--------|
-| Hexagonal Architecture | ✅ FROZEN |
-| Domain-Driven Design | ✅ FROZEN |
-| Clean Architecture | ✅ FROZEN |
-| Dependency Injection | ✅ FROZEN |
-| Immutable Objects | ✅ FROZEN |
-| Fail-Closed | ✅ FROZEN |
+| Principle               | Status    |
+| ----------------------- | --------- |
+| Hexagonal Architecture  | ✅ FROZEN |
+| Domain-Driven Design    | ✅ FROZEN |
+| Clean Architecture      | ✅ FROZEN |
+| Dependency Injection    | ✅ FROZEN |
+| Immutable Objects       | ✅ FROZEN |
+| Fail-Closed             | ✅ FROZEN |
 | Deterministic Execution | ✅ FROZEN |
-| Replay Safe | ✅ FROZEN |
-| Recovery Safe | ✅ FROZEN |
+| Replay Safe             | ✅ FROZEN |
+| Recovery Safe           | ✅ FROZEN |
 
 ---
 
 ## 4. Public API Freeze Report
 
-| Category | Count |
-|----------|-------|
-| Classes | 42 |
-| Interfaces | 20 |
-| Type Aliases | 1 |
-| Error Classes | 1 |
+| Category          | Count  |
+| ----------------- | ------ |
+| Classes           | 42     |
+| Interfaces        | 20     |
+| Type Aliases      | 1      |
+| Error Classes     | 1      |
 | **Total Exports** | **99** |
 
 ### Frozen Classes (42)
+
 RuntimeLifecycleManager, RuntimeStateManager, RuntimeSupervisor, RuntimeHealthManager,
 ServiceRegistry, ServiceDiscovery, PluginManager, ExtensionManager,
 ConfigurationManager, SecretManager, FeatureFlagManager,
@@ -95,10 +96,10 @@ AutoscalingSupport, HighAvailabilitySupport, GracefulShutdown, RollingUpgradeSup
 └── @agentx/core-runtime (workspace)
 ```
 
-| Dependency | Version | Type | Status |
-|-----------|---------|------|--------|
-| @agentx/shared | 0.1.0 | workspace | ✅ FROZEN |
-| @agentx/core-runtime | 0.1.0 | workspace | ✅ FROZEN |
+| Dependency           | Version | Type      | Status    |
+| -------------------- | ------- | --------- | --------- |
+| @agentx/shared       | 0.1.0   | workspace | ✅ FROZEN |
+| @agentx/core-runtime | 0.1.0   | workspace | ✅ FROZEN |
 
 No external vendor dependencies. Zero circular dependencies.
 
@@ -106,43 +107,43 @@ No external vendor dependencies. Zero circular dependencies.
 
 ## 6. Runtime Baseline Certification
 
-| Field | Value |
-|-------|-------|
-| Baseline Version | 0.1.0 |
-| Milestone | M6.0 |
-| Source Files | 38 |
-| Public API Count | 99 exports |
-| Test Count | 139 |
-| Coverage Statements | 100% |
-| Coverage Branches | 100% |
-| Coverage Functions | 100% |
-| Coverage Lines | 100% |
-| Quality Grade | A+ |
-| Production Grade | READY |
-| Architecture Checksum | SHA256:M6.0-FROZEN-2026-07-17 |
-| Freeze Signature | FROZEN-M6.0-0.1.0-2026-07-17T04:15:00Z |
+| Field                 | Value                                  |
+| --------------------- | -------------------------------------- |
+| Baseline Version      | 0.1.0                                  |
+| Milestone             | M6.0                                   |
+| Source Files          | 38                                     |
+| Public API Count      | 99 exports                             |
+| Test Count            | 139                                    |
+| Coverage Statements   | 100%                                   |
+| Coverage Branches     | 100%                                   |
+| Coverage Functions    | 100%                                   |
+| Coverage Lines        | 100%                                   |
+| Quality Grade         | A+                                     |
+| Production Grade      | READY                                  |
+| Architecture Checksum | SHA256:M6.0-FROZEN-2026-07-17          |
+| Freeze Signature      | FROZEN-M6.0-0.1.0-2026-07-17T04:15:00Z |
 
 ---
 
 ## 7. Production Readiness Report
 
-| Criterion | Status |
-|-----------|--------|
+| Criterion         | Status    |
+| ----------------- | --------- |
 | Runtime Lifecycle | ✅ FROZEN |
-| Service Registry | ✅ FROZEN |
+| Service Registry  | ✅ FROZEN |
 | Service Discovery | ✅ FROZEN |
-| Plugin System | ✅ FROZEN |
-| Configuration | ✅ FROZEN |
+| Plugin System     | ✅ FROZEN |
+| Configuration     | ✅ FROZEN |
 | Secret Management | ✅ FROZEN |
-| Multi-Tenant | ✅ FROZEN |
-| Security | ✅ FROZEN |
-| Observability | ✅ FROZEN |
-| Deployment | ✅ FROZEN |
-| Networking | ✅ FROZEN |
+| Multi-Tenant      | ✅ FROZEN |
+| Security          | ✅ FROZEN |
+| Observability     | ✅ FROZEN |
+| Deployment        | ✅ FROZEN |
+| Networking        | ✅ FROZEN |
 | Platform Services | ✅ FROZEN |
 | High Availability | ✅ FROZEN |
 | Graceful Shutdown | ✅ FROZEN |
-| Rolling Upgrade | ✅ FROZEN |
+| Rolling Upgrade   | ✅ FROZEN |
 
 ---
 

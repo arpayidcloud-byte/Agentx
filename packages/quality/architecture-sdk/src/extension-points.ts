@@ -5,11 +5,6 @@
 
 export class ExtensionPoints {
   listExtensionPoints(): string[] {
-    return [
-      'HookManager',
-      'LifecycleHooks',
-      'EventPublisher',
-      'EngineProviders',
-    ];
+    return ['HookManager', 'LifecycleHooks', 'EventPublisher', 'EngineProviders'];
   }
 }

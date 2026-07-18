@@ -4,7 +4,13 @@
  * Provides read-only git status query within sandbox.
  */
 
-import { GitExecutionRequest, GitExecutionResult, GitExecutionContext, GitStatusOutput, GitStatusFile } from './interfaces.js';
+import {
+  GitExecutionRequest,
+  GitExecutionResult,
+  GitExecutionContext,
+  GitStatusOutput,
+  GitStatusFile,
+} from './interfaces.js';
 import { GitExecutor } from './executor.js';
 
 /**
@@ -45,7 +51,7 @@ export class GitStatusTool {
    * @returns Parsed GitStatusOutput
    */
   private parseStatus(output: string): GitStatusOutput {
-    const lines = output.split('\n').filter(line => line.trim().length > 0);
+    const lines = output.split('\n').filter((line) => line.trim().length > 0);
     const changed: GitStatusFile[] = [];
 
     for (const line of lines) {

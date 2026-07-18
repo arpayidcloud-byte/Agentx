@@ -59,7 +59,10 @@ export class LearningEngine {
   public metrics = new LearningMetricsCollector();
   private extractor = new ExperienceExtractor();
 
-  async run(experiences: Experience[], adaptationPolicy: AdaptationPolicy = 'balanced'): Promise<void> {
+  async run(
+    experiences: Experience[],
+    adaptationPolicy: AdaptationPolicy = 'balanced',
+  ): Promise<void> {
     const session = new LearningSession(`learn-${Date.now()}`);
     await this.hooks.runBeforeLearning(session.id);
     this.events.publish('learning.started', { sessionId: session.id });
@@ -101,7 +104,10 @@ export class LearningEngine {
       const adaptations = this.adaptationEngine.adapt(allPatterns, adaptationPolicy);
       this.metrics.adaptationsGenerated += adaptations.length;
       if (adaptations.length > 0) {
-        this.events.publish('adaptation.generated', { sessionId: session.id, count: adaptations.length });
+        this.events.publish('adaptation.generated', {
+          sessionId: session.id,
+          count: adaptations.length,
+        });
       }
 
       this.stateMachine.transition('VALIDATION');
@@ -111,7 +117,10 @@ export class LearningEngine {
         this.metrics.improvementsGenerated++;
       }
       if (improvements.length > 0) {
-        this.events.publish('improvement.generated', { sessionId: session.id, count: improvements.length });
+        this.events.publish('improvement.generated', {
+          sessionId: session.id,
+          count: improvements.length,
+        });
       }
 
       this.stateMachine.transition('CHECKPOINTING');
@@ -127,7 +136,6 @@ export class LearningEngine {
       session.markComplete();
       this.events.publish('learning.completed', { sessionId: session.id });
       await this.hooks.runAfterLearning(session.id, { patterns: allPatterns.length });
-
     } catch (err: any) {
       this.metrics.recordRun(false);
       this.events.publish('learning.failed', { sessionId: session.id, error: err.message });

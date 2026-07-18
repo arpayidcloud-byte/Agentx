@@ -3,7 +3,14 @@
  * @description Native Ollama local model provider integration adapter.
  */
 
-import { IConfigurationProvider, INativeProvider, CompletionOptions, CompletionResponse, EmbeddingRequest, EmbeddingResponse } from '../interfaces.js';
+import {
+  IConfigurationProvider,
+  INativeProvider,
+  CompletionOptions,
+  CompletionResponse,
+  EmbeddingRequest,
+  EmbeddingResponse,
+} from '../interfaces.js';
 import { ConfigurationError } from '../errors.js';
 
 export class OllamaProvider implements INativeProvider {
@@ -32,7 +39,7 @@ export class OllamaProvider implements INativeProvider {
   }
 
   async getHealth() {
-    return { status: this.connected ? 'UP' : 'DOWN' as const, latencyMs: 5 };
+    return { status: this.connected ? 'UP' : ('DOWN' as const), latencyMs: 5 };
   }
 
   getMetadata() {
@@ -51,7 +58,9 @@ export class OllamaProvider implements INativeProvider {
 
   async embed(request: EmbeddingRequest): Promise<EmbeddingResponse> {
     return {
-      embeddings: Array.isArray(request.input) ? request.input.map(() => Array(384).fill(0)) : [Array(384).fill(0)],
+      embeddings: Array.isArray(request.input)
+        ? request.input.map(() => Array(384).fill(0))
+        : [Array(384).fill(0)],
       model: request.model,
       usage: { promptTokens: 10, totalTokens: 10 },
     };

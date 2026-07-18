@@ -27,7 +27,8 @@ export interface ReleaseManifest {
   releaseStatus: ReleaseStatus;
 }
 
-export type ReleaseStatus = 'Development' | 'Experimental' | 'Preview' | 'Stable' | 'Enterprise' | 'Production' | 'LTS';
+export type ReleaseStatus =
+  'Development' | 'Experimental' | 'Preview' | 'Stable' | 'Enterprise' | 'Production' | 'LTS';
 
 export interface ReleaseCertificate {
   certificateId: string;

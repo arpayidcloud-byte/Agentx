@@ -4,7 +4,18 @@
  */
 
 /** @description Runtime lifecycle states */
-export type RuntimeState = 'CREATED' | 'INITIALIZING' | 'PLANNING' | 'RUNNING' | 'WAITING_APPROVAL' | 'EXECUTING' | 'CHECKPOINTING' | 'COMPLETED' | 'FAILED' | 'CANCELLED' | 'RECOVERING';
+export type RuntimeState =
+  | 'CREATED'
+  | 'INITIALIZING'
+  | 'PLANNING'
+  | 'RUNNING'
+  | 'WAITING_APPROVAL'
+  | 'EXECUTING'
+  | 'CHECKPOINTING'
+  | 'COMPLETED'
+  | 'FAILED'
+  | 'CANCELLED'
+  | 'RECOVERING';
 
 /** @description Session status */
 export type SessionStatus = 'ACTIVE' | 'PAUSED' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
@@ -105,7 +116,8 @@ export interface ResourceLimits {
 }
 
 /** @description Error types */
-export type ErrorSeverity = 'recoverable' | 'non-recoverable' | 'timeout' | 'cancellation' | 'resource-limit';
+export type ErrorSeverity =
+  'recoverable' | 'non-recoverable' | 'timeout' | 'cancellation' | 'resource-limit';
 
 export interface RuntimeError {
   code: string;

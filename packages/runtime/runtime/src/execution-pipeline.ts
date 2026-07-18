@@ -25,7 +25,7 @@ export interface PipelineResult {
 export class ExecutionPipeline {
   constructor(
     private auditStore: IAuditStore,
-    private config: RuntimeConfig
+    private config: RuntimeConfig,
   ) {}
 
   getConfig(): RuntimeConfig {
@@ -34,7 +34,7 @@ export class ExecutionPipeline {
 
   async execute(
     session: { id: string; traceId: string; goal: string },
-    _context: Record<string, unknown> = {}
+    _context: Record<string, unknown> = {},
   ): Promise<PipelineResult> {
     const startTime = Date.now();
 
@@ -87,7 +87,10 @@ export class ExecutionPipeline {
     } catch (error: unknown) {
       audit.durationMs = Date.now() - startTime;
       audit.result = 'failure';
-      audit.metadata = { ...audit.metadata, error: error instanceof Error ? error.message : String(error) };
+      audit.metadata = {
+        ...audit.metadata,
+        error: error instanceof Error ? error.message : String(error),
+      };
       await this.auditStore.record(audit);
 
       return {

@@ -22,11 +22,11 @@ export class DecisionSynthesizer {
     }
 
     const avgConf = decisions.reduce((sum, d) => sum + d.confidence, 0) / decisions.length;
-    const synthesized = decisions.map(d => d.decision).join(' ');
+    const synthesized = decisions.map((d) => d.decision).join(' ');
 
     return {
       synthesizedDecision: synthesized,
-      inputs: decisions.map(d => ({ ...d })),
+      inputs: decisions.map((d) => ({ ...d })),
       averageConfidence: Math.round(avgConf * 100) / 100,
     };
   }

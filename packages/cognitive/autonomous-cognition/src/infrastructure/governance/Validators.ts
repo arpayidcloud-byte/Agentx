@@ -10,16 +10,22 @@ export class PolicyValidator {
   validate(action: string, policies: string[]): ValidationResult {
     const errors: string[] = [];
     if (!policies.includes('allow-all')) errors.push(`No matching policy for: ${action}`);
-    const checksum = createHash('sha256').update(JSON.stringify({ action, policies, errors })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ action, policies, errors }))
+      .digest('hex');
     return Object.freeze({ valid: errors.length === 0, errors, checksum });
   }
 }
 
 export class SafetyValidator {
   validate(action: string, safetyRules: string[]): ValidationResult {
-    const blocked = safetyRules.some(r => action.includes(r));
+    const blocked = safetyRules.some((r) => action.includes(r));
     const checksum = createHash('sha256').update(JSON.stringify({ action, blocked })).digest('hex');
-    return Object.freeze({ valid: !blocked, errors: blocked ? [`Unsafe action: ${action}`] : [], checksum });
+    return Object.freeze({
+      valid: !blocked,
+      errors: blocked ? [`Unsafe action: ${action}`] : [],
+      checksum,
+    });
   }
 }
 
@@ -27,9 +33,12 @@ export class ConstraintValidator {
   validate(action: string, constraints: Record<string, unknown>): ValidationResult {
     const errors: string[] = [];
     for (const [key, value] of Object.entries(constraints)) {
-      if (typeof value === 'string' && !action.includes(key)) errors.push(`Missing constraint: ${key}`);
+      if (typeof value === 'string' && !action.includes(key))
+        errors.push(`Missing constraint: ${key}`);
     }
-    const checksum = createHash('sha256').update(JSON.stringify({ action, constraints, errors })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ action, constraints, errors }))
+      .digest('hex');
     return Object.freeze({ valid: errors.length === 0, errors, checksum });
   }
 }

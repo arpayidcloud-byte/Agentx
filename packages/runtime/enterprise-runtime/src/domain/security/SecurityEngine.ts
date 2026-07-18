@@ -13,7 +13,9 @@ export class RuntimePolicyEngine {
 
   addRule(name: string, action: string, effect: 'ALLOW' | 'DENY'): PolicyRule {
     const ruleId = `rule-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ ruleId, name, action, effect })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ ruleId, name, action, effect }))
+      .digest('hex');
     const rule: PolicyRule = Object.freeze({ ruleId, name, action, effect, checksum });
     this.rules.set(ruleId, rule);
     return rule;
@@ -56,8 +58,17 @@ export class RuntimeSecurityEngine {
 
   recordEvent(type: string, source: string, details: Record<string, unknown>): SecurityEvent {
     const eventId = `se-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ eventId, type, source, details })).digest('hex');
-    const event: SecurityEvent = Object.freeze({ eventId, type, source, details: { ...details }, timestamp: new Date(), checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ eventId, type, source, details }))
+      .digest('hex');
+    const event: SecurityEvent = Object.freeze({
+      eventId,
+      type,
+      source,
+      details: { ...details },
+      timestamp: new Date(),
+      checksum,
+    });
     this.events.push(event);
     return event;
   }
@@ -94,8 +105,15 @@ export class RuntimeCompatibilityEngine {
   private entries = new Map<string, CompatibilityEntry>();
 
   register(packageName: string, version: string, compatibleVersions: string[]): CompatibilityEntry {
-    const checksum = createHash('sha256').update(JSON.stringify({ packageName, version, compatibleVersions })).digest('hex');
-    const entry: CompatibilityEntry = Object.freeze({ packageName, version, compatibleVersions: [...compatibleVersions], checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ packageName, version, compatibleVersions }))
+      .digest('hex');
+    const entry: CompatibilityEntry = Object.freeze({
+      packageName,
+      version,
+      compatibleVersions: [...compatibleVersions],
+      checksum,
+    });
     this.entries.set(packageName, entry);
     return entry;
   }
@@ -129,10 +147,24 @@ export class ResourceManager {
   private quotas = new Map<string, ResourceQuota>();
   private usage = new Map<string, { cpu: number; memoryMb: number; storageMb: number }>();
 
-  setQuota(tenantId: string, maxCpu: number, maxMemoryMb: number, maxStorageMb: number): ResourceQuota {
+  setQuota(
+    tenantId: string,
+    maxCpu: number,
+    maxMemoryMb: number,
+    maxStorageMb: number,
+  ): ResourceQuota {
     const resourceId = `rq-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ resourceId, tenantId, maxCpu, maxMemoryMb, maxStorageMb })).digest('hex');
-    const quota: ResourceQuota = Object.freeze({ resourceId, tenantId, maxCpu, maxMemoryMb, maxStorageMb, checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ resourceId, tenantId, maxCpu, maxMemoryMb, maxStorageMb }))
+      .digest('hex');
+    const quota: ResourceQuota = Object.freeze({
+      resourceId,
+      tenantId,
+      maxCpu,
+      maxMemoryMb,
+      maxStorageMb,
+      checksum,
+    });
     this.quotas.set(resourceId, quota);
     return quota;
   }

@@ -1,9 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": [
-    "**/.env.*local",
-    "agentx.config.yaml"
-  ],
+  "globalDependencies": ["**/.env.*local", "agentx.config.yaml"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],

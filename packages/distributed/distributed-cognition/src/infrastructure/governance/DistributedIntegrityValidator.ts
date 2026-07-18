@@ -29,7 +29,7 @@ export class DistributedIntegrityValidator {
 
   verify(entityType: string, entityId: string, data: unknown): boolean {
     const records = this.records.get(entityType) || [];
-    const latest = records.filter(r => r.entityId === entityId).pop();
+    const latest = records.filter((r) => r.entityId === entityId).pop();
     if (!latest) return false;
     const computed = createHash('sha256').update(JSON.stringify(data)).digest('hex');
     return computed === latest.checksum;

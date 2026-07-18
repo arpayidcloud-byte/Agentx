@@ -19,16 +19,17 @@ export interface PlanningScoreData {
 export class PlanningScorer {
   score(plan: PlanningPlan): PlanningScoreData {
     const stepCount = plan.steps.length;
-    const parallelCount = plan.steps.filter(s => s.parallel).length;
+    const parallelCount = plan.steps.filter((s) => s.parallel).length;
     const avgOrder = plan.steps.reduce((sum, s) => sum + s.order, 0) / Math.max(stepCount, 1);
 
     const complexityScore = Math.min(100, stepCount * 10);
-    const riskScore = Math.max(0, 100 - (stepCount * 5));
-    const resourceScore = Math.max(0, 100 - (plan.budget.tokens / 100));
+    const riskScore = Math.max(0, 100 - stepCount * 5);
+    const resourceScore = Math.max(0, 100 - plan.budget.tokens / 100);
     const dependencyScore = Math.min(100, stepCount * 15);
     const parallelismScore = Math.min(100, parallelCount * 20);
-    const estimatedSuccessScore = Math.max(0, 100 - (riskScore * 0.5));
-    const planningQualityScore = (complexityScore + riskScore + resourceScore + dependencyScore + parallelismScore) / 5;
+    const estimatedSuccessScore = Math.max(0, 100 - riskScore * 0.5);
+    const planningQualityScore =
+      (complexityScore + riskScore + resourceScore + dependencyScore + parallelismScore) / 5;
 
     let grade: string;
     if (planningQualityScore >= 90) grade = 'Excellent';

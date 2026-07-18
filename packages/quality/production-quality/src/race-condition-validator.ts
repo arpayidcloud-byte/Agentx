@@ -7,7 +7,7 @@ import { ValidationResult } from './interfaces.js';
 
 export class RaceConditionValidator {
   validate(parallelRunResults: boolean[]): ValidationResult {
-    const failed = parallelRunResults.filter(r => !r).length;
+    const failed = parallelRunResults.filter((r) => !r).length;
     return {
       passed: failed === 0,
       score: failed === 0 ? 100 : Math.max(0, 100 - failed * 20),

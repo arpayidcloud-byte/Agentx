@@ -43,7 +43,7 @@ vi.mock('@anthropic-ai/sdk', () => {
       }),
     },
   }));
-  
+
   (Anthropic as any).AuthenticationError = class AuthenticationError extends Error {};
   (Anthropic as any).RateLimitError = class RateLimitError extends Error {};
   (Anthropic as any).APITimeoutError = class APITimeoutError extends Error {};
@@ -79,7 +79,10 @@ describe('Provider Errors', () => {
 describe('CostCalculator', () => {
   it('calculates cost correctly', () => {
     const calc = new CostCalculator();
-    const cost = calc.calculateCost('anthropic', 'claude-3-haiku-20240307', { inputTokens: 1000, outputTokens: 1000 });
+    const cost = calc.calculateCost('anthropic', 'claude-3-haiku-20240307', {
+      inputTokens: 1000,
+      outputTokens: 1000,
+    });
     expect(cost).toBeCloseTo(0.0015);
   });
 
@@ -100,7 +103,7 @@ describe('CircuitBreaker & executeWithRetry', () => {
     const cb = new CircuitBreaker({ failureThreshold: 1, resetTimeoutMs: 50 });
     cb.recordFailure();
     expect(cb.isOpen()).toBe(true);
-    await new Promise(r => setTimeout(r, 60)); // Wait for reset
+    await new Promise((r) => setTimeout(r, 60)); // Wait for reset
     expect(cb.isOpen()).toBe(false); // Half open
   });
 
@@ -115,7 +118,7 @@ describe('CircuitBreaker & executeWithRetry', () => {
     const result = await executeWithRetry(
       action,
       { maxAttempts: 2, initialDelayMs: 10, backoffMultiplier: 1 },
-      'test'
+      'test',
     );
     expect(result).toBe('success');
     expect(attempts).toBe(2);
@@ -124,14 +127,22 @@ describe('CircuitBreaker & executeWithRetry', () => {
   it('applies maxDelayMs correctly', async () => {
     const action = vi.fn().mockRejectedValue(new ProviderRateLimitError('test'));
     await expect(
-      executeWithRetry(action, { maxAttempts: 1, initialDelayMs: 1000, backoffMultiplier: 2, maxDelayMs: 5 }, 'test')
+      executeWithRetry(
+        action,
+        { maxAttempts: 1, initialDelayMs: 1000, backoffMultiplier: 2, maxDelayMs: 5 },
+        'test',
+      ),
     ).rejects.toThrow();
   });
 
   it('does not retry non-transient errors', async () => {
     const action = vi.fn().mockRejectedValue(new ProviderInvalidCredentialsError('test'));
     await expect(
-      executeWithRetry(action, { maxAttempts: 2, initialDelayMs: 10, backoffMultiplier: 1 }, 'test')
+      executeWithRetry(
+        action,
+        { maxAttempts: 2, initialDelayMs: 10, backoffMultiplier: 1 },
+        'test',
+      ),
     ).rejects.toThrow(ProviderInvalidCredentialsError);
   });
 
@@ -140,7 +151,12 @@ describe('CircuitBreaker & executeWithRetry', () => {
     cb.recordFailure();
     const action = vi.fn();
     await expect(
-      executeWithRetry(action, { maxAttempts: 2, initialDelayMs: 10, backoffMultiplier: 1 }, 'test', cb)
+      executeWithRetry(
+        action,
+        { maxAttempts: 2, initialDelayMs: 10, backoffMultiplier: 1 },
+        'test',
+        cb,
+      ),
     ).rejects.toThrow(CircuitBreakerOpenError);
   });
 });
@@ -182,14 +198,22 @@ describe('ProviderRegistry & Failover', () => {
       checkHealth: vi.fn(),
     };
     registry.register(primary);
-    registry.registerFailoverPolicy({ primaryProviderId: 'primary', secondaryProviderId: 'secondary', onCondition: 'timeout' });
-    
-    await expect(registry.complete('primary', {} as any)).rejects.toThrow(ProviderInvalidCredentialsError);
+    registry.registerFailoverPolicy({
+      primaryProviderId: 'primary',
+      secondaryProviderId: 'secondary',
+      onCondition: 'timeout',
+    });
+
+    await expect(registry.complete('primary', {} as any)).rejects.toThrow(
+      ProviderInvalidCredentialsError,
+    );
   });
 
   it('throws if provider not found', async () => {
     const registry = new ProviderRegistry();
-    await expect(registry.complete('missing', {} as any)).rejects.toThrow('Provider not found: missing');
+    await expect(registry.complete('missing', {} as any)).rejects.toThrow(
+      'Provider not found: missing',
+    );
   });
 });
 
@@ -255,11 +279,15 @@ describe('AnthropicProvider', () => {
   });
 
   it('maps context with complex content', async () => {
-    const provider = new AnthropicProvider({ providerId: 'anthropic', defaultModelId: 'test', credentialResolver: mockResolver });
+    const provider = new AnthropicProvider({
+      providerId: 'anthropic',
+      defaultModelId: 'test',
+      credentialResolver: mockResolver,
+    });
     await provider.complete({
       systemPrompt: 'sys',
       userPrompt: 'user',
-      context: [{ role: 'user', content: [{ callId: '1', output: 'ok', success: true }] }]
+      context: [{ role: 'user', content: [{ callId: '1', output: 'ok', success: true }] }],
     });
   });
 
@@ -272,11 +300,21 @@ describe('AnthropicProvider', () => {
       credentialResolver: mockResolver,
     });
 
-    expect((provider as any).mapError(new (Anthropic as any).AuthenticationError('invalid'))).toBeInstanceOf(ProviderInvalidCredentialsError);
-    expect((provider as any).mapError(new (Anthropic as any).RateLimitError('rate limit'))).toBeInstanceOf(ProviderRateLimitError);
-    expect((provider as any).mapError(new (Anthropic as any).APITimeoutError('timeout'))).toBeInstanceOf(ProviderTimeoutError);
-    expect((provider as any).mapError(new (Anthropic as any).APIError(400, undefined, 'api error', undefined))).toBeInstanceOf(ProviderError);
-    
+    expect(
+      (provider as any).mapError(new (Anthropic as any).AuthenticationError('invalid')),
+    ).toBeInstanceOf(ProviderInvalidCredentialsError);
+    expect(
+      (provider as any).mapError(new (Anthropic as any).RateLimitError('rate limit')),
+    ).toBeInstanceOf(ProviderRateLimitError);
+    expect(
+      (provider as any).mapError(new (Anthropic as any).APITimeoutError('timeout')),
+    ).toBeInstanceOf(ProviderTimeoutError);
+    expect(
+      (provider as any).mapError(
+        new (Anthropic as any).APIError(400, undefined, 'api error', undefined),
+      ),
+    ).toBeInstanceOf(ProviderError);
+
     const abortErr = new Error('AbortError');
     abortErr.name = 'AbortError';
     expect((provider as any).mapError(abortErr)).toBeInstanceOf(Error);
@@ -300,20 +338,28 @@ describe('GoogleProvider', () => {
   });
 
   it('maps context with string content', async () => {
-    const provider = new GoogleProvider({ providerId: 'google', defaultModelId: 'test', credentialResolver: mockResolver });
+    const provider = new GoogleProvider({
+      providerId: 'google',
+      defaultModelId: 'test',
+      credentialResolver: mockResolver,
+    });
     await provider.complete({
       systemPrompt: 'sys',
       userPrompt: 'user',
-      context: [{ role: 'user', content: 'string context' }]
+      context: [{ role: 'user', content: 'string context' }],
     });
   });
 
   it('maps tools to function declarations', async () => {
-    const provider = new GoogleProvider({ providerId: 'google', defaultModelId: 'test', credentialResolver: mockResolver });
+    const provider = new GoogleProvider({
+      providerId: 'google',
+      defaultModelId: 'test',
+      credentialResolver: mockResolver,
+    });
     await provider.complete({
       systemPrompt: 'sys',
       userPrompt: 'user',
-      tools: [{ name: 'test', description: 'desc', parameters: {} }]
+      tools: [{ name: 'test', description: 'desc', parameters: {} }],
     });
   });
 
@@ -323,9 +369,11 @@ describe('GoogleProvider', () => {
       defaultModelId: 'gemini-1.5-pro',
       credentialResolver: mockResolver,
     });
-    const err = (provider as any).mapError(new Error('API key not valid. Please pass a valid API key.'));
+    const err = (provider as any).mapError(
+      new Error('API key not valid. Please pass a valid API key.'),
+    );
     expect(err).toBeInstanceOf(ProviderInvalidCredentialsError);
-    
+
     const generalErr = (provider as any).mapError(new Error('Some other error'));
     expect(generalErr).toBeInstanceOf(ProviderError);
     expect(generalErr).not.toBeInstanceOf(ProviderInvalidCredentialsError);
@@ -335,20 +383,34 @@ describe('GoogleProvider', () => {
 describe('Factory & Utils', () => {
   it('creates provider via factory', () => {
     const factory = new ProviderFactory(mockResolver);
-    expect(factory.createProvider({ providerId: 'anthropic', defaultModelId: 'test' })).toBeInstanceOf(AnthropicProvider);
-    expect(factory.createProvider({ providerId: 'google', defaultModelId: 'test' })).toBeInstanceOf(GoogleProvider);
-    expect(() => factory.createProvider({ providerId: 'openai', defaultModelId: 'test' })).toThrow('Unsupported provider');
+    expect(
+      factory.createProvider({ providerId: 'anthropic', defaultModelId: 'test' }),
+    ).toBeInstanceOf(AnthropicProvider);
+    expect(factory.createProvider({ providerId: 'google', defaultModelId: 'test' })).toBeInstanceOf(
+      GoogleProvider,
+    );
+    expect(() => factory.createProvider({ providerId: 'openai', defaultModelId: 'test' })).toThrow(
+      'Unsupported provider',
+    );
   });
 
   it('discovers capabilities', () => {
-    const provider = new AnthropicProvider({ providerId: 'anthropic', defaultModelId: '', credentialResolver: mockResolver });
+    const provider = new AnthropicProvider({
+      providerId: 'anthropic',
+      defaultModelId: '',
+      credentialResolver: mockResolver,
+    });
     expect(CapabilityDiscovery.supports(provider, 'toolUse')).toBe(true);
     expect(CapabilityDiscovery.supports(provider, 'embedding')).toBe(false);
   });
 
   it('checks health of all registered providers', async () => {
     const registry = new ProviderRegistry();
-    const provider = new AnthropicProvider({ providerId: 'anthropic', defaultModelId: '', credentialResolver: mockResolver });
+    const provider = new AnthropicProvider({
+      providerId: 'anthropic',
+      defaultModelId: '',
+      credentialResolver: mockResolver,
+    });
     registry.register(provider);
     const healthService = new HealthCheckService(registry);
     const statuses = await healthService.checkAll();
@@ -357,12 +419,22 @@ describe('Factory & Utils', () => {
 
   it('caches provider registry status', () => {
     const cache = new ProviderRegistryCache();
-    cache.set('test', { providerId: 'test', health: 'healthy', lastCheckedAt: new Date(), activeCircuitBreaker: false });
+    cache.set('test', {
+      providerId: 'test',
+      health: 'healthy',
+      lastCheckedAt: new Date(),
+      activeCircuitBreaker: false,
+    });
     expect(cache.get('test')?.health).toBe('healthy');
     cache.invalidate('test');
     expect(cache.get('test')).toBeUndefined();
-    
-    cache.set('test', { providerId: 'test', health: 'healthy', lastCheckedAt: new Date(), activeCircuitBreaker: false });
+
+    cache.set('test', {
+      providerId: 'test',
+      health: 'healthy',
+      lastCheckedAt: new Date(),
+      activeCircuitBreaker: false,
+    });
     cache.clear();
     expect(cache.get('test')).toBeUndefined();
   });

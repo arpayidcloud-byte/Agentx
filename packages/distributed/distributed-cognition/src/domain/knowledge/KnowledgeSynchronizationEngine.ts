@@ -28,7 +28,9 @@ export class KnowledgeSynchronizationEngine {
   }
 
   detectConflict(localEntry: KnowledgeEntry, remoteEntry: KnowledgeEntry): boolean {
-    return localEntry.version === remoteEntry.version && localEntry.checksum !== remoteEntry.checksum;
+    return (
+      localEntry.version === remoteEntry.version && localEntry.checksum !== remoteEntry.checksum
+    );
   }
 
   merge(localEntry: KnowledgeEntry, remoteEntry: KnowledgeEntry): KnowledgeEntry {

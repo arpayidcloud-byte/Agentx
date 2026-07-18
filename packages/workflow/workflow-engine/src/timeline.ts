@@ -22,8 +22,12 @@ export class ExecutionTimeline {
     });
   }
 
-  public finishNode(nodeId: string, status: 'COMPLETED' | 'FAILED' | 'SKIPPED', retries: number = 0): void {
-    const entry = this.entries.find(e => e.nodeId === nodeId && !e.finishedAt);
+  public finishNode(
+    nodeId: string,
+    status: 'COMPLETED' | 'FAILED' | 'SKIPPED',
+    retries: number = 0,
+  ): void {
+    const entry = this.entries.find((e) => e.nodeId === nodeId && !e.finishedAt);
     if (entry) {
       entry.finishedAt = new Date();
       entry.durationMs = entry.finishedAt.getTime() - entry.startedAt.getTime();
@@ -40,7 +44,7 @@ export class ExecutionTimeline {
     if (this.entries.length === 0) return 0;
     const sorted = this.getTimeline();
     if (sorted.length === 0) return 0;
-    const lastFinished = sorted.find(e => e.finishedAt);
+    const lastFinished = sorted.find((e) => e.finishedAt);
     return lastFinished?.finishedAt?.getTime() ?? 0;
   }
 

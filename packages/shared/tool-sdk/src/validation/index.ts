@@ -1,14 +1,18 @@
 import { IToolValidator, ToolManifest, ITool, IToolRegistry } from '../interfaces/index.js';
-import { SchemaValidationError, ManifestValidationError, DuplicateToolError } from '../errors/index.js';
+import {
+  SchemaValidationError,
+  ManifestValidationError,
+  DuplicateToolError,
+} from '../errors/index.js';
 
 export class ToolValidator implements IToolValidator {
   public validateSchema(schema: Record<string, unknown>, args: Record<string, unknown>): boolean {
-    // Basic structural validation for demonstration. 
+    // Basic structural validation for demonstration.
     // In production, an AJV or JSON Schema validator is used.
     if (!schema || typeof schema !== 'object') {
       throw new SchemaValidationError(['Invalid schema definition']);
     }
-    
+
     const required = (schema as any).required;
     if (Array.isArray(required)) {
       const missing = required.filter((key: string) => args[key] === undefined);
@@ -32,7 +36,10 @@ export class ToolValidator implements IToolValidator {
     if (!manifest.entryPoint || typeof manifest.entryPoint !== 'string') {
       throw new ManifestValidationError('Manifest is missing required string field: entryPoint');
     }
-    if (!Array.isArray(manifest.declaredToolCategories) || manifest.declaredToolCategories.length === 0) {
+    if (
+      !Array.isArray(manifest.declaredToolCategories) ||
+      manifest.declaredToolCategories.length === 0
+    ) {
       throw new ManifestValidationError('Manifest must declare at least one tool category');
     }
     if (!Array.isArray(manifest.tools) || manifest.tools.length === 0) {

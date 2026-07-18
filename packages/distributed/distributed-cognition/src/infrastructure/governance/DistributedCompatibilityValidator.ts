@@ -26,7 +26,9 @@ export class DistributedCompatibilityValidator {
 
   validateAll(): CompatibilityCheck[] {
     const versions = this.versionManager.getAll();
-    return versions.flatMap(v => v.compatibleVersions.map(cv => this.validate(v.packageName, cv)));
+    return versions.flatMap((v) =>
+      v.compatibleVersions.map((cv) => this.validate(v.packageName, cv)),
+    );
   }
 
   getChecks(): CompatibilityCheck[] {
@@ -34,6 +36,6 @@ export class DistributedCompatibilityValidator {
   }
 
   getFailures(): CompatibilityCheck[] {
-    return this.checks.filter(c => !c.compatible);
+    return this.checks.filter((c) => !c.compatible);
   }
 }

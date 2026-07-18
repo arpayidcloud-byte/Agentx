@@ -17,7 +17,8 @@ describe('SecretRedactor', () => {
   });
 
   it('should redact JWT tokens', () => {
-    const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+    const jwt =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
     const redacted = SecretRedactor.redact(`Bearer ${jwt}`);
     expect(redacted).toBe('Bearer [REDACTED]');
   });
@@ -44,7 +45,7 @@ describe('SecretRedactor', () => {
   it('should redact sensitive key values with custom case and delimiters', () => {
     const original = {
       'Client-Secret': 'cs',
-      'access_token': 'at',
+      access_token: 'at',
     };
     const redacted = SecretRedactor.redact(original) as any;
     expect(redacted['Client-Secret']).toBe('[REDACTED]');
@@ -54,7 +55,7 @@ describe('SecretRedactor', () => {
   it('should redact Error objects', () => {
     const error = new Error('Database password is AGENTX_SECRET_DB_PASS');
     (error as any).code = 'CONN_ERR';
-    
+
     const redacted = SecretRedactor.redact(error) as any;
     expect(redacted.message).toBe('Database password is [REDACTED]');
     expect(redacted.code).toBe('CONN_ERR');

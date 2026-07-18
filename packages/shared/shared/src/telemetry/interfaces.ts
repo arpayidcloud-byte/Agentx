@@ -14,6 +14,9 @@ export interface ISpan {
  * Allows business logic to create spans without importing `@opentelemetry/api`.
  */
 export interface ITelemetryProvider {
-  startSpan(name: string, options?: { kind?: SpanKind; attributes?: Record<string, string | number | boolean> }): ISpan;
+  startSpan(
+    name: string,
+    options?: { kind?: SpanKind; attributes?: Record<string, string | number | boolean> },
+  ): ISpan;
   getActiveSpan(): ISpan | undefined;
 }

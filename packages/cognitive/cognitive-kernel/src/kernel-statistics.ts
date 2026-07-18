@@ -12,9 +12,11 @@ export class KernelStatistics {
     return {
       totalSessions: this.metrics.sessionCount,
       averageThinkingTime: this.metrics.getAverageThinkingTime(),
-      successRate: this.metrics.sessionCount > 0
-        ? ((this.metrics.sessionCount - this.metrics.failureCount) / this.metrics.sessionCount) * 100
-        : 100,
+      successRate:
+        this.metrics.sessionCount > 0
+          ? ((this.metrics.sessionCount - this.metrics.failureCount) / this.metrics.sessionCount) *
+            100
+          : 100,
     };
   }
 }

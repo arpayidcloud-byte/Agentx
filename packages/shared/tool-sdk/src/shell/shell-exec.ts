@@ -5,7 +5,12 @@
  * Per ADR-0005, shell.exec is Destructive (Risk 90) and requires approval.
  */
 
-import { ShellExecutionRequest, ShellExecutionResult, ShellExecutionContext, ToolCategory } from './interfaces.js';
+import {
+  ShellExecutionRequest,
+  ShellExecutionResult,
+  ShellExecutionContext,
+  ToolCategory,
+} from './interfaces.js';
 import { ShellExecutor } from './executor.js';
 import { ApprovalRequiredError } from './errors.js';
 import { classifyCommand } from './approval.js';

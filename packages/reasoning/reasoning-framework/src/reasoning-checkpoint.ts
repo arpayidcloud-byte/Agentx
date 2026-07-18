@@ -24,6 +24,6 @@ export class ReasoningCheckpointManager {
   }
 
   getSnapshots(sessionId: string): ReasoningSnapshot[] {
-    return this.snapshots.filter(s => s.sessionId === sessionId);
+    return this.snapshots.filter((s) => s.sessionId === sessionId);
   }
 }

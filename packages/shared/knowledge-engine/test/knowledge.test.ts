@@ -17,7 +17,7 @@ describe('Knowledge Engine', () => {
     const doc = await engine.ingest({ content: 'TypeScript is typed JS' });
     expect(doc.id).toBeDefined();
     expect(doc.content).toBe('TypeScript is typed JS');
-    
+
     const nodes = await engine.retrieve({ text: 'typed' });
     expect(nodes).toHaveLength(1);
     expect(nodes[0].documentId).toBe(doc.id);
@@ -26,10 +26,10 @@ describe('Knowledge Engine', () => {
   it('updates document and node', async () => {
     const doc = await engine.ingest({ content: 'Old content' });
     const updated = await engine.update(doc.id, { content: 'New content' });
-    
+
     expect(updated.version).toBe(2);
     expect(updated.content).toBe('New content');
-    
+
     const nodes = await engine.retrieve({ text: 'New' });
     expect(nodes).toHaveLength(1);
     expect(nodes[0].content).toBe('New content');
@@ -42,7 +42,7 @@ describe('Knowledge Engine', () => {
   it('deletes document', async () => {
     const doc = await engine.ingest({ content: 'delete me' });
     await engine.delete(doc.id);
-    
+
     // Store delete implementation should remove doc
     const retrieved = await store.getDocument(doc.id);
     expect(retrieved).toBeUndefined();
@@ -51,12 +51,12 @@ describe('Knowledge Engine', () => {
   it('creates relationships and traverses graph', async () => {
     const doc1 = await engine.ingest({ content: 'Node A' });
     const doc2 = await engine.ingest({ content: 'Node B' });
-    
+
     const node1Id = `node_${doc1.id}`;
     const node2Id = `node_${doc2.id}`;
-    
+
     await engine.createRelationship(node1Id, node2Id, 'depends_on');
-    
+
     const graph = await engine.traverse(node1Id, 1);
     expect(graph.nodes).toHaveLength(2);
     expect(graph.relations).toHaveLength(1);
@@ -73,7 +73,7 @@ describe('Knowledge Engine', () => {
     // Default ingestion has confidence 1.0
     const results = await engine.retrieve({ text: 'Good', minConfidence: 0.9 });
     expect(results).toHaveLength(1);
-    
+
     const noResults = await engine.retrieve({ text: 'Good', minConfidence: 1.1 });
     expect(noResults).toHaveLength(0);
   });
@@ -81,7 +81,7 @@ describe('Knowledge Engine', () => {
   it('provides metrics', async () => {
     await engine.ingest({ content: 'Doc 1' });
     await engine.ingest({ content: 'Doc 2' });
-    
+
     const metrics = engine.getMetrics();
     expect(metrics.totalDocuments).toBe(2);
     expect(metrics.averageConfidence).toBe(1.0);

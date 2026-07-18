@@ -36,20 +36,19 @@ export class ExecutionPlanner {
 
     while (completedNodes.size < sortedNodes.length) {
       const ready = sortedNodes.filter(
-        n => !completedNodes.has(n.id) &&
-        isNodeReady(n.id, edges, completedNodes)
+        (n) => !completedNodes.has(n.id) && isNodeReady(n.id, edges, completedNodes),
       );
 
       if (ready.length === 0) break;
 
       batches.push({
         batchIndex: batchIndex++,
-        nodeIds: ready.map(n => n.id),
-        estimatedDurationMs: Math.max(...ready.map(n => this.estimateNodeDuration(n))),
+        nodeIds: ready.map((n) => n.id),
+        estimatedDurationMs: Math.max(...ready.map((n) => this.estimateNodeDuration(n))),
         canRunInParallel: ready.length > 1,
       });
 
-      ready.forEach(n => completedNodes.add(n.id));
+      ready.forEach((n) => completedNodes.add(n.id));
     }
 
     return batches;
@@ -57,7 +56,7 @@ export class ExecutionPlanner {
 
   public calculateCriticalPath(workflow: WorkflowDefinition): string[] {
     const sorted = topologicalSort(workflow.nodes, workflow.edges);
-    return sorted.map(n => n.id);
+    return sorted.map((n) => n.id);
   }
 
   public estimateParallelism(workflow: WorkflowDefinition): number {
@@ -73,7 +72,7 @@ export class ExecutionPlanner {
       inDegree.set(edge.target, (inDegree.get(edge.target) || 0) + 1);
     }
 
-    const zeroCount = Array.from(inDegree.values()).filter(d => d === 0).length;
+    const zeroCount = Array.from(inDegree.values()).filter((d) => d === 0).length;
     maxParallel = Math.max(maxParallel, zeroCount);
 
     return maxParallel;
@@ -81,12 +80,18 @@ export class ExecutionPlanner {
 
   private estimateNodeDuration(node: WorkflowNode): number {
     switch (node.config.type) {
-      case 'tool': return 2000;
-      case 'agent': return 5000;
-      case 'approval': return 30000;
-      case 'parallel': return 3000;
-      case 'loop': return 10000;
-      default: return 1000;
+      case 'tool':
+        return 2000;
+      case 'agent':
+        return 5000;
+      case 'approval':
+        return 30000;
+      case 'parallel':
+        return 3000;
+      case 'loop':
+        return 10000;
+      default:
+        return 1000;
     }
   }
 }

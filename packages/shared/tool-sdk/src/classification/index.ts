@@ -1,4 +1,9 @@
-import { ToolCategory, ToolClassification, RiskScore, PermissionLevel } from '../interfaces/index.js';
+import {
+  ToolCategory,
+  ToolClassification,
+  RiskScore,
+  PermissionLevel,
+} from '../interfaces/index.js';
 
 export class ToolClassifier {
   public static classifyCategory(category: ToolCategory): ToolClassification {
@@ -6,7 +11,7 @@ export class ToolClassifier {
     if (['fs.write', 'shell.exec', 'git.write'].includes(category)) {
       return 'Destructive';
     }
-    
+
     if (category === 'shell.build') {
       return 'PotentiallyDestructive';
     }

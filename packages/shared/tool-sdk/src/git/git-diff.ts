@@ -4,7 +4,13 @@
  * Provides read-only git diff query within sandbox.
  */
 
-import { GitExecutionRequest, GitExecutionResult, GitExecutionContext, GitDiffOutput, GitDiffFile } from './interfaces.js';
+import {
+  GitExecutionRequest,
+  GitExecutionResult,
+  GitExecutionContext,
+  GitDiffOutput,
+  GitDiffFile,
+} from './interfaces.js';
 import { GitExecutor } from './executor.js';
 
 /**

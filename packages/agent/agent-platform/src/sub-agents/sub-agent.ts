@@ -24,33 +24,49 @@ export class BaseSubAgent implements SubAgent {
 }
 
 export class PlannerAgent extends BaseSubAgent {
-  constructor(id: string) { super(id, 'planner'); }
+  constructor(id: string) {
+    super(id, 'planner');
+  }
 }
 
 export class ArchitectAgent extends BaseSubAgent {
-  constructor(id: string) { super(id, 'architect'); }
+  constructor(id: string) {
+    super(id, 'architect');
+  }
 }
 
 export class CoderAgent extends BaseSubAgent {
-  constructor(id: string) { super(id, 'coder'); }
+  constructor(id: string) {
+    super(id, 'coder');
+  }
 }
 
 export class ReviewerAgent extends BaseSubAgent {
-  constructor(id: string) { super(id, 'reviewer'); }
+  constructor(id: string) {
+    super(id, 'reviewer');
+  }
 }
 
 export class TesterAgent extends BaseSubAgent {
-  constructor(id: string) { super(id, 'tester'); }
+  constructor(id: string) {
+    super(id, 'tester');
+  }
 }
 
 export class SecurityAgent extends BaseSubAgent {
-  constructor(id: string) { super(id, 'security'); }
+  constructor(id: string) {
+    super(id, 'security');
+  }
 }
 
 export class DocumentationAgent extends BaseSubAgent {
-  constructor(id: string) { super(id, 'documentation'); }
+  constructor(id: string) {
+    super(id, 'documentation');
+  }
 }
 
 export class QAAgent extends BaseSubAgent {
-  constructor(id: string) { super(id, 'qa'); }
+  constructor(id: string) {
+    super(id, 'qa');
+  }
 }

@@ -8,7 +8,10 @@ export class CachedCredentialResolver implements CredentialResolver {
   private backend: SecretStore;
   private keyMapping: Record<string, string>;
 
-  constructor(backend: SecretStore, options?: { keyMapping?: Record<string, string>; ttlMs?: number; negativeTtlMs?: number }) {
+  constructor(
+    backend: SecretStore,
+    options?: { keyMapping?: Record<string, string>; ttlMs?: number; negativeTtlMs?: number },
+  ) {
     this.backend = backend;
     this.keyMapping = options?.keyMapping || {};
     this.cache = new SecretCache({

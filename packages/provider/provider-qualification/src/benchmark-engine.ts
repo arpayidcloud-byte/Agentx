@@ -8,7 +8,7 @@ import { BenchmarkMetrics } from './interfaces.js';
 export class BenchmarkEngine {
   async run(_rateRps: number, durationMs: number): Promise<BenchmarkMetrics> {
     const start = Date.now();
-    await new Promise(resolve => setTimeout(resolve, Math.min(100, durationMs)));
+    await new Promise((resolve) => setTimeout(resolve, Math.min(100, durationMs)));
     const duration = Date.now() - start;
     return {
       latencyP50: duration / 2,

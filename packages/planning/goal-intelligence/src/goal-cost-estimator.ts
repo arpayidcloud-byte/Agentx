@@ -17,7 +17,7 @@ export interface CostEstimate {
 export class GoalCostEstimator {
   estimate(subgoalCount: number, dependencyCount: number, priority: number): CostEstimate {
     const baseTime = subgoalCount * 1000;
-    const timeWithDeps = baseTime + (dependencyCount * 500);
+    const timeWithDeps = baseTime + dependencyCount * 500;
     const cpuEstimate = subgoalCount * 2;
     const memoryEstimate = subgoalCount * 64;
     const tokenEstimate = subgoalCount * 500;

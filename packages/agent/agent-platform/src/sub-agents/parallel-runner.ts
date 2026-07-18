@@ -10,12 +10,15 @@ export interface ParallelExecutionResult {
 }
 
 export class ParallelRunner {
-  constructor(private pool: AgentPool, private bus: MessageBus) {}
+  constructor(
+    private pool: AgentPool,
+    private bus: MessageBus,
+  ) {}
 
   public async runParallel(
     task: TaskModel,
     roles: AgentRole[],
-    context: unknown
+    context: unknown,
   ): Promise<ParallelExecutionResult> {
     const promises: Promise<void>[] = [];
     const results: Record<string, unknown> = {};
@@ -39,7 +42,7 @@ export class ParallelRunner {
     task: TaskModel,
     context: unknown,
     results: Record<string, unknown>,
-    errors: Record<string, Error>
+    errors: Record<string, Error>,
   ): Promise<void> {
     const agent = this.pool.acquire(role);
     try {
@@ -66,7 +69,7 @@ export class ParallelRunner {
       });
     } catch (e: unknown) {
       errors[agent.id] = e instanceof Error ? e : new Error(String(e));
-      
+
       this.bus.publish({
         id: `msg-${Date.now()}-${agent.id}-err`,
         topic: 'TaskFailed',

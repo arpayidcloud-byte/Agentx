@@ -1,4 +1,8 @@
-import { IMultiAgentOrchestrator, ResourceAllocation, ExecutionHistoryEntry } from './interfaces.js';
+import {
+  IMultiAgentOrchestrator,
+  ResourceAllocation,
+  ExecutionHistoryEntry,
+} from './interfaces.js';
 import { TaskSplitter, DependencyAnalyzer, TaskGraphNode } from './task-splitter.js';
 import { AgentPool } from './agent-pool.js';
 import { ParallelRunner } from './parallel-runner.js';
@@ -18,29 +22,35 @@ export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
   private heartbeatMonitor: HeartbeatMonitor;
   // private mergeEngine: MergeEngine;
 
-  private workflows = new Map<string, {
-    nodes: TaskGraphNode[];
-    completedNodes: Set<string>;
-    history: ExecutionHistoryEntry[];
-    budget: ResourceAllocation;
-  }>();
+  private workflows = new Map<
+    string,
+    {
+      nodes: TaskGraphNode[];
+      completedNodes: Set<string>;
+      history: ExecutionHistoryEntry[];
+      budget: ResourceAllocation;
+    }
+  >();
 
   constructor(globalEventBus: IEventBus) {
     this.splitter = new TaskSplitter();
     this.dependencyAnalyzer = new DependencyAnalyzer();
-    
+
     const factory = new SubAgentFactory();
-    this.pool = new AgentPool({
-      minAgents: 1,
-      maxAgents: 10,
-      idleTimeoutMs: 60000,
-      reuseIdleAgents: true,
-      spawnStrategy: 'lazy'
-    }, factory);
+    this.pool = new AgentPool(
+      {
+        minAgents: 1,
+        maxAgents: 10,
+        idleTimeoutMs: 60000,
+        reuseIdleAgents: true,
+        spawnStrategy: 'lazy',
+      },
+      factory,
+    );
 
     this.bus = new MessageBus(globalEventBus);
     this.runner = new ParallelRunner(this.pool, this.bus);
-    
+
     this.resourceManager = new ResourceManager({
       estimatedCpuTimeMs: 100000,
       estimatedMemoryBytes: 1024 * 1024 * 1024, // 1GB
@@ -57,9 +67,9 @@ export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
   public async createWorkflow(goal: string, budget: ResourceAllocation): Promise<string> {
     const workflowId = `wf-${Date.now()}`;
     const nodes = this.splitter.decomposeTask(goal, {}, budget);
-    
+
     this.dependencyAnalyzer.validateGraph(nodes);
-    
+
     this.workflows.set(workflowId, {
       nodes,
       completedNodes: new Set(),
@@ -94,31 +104,32 @@ export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
     let progress = true;
     while (progress && wf.completedNodes.size < wf.nodes.length) {
       progress = false;
-      
+
       // Find all ready nodes
-      const readyNodes = wf.nodes.filter(n => 
-        !wf.completedNodes.has(n.task.id) &&
-        n.task.dependsOn.every(dep => wf.completedNodes.has(dep))
+      const readyNodes = wf.nodes.filter(
+        (n) =>
+          !wf.completedNodes.has(n.task.id) &&
+          n.task.dependsOn.every((dep) => wf.completedNodes.has(dep)),
       );
 
       if (readyNodes.length > 0) {
         progress = true;
-        
+
         // Execute ready nodes in parallel
         const promises = readyNodes.map(async (node) => {
           this.resourceManager.registerAgent(node.task.assignedAgentRole!, node.estimatedBudget);
-          
+
           const result = await this.runner.runParallel(
             node.task,
             [node.task.assignedAgentRole as any],
-            {}
+            {},
           );
 
           this.resourceManager.unregisterAgent(node.task.assignedAgentRole!);
-          
+
           wf.completedNodes.add(node.task.id);
           executionResults[node.task.id] = result;
-          
+
           wf.history.push({
             timestamp: new Date(),
             agentId: node.task.assignedAgentRole!,

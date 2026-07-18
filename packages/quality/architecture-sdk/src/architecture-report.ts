@@ -10,7 +10,7 @@ export class ArchitectureReportBuilder {
   build(metadata: ArchitectureReport): ArchitectureReport {
     const payload = JSON.stringify(metadata.metadata);
     const checksum = createHash('sha256').update(payload).digest('hex');
-    
+
     return {
       ...metadata,
       checksum,

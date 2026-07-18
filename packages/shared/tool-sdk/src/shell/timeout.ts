@@ -18,9 +18,10 @@ const DEFAULT_TIMEOUT_CONFIG: TimeoutConfig = {
  * @param config - Timeout configuration
  * @returns Object with AbortController and cleanup function
  */
-export function createTimeoutController(
-  config: Partial<TimeoutConfig> = {}
-): { controller: AbortController; cleanup: () => void } {
+export function createTimeoutController(config: Partial<TimeoutConfig> = {}): {
+  controller: AbortController;
+  cleanup: () => void;
+} {
   const mergedConfig = { ...DEFAULT_TIMEOUT_CONFIG, ...config };
   const controller = new AbortController();
 

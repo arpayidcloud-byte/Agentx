@@ -11,10 +11,10 @@ export class PathResolver implements IPathResolver {
     const normalized = this.canonicalize(requestPath);
     const absolute = path.resolve(workspaceRoot, normalized);
     const realPath = await this.resolveRealPath(absolute);
-    
+
     this.validateWorkspaceJail(realPath, workspaceRoot);
     this.validateSymlinkEscape(realPath);
-    
+
     return realPath;
   }
 
@@ -24,7 +24,7 @@ export class PathResolver implements IPathResolver {
 
   public detectTraversal(rawPath: string): void {
     const parts = rawPath.split(path.sep).filter(Boolean);
-    
+
     for (const part of parts) {
       if (part === '..') {
         throw new PathTraversalError(rawPath, 'Relative parent directory traversal detected');
@@ -39,7 +39,6 @@ export class PathResolver implements IPathResolver {
       throw new PathTraversalError(rawPath, 'Windows UNC path attempt detected');
     }
   }
-
 
   public async resolveRealPath(absolutePath: string): Promise<string> {
     try {
@@ -59,7 +58,10 @@ export class PathResolver implements IPathResolver {
     const lowerPath = rawPath.toLowerCase();
     for (const blocked of PathResolver.BLOCKED_DIRS) {
       if (lowerPath.startsWith(blocked + '/') || lowerPath === blocked) {
-        throw new PathTraversalError(rawPath, `Attempt to access restricted system directory ${blocked}`);
+        throw new PathTraversalError(
+          rawPath,
+          `Attempt to access restricted system directory ${blocked}`,
+        );
       }
     }
   }

@@ -18,18 +18,18 @@ export class ProviderReadinessScore {
     documentation: number;
     observability: number;
   }): ReadinessScore {
-    const overall = (
-      scores.performance +
-      scores.reliability +
-      scores.availability +
-      scores.recovery +
-      scores.security +
-      scores.resourceEfficiency +
-      scores.compatibility +
-      scores.maintainability +
-      scores.documentation +
-      scores.observability
-    ) / 10;
+    const overall =
+      (scores.performance +
+        scores.reliability +
+        scores.availability +
+        scores.recovery +
+        scores.security +
+        scores.resourceEfficiency +
+        scores.compatibility +
+        scores.maintainability +
+        scores.documentation +
+        scores.observability) /
+      10;
 
     return { ...scores, overall };
   }

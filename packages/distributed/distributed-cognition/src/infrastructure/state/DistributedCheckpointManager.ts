@@ -13,9 +13,16 @@ export interface DistributedCheckpoint {
 export class DistributedCheckpointManager {
   private checkpoints = new Map<string, DistributedCheckpoint[]>();
 
-  save(nodeId: string, sessionId: string, state: Record<string, unknown>, version: number): DistributedCheckpoint {
+  save(
+    nodeId: string,
+    sessionId: string,
+    state: Record<string, unknown>,
+    version: number,
+  ): DistributedCheckpoint {
     const checkpointId = `dcp-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ nodeId, sessionId, state, version })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ nodeId, sessionId, state, version }))
+      .digest('hex');
     const checkpoint: DistributedCheckpoint = Object.freeze({
       checkpointId,
       nodeId,
@@ -33,18 +40,22 @@ export class DistributedCheckpointManager {
 
   load(sessionId: string, nodeId?: string): DistributedCheckpoint | undefined {
     const all = this.checkpoints.get(sessionId) || [];
-    const filtered = nodeId ? all.filter(c => c.nodeId === nodeId) : all;
+    const filtered = nodeId ? all.filter((c) => c.nodeId === nodeId) : all;
     if (filtered.length === 0) return undefined;
     return filtered[filtered.length - 1];
   }
 
   validate(checkpoint: DistributedCheckpoint): boolean {
-    const computed = createHash('sha256').update(JSON.stringify({
-      nodeId: checkpoint.nodeId,
-      sessionId: checkpoint.sessionId,
-      state: checkpoint.state,
-      version: checkpoint.version,
-    })).digest('hex');
+    const computed = createHash('sha256')
+      .update(
+        JSON.stringify({
+          nodeId: checkpoint.nodeId,
+          sessionId: checkpoint.sessionId,
+          state: checkpoint.state,
+          version: checkpoint.version,
+        }),
+      )
+      .digest('hex');
     return computed === checkpoint.checksum;
   }
 
@@ -54,7 +65,7 @@ export class DistributedCheckpointManager {
 
   remove(sessionId: string, checkpointId: string): boolean {
     const all = this.checkpoints.get(sessionId) || [];
-    const idx = all.findIndex(c => c.checkpointId === checkpointId);
+    const idx = all.findIndex((c) => c.checkpointId === checkpointId);
     if (idx >= 0) {
       all.splice(idx, 1);
       return true;

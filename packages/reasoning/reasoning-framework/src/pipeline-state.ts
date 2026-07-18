@@ -30,7 +30,10 @@ export class PipelineStateMachine {
 
   transition(next: PipelineStageName): void {
     if (!validTransitions[this.currentState]?.includes(next)) {
-      throw new PipelineError(`Invalid pipeline transition: ${this.currentState} -> ${next}`, 'pipeline-state');
+      throw new PipelineError(
+        `Invalid pipeline transition: ${this.currentState} -> ${next}`,
+        'pipeline-state',
+      );
     }
     this.currentState = next;
   }

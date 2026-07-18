@@ -28,7 +28,10 @@ export class TaskDelegationEngine {
     this.edges.push([fromTaskId, toTaskId]);
     if (this.detectCycle()) {
       this.edges.pop();
-      throw new CircularDelegationError(`Circular delegation detected: ${fromTaskId} -> ${toTaskId}`, 'delegation-engine');
+      throw new CircularDelegationError(
+        `Circular delegation detected: ${fromTaskId} -> ${toTaskId}`,
+        'delegation-engine',
+      );
     }
   }
 
@@ -44,7 +47,7 @@ export class TaskDelegationEngine {
     const dfs = (node: string): boolean => {
       visited.add(node);
       stack.add(node);
-      for (const neighbor of (adj.get(node) || [])) {
+      for (const neighbor of adj.get(node) || []) {
         if (!visited.has(neighbor)) {
           if (dfs(neighbor)) return true;
         } else if (stack.has(neighbor)) {

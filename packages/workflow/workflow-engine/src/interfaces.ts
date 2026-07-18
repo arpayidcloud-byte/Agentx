@@ -5,13 +5,23 @@
  */
 
 /** @description Node types in a workflow graph */
-export type NodeType = 'task' | 'approval' | 'conditional' | 'loop' | 'parallel' | 'tool' | 'agent' | 'retry';
+export type NodeType =
+  'task' | 'approval' | 'conditional' | 'loop' | 'parallel' | 'tool' | 'agent' | 'retry';
 
 /** @description Workflow state */
-export type WorkflowState = 'CREATED' | 'COMPILED' | 'RUNNING' | 'PAUSED' | 'COMPLETED' | 'FAILED' | 'CANCELLED' | 'SUSPENDED';
+export type WorkflowState =
+  | 'CREATED'
+  | 'COMPILED'
+  | 'RUNNING'
+  | 'PAUSED'
+  | 'COMPLETED'
+  | 'FAILED'
+  | 'CANCELLED'
+  | 'SUSPENDED';
 
 /** @description Node state */
-export type NodeState = 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED' | 'SKIPPED' | 'WAITING_APPROVAL' | 'CANCELLED';
+export type NodeState =
+  'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED' | 'SKIPPED' | 'WAITING_APPROVAL' | 'CANCELLED';
 
 /** @description Workflow definition */
 export interface WorkflowDefinition {

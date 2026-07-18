@@ -1,6 +1,7 @@
 # LAPORAN IMPLEMENTASI — M4.0 (Production Runtime Integration)
 
 ## Status: COMPLETE
+
 **Tanggal:** 2026-07-14
 
 M4.0 mengintegrasikan semua engine (M2.x - M3.5) ke dalam satu runtime produksi-grade sebagai single entry point.
@@ -9,26 +10,26 @@ M4.0 mengintegrasikan semua engine (M2.x - M3.5) ke dalam satu runtime produksi-
 
 ## 1. File yang Dibuat (17 file)
 
-| File | Deskripsi |
-|------|-----------|
-| `interfaces.ts` | `RuntimeState`, `RuntimeSession`, `ExecutionSession`, `RuntimeConfig`, `RuntimeMetrics`, `AuditRecord`, `HealthStatus`, `ResourceLimits`, `RuntimeError` |
-| `errors.ts` | 13 error types: `RuntimeRecoverableError`, `RuntimeNonRecoverableError`, `RuntimeTimeoutError`, `RuntimeCancellationError`, `RuntimeResourceLimitError`, dll |
-| `runtime.ts` | `Runtime` — single entry point orchestrating semua engine |
-| `runtime-config.ts` | `createRuntimeConfig`, `createResourceLimits` |
-| `runtime-state.ts` | `RuntimeStateMachine` — 11-state lifecycle |
-| `runtime-session.ts` | `createRuntimeSession`, `createExecutionSession`, `createEmptyMetrics` |
-| `runtime-executor.ts` | `RuntimeExecutor` — delegates ke ExecutionPipeline |
-| `runtime-bootstrap.ts` | `createBootstrapConfig` — initialization config |
-| `runtime-context.ts` | `RuntimeContext` — correlation context propagation |
-| `runtime-hooks.ts` | `RuntimeHookManager` — before/after lifecycle hooks |
-| `runtime-events.ts` | 14 event types untuk EventBus integration |
-| `runtime-audit.ts` | `AuditStore` — immutable audit trail |
-| `runtime-health.ts` | `HealthChecker` — component health monitoring |
-| `runtime-metrics.ts` | `MetricsCollector` — execution/workflow/planning metrics |
-| `runtime-supervisor.ts` | `RuntimeSupervisor` — recovery and monitoring |
-| `runtime-registry.ts` | `RuntimeRegistry` — component dependency injection |
-| `runtime-lifecycle.ts` | `RuntimeLifecycle` — state machine management |
-| `index.ts` | Barrel exports |
+| File                    | Deskripsi                                                                                                                                                    |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `interfaces.ts`         | `RuntimeState`, `RuntimeSession`, `ExecutionSession`, `RuntimeConfig`, `RuntimeMetrics`, `AuditRecord`, `HealthStatus`, `ResourceLimits`, `RuntimeError`     |
+| `errors.ts`             | 13 error types: `RuntimeRecoverableError`, `RuntimeNonRecoverableError`, `RuntimeTimeoutError`, `RuntimeCancellationError`, `RuntimeResourceLimitError`, dll |
+| `runtime.ts`            | `Runtime` — single entry point orchestrating semua engine                                                                                                    |
+| `runtime-config.ts`     | `createRuntimeConfig`, `createResourceLimits`                                                                                                                |
+| `runtime-state.ts`      | `RuntimeStateMachine` — 11-state lifecycle                                                                                                                   |
+| `runtime-session.ts`    | `createRuntimeSession`, `createExecutionSession`, `createEmptyMetrics`                                                                                       |
+| `runtime-executor.ts`   | `RuntimeExecutor` — delegates ke ExecutionPipeline                                                                                                           |
+| `runtime-bootstrap.ts`  | `createBootstrapConfig` — initialization config                                                                                                              |
+| `runtime-context.ts`    | `RuntimeContext` — correlation context propagation                                                                                                           |
+| `runtime-hooks.ts`      | `RuntimeHookManager` — before/after lifecycle hooks                                                                                                          |
+| `runtime-events.ts`     | 14 event types untuk EventBus integration                                                                                                                    |
+| `runtime-audit.ts`      | `AuditStore` — immutable audit trail                                                                                                                         |
+| `runtime-health.ts`     | `HealthChecker` — component health monitoring                                                                                                                |
+| `runtime-metrics.ts`    | `MetricsCollector` — execution/workflow/planning metrics                                                                                                     |
+| `runtime-supervisor.ts` | `RuntimeSupervisor` — recovery and monitoring                                                                                                                |
+| `runtime-registry.ts`   | `RuntimeRegistry` — component dependency injection                                                                                                           |
+| `runtime-lifecycle.ts`  | `RuntimeLifecycle` — state machine management                                                                                                                |
+| `index.ts`              | Barrel exports                                                                                                                                               |
 
 ---
 
@@ -123,7 +124,7 @@ sequenceDiagram
     User->>Runtime: executeGoal(sessionId, goal)
     Runtime->>Executor: execute(session, config)
     Executor->>Executor: pipeline.execute()
-    
+
     alt Success
         Executor-->>Runtime: result
         Runtime->>Lifecycle: transition(COMPLETED)
@@ -133,7 +134,7 @@ sequenceDiagram
         Runtime->>Lifecycle: transition(FAILED)
         Runtime->>EventBus: publish(runtime.failed)
     end
-    
+
     Runtime-->>User: result/error
 ```
 
@@ -216,10 +217,10 @@ sequenceDiagram
 
     Note over E: Start Execution
     E->>A: record(startAudit)
-    
+
     Note over E: Execute Pipeline
     E->>E: pipeline.execute()
-    
+
     alt Success
         E->>A: record(endAudit)
         E->>B: publish(runtime.finished)
@@ -233,29 +234,30 @@ sequenceDiagram
 
 ## 8. Security Checklist
 
-| Persyaratan | Status | Referensi |
-|-------------|--------|-----------|
-| Immutable audit records | ✅ | Volume 2, ADR-0014 |
-| State machine validation | ✅ | Volume 2 |
-| Session isolation | ✅ | Volume 7, Constitution Principle 7 |
-| Fail-closed state transitions | ✅ | Constitution Principle 7 |
-| Credential isolation (via DI) | ✅ | Constitution Principle 3 |
-| No circular dependencies | ✅ | Constitution Principle 10 |
-| Context propagation with traceId | ✅ | Volume 2, Volume 13 |
-| No vendor lock-in | ✅ | Constitution Principle 9 |
+| Persyaratan                      | Status | Referensi                          |
+| -------------------------------- | ------ | ---------------------------------- |
+| Immutable audit records          | ✅     | Volume 2, ADR-0014                 |
+| State machine validation         | ✅     | Volume 2                           |
+| Session isolation                | ✅     | Volume 7, Constitution Principle 7 |
+| Fail-closed state transitions    | ✅     | Constitution Principle 7           |
+| Credential isolation (via DI)    | ✅     | Constitution Principle 3           |
+| No circular dependencies         | ✅     | Constitution Principle 10          |
+| Context propagation with traceId | ✅     | Volume 2, Volume 13                |
+| No vendor lock-in                | ✅     | Constitution Principle 9           |
 
 ---
 
 ## 9. Coverage
 
-| Metrik | Nilai |
-|--------|-------|
+| Metrik         | Nilai  |
+| -------------- | ------ |
 | **Statements** | 96.27% |
-| **Branches** | 95.00% |
-| **Functions** | 93.26% |
-| **Lines** | 96.27% |
+| **Branches**   | 95.00% |
+| **Functions**  | 93.26% |
+| **Lines**      | 96.27% |
 
 ### Kategori Test (54 test)
+
 - ✅ Configuration (2 test)
 - ✅ State Machine (3 test)
 - ✅ Sessions (4 test)
@@ -275,30 +277,30 @@ sequenceDiagram
 
 ## 10. RFC / ADR Mapping
 
-| Dokumen | Pemetaan |
-|---------|----------|
-| **Volume 2** | Core Runtime integration patterns, EventBus |
-| **Volume 5** | Workflow integration delegation |
-| **Volume 3** | Agent Platform orchestration |
-| **Volume 7** | Tool SDK integration via pipeline |
-| **Volume 13** | Metrics collection patterns |
-| **RFC-0008** | TaskContext retrieval |
-| **RFC-0038** | Task graph rollback |
-| **RFC-0042** | TypeScript strict mode, JSDoc |
-| **Constitution Principle 7** | Fail-closed lifecycle |
-| **Constitution Principle 10** | Small Stable Core |
+| Dokumen                       | Pemetaan                                    |
+| ----------------------------- | ------------------------------------------- |
+| **Volume 2**                  | Core Runtime integration patterns, EventBus |
+| **Volume 5**                  | Workflow integration delegation             |
+| **Volume 3**                  | Agent Platform orchestration                |
+| **Volume 7**                  | Tool SDK integration via pipeline           |
+| **Volume 13**                 | Metrics collection patterns                 |
+| **RFC-0008**                  | TaskContext retrieval                       |
+| **RFC-0038**                  | Task graph rollback                         |
+| **RFC-0042**                  | TypeScript strict mode, JSDoc               |
+| **Constitution Principle 7**  | Fail-closed lifecycle                       |
+| **Constitution Principle 10** | Small Stable Core                           |
 
 ---
 
 ## 11. Remaining Work
 
-| Item | Milestone | Referensi |
-|------|-----------|-----------|
-| Persistent audit store (PostgreSQL) | M4.1 | Volume 6 |
-| Real tool execution delegation | M4.1 | Volume 7 |
-| Real agent execution delegation | M4.1 | Volume 3 |
-| Production EventBus integration | M4.1 | Volume 2 |
-| Advanced approval gate integration | M4.1 | M2.5 |
+| Item                                | Milestone | Referensi |
+| ----------------------------------- | --------- | --------- |
+| Persistent audit store (PostgreSQL) | M4.1      | Volume 6  |
+| Real tool execution delegation      | M4.1      | Volume 7  |
+| Real agent execution delegation     | M4.1      | Volume 3  |
+| Production EventBus integration     | M4.1      | Volume 2  |
+| Advanced approval gate integration  | M4.1      | M2.5      |
 
 ---
 

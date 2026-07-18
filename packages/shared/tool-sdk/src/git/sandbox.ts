@@ -4,7 +4,12 @@
  * Enforces workspace jail for all git operations.
  */
 
-import { GitSandboxConfig, GitExecutionRequest, GitRepositoryInfo, GitOperation } from './interfaces.js';
+import {
+  GitSandboxConfig,
+  GitExecutionRequest,
+  GitRepositoryInfo,
+  GitOperation,
+} from './interfaces.js';
 import { createNonGitRepositoryInfo, isWithinWorkspace } from './repository.js';
 import { GitRepositoryNotFoundError, GitWorkspaceEscapeError } from './errors.js';
 import { isForceOperation, isOrphanBranch, isEmptyCommit } from './validator.js';
@@ -44,7 +49,10 @@ export class GitSandbox {
     }
 
     // 4. Validate working directory
-    if (request.workingDirectory && !isWithinWorkspace(request.workingDirectory, this.config.workspaceRoot)) {
+    if (
+      request.workingDirectory &&
+      !isWithinWorkspace(request.workingDirectory, this.config.workspaceRoot)
+    ) {
       throw new GitWorkspaceEscapeError(request.workingDirectory, this.config.workspaceRoot);
     }
 

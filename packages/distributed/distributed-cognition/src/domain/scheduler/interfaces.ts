@@ -1,6 +1,14 @@
 /** Scheduler and task domain interfaces. */
 
-export type TaskState = 'PENDING' | 'SCHEDULED' | 'ASSIGNED' | 'EXECUTING' | 'COMPLETED' | 'FAILED' | 'CANCELLED' | 'MIGRATED';
+export type TaskState =
+  | 'PENDING'
+  | 'SCHEDULED'
+  | 'ASSIGNED'
+  | 'EXECUTING'
+  | 'COMPLETED'
+  | 'FAILED'
+  | 'CANCELLED'
+  | 'MIGRATED';
 
 export interface DistributedTask {
   readonly taskId: string;

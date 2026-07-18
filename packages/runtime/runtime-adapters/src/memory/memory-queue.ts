@@ -3,7 +3,13 @@
  * @description Reference in-memory queue provider.
  */
 
-import { IQueueProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics } from '../interfaces.js';
+import {
+  IQueueProvider,
+  ProviderMetadata,
+  ProviderCapabilities,
+  ProviderHealth,
+  ProviderMetrics,
+} from '../interfaces.js';
 
 export class MemoryQueueProvider implements IQueueProvider {
   private queue = new Map<string, Array<{ id: string; payload: unknown; priority: number }>>();
@@ -29,7 +35,12 @@ export class MemoryQueueProvider implements IQueueProvider {
   }
 
   getMetrics(): ProviderMetrics {
-    return { totalRequests: this.total, successfulRequests: this.successes, failedRequests: this.failures, averageLatencyMs: 0 };
+    return {
+      totalRequests: this.total,
+      successfulRequests: this.successes,
+      failedRequests: this.failures,
+      averageLatencyMs: 0,
+    };
   }
 
   async enqueue(topic: string, message: unknown, priority: number = 0): Promise<void> {

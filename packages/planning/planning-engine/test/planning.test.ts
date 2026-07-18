@@ -23,7 +23,7 @@ describe('Planning Engine', () => {
   it('optimizes plan', async () => {
     const plan = await engine.createPlan('test', {});
     const optimized = await engine.optimizePlan(plan);
-    
+
     expect(optimized.estimatedCostUsd).toBeLessThan(plan.estimatedCostUsd);
     expect(optimized.metadata.optimized).toBe(true);
   });
@@ -40,7 +40,7 @@ describe('Planning Engine', () => {
     const plan = await engine.createPlan('test', {});
     plan.goal = '';
     plan.tasks = [];
-    
+
     const result = await engine.validatePlan(plan);
     expect(result.isValid).toBe(false);
     expect(result.errors).toContain('Goal is required');
@@ -50,7 +50,7 @@ describe('Planning Engine', () => {
   it('generates warnings for high risk', async () => {
     const plan = await engine.createPlan('test', {});
     plan.riskScore = 95;
-    
+
     const result = await engine.validatePlan(plan);
     expect(result.isValid).toBe(true);
     expect(result.warnings).toContain('High risk score, requires double confirmation');
@@ -59,7 +59,7 @@ describe('Planning Engine', () => {
   it('explains plan', async () => {
     const plan = await engine.createPlan('test goal', {});
     const explanation = engine.explainPlan(plan);
-    
+
     expect(explanation).toContain('Plan for: test goal');
     expect(explanation).toContain('Tasks: 2');
     expect(explanation).toContain('- [planner]');
@@ -69,7 +69,7 @@ describe('Planning Engine', () => {
     await engine.createPlan('test 1', {});
     const plan2 = await engine.createPlan('test 2', {});
     await engine.optimizePlan(plan2);
-    
+
     const metrics = engine.getMetrics();
     expect(metrics.totalPlansCreated).toBe(2);
     expect(metrics.totalPlansOptimized).toBe(1);

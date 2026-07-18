@@ -47,11 +47,7 @@ class MockConfig {
 
 describe('Native Provider Errors', () => {
   it('instantiates errors correctly', () => {
-    const errs = [
-      ConnectionError,
-      ConfigurationError,
-      VendorSDKError,
-    ];
+    const errs = [ConnectionError, ConfigurationError, VendorSDKError];
 
     for (const Err of errs) {
       const e = new Err('msg', 'src');
@@ -76,7 +72,7 @@ describe('BullMQQueueProvider', () => {
 
   it('initializes, connects, health checks and enforces fail-closed operations', async () => {
     await expect(provider.initialize(new MockConfig())).rejects.toThrow(ConfigurationError);
-    
+
     await provider.initialize(new MockConfig({ REDIS_URL: 'redis://localhost' }));
     expect(provider.isConnected()).toBe(false);
     expect(await provider.getHealth()).toEqual({ status: 'DOWN', latencyMs: 5 });
@@ -118,7 +114,7 @@ describe('RedisLockProvider', () => {
 
   it('initializes, manages distributed locks cleanly', async () => {
     await expect(provider.initialize(new MockConfig())).rejects.toThrow(ConfigurationError);
-    
+
     await provider.initialize(new MockConfig({ REDIS_URL: 'redis://localhost' }));
     await provider.connect();
     expect(await provider.getHealth()).toEqual({ status: 'UP', latencyMs: 2 });
@@ -153,7 +149,7 @@ describe('PostgresStorageProvider', () => {
 
   it('manages store operations and transaction wrappers', async () => {
     await expect(provider.initialize(new MockConfig())).rejects.toThrow(ConfigurationError);
-    
+
     await provider.initialize(new MockConfig({ DATABASE_URL: 'postgres://localhost' }));
     await provider.connect();
     expect(await provider.getHealth()).toEqual({ status: 'UP', latencyMs: 10 });
@@ -180,11 +176,11 @@ describe('PgVectorKnowledgeProvider', () => {
 
   it('manages similarity search stubs', async () => {
     await expect(provider.initialize(new MockConfig())).rejects.toThrow(ConfigurationError);
-    
+
     await provider.initialize(new MockConfig({ DATABASE_URL: 'postgres://localhost' }));
     await provider.connect();
     expect(await provider.getHealth()).toEqual({ status: 'UP', latencyMs: 12 });
-    
+
     await provider.put('b', 'k', 'v');
     expect(await provider.get('b', 'k')).toBeUndefined();
     await provider.delete('b', 'k');
@@ -215,8 +211,10 @@ describe('OTELTelemetryProvider', () => {
 
   it('manages traces, spans and telemetry logs', async () => {
     await expect(provider.initialize(new MockConfig())).rejects.toThrow(ConfigurationError);
-    
-    await provider.initialize(new MockConfig({ OTEL_EXPORTER_OTLP_ENDPOINT: 'http://localhost:4317' }));
+
+    await provider.initialize(
+      new MockConfig({ OTEL_EXPORTER_OTLP_ENDPOINT: 'http://localhost:4317' }),
+    );
     await provider.connect();
     expect(await provider.getHealth()).toEqual({ status: 'UP', latencyMs: 3 });
 
@@ -239,7 +237,7 @@ describe('NATSQueueProvider', () => {
 
   it('manages pubsub and streaming topics', async () => {
     await expect(provider.initialize(new MockConfig())).rejects.toThrow(ConfigurationError);
-    
+
     await provider.initialize(new MockConfig({ NATS_URL: 'nats://localhost:4222' }));
     await provider.connect();
     expect(await provider.getHealth()).toEqual({ status: 'UP', latencyMs: 4 });
@@ -264,18 +262,24 @@ describe('OpenAIProvider', () => {
 
   it('connects and runs completions and embeddings', async () => {
     await expect(provider.initialize(new MockConfig())).rejects.toThrow(ConfigurationError);
-    
+
     await provider.initialize(new MockConfig({ OPENAI_API_KEY: 'sk-123' }));
     await provider.connect();
     expect(await provider.getHealth()).toEqual({ status: 'UP', latencyMs: 20 });
 
-    const res = await provider.complete({ model: 'gpt-4', messages: [{ role: 'user', content: 'hello' }] });
+    const res = await provider.complete({
+      model: 'gpt-4',
+      messages: [{ role: 'user', content: 'hello' }],
+    });
     expect(res.content).toContain('gpt-4');
 
     const emb = await provider.embed({ model: 'text-embedding-ada-002', input: 'test' });
     expect(emb.embeddings[0]).toHaveLength(1536);
 
-    const embBatch = await provider.embed({ model: 'text-embedding-ada-002', input: ['test1', 'test2'] });
+    const embBatch = await provider.embed({
+      model: 'text-embedding-ada-002',
+      input: ['test1', 'test2'],
+    });
     expect(embBatch.embeddings).toHaveLength(2);
 
     await provider.disconnect();
@@ -292,12 +296,15 @@ describe('AnthropicProvider', () => {
 
   it('connects and runs messages API completions', async () => {
     await expect(provider.initialize(new MockConfig())).rejects.toThrow(ConfigurationError);
-    
+
     await provider.initialize(new MockConfig({ ANTHROPIC_API_KEY: 'sk-123' }));
     await provider.connect();
     expect(await provider.getHealth()).toEqual({ status: 'UP', latencyMs: 18 });
 
-    const res = await provider.complete({ model: 'claude-3', messages: [{ role: 'user', content: 'hello' }] });
+    const res = await provider.complete({
+      model: 'claude-3',
+      messages: [{ role: 'user', content: 'hello' }],
+    });
     expect(res.content).toContain('claude-3');
 
     await provider.disconnect();
@@ -314,12 +321,15 @@ describe('GeminiProvider', () => {
 
   it('connects and runs Gemini API completions and embeddings', async () => {
     await expect(provider.initialize(new MockConfig())).rejects.toThrow(ConfigurationError);
-    
+
     await provider.initialize(new MockConfig({ GOOGLE_API_KEY: 'sk-123' }));
     await provider.connect();
     expect(await provider.getHealth()).toEqual({ status: 'UP', latencyMs: 15 });
 
-    const res = await provider.complete({ model: 'gemini-pro', messages: [{ role: 'user', content: 'hello' }] });
+    const res = await provider.complete({
+      model: 'gemini-pro',
+      messages: [{ role: 'user', content: 'hello' }],
+    });
     expect(res.content).toContain('gemini-pro');
 
     const emb = await provider.embed({ model: 'embedding-001', input: 'test' });
@@ -342,12 +352,15 @@ describe('OllamaProvider', () => {
 
   it('connects and runs local Ollama completions and embeddings', async () => {
     await expect(provider.initialize(new MockConfig())).rejects.toThrow(ConfigurationError);
-    
+
     await provider.initialize(new MockConfig({ OLLAMA_BASE_URL: 'http://localhost:11434' }));
     await provider.connect();
     expect(await provider.getHealth()).toEqual({ status: 'UP', latencyMs: 5 });
 
-    const res = await provider.complete({ model: 'llama3', messages: [{ role: 'user', content: 'hello' }] });
+    const res = await provider.complete({
+      model: 'llama3',
+      messages: [{ role: 'user', content: 'hello' }],
+    });
     expect(res.content).toContain('llama3');
 
     const emb = await provider.embed({ model: 'nomic-embed-text', input: 'test' });

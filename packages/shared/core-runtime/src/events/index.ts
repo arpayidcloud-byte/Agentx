@@ -7,7 +7,13 @@ export class InMemoryEventBus implements IEventBus {
   private handlers = new Map<string, Set<(e: EventEnvelope<any>) => Promise<void>>>();
   private processedEventIds = new Set<string>();
 
-  public async publish<T>(topic: string, payload: T, traceId: string, taskId?: string, metadata?: Record<string, unknown>): Promise<void> {
+  public async publish<T>(
+    topic: string,
+    payload: T,
+    traceId: string,
+    taskId?: string,
+    metadata?: Record<string, unknown>,
+  ): Promise<void> {
     const event: EventEnvelope<T> = {
       id: Math.random().toString(36).substring(2) + Date.now().toString(36),
       topic,
@@ -22,7 +28,10 @@ export class InMemoryEventBus implements IEventBus {
     await this.dispatch(topic, event);
   }
 
-  public async subscribe<T>(topic: string, handler: (event: EventEnvelope<T>) => Promise<void>): Promise<void> {
+  public async subscribe<T>(
+    topic: string,
+    handler: (event: EventEnvelope<T>) => Promise<void>,
+  ): Promise<void> {
     if (!this.handlers.has(topic)) {
       this.handlers.set(topic, new Set());
     }
@@ -33,10 +42,18 @@ export class InMemoryEventBus implements IEventBus {
     this.handlers.delete(topic);
   }
 
-  public async request<TReq, TRes>(topic: string, payload: TReq, traceId: string, timeoutMs: number = 5000): Promise<EventEnvelope<TRes>> {
+  public async request<TReq, TRes>(
+    topic: string,
+    payload: TReq,
+    traceId: string,
+    timeoutMs: number = 5000,
+  ): Promise<EventEnvelope<TRes>> {
     return new Promise((resolve, reject) => {
       const replyTopic = `${topic}.reply.${Math.random().toString(36).substring(2)}`;
-      const timeout = setTimeout(() => reject(new EventBusError(`Request timed out for topic ${topic}`)), timeoutMs);
+      const timeout = setTimeout(
+        () => reject(new EventBusError(`Request timed out for topic ${topic}`)),
+        timeoutMs,
+      );
 
       this.subscribe<TRes>(replyTopic, async (event) => {
         clearTimeout(timeout);
@@ -48,7 +65,10 @@ export class InMemoryEventBus implements IEventBus {
     });
   }
 
-  public async reply<TReq, TRes>(topic: string, handler: (event: EventEnvelope<TReq>) => Promise<TRes>): Promise<void> {
+  public async reply<TReq, TRes>(
+    topic: string,
+    handler: (event: EventEnvelope<TReq>) => Promise<TRes>,
+  ): Promise<void> {
     await this.subscribe<TReq>(topic, async (event) => {
       try {
         const responsePayload = await handler(event);
@@ -78,7 +98,7 @@ export class InMemoryEventBus implements IEventBus {
         try {
           const promise = handler(event);
           if (promise && typeof promise.catch === 'function') {
-            promise.catch(err => {
+            promise.catch((err) => {
               console.error(`Error in event handler for topic ${topic}`, err);
             });
           }
@@ -105,7 +125,7 @@ export class BullMQEventBus implements IEventBus {
     payload: T,
     traceId: string,
     taskId?: string,
-    metadata?: Record<string, unknown>
+    metadata?: Record<string, unknown>,
   ): Promise<void> {
     if (!this.queues.has(topic)) {
       this.queues.set(topic, new Queue(topic, { connection: this.redisConnection as any }));
@@ -125,7 +145,10 @@ export class BullMQEventBus implements IEventBus {
     await queue.add(topic, event, { jobId: event.id });
   }
 
-  public async subscribe<T>(topic: string, handler: (event: EventEnvelope<T>) => Promise<void>): Promise<void> {
+  public async subscribe<T>(
+    topic: string,
+    handler: (event: EventEnvelope<T>) => Promise<void>,
+  ): Promise<void> {
     if (this.workers.has(topic)) {
       throw new EventBusError(`Already subscribed to topic ${topic}`);
     }
@@ -139,7 +162,7 @@ export class BullMQEventBus implements IEventBus {
         this.processedEventIds.add(event.id);
         await handler(event);
       },
-      { connection: this.redisConnection as any }
+      { connection: this.redisConnection as any },
     );
     this.workers.set(topic, worker);
   }
@@ -152,7 +175,12 @@ export class BullMQEventBus implements IEventBus {
     }
   }
 
-  public async request<TReq, TRes>(topic: string, payload: TReq, traceId: string, timeoutMs: number = 5000): Promise<EventEnvelope<TRes>> {
+  public async request<TReq, TRes>(
+    topic: string,
+    payload: TReq,
+    traceId: string,
+    timeoutMs: number = 5000,
+  ): Promise<EventEnvelope<TRes>> {
     const replyTopic = `${topic}.reply.${Math.random().toString(36).substring(2)}`;
     return new Promise(async (resolve, reject) => {
       const timeout = setTimeout(async () => {
@@ -170,7 +198,10 @@ export class BullMQEventBus implements IEventBus {
     });
   }
 
-  public async reply<TReq, TRes>(topic: string, handler: (event: EventEnvelope<TReq>) => Promise<TRes>): Promise<void> {
+  public async reply<TReq, TRes>(
+    topic: string,
+    handler: (event: EventEnvelope<TReq>) => Promise<TRes>,
+  ): Promise<void> {
     await this.subscribe<TReq>(topic, async (event) => {
       try {
         const responsePayload = await handler(event);

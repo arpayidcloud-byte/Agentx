@@ -4,12 +4,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import {
-  WorkflowEngine,
-  createWorkflow,
-  createNode,
-  createEdge,
-} from '../src/index.js';
+import { WorkflowEngine, createWorkflow, createNode, createEdge } from '../src/index.js';
 import {
   WorkflowExecutor,
   NodeExecutor,
@@ -49,12 +44,16 @@ describe('WorkflowExecutor', () => {
   });
 
   it('executes a simple workflow and emits metrics', async () => {
-    const wf = createWorkflow('wf-1', 'Test', 'admin', [
-      createNode('n1', 'task', 'Step 1', { type: 'task', goal: 'process', priority: 1 }),
-      createNode('n2', 'task', 'Step 2', { type: 'task', goal: 'analyze', priority: 2 }),
-    ], [
-      { source: 'n1', target: 'n2' },
-    ]);
+    const wf = createWorkflow(
+      'wf-1',
+      'Test',
+      'admin',
+      [
+        createNode('n1', 'task', 'Step 1', { type: 'task', goal: 'process', priority: 1 }),
+        createNode('n2', 'task', 'Step 2', { type: 'task', goal: 'analyze', priority: 2 }),
+      ],
+      [{ source: 'n1', target: 'n2' }],
+    );
 
     const metrics = await executor.executeWorkflow(wf, () => {});
     expect(metrics.completedNodes).toBe(2);
@@ -63,27 +62,52 @@ describe('WorkflowExecutor', () => {
   });
 
   it('executes tool nodes', async () => {
-    const wf = createWorkflow('wf-tool', 'Tool WF', 'admin', [
-      createNode('n1', 'tool', 'Run Tool', { type: 'tool', toolName: 'npm test', category: 'shell.build', arguments: {} }),
-    ], []);
+    const wf = createWorkflow(
+      'wf-tool',
+      'Tool WF',
+      'admin',
+      [
+        createNode('n1', 'tool', 'Run Tool', {
+          type: 'tool',
+          toolName: 'npm test',
+          category: 'shell.build',
+          arguments: {},
+        }),
+      ],
+      [],
+    );
 
     const metrics = await executor.executeWorkflow(wf, () => {});
     expect(metrics.toolCalls).toBe(1);
   });
 
   it('executes agent nodes', async () => {
-    const wf = createWorkflow('wf-agent', 'Agent WF', 'admin', [
-      createNode('n1', 'agent', 'Code Review', { type: 'agent', role: 'reviewer', goal: 'review' }),
-    ], []);
+    const wf = createWorkflow(
+      'wf-agent',
+      'Agent WF',
+      'admin',
+      [
+        createNode('n1', 'agent', 'Code Review', {
+          type: 'agent',
+          role: 'reviewer',
+          goal: 'review',
+        }),
+      ],
+      [],
+    );
 
     const metrics = await executor.executeWorkflow(wf, () => {});
     expect(metrics.agentCalls).toBe(1);
   });
 
   it('executes approval nodes', async () => {
-    const wf = createWorkflow('wf-approve', 'Approval WF', 'admin', [
-      createNode('n1', 'approval', 'Review', { type: 'approval', riskScore: 60 }),
-    ], []);
+    const wf = createWorkflow(
+      'wf-approve',
+      'Approval WF',
+      'admin',
+      [createNode('n1', 'approval', 'Review', { type: 'approval', riskScore: 60 })],
+      [],
+    );
 
     const metrics = await executor.executeWorkflow(wf, () => {});
     expect(metrics.approvalCount).toBe(1);
@@ -99,9 +123,13 @@ describe('WorkflowExecutor', () => {
       afterWorkflow: afterHook,
     });
 
-    const wf = createWorkflow('wf-hook', 'Hook WF', 'admin', [
-      createNode('n1', 'task', 'Task', { type: 'task', goal: 'test', priority: 1 }),
-    ], []);
+    const wf = createWorkflow(
+      'wf-hook',
+      'Hook WF',
+      'admin',
+      [createNode('n1', 'task', 'Task', { type: 'task', goal: 'test', priority: 1 })],
+      [],
+    );
 
     await executor.executeWorkflow(wf, () => {});
     expect(beforeHook).toHaveBeenCalled();
@@ -109,32 +137,60 @@ describe('WorkflowExecutor', () => {
   });
 
   it('executes parallel nodes', async () => {
-    const wf = createWorkflow('wf-par', 'Parallel', 'admin', [
-      createNode('n1', 'task', 'Start', { type: 'task', goal: 'init', priority: 1 }),
-      createNode('n2', 'task', 'A', { type: 'task', goal: 'a', priority: 2 }),
-      createNode('n3', 'task', 'B', { type: 'task', goal: 'b', priority: 2 }),
-    ], [
-      { source: 'n1', target: 'n2' },
-      { source: 'n1', target: 'n3' },
-    ]);
+    const wf = createWorkflow(
+      'wf-par',
+      'Parallel',
+      'admin',
+      [
+        createNode('n1', 'task', 'Start', { type: 'task', goal: 'init', priority: 1 }),
+        createNode('n2', 'task', 'A', { type: 'task', goal: 'a', priority: 2 }),
+        createNode('n3', 'task', 'B', { type: 'task', goal: 'b', priority: 2 }),
+      ],
+      [
+        { source: 'n1', target: 'n2' },
+        { source: 'n1', target: 'n3' },
+      ],
+    );
 
     const metrics = await executor.executeWorkflow(wf, () => {});
     expect(metrics.completedNodes).toBe(3);
   });
 
   it('handles loop nodes', async () => {
-    const wf = createWorkflow('wf-loop', 'Loop', 'admin', [
-      createNode('n1', 'loop', 'Loop', { type: 'loop', iterator: 'i', maxIterations: 3, body: [] }),
-    ], []);
+    const wf = createWorkflow(
+      'wf-loop',
+      'Loop',
+      'admin',
+      [
+        createNode('n1', 'loop', 'Loop', {
+          type: 'loop',
+          iterator: 'i',
+          maxIterations: 3,
+          body: [],
+        }),
+      ],
+      [],
+    );
 
     const metrics = await executor.executeWorkflow(wf, () => {});
     expect(metrics.completedNodes).toBe(1);
   });
 
   it('handles conditional nodes', async () => {
-    const wf = createWorkflow('wf-cond', 'Conditional', 'admin', [
-      createNode('n1', 'conditional', 'Check', { type: 'conditional', condition: 'true', trueBranch: 'n2', falseBranch: 'n3' }),
-    ], []);
+    const wf = createWorkflow(
+      'wf-cond',
+      'Conditional',
+      'admin',
+      [
+        createNode('n1', 'conditional', 'Check', {
+          type: 'conditional',
+          condition: 'true',
+          trueBranch: 'n2',
+          falseBranch: 'n3',
+        }),
+      ],
+      [],
+    );
 
     const metrics = await executor.executeWorkflow(wf, () => {});
     expect(metrics.completedNodes).toBe(1);
@@ -149,49 +205,84 @@ describe('NodeExecutor', () => {
   });
 
   it('executes tool nodes', async () => {
-    const node = { id: 'n1', type: 'tool', name: 'Run Tool', config: { type: 'tool', toolName: 'npm test', category: 'shell.build', arguments: {} } } as any;
+    const node = {
+      id: 'n1',
+      type: 'tool',
+      name: 'Run Tool',
+      config: { type: 'tool', toolName: 'npm test', category: 'shell.build', arguments: {} },
+    } as any;
     const result = await executor.executeToolNode(node, {});
     expect(result).toHaveProperty('status', 'completed');
     expect(result).toHaveProperty('toolName', 'npm test');
   });
 
   it('executes agent nodes', async () => {
-    const node = { id: 'n1', type: 'agent', name: 'Agent', config: { type: 'agent', role: 'coder', goal: 'code' } } as any;
+    const node = {
+      id: 'n1',
+      type: 'agent',
+      name: 'Agent',
+      config: { type: 'agent', role: 'coder', goal: 'code' },
+    } as any;
     const result = await executor.executeAgentNode(node, {});
     expect(result).toHaveProperty('status', 'completed');
     expect(result).toHaveProperty('role', 'coder');
   });
 
   it('executes approval nodes', async () => {
-    const node = { id: 'n1', type: 'approval', name: 'Approve', config: { type: 'approval', riskScore: 60 } } as any;
+    const node = {
+      id: 'n1',
+      type: 'approval',
+      name: 'Approve',
+      config: { type: 'approval', riskScore: 60 },
+    } as any;
     const result = await executor.executeApprovalNode(node, {});
     expect(result).toHaveProperty('status', 'completed');
     expect(result).toHaveProperty('riskScore', 60);
   });
 
   it('executes parallel nodes', async () => {
-    const node = { id: 'n1', type: 'parallel', name: 'Parallel', config: { type: 'parallel', branches: ['a', 'b'] } } as any;
+    const node = {
+      id: 'n1',
+      type: 'parallel',
+      name: 'Parallel',
+      config: { type: 'parallel', branches: ['a', 'b'] },
+    } as any;
     const result = await executor.executeParallelNode(node, {});
     expect(result).toHaveProperty('status', 'completed');
     expect(result).toHaveProperty('branches');
   });
 
   it('executes loop nodes', async () => {
-    const node = { id: 'n1', type: 'loop', name: 'Loop', config: { type: 'loop', iterator: 'i', maxIterations: 5, body: [] } } as any;
+    const node = {
+      id: 'n1',
+      type: 'loop',
+      name: 'Loop',
+      config: { type: 'loop', iterator: 'i', maxIterations: 5, body: [] },
+    } as any;
     const result = await executor.executeLoopNode(node, {});
     expect(result).toHaveProperty('status', 'completed');
     expect(result).toHaveProperty('iterations', 5);
   });
 
   it('executes conditional nodes', async () => {
-    const node = { id: 'n1', type: 'conditional', name: 'Cond', config: { type: 'conditional', condition: 'x > 5', trueBranch: 'n2', falseBranch: 'n3' } } as any;
+    const node = {
+      id: 'n1',
+      type: 'conditional',
+      name: 'Cond',
+      config: { type: 'conditional', condition: 'x > 5', trueBranch: 'n2', falseBranch: 'n3' },
+    } as any;
     const result = await executor.executeConditionalNode(node, {});
     expect(result).toHaveProperty('status', 'completed');
     expect(result).toHaveProperty('selectedBranch', 'n2');
   });
 
   it('dispatches to correct executor based on type', async () => {
-    const node = { id: 'n1', type: 'tool', name: 'Tool', config: { type: 'tool', toolName: 'test', category: 'shell.build', arguments: {} } } as any;
+    const node = {
+      id: 'n1',
+      type: 'tool',
+      name: 'Tool',
+      config: { type: 'tool', toolName: 'test', category: 'shell.build', arguments: {} },
+    } as any;
     const result = await executor.executeNode(node, {});
     expect(result).toHaveProperty('toolName', 'test');
   });
@@ -206,14 +297,20 @@ describe('ExecutionPlanner', () => {
 
   it('plans execution batches', () => {
     const wf = {
-      id: 'wf-1', name: 'Test', version: 1,
+      id: 'wf-1',
+      name: 'Test',
+      version: 1,
       nodes: [
         { id: 'n1', type: 'task', name: 'T1', config: { type: 'task', goal: 'test', priority: 1 } },
         { id: 'n2', type: 'task', name: 'T2', config: { type: 'task', goal: 'test', priority: 2 } },
         { id: 'n3', type: 'task', name: 'T3', config: { type: 'task', goal: 'test', priority: 3 } },
       ],
-      edges: [{ source: 'n1', target: 'n2' }, { source: 'n2', target: 'n3' }],
-      variables: {}, metadata: { createdAt: new Date(), updatedAt: new Date(), createdBy: 'test', traceId: 't1' },
+      edges: [
+        { source: 'n1', target: 'n2' },
+        { source: 'n2', target: 'n3' },
+      ],
+      variables: {},
+      metadata: { createdAt: new Date(), updatedAt: new Date(), createdBy: 'test', traceId: 't1' },
     } as any;
 
     const plan = planner.plan(wf);
@@ -225,14 +322,25 @@ describe('ExecutionPlanner', () => {
 
   it('identifies parallel nodes in same batch', () => {
     const wf = {
-      id: 'wf-1', name: 'Test', version: 1,
+      id: 'wf-1',
+      name: 'Test',
+      version: 1,
       nodes: [
-        { id: 'n1', type: 'task', name: 'Start', config: { type: 'task', goal: 'init', priority: 1 } },
+        {
+          id: 'n1',
+          type: 'task',
+          name: 'Start',
+          config: { type: 'task', goal: 'init', priority: 1 },
+        },
         { id: 'n2', type: 'task', name: 'A', config: { type: 'task', goal: 'a', priority: 2 } },
         { id: 'n3', type: 'task', name: 'B', config: { type: 'task', goal: 'b', priority: 2 } },
       ],
-      edges: [{ source: 'n1', target: 'n2' }, { source: 'n1', target: 'n3' }],
-      variables: {}, metadata: { createdAt: new Date(), updatedAt: new Date(), createdBy: 'test', traceId: 't1' },
+      edges: [
+        { source: 'n1', target: 'n2' },
+        { source: 'n1', target: 'n3' },
+      ],
+      variables: {},
+      metadata: { createdAt: new Date(), updatedAt: new Date(), createdBy: 'test', traceId: 't1' },
     } as any;
 
     const plan = planner.plan(wf);
@@ -242,13 +350,16 @@ describe('ExecutionPlanner', () => {
 
   it('calculates critical path', () => {
     const wf = {
-      id: 'wf-1', name: 'Test', version: 1,
+      id: 'wf-1',
+      name: 'Test',
+      version: 1,
       nodes: [
         { id: 'n1', type: 'task', name: 'T1', config: { type: 'task', goal: 'test', priority: 1 } },
         { id: 'n2', type: 'task', name: 'T2', config: { type: 'task', goal: 'test', priority: 2 } },
       ],
       edges: [{ source: 'n1', target: 'n2' }],
-      variables: {}, metadata: { createdAt: new Date(), updatedAt: new Date(), createdBy: 'test', traceId: 't1' },
+      variables: {},
+      metadata: { createdAt: new Date(), updatedAt: new Date(), createdBy: 'test', traceId: 't1' },
     } as any;
 
     const path = planner.calculateCriticalPath(wf);
@@ -257,14 +368,17 @@ describe('ExecutionPlanner', () => {
 
   it('estimates parallelism', () => {
     const wf = {
-      id: 'wf-1', name: 'Test', version: 1,
+      id: 'wf-1',
+      name: 'Test',
+      version: 1,
       nodes: [
         { id: 'n1', type: 'task', name: 'T1', config: { type: 'task', goal: 'test', priority: 1 } },
         { id: 'n2', type: 'task', name: 'T2', config: { type: 'task', goal: 'test', priority: 2 } },
         { id: 'n3', type: 'task', name: 'T3', config: { type: 'task', goal: 'test', priority: 3 } },
       ],
       edges: [],
-      variables: {}, metadata: { createdAt: new Date(), updatedAt: new Date(), createdBy: 'test', traceId: 't1' },
+      variables: {},
+      metadata: { createdAt: new Date(), updatedAt: new Date(), createdBy: 'test', traceId: 't1' },
     } as any;
 
     const parallelism = planner.estimateParallelism(wf);
@@ -335,11 +449,16 @@ describe('WorkflowHookManager', () => {
 describe('ExecutionTimeline', () => {
   it('records node execution timeline', () => {
     const timeline = new ExecutionTimeline();
-    const node = { id: 'n1', type: 'task', name: 'Task', config: { type: 'task', goal: 'test', priority: 1 } } as any;
-    
+    const node = {
+      id: 'n1',
+      type: 'task',
+      name: 'Task',
+      config: { type: 'task', goal: 'test', priority: 1 },
+    } as any;
+
     timeline.startNode(node);
     timeline.finishNode('n1', 'COMPLETED', 0);
-    
+
     const entries = timeline.getTimeline();
     expect(entries.length).toBe(1);
     expect(entries[0].nodeId).toBe('n1');
@@ -349,7 +468,12 @@ describe('ExecutionTimeline', () => {
 
   it('clears timeline', () => {
     const timeline = new ExecutionTimeline();
-    const node = { id: 'n1', type: 'task', name: 'Task', config: { type: 'task', goal: 'test', priority: 1 } } as any;
+    const node = {
+      id: 'n1',
+      type: 'task',
+      name: 'Task',
+      config: { type: 'task', goal: 'test', priority: 1 },
+    } as any;
     timeline.startNode(node);
     timeline.clear();
     expect(timeline.getTimeline().length).toBe(0);
@@ -368,9 +492,15 @@ describe('Snapshot Versioning', () => {
   });
 
   it('validates checksum', () => {
-    const snapshot = createVersionedSnapshot('wf-1', new Map([['n1', 'COMPLETED']]), new Map(), 1, 'admin');
+    const snapshot = createVersionedSnapshot(
+      'wf-1',
+      new Map([['n1', 'COMPLETED']]),
+      new Map(),
+      1,
+      'admin',
+    );
     expect(validateSnapshotChecksum(snapshot)).toBe(true);
-    
+
     snapshot.nodeStates.set('n2', 'PENDING');
     expect(validateSnapshotChecksum(snapshot)).toBe(false);
   });
@@ -385,14 +515,20 @@ describe('CriticalPathAnalyzer', () => {
 
   it('analyzes workflow critical path', () => {
     const wf = {
-      id: 'wf-1', name: 'Test', version: 1,
+      id: 'wf-1',
+      name: 'Test',
+      version: 1,
       nodes: [
         { id: 'n1', type: 'task', name: 'T1', config: { type: 'task', goal: 'test', priority: 1 } },
         { id: 'n2', type: 'task', name: 'T2', config: { type: 'task', goal: 'test', priority: 2 } },
         { id: 'n3', type: 'task', name: 'T3', config: { type: 'task', goal: 'test', priority: 3 } },
       ],
-      edges: [{ source: 'n1', target: 'n2' }, { source: 'n2', target: 'n3' }],
-      variables: {}, metadata: { createdAt: new Date(), updatedAt: new Date(), createdBy: 'test', traceId: 't1' },
+      edges: [
+        { source: 'n1', target: 'n2' },
+        { source: 'n2', target: 'n3' },
+      ],
+      variables: {},
+      metadata: { createdAt: new Date(), updatedAt: new Date(), createdBy: 'test', traceId: 't1' },
     } as any;
 
     const analysis = analyzer.analyze(wf);
@@ -403,14 +539,25 @@ describe('CriticalPathAnalyzer', () => {
 
   it('identifies bottlenecks', () => {
     const wf = {
-      id: 'wf-1', name: 'Test', version: 1,
+      id: 'wf-1',
+      name: 'Test',
+      version: 1,
       nodes: [
-        { id: 'n1', type: 'task', name: 'Hub', config: { type: 'task', goal: 'test', priority: 1 } },
+        {
+          id: 'n1',
+          type: 'task',
+          name: 'Hub',
+          config: { type: 'task', goal: 'test', priority: 1 },
+        },
         { id: 'n2', type: 'task', name: 'A', config: { type: 'task', goal: 'test', priority: 2 } },
         { id: 'n3', type: 'task', name: 'B', config: { type: 'task', goal: 'test', priority: 3 } },
       ],
-      edges: [{ source: 'n1', target: 'n2' }, { source: 'n1', target: 'n3' }],
-      variables: {}, metadata: { createdAt: new Date(), updatedAt: new Date(), createdBy: 'test', traceId: 't1' },
+      edges: [
+        { source: 'n1', target: 'n2' },
+        { source: 'n1', target: 'n3' },
+      ],
+      variables: {},
+      metadata: { createdAt: new Date(), updatedAt: new Date(), createdBy: 'test', traceId: 't1' },
     } as any;
 
     const analysis = analyzer.analyze(wf);

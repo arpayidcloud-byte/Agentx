@@ -1,6 +1,7 @@
 /** Collaboration domain interfaces. */
 
-export type CollaborationState = 'INITIATED' | 'NEGOTIATING' | 'EXECUTING' | 'SYNTHESIZING' | 'COMPLETED' | 'FAILED';
+export type CollaborationState =
+  'INITIATED' | 'NEGOTIATING' | 'EXECUTING' | 'SYNTHESIZING' | 'COMPLETED' | 'FAILED';
 
 export interface CrossNodeSession {
   readonly sessionId: string;

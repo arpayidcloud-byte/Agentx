@@ -9,7 +9,7 @@ export class ImprovementEngine {
   generate(experiences: Experience[], patterns: Pattern[]): Improvement[] {
     const improvements: Improvement[] = [];
 
-    const failures = experiences.filter(e => e.outcome === 'failure');
+    const failures = experiences.filter((e) => e.outcome === 'failure');
     if (failures.length >= 2) {
       improvements.push({
         id: `impr-${Date.now()}`,
@@ -21,7 +21,7 @@ export class ImprovementEngine {
       });
     }
 
-    if (patterns.filter(p => p.type === 'repeated_success').length >= 2) {
+    if (patterns.filter((p) => p.type === 'repeated_success').length >= 2) {
       improvements.push({
         id: `impr-${Date.now()}`,
         sessionId: '',

@@ -77,7 +77,9 @@ describe('MemoryLockProvider', () => {
 
   it('fails to acquire lock when already held', async () => {
     await provider.acquire('resource-1', { ttlMs: 1000 });
-    await expect(provider.acquire('resource-1', { ttlMs: 1000 })).rejects.toThrow(DistributedLockError);
+    await expect(provider.acquire('resource-1', { ttlMs: 1000 })).rejects.toThrow(
+      DistributedLockError,
+    );
   });
 
   it('renews locks', async () => {
@@ -144,25 +146,52 @@ describe('MemoryQueue', () => {
   });
 
   it('enqueues and dequeues messages by priority', async () => {
-    await queue.enqueue({ id: '1', traceId: 't', workflowId: 'w', payload: {}, priority: 1, retryCount: 0, status: 'PENDING', createdAt: new Date() });
-    await queue.enqueue({ id: '2', traceId: 't', workflowId: 'w', payload: {}, priority: 10, retryCount: 0, status: 'PENDING', createdAt: new Date() });
-    
+    await queue.enqueue({
+      id: '1',
+      traceId: 't',
+      workflowId: 'w',
+      payload: {},
+      priority: 1,
+      retryCount: 0,
+      status: 'PENDING',
+      createdAt: new Date(),
+    });
+    await queue.enqueue({
+      id: '2',
+      traceId: 't',
+      workflowId: 'w',
+      payload: {},
+      priority: 10,
+      retryCount: 0,
+      status: 'PENDING',
+      createdAt: new Date(),
+    });
+
     const first = await queue.dequeue();
     expect(first?.id).toBe('2');
-    
+
     await queue.ack('2');
     const second = await queue.dequeue();
     expect(second?.id).toBe('1');
   });
 
   it('handles retries and DLQ integration', async () => {
-    await queue.enqueue({ id: '1', traceId: 't', workflowId: 'w', payload: {}, priority: 1, retryCount: 0, status: 'PENDING', createdAt: new Date() });
-    
+    await queue.enqueue({
+      id: '1',
+      traceId: 't',
+      workflowId: 'w',
+      payload: {},
+      priority: 1,
+      retryCount: 0,
+      status: 'PENDING',
+      createdAt: new Date(),
+    });
+
     await queue.retry('1');
     await queue.retry('1');
     await queue.retry('1');
     await queue.retry('1'); // 4th time triggers DLQ
-    
+
     expect(queue.getDlq()).toHaveLength(1);
     expect(queue.getDlq()[0].id).toBe('1');
 
@@ -251,39 +280,79 @@ describe('WorkerRegistry', () => {
   });
 
   it('registers and listings active workers', () => {
-    const worker = { id: 'w1', hostname: 'host', capabilities: [], maxMemoryMb: 1024, maxCpu: 4, registeredAt: new Date(), lastHeartbeat: new Date() };
+    const worker = {
+      id: 'w1',
+      hostname: 'host',
+      capabilities: [],
+      maxMemoryMb: 1024,
+      maxCpu: 4,
+      registeredAt: new Date(),
+      lastHeartbeat: new Date(),
+    };
     registry.register(worker);
     expect(registry.getWorker('w1')).toBeDefined();
-    
+
     registry.heartbeat('w1');
-    
+
     expect(registry.listWorkers()).toHaveLength(1);
-    
+
     registry.unregister('w1');
     expect(registry.getWorker('w1')).toBeUndefined();
   });
 
   it('throws when registering existing worker or heartbeat of missing worker', () => {
-    const worker = { id: 'w1', hostname: 'host', capabilities: [], maxMemoryMb: 1024, maxCpu: 4, registeredAt: new Date(), lastHeartbeat: new Date() };
+    const worker = {
+      id: 'w1',
+      hostname: 'host',
+      capabilities: [],
+      maxMemoryMb: 1024,
+      maxCpu: 4,
+      registeredAt: new Date(),
+      lastHeartbeat: new Date(),
+    };
     registry.register(worker);
     expect(() => registry.register(worker)).toThrow(WorkerRegistryError);
     expect(() => registry.heartbeat('w2')).toThrow(WorkerRegistryError);
   });
 
   it('lists workers', () => {
-    const worker1 = { id: 'w1', hostname: 'host', capabilities: [], maxMemoryMb: 1024, maxCpu: 4, registeredAt: new Date(), lastHeartbeat: new Date() };
-    const worker2 = { id: 'w2', hostname: 'host', capabilities: [], maxMemoryMb: 1024, maxCpu: 4, registeredAt: new Date(), lastHeartbeat: new Date(Date.now() - 20000) };
-    
+    const worker1 = {
+      id: 'w1',
+      hostname: 'host',
+      capabilities: [],
+      maxMemoryMb: 1024,
+      maxCpu: 4,
+      registeredAt: new Date(),
+      lastHeartbeat: new Date(),
+    };
+    const worker2 = {
+      id: 'w2',
+      hostname: 'host',
+      capabilities: [],
+      maxMemoryMb: 1024,
+      maxCpu: 4,
+      registeredAt: new Date(),
+      lastHeartbeat: new Date(Date.now() - 20000),
+    };
+
     registry.register(worker1);
     registry.register(worker2);
-    
+
     const active = registry.listWorkers();
     expect(active).toHaveLength(1);
     expect(active[0].id).toBe('w1');
   });
 
   it('clears all workers', () => {
-    const worker = { id: 'w1', hostname: 'host', capabilities: [], maxMemoryMb: 1024, maxCpu: 4, registeredAt: new Date(), lastHeartbeat: new Date() };
+    const worker = {
+      id: 'w1',
+      hostname: 'host',
+      capabilities: [],
+      maxMemoryMb: 1024,
+      maxCpu: 4,
+      registeredAt: new Date(),
+      lastHeartbeat: new Date(),
+    };
     registry.register(worker);
     registry.clear();
     expect(registry.listWorkers()).toHaveLength(0);
@@ -298,10 +367,25 @@ describe('ClusterMembership', () => {
   });
 
   it('manages node joins, heartbeats, and leader election', () => {
-    const node1 = { id: 'node-1', address: '127.0.0.1', status: 'ACTIVE' as const, lastHeartbeat: new Date() };
-    const node2 = { id: 'node-2', address: '127.0.0.2', status: 'ACTIVE' as const, lastHeartbeat: new Date() };
-    const node3 = { id: 'node-3', address: '127.0.0.3', status: 'ACTIVE' as const, lastHeartbeat: new Date(Date.now() - 30000) };
-    
+    const node1 = {
+      id: 'node-1',
+      address: '127.0.0.1',
+      status: 'ACTIVE' as const,
+      lastHeartbeat: new Date(),
+    };
+    const node2 = {
+      id: 'node-2',
+      address: '127.0.0.2',
+      status: 'ACTIVE' as const,
+      lastHeartbeat: new Date(),
+    };
+    const node3 = {
+      id: 'node-3',
+      address: '127.0.0.3',
+      status: 'ACTIVE' as const,
+      lastHeartbeat: new Date(Date.now() - 30000),
+    };
+
     cluster.join(node1);
     cluster.join(node2);
     cluster.join(node3);
@@ -310,14 +394,19 @@ describe('ClusterMembership', () => {
     expect(cluster.electLeader()).toBe('node-1');
     expect(cluster.getLeader()).toBe('node-1');
 
-    expect(cluster.listNodes().find(n => n.id === 'node-3')?.status).toBe('DOWN');
+    expect(cluster.listNodes().find((n) => n.id === 'node-3')?.status).toBe('DOWN');
 
     cluster.leave('node-1');
     expect(cluster.getLeader()).toBe('node-2');
   });
 
   it('throws on duplicate node join, missing node heartbeat, or no active nodes leadership', () => {
-    const node1 = { id: 'node-1', address: '127.0.0.1', status: 'ACTIVE' as const, lastHeartbeat: new Date() };
+    const node1 = {
+      id: 'node-1',
+      address: '127.0.0.1',
+      status: 'ACTIVE' as const,
+      lastHeartbeat: new Date(),
+    };
     cluster.join(node1);
     expect(() => cluster.join(node1)).toThrow(ClusterError);
     expect(() => cluster.heartbeat('node-2')).toThrow(ClusterError);
@@ -327,7 +416,12 @@ describe('ClusterMembership', () => {
   });
 
   it('clears cluster state', () => {
-    const node1 = { id: 'node-1', address: '127.0.0.1', status: 'ACTIVE' as const, lastHeartbeat: new Date() };
+    const node1 = {
+      id: 'node-1',
+      address: '127.0.0.1',
+      status: 'ACTIVE' as const,
+      lastHeartbeat: new Date(),
+    };
     cluster.join(node1);
     cluster.clear();
     expect(cluster.getLeader()).toBeNull();
@@ -346,13 +440,25 @@ describe('BackpressureController', () => {
 
     expect(controller.getConfig()).toBeDefined();
 
-    expect(() => controller.checkLimits({ cpu: 90, memory: 50, queueLength: 10, tokens: 1000, cost: 5 })).toThrow(BackpressureError);
-    expect(() => controller.checkLimits({ cpu: 50, memory: 90, queueLength: 10, tokens: 1000, cost: 5 })).toThrow(BackpressureError);
-    expect(() => controller.checkLimits({ cpu: 50, memory: 50, queueLength: 110, tokens: 1000, cost: 5 })).toThrow(BackpressureError);
-    expect(() => controller.checkLimits({ cpu: 50, memory: 50, queueLength: 10, tokens: 600000, cost: 5 })).toThrow(BackpressureError);
-    expect(() => controller.checkLimits({ cpu: 50, memory: 50, queueLength: 10, tokens: 1000, cost: 120 })).toThrow(BackpressureError);
-    
-    expect(() => controller.checkLimits({ cpu: 50, memory: 50, queueLength: 10, tokens: 1000, cost: 5 })).not.toThrow();
+    expect(() =>
+      controller.checkLimits({ cpu: 90, memory: 50, queueLength: 10, tokens: 1000, cost: 5 }),
+    ).toThrow(BackpressureError);
+    expect(() =>
+      controller.checkLimits({ cpu: 50, memory: 90, queueLength: 10, tokens: 1000, cost: 5 }),
+    ).toThrow(BackpressureError);
+    expect(() =>
+      controller.checkLimits({ cpu: 50, memory: 50, queueLength: 110, tokens: 1000, cost: 5 }),
+    ).toThrow(BackpressureError);
+    expect(() =>
+      controller.checkLimits({ cpu: 50, memory: 50, queueLength: 10, tokens: 600000, cost: 5 }),
+    ).toThrow(BackpressureError);
+    expect(() =>
+      controller.checkLimits({ cpu: 50, memory: 50, queueLength: 10, tokens: 1000, cost: 120 }),
+    ).toThrow(BackpressureError);
+
+    expect(() =>
+      controller.checkLimits({ cpu: 50, memory: 50, queueLength: 10, tokens: 1000, cost: 5 }),
+    ).not.toThrow();
   });
 });
 
@@ -370,16 +476,20 @@ describe('CircuitBreaker', () => {
     expect(await cb.execute(opSuccess)).toBe('ok');
 
     // First fail
-    try { await cb.execute(opFail); } catch (e) {}
+    try {
+      await cb.execute(opFail);
+    } catch (e) {}
     // Second fail -> OPEN
-    try { await cb.execute(opFail); } catch (e) {}
+    try {
+      await cb.execute(opFail);
+    } catch (e) {}
 
     expect(cb.getMetrics().state).toBe('OPEN');
     await expect(cb.execute(opSuccess)).rejects.toThrow(CircuitOpenError);
 
     // Wait for recovery timeout
-    await new Promise(resolve => setTimeout(resolve, 60));
-    
+    await new Promise((resolve) => setTimeout(resolve, 60));
+
     // Success transitions from HALF_OPEN back to CLOSED
     expect(await cb.execute(opSuccess)).toBe('ok');
     expect(cb.getMetrics().state).toBe('CLOSED');
@@ -387,8 +497,12 @@ describe('CircuitBreaker', () => {
 
   it('resets circuit breaker state', async () => {
     const opFail = () => Promise.reject(new Error('fail'));
-    try { await cb.execute(opFail); } catch (e) {}
-    try { await cb.execute(opFail); } catch (e) {}
+    try {
+      await cb.execute(opFail);
+    } catch (e) {}
+    try {
+      await cb.execute(opFail);
+    } catch (e) {}
     cb.reset();
     expect(cb.getMetrics().state).toBe('CLOSED');
   });
@@ -427,7 +541,16 @@ describe('GracefulShutdownManager', () => {
 describe('DeadLetterQueue', () => {
   it('receives and lists dead messages', () => {
     const dlq = new DeadLetterQueue();
-    const msg = { id: '1', traceId: 't', workflowId: 'w', payload: {}, priority: 1, retryCount: 0, status: 'FAILED' as const, createdAt: new Date() };
+    const msg = {
+      id: '1',
+      traceId: 't',
+      workflowId: 'w',
+      payload: {},
+      priority: 1,
+      retryCount: 0,
+      status: 'FAILED' as const,
+      createdAt: new Date(),
+    };
     dlq.send(msg);
     expect(dlq.size()).toBe(1);
     expect(dlq.list()).toHaveLength(1);

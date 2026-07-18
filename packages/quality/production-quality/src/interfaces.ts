@@ -21,7 +21,8 @@ export interface ValidationScore {
   overallScore: number;
 }
 
-export type QualityGrade = 'Production Elite' | 'Production Ready' | 'Enterprise Ready' | 'Stable' | 'Beta' | 'Rejected';
+export type QualityGrade =
+  'Production Elite' | 'Production Ready' | 'Enterprise Ready' | 'Stable' | 'Beta' | 'Rejected';
 
 export interface ProductionQualityReport {
   id: string;

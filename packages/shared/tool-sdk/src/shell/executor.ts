@@ -14,7 +14,11 @@ import {
 import { ShellSandbox } from './sandbox.js';
 import { ProcessManager } from './process-manager.js';
 import { createTimeoutController } from './timeout.js';
-import { createResourceLimits, validateOutputSize, validateExecutionTime } from './resource-limits.js';
+import {
+  createResourceLimits,
+  validateOutputSize,
+  validateExecutionTime,
+} from './resource-limits.js';
 import {
   ShellAuditEmitter,
   createToolInvokedEvent,
@@ -52,7 +56,9 @@ export class ShellExecutor {
       wasAllowed = true;
 
       // 2. Classify for approval
-      const category: ToolCategory = request.command.includes('build') ? 'shell.build' : 'shell.exec';
+      const category: ToolCategory = request.command.includes('build')
+        ? 'shell.build'
+        : 'shell.exec';
 
       // 3. Emit tool.invoked event
       this.auditEmitter.emit(
@@ -61,8 +67,8 @@ export class ShellExecutor {
           category,
           request.taskId,
           request.traceId,
-          request.agentRole
-        )
+          request.agentRole,
+        ),
       );
 
       // 4. Create timeout controller
@@ -100,7 +106,7 @@ export class ShellExecutor {
       // 10. Validate output
       validateOutputSize(
         Buffer.byteLength(output.stdout) + Buffer.byteLength(output.stderr),
-        resourceLimits
+        resourceLimits,
       );
       validateExecutionTime(output.durationMs, resourceLimits);
 
@@ -119,8 +125,8 @@ export class ShellExecutor {
           request.taskId,
           request.traceId,
           request.agentRole,
-          timedOut
-        )
+          timedOut,
+        ),
       );
 
       return {
@@ -136,7 +142,9 @@ export class ShellExecutor {
       };
     } catch (error) {
       const durationMs = Date.now() - startTime;
-      const category: ToolCategory = request.command.includes('build') ? 'shell.build' : 'shell.exec';
+      const category: ToolCategory = request.command.includes('build')
+        ? 'shell.build'
+        : 'shell.exec';
 
       // Emit tool.failed event
       this.auditEmitter.emit(
@@ -146,8 +154,8 @@ export class ShellExecutor {
           request.taskId,
           request.traceId,
           request.agentRole,
-          error instanceof Error ? error.message : String(error)
-        )
+          error instanceof Error ? error.message : String(error),
+        ),
       );
 
       return {

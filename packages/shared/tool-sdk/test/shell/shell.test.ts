@@ -49,9 +49,58 @@ import {
 // ============================================================
 
 const DEFAULT_SHELL_CONFIG: ShellSandboxConfig = {
-  allowedPrograms: ['npm', 'pnpm', 'node', 'git', 'cargo', 'rustc', 'go', 'python', 'python3', 'uv', 'pytest', 'docker', 'docker-compose', 'turbo', 'nx', 'biome', 'eslint', 'prettier'],
-  blockedPrograms: ['rm', 'mkfs', 'shutdown', 'reboot', 'systemctl', 'sudo', 'passwd', 'useradd', 'chmod', 'chown', 'iptables', 'mount', 'umount', 'dd', 'killall', 'kill', 'curl', 'wget', 'scp', 'ssh'],
-  dangerousFlags: ['--force', '-f', '--no-preserve-root', '--recursive', '-r', '--system', '--global', '--unsafe-perm'],
+  allowedPrograms: [
+    'npm',
+    'pnpm',
+    'node',
+    'git',
+    'cargo',
+    'rustc',
+    'go',
+    'python',
+    'python3',
+    'uv',
+    'pytest',
+    'docker',
+    'docker-compose',
+    'turbo',
+    'nx',
+    'biome',
+    'eslint',
+    'prettier',
+  ],
+  blockedPrograms: [
+    'rm',
+    'mkfs',
+    'shutdown',
+    'reboot',
+    'systemctl',
+    'sudo',
+    'passwd',
+    'useradd',
+    'chmod',
+    'chown',
+    'iptables',
+    'mount',
+    'umount',
+    'dd',
+    'killall',
+    'kill',
+    'curl',
+    'wget',
+    'scp',
+    'ssh',
+  ],
+  dangerousFlags: [
+    '--force',
+    '-f',
+    '--no-preserve-root',
+    '--recursive',
+    '-r',
+    '--system',
+    '--global',
+    '--unsafe-perm',
+  ],
   defaultTimeoutMs: 60000,
   defaultMaxOutputBytes: 10 * 1024 * 1024,
   defaultWorkingDirectory: '/root/agentx/workspace',
@@ -62,8 +111,16 @@ const DEFAULT_CONTEXT: ShellExecutionContext = {
   workspaceRoot: '/root/agentx/workspace',
   sandboxConfig: DEFAULT_SHELL_CONFIG,
   timeoutConfig: { timeoutMs: 5000, killOnTimeout: true, gracePeriodMs: 1000 },
-  resourceLimits: { maxCpuTimeMs: 30000, maxMemoryBytes: 512 * 1024 * 1024, maxOutputBytes: 1024, maxExecutionTimeMs: 5000 },
-  environmentScrubber: { scrubPatterns: ['AGENTX_SECRET_', 'TOKEN', 'PASSWORD', 'SECRET', 'KEY', 'CREDENTIAL'], additionalKeys: ['OPENAI_API_KEY', 'GOOGLE_API_KEY', 'ANTHROPIC_API_KEY', 'GITHUB_TOKEN'] },
+  resourceLimits: {
+    maxCpuTimeMs: 30000,
+    maxMemoryBytes: 512 * 1024 * 1024,
+    maxOutputBytes: 1024,
+    maxExecutionTimeMs: 5000,
+  },
+  environmentScrubber: {
+    scrubPatterns: ['AGENTX_SECRET_', 'TOKEN', 'PASSWORD', 'SECRET', 'KEY', 'CREDENTIAL'],
+    additionalKeys: ['OPENAI_API_KEY', 'GOOGLE_API_KEY', 'ANTHROPIC_API_KEY', 'GITHUB_TOKEN'],
+  },
 };
 
 // ============================================================
@@ -316,42 +373,42 @@ describe('Command Validator', () => {
     const parsed = parseCommand('rm -rf /');
     const result = validateCommand(parsed, DEFAULT_SHELL_CONFIG);
     expect(result.valid).toBe(false);
-    expect(result.reasons.some(r => r.includes('blocked'))).toBe(true);
+    expect(result.reasons.some((r) => r.includes('blocked'))).toBe(true);
   });
 
   it('rejects unknown commands', () => {
     const parsed = parseCommand('unknown-cmd arg1');
     const result = validateCommand(parsed, DEFAULT_SHELL_CONFIG);
     expect(result.valid).toBe(false);
-    expect(result.reasons.some(r => r.includes('not in the allowlist'))).toBe(true);
+    expect(result.reasons.some((r) => r.includes('not in the allowlist'))).toBe(true);
   });
 
   it('rejects dangerous flags', () => {
     const parsed = parseCommand('npm install --force');
     const result = validateCommand(parsed, DEFAULT_SHELL_CONFIG);
     expect(result.valid).toBe(false);
-    expect(result.reasons.some(r => r.includes('--force'))).toBe(true);
+    expect(result.reasons.some((r) => r.includes('--force'))).toBe(true);
   });
 
   it('rejects pipe operators', () => {
     const parsed = parseCommand('npm test | grep pass');
     const result = validateCommand(parsed, DEFAULT_SHELL_CONFIG);
     expect(result.valid).toBe(false);
-    expect(result.reasons.some(r => r.includes('Pipe'))).toBe(true);
+    expect(result.reasons.some((r) => r.includes('Pipe'))).toBe(true);
   });
 
   it('rejects injection patterns', () => {
     const parsed = parseCommand('npm test; rm -rf /');
     const result = validateCommand(parsed, DEFAULT_SHELL_CONFIG);
     expect(result.valid).toBe(false);
-    expect(result.reasons.some(r => r.includes('Injection'))).toBe(true);
+    expect(result.reasons.some((r) => r.includes('Injection'))).toBe(true);
   });
 
   it('rejects sudo command', () => {
     const parsed = parseCommand('sudo npm install');
     const result = validateCommand(parsed, DEFAULT_SHELL_CONFIG);
     expect(result.valid).toBe(false);
-    expect(result.reasons.some(r => r.includes('blocked'))).toBe(true);
+    expect(result.reasons.some((r) => r.includes('blocked'))).toBe(true);
   });
 
   it('validates pnpm command', () => {
@@ -551,7 +608,17 @@ describe('Audit Events', () => {
   });
 
   it('creates and stores tool.finished event', () => {
-    const event = createToolFinishedEvent('npm test', 'shell.build', 0, 1000, 100, 0, 'task-1', 'trace-1', 'coding');
+    const event = createToolFinishedEvent(
+      'npm test',
+      'shell.build',
+      0,
+      1000,
+      100,
+      0,
+      'task-1',
+      'trace-1',
+      'coding',
+    );
     emitter.emit(event);
     expect(emitter.getEvents()).toHaveLength(1);
     expect(emitter.getEvents()[0].eventType).toBe('tool.finished');
@@ -559,7 +626,14 @@ describe('Audit Events', () => {
   });
 
   it('creates and stores tool.failed event', () => {
-    const event = createToolFailedEvent('npm test', 'shell.build', 'task-1', 'trace-1', 'coding', 'test failed');
+    const event = createToolFailedEvent(
+      'npm test',
+      'shell.build',
+      'task-1',
+      'trace-1',
+      'coding',
+      'test failed',
+    );
     emitter.emit(event);
     expect(emitter.getEvents()).toHaveLength(1);
     expect(emitter.getEvents()[0].eventType).toBe('tool.failed');
@@ -567,7 +641,19 @@ describe('Audit Events', () => {
 
   it('filters events by type', () => {
     emitter.emit(createToolInvokedEvent('npm test', 'shell.build', 'task-1', 'trace-1', 'coding'));
-    emitter.emit(createToolFinishedEvent('npm test', 'shell.build', 0, 1000, 100, 0, 'task-1', 'trace-1', 'coding'));
+    emitter.emit(
+      createToolFinishedEvent(
+        'npm test',
+        'shell.build',
+        0,
+        1000,
+        100,
+        0,
+        'task-1',
+        'trace-1',
+        'coding',
+      ),
+    );
     emitter.emit(createToolInvokedEvent('pnpm test', 'shell.build', 'task-2', 'trace-2', 'coding'));
 
     const invokedEvents = emitter.getEventsByType('tool.invoked');
@@ -688,7 +774,7 @@ describe('Shell Executor', () => {
     expect(result.allowed).toBe(true);
 
     const events = executor.getAuditEmitter().getEvents();
-    expect(events.some(e => e.eventType === 'tool.invoked')).toBe(true);
+    expect(events.some((e) => e.eventType === 'tool.invoked')).toBe(true);
   });
 
   it('rejects blocked commands and emits failure event', async () => {
@@ -704,7 +790,7 @@ describe('Shell Executor', () => {
     expect(result.exitCode).toBe(1);
 
     const events = executor.getAuditEmitter().getEvents();
-    expect(events.some(e => e.eventType === 'tool.failed')).toBe(true);
+    expect(events.some((e) => e.eventType === 'tool.failed')).toBe(true);
   });
 
   it('returns audit emitter', () => {

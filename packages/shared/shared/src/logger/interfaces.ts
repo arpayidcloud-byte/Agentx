@@ -28,9 +28,19 @@ export interface ILogger {
   debug(message: string, metadata?: Record<string, unknown>, context?: LogContext): void;
   info(message: string, metadata?: Record<string, unknown>, context?: LogContext): void;
   warn(message: string, metadata?: Record<string, unknown>, context?: LogContext): void;
-  error(message: string, error?: Error, metadata?: Record<string, unknown>, context?: LogContext): void;
-  fatal(message: string, error?: Error, metadata?: Record<string, unknown>, context?: LogContext): void;
-  
+  error(
+    message: string,
+    error?: Error,
+    metadata?: Record<string, unknown>,
+    context?: LogContext,
+  ): void;
+  fatal(
+    message: string,
+    error?: Error,
+    metadata?: Record<string, unknown>,
+    context?: LogContext,
+  ): void;
+
   withContext(context: LogContext): ILogger;
   withModule(moduleName: string): ILogger;
 }

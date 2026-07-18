@@ -6,7 +6,7 @@ export interface IRetryPolicy {
   readonly initialDelayMs: number;
   readonly backoffMultiplier: number;
   readonly maxDelayMs?: number;
-  
+
   calculateDelay(attempt: number): number;
   isRetryable(error: Error): boolean;
 }

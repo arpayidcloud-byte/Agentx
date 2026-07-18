@@ -4,7 +4,10 @@
  */
 
 export class OutcomeEvaluator {
-  evaluate(expected: string, actual: string): { successScore: number; qualityScore: number; confidenceDelta: number } {
+  evaluate(
+    expected: string,
+    actual: string,
+  ): { successScore: number; qualityScore: number; confidenceDelta: number } {
     const match = expected === actual;
     return {
       successScore: match ? 100 : 0,

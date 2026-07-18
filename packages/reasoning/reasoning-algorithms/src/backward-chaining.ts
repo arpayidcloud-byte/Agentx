@@ -9,7 +9,7 @@ export class BackwardChaining {
   execute(goal: string, facts: Set<string>, rules: Rule[]): boolean {
     if (facts.has(goal)) return true;
 
-    const supportingRules = rules.filter(r => r.consequent === goal);
+    const supportingRules = rules.filter((r) => r.consequent === goal);
 
     for (const rule of supportingRules) {
       let allAntecedentsMet = true;

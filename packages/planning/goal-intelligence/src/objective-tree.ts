@@ -19,7 +19,7 @@ export class ObjectiveTree {
   getChildren(id: string): ObjectiveNode[] {
     const node = this.nodes.get(id);
     if (!node) return [];
-    return node.children.map(cid => this.nodes.get(cid)).filter((n): n is ObjectiveNode => !!n);
+    return node.children.map((cid) => this.nodes.get(cid)).filter((n): n is ObjectiveNode => !!n);
   }
 
   getAll(): ObjectiveNode[] {

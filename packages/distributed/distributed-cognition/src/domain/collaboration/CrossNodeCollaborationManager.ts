@@ -7,8 +7,10 @@ export class CrossNodeCollaborationManager {
 
   initiate(initiatorNode: string, goalId: string, participants: string[]): CrossNodeSession {
     const sessionId = `cn-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const allParticipants = [initiatorNode, ...participants.filter(p => p !== initiatorNode)];
-    const checksum = createHash('sha256').update(JSON.stringify({ sessionId, initiatorNode, goalId, participants: allParticipants })).digest('hex');
+    const allParticipants = [initiatorNode, ...participants.filter((p) => p !== initiatorNode)];
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ sessionId, initiatorNode, goalId, participants: allParticipants }))
+      .digest('hex');
     const session: CrossNodeSession = Object.freeze({
       sessionId,
       initiatorNode,
@@ -35,8 +37,8 @@ export class CrossNodeCollaborationManager {
   }
 
   getMessages(fromNode?: string, toNode?: string): CollaborationMessage[] {
-    return this.messages.filter(m =>
-      (!fromNode || m.fromNode === fromNode) && (!toNode || m.toNode === toNode)
+    return this.messages.filter(
+      (m) => (!fromNode || m.fromNode === fromNode) && (!toNode || m.toNode === toNode),
     );
   }
 
@@ -45,6 +47,6 @@ export class CrossNodeCollaborationManager {
   }
 
   getSessionsByNode(nodeId: string): CrossNodeSession[] {
-    return Array.from(this.sessions.values()).filter(s => s.participants.includes(nodeId));
+    return Array.from(this.sessions.values()).filter((s) => s.participants.includes(nodeId));
   }
 }

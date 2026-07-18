@@ -29,7 +29,16 @@ export class GoalStatisticsCollector {
   public totalRisks: number[] = [];
   public totalPlanningTimes: number[] = [];
 
-  recordGoalCompletion(completed: boolean, subgoalSize: number, planningDepth: number, branchFactor: number, dependencyCount: number, cost: number, risk: number, planningTime: number): void {
+  recordGoalCompletion(
+    completed: boolean,
+    subgoalSize: number,
+    planningDepth: number,
+    branchFactor: number,
+    dependencyCount: number,
+    cost: number,
+    risk: number,
+    planningTime: number,
+  ): void {
     this.totalGoals++;
     if (completed) this.completedGoals++;
     else this.failedGoals++;
@@ -47,7 +56,8 @@ export class GoalStatisticsCollector {
   }
 
   getStatistics(): GoalStatistics {
-    const avg = (arr: number[]) => arr.length > 0 ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
+    const avg = (arr: number[]) =>
+      arr.length > 0 ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
     return {
       averageGoalSize: avg(this.totalSubgoalSizes),
       averagePlanningDepth: avg(this.totalPlanningDepths),

@@ -41,7 +41,7 @@ function runSchemaLint(): boolean {
   // Check Volume mapping: volumes 1 to 16 should have schemas
   for (let i = 1; i <= 16; i++) {
     const volNum = String(i).padStart(2, '0');
-    const matching = schemas.filter(s => {
+    const matching = schemas.filter((s) => {
       const base = path.basename(s);
       return base.startsWith(`volume-${volNum}`);
     });
@@ -61,7 +61,7 @@ function runXrefLint(): boolean {
   console.log('\n--- Running Cross-Reference Lint ---');
   const hasError = false;
   const docs = globSync(path.join(HANDBOOK_DIR, '**/*.md'));
-  
+
   const docIds = new Set<string>();
   const references = new Map<string, string[]>();
 
@@ -97,7 +97,7 @@ function runXrefLint(): boolean {
     }
 
     const content = fs.readFileSync(docPath, 'utf8');
-    
+
     const volRegex = /Volume-(\d{2})/g;
     const rfcRegex = /RFC-(\d{4})/g;
     const adrRegex = /ADR-(\d{4})/g;
@@ -115,13 +115,15 @@ function runXrefLint(): boolean {
       if (match[1]) refs.push(`ADR-${match[1]}`);
     }
 
-    const filteredRefs = refs.filter(r => r !== docId);
+    const filteredRefs = refs.filter((r) => r !== docId);
     references.set(docId, filteredRefs);
 
     // Validate references exist
     for (const ref of filteredRefs) {
       const refBase = ref;
-      const refExists = Array.from(docIds).some(id => id.startsWith(refBase) || refBase.startsWith(id));
+      const refExists = Array.from(docIds).some(
+        (id) => id.startsWith(refBase) || refBase.startsWith(id),
+      );
       if (!refExists) {
         logWarning(`Broken reference in ${docId}: Reference to ${ref} cannot be resolved.`);
       }
@@ -131,13 +133,13 @@ function runXrefLint(): boolean {
   // Find Orphan documents
   const referencedTargets = new Set<string>();
   for (const refs of references.values()) {
-    refs.forEach(r => referencedTargets.add(r));
+    refs.forEach((r) => referencedTargets.add(r));
   }
 
   for (const docId of docIds) {
     if (
-      docId.toLowerCase().includes('readme') || 
-      docId.toLowerCase().includes('template') || 
+      docId.toLowerCase().includes('readme') ||
+      docId.toLowerCase().includes('template') ||
       docId.toLowerCase().includes('review') ||
       docId.toLowerCase().includes('backlog') ||
       docId.toLowerCase().includes('assessment') ||
@@ -153,7 +155,9 @@ function runXrefLint(): boolean {
       continue;
     }
 
-    const hasIncoming = Array.from(referencedTargets).some(t => t.startsWith(docId) || docId.startsWith(t));
+    const hasIncoming = Array.from(referencedTargets).some(
+      (t) => t.startsWith(docId) || docId.startsWith(t),
+    );
     if (!hasIncoming && docId !== 'Volume-01') {
       logWarning(`Orphan document detected: ${docId} has no incoming references.`);
     }
@@ -185,7 +189,9 @@ function runTemplateLint(): boolean {
     const lines = content.split('\n');
 
     if (lines.length < 80) {
-      logError(`${base} fails line count check: got ${lines.length} lines, expected minimum 80 (RFC-0031).`);
+      logError(
+        `${base} fails line count check: got ${lines.length} lines, expected minimum 80 (RFC-0031).`,
+      );
       hasError = true;
     }
 
@@ -193,18 +199,20 @@ function runTemplateLint(): boolean {
       /problem\s+statement|context/i,
       /proposed\s+solution|proposed\s+decision/i,
       /alternatives\s+considered/i,
-      /consequences/i
+      /consequences/i,
     ];
 
     for (const pattern of requiredSections) {
-      const match = lines.some(line => line.startsWith('#') && pattern.test(line));
+      const match = lines.some((line) => line.startsWith('#') && pattern.test(line));
       if (!match) {
         logError(`${base} is missing required section matching pattern: ${pattern.source}`);
         hasError = true;
       }
     }
 
-    const altIndex = lines.findIndex(line => line.startsWith('#') && /alternatives\s+considered/i.test(line));
+    const altIndex = lines.findIndex(
+      (line) => line.startsWith('#') && /alternatives\s+considered/i.test(line),
+    );
     if (altIndex !== -1) {
       let altCount = 0;
       for (let i = altIndex + 1; i < lines.length; i++) {
@@ -213,7 +221,9 @@ function runTemplateLint(): boolean {
         if (line && line.startsWith('## ')) altCount++;
       }
       if (altCount < 2) {
-        logError(`${base} has fewer than 2 alternatives under Alternatives Considered: got ${altCount}, expected minimum 2 (RFC-0031).`);
+        logError(
+          `${base} has fewer than 2 alternatives under Alternatives Considered: got ${altCount}, expected minimum 2 (RFC-0031).`,
+        );
         hasError = true;
       }
     }
@@ -232,7 +242,9 @@ function runTemplateLint(): boolean {
     const lines = content.split('\n');
 
     if (lines.length < 20) {
-      logError(`${base} fails line count check: got ${lines.length} lines, expected minimum 20 (RFC-0031).`);
+      logError(
+        `${base} fails line count check: got ${lines.length} lines, expected minimum 20 (RFC-0031).`,
+      );
       hasError = true;
     }
 
@@ -240,11 +252,11 @@ function runTemplateLint(): boolean {
       /context/i,
       /decision|proposed\s+decision/i,
       /alternatives\s+considered/i,
-      /consequences/i
+      /consequences/i,
     ];
 
     for (const pattern of requiredSections) {
-      const match = lines.some(line => line.startsWith('#') && pattern.test(line));
+      const match = lines.some((line) => line.startsWith('#') && pattern.test(line));
       if (!match) {
         logError(`${base} is missing required section matching pattern: ${pattern.source}`);
         hasError = true;
@@ -258,9 +270,11 @@ function runTemplateLint(): boolean {
     const content = fs.readFileSync(volPath, 'utf8');
     const lines = content.split('\n');
 
-    const hasObs = lines.some(line => line.startsWith('#') && /observability/i.test(line));
+    const hasObs = lines.some((line) => line.startsWith('#') && /observability/i.test(line));
     if (!hasObs) {
-      logError(`${base} is missing required Observability / Observability Requirements section (RFC-0033).`);
+      logError(
+        `${base} is missing required Observability / Observability Requirements section (RFC-0033).`,
+      );
       hasError = true;
     }
   }

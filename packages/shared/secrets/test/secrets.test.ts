@@ -219,11 +219,15 @@ describe('CachedCredentialResolver', () => {
     const resolver = new CachedCredentialResolver(fakeStore);
 
     // Initial fail
-    await expect(resolver.resolve('provider.google.api_key')).rejects.toThrow(CredentialResolutionError);
+    await expect(resolver.resolve('provider.google.api_key')).rejects.toThrow(
+      CredentialResolutionError,
+    );
     expect(spyGet).toHaveBeenCalledTimes(1);
 
     // Second call triggers negative cache hit, no store call
-    await expect(resolver.resolve('provider.google.api_key')).rejects.toThrow(CredentialResolutionError);
+    await expect(resolver.resolve('provider.google.api_key')).rejects.toThrow(
+      CredentialResolutionError,
+    );
     expect(spyGet).toHaveBeenCalledTimes(1); // remains 1
   });
 

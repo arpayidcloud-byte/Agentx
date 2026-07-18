@@ -14,7 +14,7 @@ export class WorkflowBuilder {
     for (let i = 0; i < subgoalCount; i++) {
       nodes.push({
         id: `node-${i}`,
-        type: i === 0 ? 'sequential' : (i % 2 === 0 ? 'parallel' : 'sequential'),
+        type: i === 0 ? 'sequential' : i % 2 === 0 ? 'parallel' : 'sequential',
         taskId: `task-${goalId}-${i}`,
         metadata: { index: i, goalId },
       });

@@ -3,7 +3,17 @@
  * @description Types for Goal Decomposition & Autonomous Decision Intelligence.
  */
 
-export type GoalState = 'CREATED' | 'VALIDATING' | 'DECOMPOSING' | 'GRAPH_BUILDING' | 'PLANNING' | 'DECISION' | 'VALIDATION' | 'CHECKPOINTING' | 'READY' | 'COMPLETED';
+export type GoalState =
+  | 'CREATED'
+  | 'VALIDATING'
+  | 'DECOMPOSING'
+  | 'GRAPH_BUILDING'
+  | 'PLANNING'
+  | 'DECISION'
+  | 'VALIDATION'
+  | 'CHECKPOINTING'
+  | 'READY'
+  | 'COMPLETED';
 
 export interface Goal {
   id: string;

@@ -1,11 +1,11 @@
 import { createHash } from 'crypto';
-import { 
-  IContextEngine, 
-  ContextScope, 
+import {
+  IContextEngine,
+  ContextScope,
   ContextSnapshot,
   ITokenEstimator,
   IContextCompressor,
-  ContextMetrics
+  ContextMetrics,
 } from './interfaces.js';
 import { IEventBus } from '@agentx/core-runtime';
 
@@ -15,20 +15,23 @@ export class ContextEngine implements IContextEngine {
     totalContexts: 0,
     averageTokens: 0,
     compressionRatio: 1.0,
-    mergeCount: 0
+    mergeCount: 0,
   };
 
   constructor(
     private eventBus: IEventBus,
     private estimator: ITokenEstimator,
-    private compressor: IContextCompressor
+    private compressor: IContextCompressor,
   ) {}
 
   private computeChecksum(data: unknown): string {
     return createHash('sha256').update(JSON.stringify(data)).digest('hex');
   }
 
-  public async createContext(scope: ContextScope, initialData: Record<string, unknown> = {}): Promise<ContextSnapshot> {
+  public async createContext(
+    scope: ContextScope,
+    initialData: Record<string, unknown> = {},
+  ): Promise<ContextSnapshot> {
     const id = `ctx_${Math.random().toString(36).substring(2, 9)}`;
     const snapshot: ContextSnapshot = {
       id,
@@ -38,17 +41,20 @@ export class ContextEngine implements IContextEngine {
       checksum: this.computeChecksum(initialData),
       tokenEstimate: this.estimator.estimate(initialData),
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     this.contexts.set(id, snapshot);
     this.updateMetrics();
-    
+
     await this.eventBus.publish('context.created', snapshot, `trace_${id}`);
     return snapshot;
   }
 
-  public async updateContext(contextId: string, updates: Record<string, unknown>): Promise<ContextSnapshot> {
+  public async updateContext(
+    contextId: string,
+    updates: Record<string, unknown>,
+  ): Promise<ContextSnapshot> {
     const existing = this.contexts.get(contextId);
     if (!existing) throw new Error(`Context ${contextId} not found`);
 
@@ -59,7 +65,7 @@ export class ContextEngine implements IContextEngine {
       data: newData,
       checksum: this.computeChecksum(newData),
       tokenEstimate: this.estimator.estimate(newData),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     this.contexts.set(contextId, snapshot);
@@ -73,7 +79,10 @@ export class ContextEngine implements IContextEngine {
     return this.contexts.get(contextId);
   }
 
-  public async mergeContexts(sourceIds: string[], targetScope: ContextScope): Promise<ContextSnapshot> {
+  public async mergeContexts(
+    sourceIds: string[],
+    targetScope: ContextScope,
+  ): Promise<ContextSnapshot> {
     const mergedData: Record<string, unknown> = {};
     for (const id of sourceIds) {
       const ctx = this.contexts.get(id);
@@ -94,7 +103,7 @@ export class ContextEngine implements IContextEngine {
 
     const ratio = targetTokens / existing.tokenEstimate;
     const compressedData = this.compressor.compress(existing.data, ratio);
-    
+
     return this.updateContext(contextId, compressedData);
   }
 

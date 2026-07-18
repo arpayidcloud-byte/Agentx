@@ -6,18 +6,65 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import {
   InvariantViolationError,
-  SDKRegistry, SDKGenerator, APISpecManager, OpenAPIGenerator, ClientGenerator, CLIEngine,
-  SDKEntry, GeneratedCode, APISpec, OpenAPIDocument, ClientCode, CLICommand,
-  DeveloperProjectManager, PackageRegistry, ArtifactRegistry, VersionRegistry, ReleaseManager, DocumentationEngine, ExampleRepositoryManager,
-  PackageEntry, ArtifactEntry, VersionEntry, ReleaseEntry, DocPage, ExampleEntry,
-  DeveloperPlatformCoordinator, SDKCoordinator, APICoordinator, DocumentationCoordinator,
-  ReleaseCoordinator, MarketplaceCoordinator, ControlPlaneCoordinator, RemoteManagementCoordinator,
-  DeveloperPortal, APIExplorer, InteractivePlayground, TemplateLibrary,
-  DashboardBuilder, ReportGenerator, RuntimeAnalytics, UsageAnalytics, PerformanceAnalytics,
-  RemoteRuntimeManager, RemoteConfiguration, RemoteDeployment, RemoteUpgrade, RemoteDiagnostics,
-  TypeScriptSDK, GoSDK, PythonSDK, RustSDK, CLISDK,
-  PluginMarketplace, ExtensionMarketplace, PackageMarketplace, ArtifactRepository,
-  DashboardManager, ReportTemplateManager, MetricSummarizer,
+  SDKRegistry,
+  SDKGenerator,
+  APISpecManager,
+  OpenAPIGenerator,
+  ClientGenerator,
+  CLIEngine,
+  SDKEntry,
+  GeneratedCode,
+  APISpec,
+  OpenAPIDocument,
+  ClientCode,
+  CLICommand,
+  DeveloperProjectManager,
+  PackageRegistry,
+  ArtifactRegistry,
+  VersionRegistry,
+  ReleaseManager,
+  DocumentationEngine,
+  ExampleRepositoryManager,
+  PackageEntry,
+  ArtifactEntry,
+  VersionEntry,
+  ReleaseEntry,
+  DocPage,
+  ExampleEntry,
+  DeveloperPlatformCoordinator,
+  SDKCoordinator,
+  APICoordinator,
+  DocumentationCoordinator,
+  ReleaseCoordinator,
+  MarketplaceCoordinator,
+  ControlPlaneCoordinator,
+  RemoteManagementCoordinator,
+  DeveloperPortal,
+  APIExplorer,
+  InteractivePlayground,
+  TemplateLibrary,
+  DashboardBuilder,
+  ReportGenerator,
+  RuntimeAnalytics,
+  UsageAnalytics,
+  PerformanceAnalytics,
+  RemoteRuntimeManager,
+  RemoteConfiguration,
+  RemoteDeployment,
+  RemoteUpgrade,
+  RemoteDiagnostics,
+  TypeScriptSDK,
+  GoSDK,
+  PythonSDK,
+  RustSDK,
+  CLISDK,
+  PluginMarketplace,
+  ExtensionMarketplace,
+  PackageMarketplace,
+  ArtifactRepository,
+  DashboardManager,
+  ReportTemplateManager,
+  MetricSummarizer,
 } from '../src/index.js';
 
 // ============================================================================
@@ -38,7 +85,9 @@ describe('InvariantViolationError', () => {
 // ============================================================================
 describe('SDKRegistry', () => {
   let reg: SDKRegistry;
-  beforeEach(() => { reg = new SDKRegistry(); });
+  beforeEach(() => {
+    reg = new SDKRegistry();
+  });
 
   it('registers SDKs', () => {
     const sdk = reg.register('agentx-ts', 'typescript', '1.0.0');
@@ -86,10 +135,14 @@ describe('SDKGenerator', () => {
 // ============================================================================
 describe('APISpecManager', () => {
   let mgr: APISpecManager;
-  beforeEach(() => { mgr = new APISpecManager(); });
+  beforeEach(() => {
+    mgr = new APISpecManager();
+  });
 
   it('creates and retrieves specs', () => {
-    const spec = mgr.create('AgentX API', '1.0.0', [{ path: '/api/v1', method: 'GET', description: 'test' }]);
+    const spec = mgr.create('AgentX API', '1.0.0', [
+      { path: '/api/v1', method: 'GET', description: 'test' },
+    ]);
     expect(spec.title).toBe('AgentX API');
     expect(mgr.get(spec.specId)).toBeDefined();
     expect(mgr.get('missing')).toBeUndefined();
@@ -103,7 +156,13 @@ describe('APISpecManager', () => {
 describe('OpenAPIGenerator', () => {
   it('generates JSON', () => {
     const gen = new OpenAPIGenerator();
-    const spec: APISpec = { specId: 's1', title: 'Test', version: '1.0', endpoints: [], checksum: 'c' };
+    const spec: APISpec = {
+      specId: 's1',
+      title: 'Test',
+      version: '1.0',
+      endpoints: [],
+      checksum: 'c',
+    };
     const doc = gen.generate(spec, 'JSON');
     expect(doc.format).toBe('JSON');
     expect(doc.content).toContain('openapi');
@@ -111,7 +170,13 @@ describe('OpenAPIGenerator', () => {
 
   it('generates YAML', () => {
     const gen = new OpenAPIGenerator();
-    const spec: APISpec = { specId: 's1', title: 'Test', version: '1.0', endpoints: [], checksum: 'c' };
+    const spec: APISpec = {
+      specId: 's1',
+      title: 'Test',
+      version: '1.0',
+      endpoints: [],
+      checksum: 'c',
+    };
     const doc = gen.generate(spec, 'YAML');
     expect(doc.format).toBe('YAML');
   });
@@ -134,7 +199,9 @@ describe('ClientGenerator', () => {
 // ============================================================================
 describe('CLIEngine', () => {
   let engine: CLIEngine;
-  beforeEach(() => { engine = new CLIEngine(); });
+  beforeEach(() => {
+    engine = new CLIEngine();
+  });
 
   it('registers and executes commands', () => {
     const cmd = engine.register('deploy', 'Deploy app', 'deploy-handler');
@@ -158,7 +225,9 @@ describe('CLIEngine', () => {
 // ============================================================================
 describe('DeveloperProjectManager', () => {
   let mgr: DeveloperProjectManager;
-  beforeEach(() => { mgr = new DeveloperProjectManager(); });
+  beforeEach(() => {
+    mgr = new DeveloperProjectManager();
+  });
 
   it('creates and retrieves projects', () => {
     const proj = mgr.create('My App', 'acc-1');
@@ -189,7 +258,9 @@ describe('DeveloperProjectManager', () => {
 // ============================================================================
 describe('PackageRegistry', () => {
   let reg: PackageRegistry;
-  beforeEach(() => { reg = new PackageRegistry(); });
+  beforeEach(() => {
+    reg = new PackageRegistry();
+  });
 
   it('publishes packages', () => {
     const pkg = reg.publish('agentx-sdk', '1.0.0', 'SDK');
@@ -249,7 +320,9 @@ describe('VersionRegistry', () => {
 // ============================================================================
 describe('ReleaseManager', () => {
   let mgr: ReleaseManager;
-  beforeEach(() => { mgr = new ReleaseManager(); });
+  beforeEach(() => {
+    mgr = new ReleaseManager();
+  });
 
   it('publishes releases', () => {
     const rel = mgr.publish('pkg-1', '1.0.0');
@@ -278,7 +351,9 @@ describe('ReleaseManager', () => {
 // ============================================================================
 describe('DocumentationEngine', () => {
   let eng: DocumentationEngine;
-  beforeEach(() => { eng = new DocumentationEngine(); });
+  beforeEach(() => {
+    eng = new DocumentationEngine();
+  });
 
   it('creates and retrieves pages', () => {
     const page = eng.create('Getting Started', 'content', 'guide');
@@ -304,7 +379,9 @@ describe('DocumentationEngine', () => {
 // ============================================================================
 describe('ExampleRepositoryManager', () => {
   let mgr: ExampleRepositoryManager;
-  beforeEach(() => { mgr = new ExampleRepositoryManager(); });
+  beforeEach(() => {
+    mgr = new ExampleRepositoryManager();
+  });
 
   it('adds and retrieves examples', () => {
     const ex = mgr.add('Hello World', 'typescript', 'console.log("hello")');
@@ -365,12 +442,20 @@ describe('APICoordinator', () => {
   });
 
   it('throws on generate docs for missing spec', () => {
-    const coord = new APICoordinator(new APISpecManager(), new OpenAPIGenerator(), new ClientGenerator());
+    const coord = new APICoordinator(
+      new APISpecManager(),
+      new OpenAPIGenerator(),
+      new ClientGenerator(),
+    );
     expect(() => coord.generateDocs('missing')).toThrow('Spec not found');
   });
 
   it('generates client', () => {
-    const coord = new APICoordinator(new APISpecManager(), new OpenAPIGenerator(), new ClientGenerator());
+    const coord = new APICoordinator(
+      new APISpecManager(),
+      new OpenAPIGenerator(),
+      new ClientGenerator(),
+    );
     const specId = coord.createAPI('API', '1.0');
     const client = coord.generateClient('typescript', specId);
     expect(client).toContain('typescript');
@@ -526,7 +611,7 @@ describe('UsageAnalytics', () => {
     usage.record('deploy');
     expect(usage.getCount('api-call')).toBe(2);
     expect(usage.getCount('unknown')).toBe(0);
-    expect(usage.getAll()).toEqual({ 'api-call': 2, 'deploy': 1 });
+    expect(usage.getAll()).toEqual({ 'api-call': 2, deploy: 1 });
   });
 });
 

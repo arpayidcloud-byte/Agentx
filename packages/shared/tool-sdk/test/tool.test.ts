@@ -45,7 +45,7 @@ describe('ToolClassifier', () => {
     expect(ToolClassifier.getRiskScore('fs.write')).toBe(90);
     expect(ToolClassifier.getRiskScore('shell.build')).toBe(50);
     expect(ToolClassifier.getRiskScore('fs.read')).toBe(10);
-    
+
     // Test default classification score via mock
     vi.spyOn(ToolClassifier, 'classifyCategory').mockReturnValueOnce('Unknown' as any);
     expect(ToolClassifier.getRiskScore('unknown')).toBe(100);
@@ -89,7 +89,10 @@ describe('Permissions', () => {
     expect(evaluator.isAllowed('review', 'fs.write')).toBe(false);
     expect(evaluator.isAllowed('unknown', 'fs.read')).toBe(false);
 
-    resolver.addPolicy('testAgent', { allowedCategories: ['fs.read'], blockedCategories: ['fs.read'] });
+    resolver.addPolicy('testAgent', {
+      allowedCategories: ['fs.read'],
+      blockedCategories: ['fs.read'],
+    });
     expect(evaluator.isAllowed('testAgent', 'fs.read')).toBe(false);
   });
 
@@ -100,12 +103,20 @@ describe('Permissions', () => {
   });
 
   it('evaluates full requests and throws on denial', () => {
-    const req = { context: { agentRole: 'review' }, category: 'fs.write', toolName: 'WriteTool' } as any;
+    const req = {
+      context: { agentRole: 'review' },
+      category: 'fs.write',
+      toolName: 'WriteTool',
+    } as any;
     const tool = { metadata: { riskScore: 90 } } as any;
-    
+
     expect(() => evaluator.evaluate(req, tool)).toThrow(PermissionDeniedError);
 
-    const validReq = { context: { agentRole: 'coding' }, category: 'fs.read', toolName: 'ReadTool' } as any;
+    const validReq = {
+      context: { agentRole: 'coding' },
+      category: 'fs.read',
+      toolName: 'ReadTool',
+    } as any;
     const validTool = { metadata: { riskScore: 10 } } as any;
     expect(evaluator.evaluate(validReq, validTool)).toBe(true);
   });
@@ -168,21 +179,42 @@ describe('ToolValidator', () => {
 
   it('validates manifests', () => {
     const validManifest = {
-      id: 'test', version: '1.0.0', kind: 'tool', entryPoint: 'main.js',
-      declaredToolCategories: ['fs.read'], tools: [{}]
+      id: 'test',
+      version: '1.0.0',
+      kind: 'tool',
+      entryPoint: 'main.js',
+      declaredToolCategories: ['fs.read'],
+      tools: [{}],
     } as any;
     expect(validator.validateManifest(validManifest)).toBe(true);
 
     expect(() => validator.validateManifest({ ...validManifest, id: null })).toThrow('id');
-    expect(() => validator.validateManifest({ ...validManifest, version: null })).toThrow('version');
+    expect(() => validator.validateManifest({ ...validManifest, version: null })).toThrow(
+      'version',
+    );
     expect(() => validator.validateManifest({ ...validManifest, kind: 'invalid' })).toThrow('kind');
-    expect(() => validator.validateManifest({ ...validManifest, entryPoint: null })).toThrow('entryPoint');
-    expect(() => validator.validateManifest({ ...validManifest, declaredToolCategories: [] })).toThrow('category');
-    expect(() => validator.validateManifest({ ...validManifest, tools: [] })).toThrow('define at least one tool');
+    expect(() => validator.validateManifest({ ...validManifest, entryPoint: null })).toThrow(
+      'entryPoint',
+    );
+    expect(() =>
+      validator.validateManifest({ ...validManifest, declaredToolCategories: [] }),
+    ).toThrow('category');
+    expect(() => validator.validateManifest({ ...validManifest, tools: [] })).toThrow(
+      'define at least one tool',
+    );
   });
 
   it('validates capabilities', () => {
-    const validTool = { definition: { capabilities: { supportsStreaming: true, supportsCancellation: true, requiresNetwork: false, requiresFilesystem: true } } } as any;
+    const validTool = {
+      definition: {
+        capabilities: {
+          supportsStreaming: true,
+          supportsCancellation: true,
+          requiresNetwork: false,
+          requiresFilesystem: true,
+        },
+      },
+    } as any;
     expect(validator.validateCapabilities(validTool)).toBe(true);
 
     const invalidTool = { definition: { capabilities: null } } as any;
@@ -210,8 +242,12 @@ describe('ToolDiscovery', () => {
 
   it('registers tools from manifest successfully', () => {
     const manifest = {
-      id: 'm1', version: '1.0.0', kind: 'tool', entryPoint: 'main.js',
-      declaredToolCategories: ['fs.read'], tools: [{}]
+      id: 'm1',
+      version: '1.0.0',
+      kind: 'tool',
+      entryPoint: 'main.js',
+      declaredToolCategories: ['fs.read'],
+      tools: [{}],
     } as any;
     const tools = [{ definition: { name: 'dt1', category: 'fs.read' } }] as any;
 
@@ -221,16 +257,24 @@ describe('ToolDiscovery', () => {
 
   it('throws error if tool category not declared in manifest', () => {
     const manifest = {
-      id: 'm2', version: '1.0.0', kind: 'tool', entryPoint: 'main.js',
-      declaredToolCategories: ['fs.read'], tools: [{}]
+      id: 'm2',
+      version: '1.0.0',
+      kind: 'tool',
+      entryPoint: 'main.js',
+      declaredToolCategories: ['fs.read'],
+      tools: [{}],
     } as any;
     const tools = [{ definition: { name: 'dt2', category: 'fs.write' } }] as any;
 
-    expect(() => discovery.registerFromManifest(manifest, tools)).toThrow('not declared in the manifest');
+    expect(() => discovery.registerFromManifest(manifest, tools)).toThrow(
+      'not declared in the manifest',
+    );
   });
 
   it('throws error on loadManifest (M2.1 restriction)', async () => {
-    await expect(discovery.loadManifest('test')).rejects.toThrow('Filesystem access not permitted in M2.1');
+    await expect(discovery.loadManifest('test')).rejects.toThrow(
+      'Filesystem access not permitted in M2.1',
+    );
   });
 });
 

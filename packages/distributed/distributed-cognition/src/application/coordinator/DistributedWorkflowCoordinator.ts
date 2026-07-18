@@ -21,8 +21,10 @@ export class DistributedWorkflowCoordinator {
 
   plan(goalId: string, taskCount: number): WorkflowPlan {
     const planId = `dwf-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const activeNodes = this.nodeRegistry.getAll().filter(n => n.status === 'ACTIVE');
-    const checksum = createHash('sha256').update(JSON.stringify({ planId, goalId, taskCount })).digest('hex');
+    const activeNodes = this.nodeRegistry.getAll().filter((n) => n.status === 'ACTIVE');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ planId, goalId, taskCount }))
+      .digest('hex');
     return Object.freeze({
       planId,
       goalId,

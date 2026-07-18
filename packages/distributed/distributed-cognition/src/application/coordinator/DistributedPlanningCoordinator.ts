@@ -23,20 +23,24 @@ export class DistributedPlanningCoordinator {
   createPlan(goalId: string, requiredCapabilities: string[]): PlanningResult {
     const planId = `dp-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
     const nodes: PlanNode[] = [];
-    const activeNodes = this.nodeRegistry.getAll().filter(n => n.status === 'ACTIVE');
+    const activeNodes = this.nodeRegistry.getAll().filter((n) => n.status === 'ACTIVE');
 
     for (const node of activeNodes) {
       const caps = node.metadata.capabilities;
-      if (requiredCapabilities.some(rc => caps.includes(rc))) {
-        nodes.push(Object.freeze({
-          nodeId: node.metadata.nodeId,
-          role: 'executor',
-          weight: node.metadata.priority,
-        }));
+      if (requiredCapabilities.some((rc) => caps.includes(rc))) {
+        nodes.push(
+          Object.freeze({
+            nodeId: node.metadata.nodeId,
+            role: 'executor',
+            weight: node.metadata.priority,
+          }),
+        );
       }
     }
 
-    const checksum = createHash('sha256').update(JSON.stringify({ planId, goalId, nodes })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ planId, goalId, nodes }))
+      .digest('hex');
     const plan: PlanningResult = Object.freeze({
       planId,
       goalId,

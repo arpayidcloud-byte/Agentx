@@ -26,11 +26,16 @@ const validTransitions: Record<WorkflowState, WorkflowState[]> = {
 export class WorkflowStateMachine {
   private state: WorkflowState = 'CREATED';
 
-  getState(): WorkflowState { return this.state; }
+  getState(): WorkflowState {
+    return this.state;
+  }
 
   transition(next: WorkflowState): void {
     if (!validTransitions[this.state]?.includes(next)) {
-      throw new WorkflowStateError(`Invalid transition from ${this.state} to ${next}`, 'workflow-state');
+      throw new WorkflowStateError(
+        `Invalid transition from ${this.state} to ${next}`,
+        'workflow-state',
+      );
     }
     this.state = next;
   }

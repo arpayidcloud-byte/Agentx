@@ -14,7 +14,7 @@ export class ForwardChaining {
       updated = false;
       for (const rule of rules) {
         if (!inferred.has(rule.consequent)) {
-          const match = rule.antecedents.every(ant => inferred.has(ant));
+          const match = rule.antecedents.every((ant) => inferred.has(ant));
           if (match) {
             inferred.add(rule.consequent);
             updated = true;

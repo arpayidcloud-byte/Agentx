@@ -29,7 +29,7 @@ const DEFAULT_SCRUB_PATTERNS = [
  */
 export function scrubEnvironment(
   original: Record<string, string | undefined>,
-  config: EnvironmentScrubberConfig
+  config: EnvironmentScrubberConfig,
 ): Record<string, string | undefined> {
   const scrubbed: Record<string, string | undefined> = {};
 

@@ -7,7 +7,7 @@ export class FilesystemSandbox implements ISandbox {
   constructor(
     public readonly workspaceRoot: string,
     private readonly pathResolver: IPathResolver,
-    private readonly policy: IFilesystemPolicy
+    private readonly policy: IFilesystemPolicy,
   ) {}
 
   public async validateRead(requestPath: string): Promise<string> {
@@ -24,10 +24,10 @@ export class FilesystemSandbox implements ISandbox {
     }
 
     const resolvedPath = await this.pathResolver.resolve(this.workspaceRoot, requestPath);
-    
+
     this.validateWorkspaceJail(resolvedPath);
     this.validateAllowlist(resolvedPath);
-    
+
     const hiddenAllowed = this.policy.getConfig().allowHiddenFiles;
     if (!hiddenAllowed) {
       this.validateHiddenFilePolicy(resolvedPath);
@@ -39,7 +39,7 @@ export class FilesystemSandbox implements ISandbox {
   public validateWorkspaceJail(realPath: string): void {
     if (!realPath.startsWith(this.workspaceRoot)) {
       throw new SandboxViolationError(
-        `Path "${realPath}" escapes workspace jail "${this.workspaceRoot}"`
+        `Path "${realPath}" escapes workspace jail "${this.workspaceRoot}"`,
       );
     }
   }
@@ -69,10 +69,10 @@ export class FilesystemSandbox implements ISandbox {
 
   public validateHiddenFilePolicy(realPath: string): void {
     const parts = path.relative(this.workspaceRoot, realPath).split(path.sep);
-    const hasHidden = parts.some(part => part.startsWith('.'));
+    const hasHidden = parts.some((part) => part.startsWith('.'));
     if (hasHidden) {
       throw new SandboxViolationError(
-        `Path "${realPath}" accesses hidden files which is disabled in policy`
+        `Path "${realPath}" accesses hidden files which is disabled in policy`,
       );
     }
   }

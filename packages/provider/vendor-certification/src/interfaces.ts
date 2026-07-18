@@ -21,7 +21,12 @@ export interface ProviderCapabilities {
 export interface IProvider {
   getMetadata(): ProviderMetadata;
   getCapabilities(): ProviderCapabilities;
-  healthCheck(): Promise<{ healthy: boolean; latencyMs: number; lastChecked: Date; status: string }>;
+  healthCheck(): Promise<{
+    healthy: boolean;
+    latencyMs: number;
+    lastChecked: Date;
+    status: string;
+  }>;
 }
 
 export interface CertificationConfig {
@@ -51,7 +56,13 @@ export interface ReadinessScore {
   overall: number;
 }
 
-export type ProviderGrade = 'Production' | 'Enterprise' | 'Certified' | 'Conditionally Certified' | 'Experimental' | 'Rejected';
+export type ProviderGrade =
+  | 'Production'
+  | 'Enterprise'
+  | 'Certified'
+  | 'Conditionally Certified'
+  | 'Experimental'
+  | 'Rejected';
 
 export interface CertificationReport {
   id: string;

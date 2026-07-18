@@ -131,13 +131,16 @@ export class GoalIntelligenceMetricsCollector {
       strategyUsage: { ...this.strategyUsage },
       recoveryCount: this.recoveryCount,
       planningFailures: this.planningFailures,
-      decisionConfidence: this.confidenceCount > 0 ? this.totalConfidence / this.confidenceCount : 0,
+      decisionConfidence:
+        this.confidenceCount > 0 ? this.totalConfidence / this.confidenceCount : 0,
       planningScoreAverage: this.goalsCreated > 0 ? this.planningScoreSum / this.goalsCreated : 0,
-      planningComplexityAverage: this.goalsCreated > 0 ? this.planningComplexitySum / this.goalsCreated : 0,
+      planningComplexityAverage:
+        this.goalsCreated > 0 ? this.planningComplexitySum / this.goalsCreated : 0,
       criticalPathAverage: this.goalsCreated > 0 ? this.criticalPathSum / this.goalsCreated : 0,
       constraintViolationCount: this.constraintViolationCount,
       integrityFailureCount: this.integrityFailureCount,
-      recoverySuccessRate: this.goalsCreated > 0 ? (this.recoveryCount / this.goalsCreated) * 100 : 0,
+      recoverySuccessRate:
+        this.goalsCreated > 0 ? (this.recoveryCount / this.goalsCreated) * 100 : 0,
       estimatedCostAverage: this.goalsCreated > 0 ? this.totalEstimatedCost / this.goalsCreated : 0,
       estimatedRiskAverage: this.goalsCreated > 0 ? this.totalEstimatedRisk / this.goalsCreated : 0,
       goalTreeDepthAverage: this.goalsCreated > 0 ? this.totalGoalTreeDepth / this.goalsCreated : 0,

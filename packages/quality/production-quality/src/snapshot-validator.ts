@@ -8,7 +8,7 @@ import { ValidationResult } from './interfaces.js';
 export class SnapshotValidator {
   validate(snapshot: any): ValidationResult {
     const failures: string[] = [];
-    
+
     if (!Object.isFrozen(snapshot)) {
       failures.push('Snapshot is not immutable (not frozen)');
     }

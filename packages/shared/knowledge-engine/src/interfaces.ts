@@ -8,7 +8,12 @@ export interface IKnowledgeEngine {
   retrieve(query: KnowledgeQuery): Promise<KnowledgeNode[]>;
   update(documentId: string, updates: Partial<KnowledgeDocument>): Promise<KnowledgeDocument>;
   delete(documentId: string): Promise<void>;
-  createRelationship(sourceId: string, targetId: string, type: string, metadata?: Record<string, unknown>): Promise<KnowledgeRelation>;
+  createRelationship(
+    sourceId: string,
+    targetId: string,
+    type: string,
+    metadata?: Record<string, unknown>,
+  ): Promise<KnowledgeRelation>;
   traverse(startNodeId: string, maxDepth?: number): Promise<KnowledgeGraph>;
   getMetrics(): KnowledgeMetrics;
 }
@@ -61,11 +66,11 @@ export interface IKnowledgeStore {
   getDocument(id: string): Promise<KnowledgeDocument | undefined>;
   deleteDocument(id: string): Promise<void>;
   listDocuments(): Promise<KnowledgeDocument[]>;
-  
+
   saveNode(node: KnowledgeNode): Promise<void>;
   getNode(id: string): Promise<KnowledgeNode | undefined>;
   searchNodes(query: string, limit?: number): Promise<KnowledgeNode[]>;
-  
+
   saveRelation(relation: KnowledgeRelation): Promise<void>;
   getRelations(nodeId: string): Promise<KnowledgeRelation[]>;
 }

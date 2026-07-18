@@ -11,6 +11,6 @@ export class HypothesisEngine {
   }
 
   prune(candidates: Hypothesis[], threshold: number): Hypothesis[] {
-    return candidates.filter(h => h.confidence >= threshold);
+    return candidates.filter((h) => h.confidence >= threshold);
   }
 }

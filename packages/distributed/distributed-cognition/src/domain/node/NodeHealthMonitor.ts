@@ -23,7 +23,12 @@ export class NodeHealthMonitor {
     return [...(this.healthRecords.get(nodeId) || [])];
   }
 
-  evaluateStatus(nodeId: string, cpuThreshold = 0.9, memoryThreshold = 0.9, latencyThreshold = 1000): NodeStatus {
+  evaluateStatus(
+    nodeId: string,
+    cpuThreshold = 0.9,
+    memoryThreshold = 0.9,
+    latencyThreshold = 1000,
+  ): NodeStatus {
     const latest = this.getLatestHealth(nodeId);
     if (!latest) return 'OFFLINE';
     if (latest.cpuUsage > cpuThreshold || latest.memoryUsage > memoryThreshold) return 'DEGRADED';

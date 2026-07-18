@@ -1,11 +1,11 @@
-import { 
-  IPermissionResolver, 
-  IPermissionEvaluator, 
-  PermissionPolicy, 
-  ToolCategory, 
+import {
+  IPermissionResolver,
+  IPermissionEvaluator,
+  PermissionPolicy,
+  ToolCategory,
   ToolExecutionRequest,
   ITool,
-  RiskScore
+  RiskScore,
 } from '../interfaces/index.js';
 import { PermissionDeniedError } from '../errors/index.js';
 
@@ -15,20 +15,27 @@ export class PermissionResolver implements IPermissionResolver {
   constructor() {
     // Default v0.1 permissions per Volume 7 Ch.2 and Vol 3 Ch.2
     this.policies.set('coding', {
-      allowedCategories: ['fs.read', 'fs.write', 'shell.build', 'shell.exec', 'git.read', 'git.write'],
-      maxRiskScore: 100
+      allowedCategories: [
+        'fs.read',
+        'fs.write',
+        'shell.build',
+        'shell.exec',
+        'git.read',
+        'git.write',
+      ],
+      maxRiskScore: 100,
     });
     this.policies.set('review', {
       allowedCategories: ['fs.read', 'git.read'],
-      maxRiskScore: 50
+      maxRiskScore: 50,
     });
     this.policies.set('test', {
       allowedCategories: ['fs.read', 'fs.write', 'shell.build', 'shell.exec'],
-      maxRiskScore: 100
+      maxRiskScore: 100,
     });
     this.policies.set('security', {
       allowedCategories: ['fs.read', 'git.read'],
-      maxRiskScore: 50
+      maxRiskScore: 50,
     });
   }
 
@@ -46,7 +53,7 @@ export class PermissionEvaluator implements IPermissionEvaluator {
 
   public isAllowed(agentRole: string, category: ToolCategory, riskScore?: RiskScore): boolean {
     const policy = this.resolver.resolvePolicyForAgent(agentRole);
-    
+
     // Check blocked categories first
     if (policy.blockedCategories?.includes(category)) {
       return false;
@@ -68,20 +75,16 @@ export class PermissionEvaluator implements IPermissionEvaluator {
   }
 
   public evaluate(req: ToolExecutionRequest, tool: ITool): boolean {
-    const allowed = this.isAllowed(
-      req.context.agentRole, 
-      req.category, 
-      tool.metadata.riskScore
-    );
-    
+    const allowed = this.isAllowed(req.context.agentRole, req.category, tool.metadata.riskScore);
+
     if (!allowed) {
       throw new PermissionDeniedError(
         req.context.agentRole,
         req.category,
-        `Tool ${req.toolName} requires permissions not granted to ${req.context.agentRole}`
+        `Tool ${req.toolName} requires permissions not granted to ${req.context.agentRole}`,
       );
     }
-    
+
     return true;
   }
 }

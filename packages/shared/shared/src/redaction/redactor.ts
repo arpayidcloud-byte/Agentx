@@ -23,7 +23,7 @@ export class SecretRedactor {
   // Basic regex for potential secrets (e.g. JWTs, generic secrets)
   private static readonly JWT_PATTERN = /eyJ[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*/g;
   private static readonly AGENTX_SECRET_PATTERN = /AGENTX_SECRET_[A-Z0-9_]+/g;
-  // A generic high-entropy base64/hex pattern for keys could be added, 
+  // A generic high-entropy base64/hex pattern for keys could be added,
   // but targeting specific known prefixes or lengths is safer to avoid false positives.
 
   /**
@@ -72,7 +72,7 @@ export class SecretRedactor {
   private static redactKeyVal(key: string, value: unknown): unknown {
     const normalizedKey = key.toLowerCase().replace(/[-_]/g, '');
     let isSensitiveKey = false;
-    
+
     // Check if the key itself implies a secret
     for (const sensitive of this.SENSITIVE_KEYS) {
       if (normalizedKey.includes(sensitive.replace(/[-_]/g, ''))) {

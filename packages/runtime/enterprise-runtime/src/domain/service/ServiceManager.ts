@@ -15,9 +15,16 @@ export class ServiceRegistry {
 
   register(name: string, version: string): ServiceEntry {
     const serviceId = `svc-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ serviceId, name, version })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ serviceId, name, version }))
+      .digest('hex');
     const entry: ServiceEntry = Object.freeze({
-      serviceId, name, version, status: 'ACTIVE', registeredAt: new Date(), checksum,
+      serviceId,
+      name,
+      version,
+      status: 'ACTIVE',
+      registeredAt: new Date(),
+      checksum,
     });
     this.services.set(serviceId, entry);
     return entry;
@@ -47,11 +54,11 @@ export class ServiceDiscovery {
   constructor(private registry: ServiceRegistry) {}
 
   discover(name: string): ServiceEntry[] {
-    return this.registry.getAll().filter(s => s.name === name && s.status === 'ACTIVE');
+    return this.registry.getAll().filter((s) => s.name === name && s.status === 'ACTIVE');
   }
 
   discoverAll(): ServiceEntry[] {
-    return this.registry.getAll().filter(s => s.status === 'ACTIVE');
+    return this.registry.getAll().filter((s) => s.status === 'ACTIVE');
   }
 }
 
@@ -69,9 +76,16 @@ export class PluginManager {
 
   load(name: string, version: string): PluginEntry {
     const pluginId = `plug-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ pluginId, name, version })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ pluginId, name, version }))
+      .digest('hex');
     const entry: PluginEntry = Object.freeze({
-      pluginId, name, version, enabled: true, loadedAt: new Date(), checksum,
+      pluginId,
+      name,
+      version,
+      enabled: true,
+      loadedAt: new Date(),
+      checksum,
     });
     this.plugins.set(pluginId, entry);
     return entry;
@@ -83,14 +97,24 @@ export class PluginManager {
 
   enable(pluginId: string): void {
     const plugin = this.plugins.get(pluginId);
-    if (!plugin) throw new InvariantViolationError(`Plugin not found: ${pluginId}`, 'PLUGIN_NOT_FOUND', 'PluginManager');
+    if (!plugin)
+      throw new InvariantViolationError(
+        `Plugin not found: ${pluginId}`,
+        'PLUGIN_NOT_FOUND',
+        'PluginManager',
+      );
     const updated: PluginEntry = Object.freeze({ ...plugin, enabled: true });
     this.plugins.set(pluginId, updated);
   }
 
   disable(pluginId: string): void {
     const plugin = this.plugins.get(pluginId);
-    if (!plugin) throw new InvariantViolationError(`Plugin not found: ${pluginId}`, 'PLUGIN_NOT_FOUND', 'PluginManager');
+    if (!plugin)
+      throw new InvariantViolationError(
+        `Plugin not found: ${pluginId}`,
+        'PLUGIN_NOT_FOUND',
+        'PluginManager',
+      );
     const updated: PluginEntry = Object.freeze({ ...plugin, enabled: false });
     this.plugins.set(pluginId, updated);
   }
@@ -104,7 +128,7 @@ export class PluginManager {
   }
 
   getEnabled(): PluginEntry[] {
-    return this.getAll().filter(p => p.enabled);
+    return this.getAll().filter((p) => p.enabled);
   }
 }
 

@@ -13,8 +13,16 @@ export class DashboardManager {
 
   create(name: string, type: string, widgets: string[] = []): DashboardEntry {
     const dashboardId = `db-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ dashboardId, name, type, widgets })).digest('hex');
-    const entry: DashboardEntry = Object.freeze({ dashboardId, name, type, widgets: [...widgets], checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ dashboardId, name, type, widgets }))
+      .digest('hex');
+    const entry: DashboardEntry = Object.freeze({
+      dashboardId,
+      name,
+      type,
+      widgets: [...widgets],
+      checksum,
+    });
     this.dashboards.set(dashboardId, entry);
     return entry;
   }
@@ -40,7 +48,9 @@ export class ReportTemplateManager {
 
   create(name: string, format: string): ReportTemplate {
     const templateId = `rt-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ templateId, name, format })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ templateId, name, format }))
+      .digest('hex');
     const template: ReportTemplate = Object.freeze({ templateId, name, format, checksum });
     this.templates.set(templateId, template);
     return template;
@@ -68,14 +78,22 @@ export class MetricSummarizer {
 
   record(metric: string, value: number): MetricSummary {
     const summaryId = `ms-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ summaryId, metric, value })).digest('hex');
-    const summary: MetricSummary = Object.freeze({ summaryId, metric, value, timestamp: new Date(), checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ summaryId, metric, value }))
+      .digest('hex');
+    const summary: MetricSummary = Object.freeze({
+      summaryId,
+      metric,
+      value,
+      timestamp: new Date(),
+      checksum,
+    });
     this.summaries.push(summary);
     return summary;
   }
 
   query(metric: string): MetricSummary[] {
-    return this.summaries.filter(s => s.metric === metric);
+    return this.summaries.filter((s) => s.metric === metric);
   }
 
   getAll(): MetricSummary[] {

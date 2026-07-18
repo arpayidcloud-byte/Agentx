@@ -23,7 +23,11 @@ const validTransitions: Record<ExecutionCoordinatorState, ExecutionCoordinatorSt
 
 export class CoordinatorStateMachine {
   private currentState: ExecutionCoordinatorState = 'CREATED';
-  private history: Array<{ from: ExecutionCoordinatorState; to: ExecutionCoordinatorState; timestamp: Date }> = [];
+  private history: Array<{
+    from: ExecutionCoordinatorState;
+    to: ExecutionCoordinatorState;
+    timestamp: Date;
+  }> = [];
 
   getState(): ExecutionCoordinatorState {
     return this.currentState;
@@ -31,7 +35,10 @@ export class CoordinatorStateMachine {
 
   transition(next: ExecutionCoordinatorState): void {
     if (!this.canTransition(next)) {
-      throw new CoordinatorStateError(`Invalid transition from ${this.currentState} to ${next}`, 'state-machine');
+      throw new CoordinatorStateError(
+        `Invalid transition from ${this.currentState} to ${next}`,
+        'state-machine',
+      );
     }
     const from = this.currentState;
     this.currentState = next;
@@ -47,10 +54,18 @@ export class CoordinatorStateMachine {
   }
 
   isTerminal(): boolean {
-    return this.currentState === 'COMPLETED' || this.currentState === 'FAILED' || this.currentState === 'CANCELLED';
+    return (
+      this.currentState === 'COMPLETED' ||
+      this.currentState === 'FAILED' ||
+      this.currentState === 'CANCELLED'
+    );
   }
 
-  getHistory(): Array<{ from: ExecutionCoordinatorState; to: ExecutionCoordinatorState; timestamp: Date }> {
+  getHistory(): Array<{
+    from: ExecutionCoordinatorState;
+    to: ExecutionCoordinatorState;
+    timestamp: Date;
+  }> {
     return [...this.history];
   }
 

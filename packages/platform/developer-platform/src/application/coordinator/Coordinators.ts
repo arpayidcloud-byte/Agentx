@@ -1,6 +1,17 @@
 import { createHash } from 'crypto';
-import { SDKRegistry, SDKGenerator, APISpecManager, OpenAPIGenerator, ClientGenerator } from '../../domain/sdk/SDKManager.js';
-import { DeveloperProjectManager, PackageRegistry, ReleaseManager, DocumentationEngine } from '../../domain/developer/DeveloperManager.js';
+import {
+  SDKRegistry,
+  SDKGenerator,
+  APISpecManager,
+  OpenAPIGenerator,
+  ClientGenerator,
+} from '../../domain/sdk/SDKManager.js';
+import {
+  DeveloperProjectManager,
+  PackageRegistry,
+  ReleaseManager,
+  DocumentationEngine,
+} from '../../domain/developer/DeveloperManager.js';
 
 export class DeveloperPlatformCoordinator {
   constructor(
@@ -20,7 +31,10 @@ export class DeveloperPlatformCoordinator {
 }
 
 export class SDKCoordinator {
-  constructor(private sdkRegistry: SDKRegistry, private generator: SDKGenerator) {}
+  constructor(
+    private sdkRegistry: SDKRegistry,
+    private generator: SDKGenerator,
+  ) {}
 
   registerSDK(name: string, language: string, version: string): string {
     const sdk = this.sdkRegistry.register(name, language, version);
@@ -34,7 +48,11 @@ export class SDKCoordinator {
 }
 
 export class APICoordinator {
-  constructor(private specManager: APISpecManager, private openAPI: OpenAPIGenerator, private clientGen: ClientGenerator) {}
+  constructor(
+    private specManager: APISpecManager,
+    private openAPI: OpenAPIGenerator,
+    private clientGen: ClientGenerator,
+  ) {}
 
   createAPI(title: string, version: string): string {
     const spec = this.specManager.create(title, version, []);
@@ -77,11 +95,16 @@ export class ReleaseCoordinator {
 }
 
 export class MarketplaceCoordinator {
-  private listings = new Map<string, { itemId: string; name: string; type: string; checksum: string }>();
+  private listings = new Map<
+    string,
+    { itemId: string; name: string; type: string; checksum: string }
+  >();
 
   list(name: string, type: string): string {
     const itemId = `mp-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ itemId, name, type })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ itemId, name, type }))
+      .digest('hex');
     const listing = Object.freeze({ itemId, name, type, checksum });
     this.listings.set(itemId, listing);
     return itemId;
@@ -97,11 +120,16 @@ export class MarketplaceCoordinator {
 }
 
 export class ControlPlaneCoordinator {
-  private dashboards = new Map<string, { dashboardId: string; name: string; type: string; checksum: string }>();
+  private dashboards = new Map<
+    string,
+    { dashboardId: string; name: string; type: string; checksum: string }
+  >();
 
   createDashboard(name: string, type: string): string {
     const dashboardId = `dash-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ dashboardId, name, type })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ dashboardId, name, type }))
+      .digest('hex');
     const dashboard = Object.freeze({ dashboardId, name, type, checksum });
     this.dashboards.set(dashboardId, dashboard);
     return dashboardId;
@@ -117,11 +145,16 @@ export class ControlPlaneCoordinator {
 }
 
 export class RemoteManagementCoordinator {
-  private commands = new Map<string, { commandId: string; action: string; target: string; checksum: string }>();
+  private commands = new Map<
+    string,
+    { commandId: string; action: string; target: string; checksum: string }
+  >();
 
   execute(action: string, target: string): string {
     const commandId = `rmc-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ commandId, action, target })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ commandId, action, target }))
+      .digest('hex');
     const command = Object.freeze({ commandId, action, target, checksum });
     this.commands.set(commandId, command);
     return commandId;

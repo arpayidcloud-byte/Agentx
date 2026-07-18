@@ -38,7 +38,7 @@ export class ShellAuditEmitter {
    * @returns Filtered audit events
    */
   getEventsByType(eventType: ShellAuditEvent['eventType']): ShellAuditEvent[] {
-    return this.events.filter(e => e.eventType === eventType);
+    return this.events.filter((e) => e.eventType === eventType);
   }
 
   /**
@@ -47,7 +47,7 @@ export class ShellAuditEmitter {
    * @returns Filtered audit events
    */
   getEventsByTask(taskId: string): ShellAuditEvent[] {
-    return this.events.filter(e => e.taskId === taskId);
+    return this.events.filter((e) => e.taskId === taskId);
   }
 
   /**
@@ -66,7 +66,7 @@ export function createToolInvokedEvent(
   category: ToolCategory,
   taskId: string,
   traceId: string,
-  agentRole: string
+  agentRole: string,
 ): ShellAuditEvent {
   return {
     eventType: 'tool.invoked',
@@ -93,7 +93,7 @@ export function createToolFinishedEvent(
   taskId: string,
   traceId: string,
   agentRole: string,
-  timedOut: boolean = false
+  timedOut: boolean = false,
 ): ShellAuditEvent {
   return {
     eventType: 'tool.finished',
@@ -121,7 +121,7 @@ export function createToolFailedEvent(
   taskId: string,
   traceId: string,
   agentRole: string,
-  _reason: string
+  _reason: string,
 ): ShellAuditEvent {
   return {
     eventType: 'tool.failed',

@@ -18,7 +18,17 @@ const validTransitions: Record<KernelState, KernelState[]> = {
   WAITING_APPROVAL: ['DECISION', 'EXECUTING', 'FAILED', 'CANCELLED'],
   DECISION: ['EXECUTING', 'FAILED', 'CANCELLED', 'CHECKPOINTING'],
   EXECUTING: ['COMPLETED', 'FAILED', 'CANCELLED', 'CHECKPOINTING'],
-  CHECKPOINTING: ['THINKING', 'REASONING', 'REFLECTING', 'PLANNING', 'DECISION', 'EXECUTING', 'FAILED', 'CANCELLED', 'COMPLETED'],
+  CHECKPOINTING: [
+    'THINKING',
+    'REASONING',
+    'REFLECTING',
+    'PLANNING',
+    'DECISION',
+    'EXECUTING',
+    'FAILED',
+    'CANCELLED',
+    'COMPLETED',
+  ],
   RECOVERING: ['WAITING', 'THINKING', 'FAILED', 'CANCELLED'],
   COMPLETED: ['RECOVERING'],
   FAILED: ['RECOVERING', 'CANCELLED'],
@@ -38,7 +48,10 @@ export class KernelStateMachine {
 
   transition(next: KernelState): void {
     if (!this.canTransition(next)) {
-      throw new LifecycleError(`Cannot transition from ${this.currentState} to ${next}`, 'kernel-state');
+      throw new LifecycleError(
+        `Cannot transition from ${this.currentState} to ${next}`,
+        'kernel-state',
+      );
     }
     this.currentState = next;
   }

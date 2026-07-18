@@ -1,5 +1,8 @@
 export class ToolError extends Error {
-  constructor(message: string, public readonly code: string) {
+  constructor(
+    message: string,
+    public readonly code: string,
+  ) {
     super(message);
     this.name = this.constructor.name;
     Object.setPrototypeOf(this, new.target.prototype);
@@ -20,7 +23,10 @@ export class DuplicateToolError extends ToolError {
 
 export class PermissionDeniedError extends ToolError {
   constructor(agentRole: string, category: string, reason: string) {
-    super(`Permission denied for agent ${agentRole} on category ${category}: ${reason}`, 'PERMISSION_DENIED');
+    super(
+      `Permission denied for agent ${agentRole} on category ${category}: ${reason}`,
+      'PERMISSION_DENIED',
+    );
   }
 }
 

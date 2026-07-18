@@ -4,7 +4,13 @@
  * Provides read-only git log query within sandbox.
  */
 
-import { GitExecutionRequest, GitExecutionResult, GitExecutionContext, GitLogOutput, GitLogEntry } from './interfaces.js';
+import {
+  GitExecutionRequest,
+  GitExecutionResult,
+  GitExecutionContext,
+  GitLogOutput,
+  GitLogEntry,
+} from './interfaces.js';
 import { GitExecutor } from './executor.js';
 
 /**
@@ -46,7 +52,7 @@ export class GitLogTool {
    */
   private parseLog(output: string): GitLogOutput {
     const entries: GitLogEntry[] = [];
-    const lines = output.split('\n').filter(line => line.trim().length > 0);
+    const lines = output.split('\n').filter((line) => line.trim().length > 0);
 
     for (const line of lines) {
       const parts = line.split('|');

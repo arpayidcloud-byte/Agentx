@@ -15,13 +15,28 @@ export interface ConflictEntry {
 export class DistributedConflictResolver {
   private conflicts: ConflictEntry[] = [];
 
-  detect(_resourceKey: string, _nodeA: string, valueA: unknown, _nodeB: string, valueB: unknown): boolean {
+  detect(
+    _resourceKey: string,
+    _nodeA: string,
+    valueA: unknown,
+    _nodeB: string,
+    valueB: unknown,
+  ): boolean {
     return JSON.stringify(valueA) !== JSON.stringify(valueB);
   }
 
-  resolve(resourceKey: string, nodeA: string, valueA: unknown, nodeB: string, valueB: unknown, resolution: ConflictEntry['resolution']): ConflictEntry {
+  resolve(
+    resourceKey: string,
+    nodeA: string,
+    valueA: unknown,
+    nodeB: string,
+    valueB: unknown,
+    resolution: ConflictEntry['resolution'],
+  ): ConflictEntry {
     const conflictId = `dc-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ resourceKey, nodeA, nodeB, valueA, valueB, resolution })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ resourceKey, nodeA, nodeB, valueA, valueB, resolution }))
+      .digest('hex');
     const entry: ConflictEntry = Object.freeze({
       conflictId,
       resourceKey,
@@ -42,6 +57,6 @@ export class DistributedConflictResolver {
   }
 
   getConflictsByNode(nodeId: string): ConflictEntry[] {
-    return this.conflicts.filter(c => c.nodeA === nodeId || c.nodeB === nodeId);
+    return this.conflicts.filter((c) => c.nodeA === nodeId || c.nodeB === nodeId);
   }
 }

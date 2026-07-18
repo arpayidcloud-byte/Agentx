@@ -80,11 +80,7 @@ export {
   canTransition,
 } from './approval-request.js';
 
-export {
-  checkExpiration,
-  isRequestValid,
-  formatTimeRemaining,
-} from './approval-expiration.js';
+export { checkExpiration, isRequestValid, formatTimeRemaining } from './approval-expiration.js';
 
 export {
   generateSessionId,
@@ -94,10 +90,7 @@ export {
   deactivateSession,
 } from './approval-session.js';
 
-export {
-  createApprovalContext,
-  validateApprovalContext,
-} from './approval-context.js';
+export { createApprovalContext, validateApprovalContext } from './approval-context.js';
 
 export {
   createApprovalAuditEvent,

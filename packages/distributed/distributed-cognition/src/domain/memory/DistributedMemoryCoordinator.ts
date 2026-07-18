@@ -5,7 +5,9 @@ export class DistributedMemoryCoordinator {
   private entries = new Map<string, MemoryEntry>();
 
   set(key: string, value: unknown, nodeId: string, ttlMs: number = 600000): MemoryEntry {
-    const checksum = createHash('sha256').update(JSON.stringify({ key, value, nodeId })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ key, value, nodeId }))
+      .digest('hex');
     const entry: MemoryEntry = Object.freeze({
       key,
       value: typeof value === 'object' ? JSON.parse(JSON.stringify(value)) : value,
@@ -33,8 +35,10 @@ export class DistributedMemoryCoordinator {
   }
 
   snapshot(nodeId: string): MemorySnapshot {
-    const entries = Array.from(this.entries.values()).filter(e => e.nodeId === nodeId);
-    const checksum = createHash('sha256').update(JSON.stringify(entries.map(e => ({ key: e.key, version: e.checksum })))).digest('hex');
+    const entries = Array.from(this.entries.values()).filter((e) => e.nodeId === nodeId);
+    const checksum = createHash('sha256')
+      .update(JSON.stringify(entries.map((e) => ({ key: e.key, version: e.checksum }))))
+      .digest('hex');
     return Object.freeze({
       snapshotId: `snap-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,
       nodeId,

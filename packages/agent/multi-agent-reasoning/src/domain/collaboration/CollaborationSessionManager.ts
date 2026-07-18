@@ -10,7 +10,9 @@ export class CollaborationSessionManager {
   private sessions = new Map<string, CollaborationSession>();
 
   createSession(goalId: string, agentIds: string[]): CollaborationSession {
-    const checksum = createHash('sha256').update(JSON.stringify({ goalId, agentIds })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ goalId, agentIds }))
+      .digest('hex');
     const session: CollaborationSession = {
       id: `collab-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,
       traceId: `trace-${Date.now()}`,

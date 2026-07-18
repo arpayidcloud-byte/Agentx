@@ -23,7 +23,7 @@ export class RuntimeHookManager {
   }
 
   unregister(hookName: string): void {
-    this.hooks = this.hooks.filter(h => h.name !== hookName);
+    this.hooks = this.hooks.filter((h) => h.name !== hookName);
   }
 
   async executeBeforeStart(session: RuntimeSession): Promise<void> {
@@ -50,7 +50,11 @@ export class RuntimeHookManager {
     }
   }
 
-  async executeOnStateChange(session: RuntimeSession, from: RuntimeState, to: RuntimeState): Promise<void> {
+  async executeOnStateChange(
+    session: RuntimeSession,
+    from: RuntimeState,
+    to: RuntimeState,
+  ): Promise<void> {
     for (const hook of this.hooks) {
       if (hook.onStateChange) await hook.onStateChange(session, from, to);
     }

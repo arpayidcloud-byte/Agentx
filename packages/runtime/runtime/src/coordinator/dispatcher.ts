@@ -20,7 +20,10 @@ export class ExecutionDispatcher {
   async dispatch(ticket: ExecutionTicket): Promise<unknown> {
     const engine = this.engines.get(ticket.phase);
     if (!engine) {
-      throw new CoordinatorExecutionError(`No engine registered for phase ${ticket.phase}`, 'dispatcher');
+      throw new CoordinatorExecutionError(
+        `No engine registered for phase ${ticket.phase}`,
+        'dispatcher',
+      );
     }
     return engine.execute(ticket);
   }

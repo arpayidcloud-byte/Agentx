@@ -17,9 +17,7 @@ export class RuntimeExecutor {
   private metricsCollector: MetricsCollector;
   private events: RuntimeEvent[] = [];
 
-  constructor(
-    private pipeline: IRuntimePipeline
-  ) {
+  constructor(private pipeline: IRuntimePipeline) {
     this.auditStore = new AuditStore();
     this.metricsCollector = new MetricsCollector();
   }
@@ -29,7 +27,7 @@ export class RuntimeExecutor {
    */
   async execute(session: any, _config: RuntimeConfig): Promise<unknown> {
     this.metricsCollector.startTiming();
-    
+
     const startAudit = createAuditRecord({
       traceId: session.traceId,
       correlationId: '',
@@ -41,9 +39,9 @@ export class RuntimeExecutor {
 
     try {
       const result = await this.pipeline.execute(session, {} as RuntimeConfig);
-      
+
       this.metricsCollector.recordExecutionTime();
-      
+
       const endAudit = createAuditRecord({
         ...startAudit,
         durationMs: this.metricsCollector.getMetrics().executionTimeMs,
@@ -51,8 +49,10 @@ export class RuntimeExecutor {
       });
       this.auditStore.record(endAudit);
 
-      this.events.push(createRuntimeEvent('runtime.finished', session.id, session.traceId, { result }));
-      
+      this.events.push(
+        createRuntimeEvent('runtime.finished', session.id, session.traceId, { result }),
+      );
+
       return result;
     } catch (error) {
       const errorAudit = createAuditRecord({
@@ -61,14 +61,22 @@ export class RuntimeExecutor {
         metadata: { error: error instanceof Error ? error.message : String(error) },
       });
       this.auditStore.record(errorAudit);
-      
-      this.events.push(createRuntimeEvent('runtime.failed', session.id, session.traceId, { error: String(error) }));
-      
+
+      this.events.push(
+        createRuntimeEvent('runtime.failed', session.id, session.traceId, { error: String(error) }),
+      );
+
       throw error;
     }
   }
 
-  getAuditStore(): AuditStore { return this.auditStore; }
-  getMetricsCollector(): MetricsCollector { return this.metricsCollector; }
-  getEvents(): RuntimeEvent[] { return [...this.events]; }
+  getAuditStore(): AuditStore {
+    return this.auditStore;
+  }
+  getMetricsCollector(): MetricsCollector {
+    return this.metricsCollector;
+  }
+  getEvents(): RuntimeEvent[] {
+    return [...this.events];
+  }
 }

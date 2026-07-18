@@ -54,7 +54,9 @@ describe('Architecture Freeze', () => {
       checksum: '',
       frozenAt: new Date(),
       version: '1.0',
-      packages: [{ id: 'p1', name: 'p', version: '1', description: '', status: 'active', checksum: '' }],
+      packages: [
+        { id: 'p1', name: 'p', version: '1', description: '', status: 'active', checksum: '' },
+      ],
       dependencies: [],
     };
 
@@ -78,7 +80,7 @@ describe('Dependency Map', () => {
     // Invalid inverse architecture dependency
     map.addDependency('core-runtime', 'runtime-adapters');
     expect(map.validate()).toBe(false);
-    
+
     const map2 = new DependencyMap();
     map2.addDependency('runtime', 'native-providers');
     expect(map2.validate()).toBe(false);
@@ -88,7 +90,14 @@ describe('Dependency Map', () => {
 describe('Package Registry', () => {
   it('registers and retrieves packages', () => {
     const registry = new PackageRegistry();
-    const pkg: PackageMetadata = { id: 'p1', name: 'N1', version: 'v1', description: 'desc', status: 'frozen', checksum: 'c' };
+    const pkg: PackageMetadata = {
+      id: 'p1',
+      name: 'N1',
+      version: 'v1',
+      description: 'desc',
+      status: 'frozen',
+      checksum: 'c',
+    };
     registry.register(pkg);
     expect(registry.get('p1')).toEqual(pkg);
     expect(registry.getAll()).toHaveLength(1);
@@ -103,14 +112,38 @@ describe('SDK Rules and Specifications', () => {
 
   it('validates plugin manifests', () => {
     const sdk = new PluginSDK();
-    expect(sdk.validate({ id: '1', name: '', version: '1', lifecycle: 'start', capabilities: [], permissions: [], checksum: '' })).toBe(true);
-    expect(sdk.validate({ id: '', name: '', version: '1', lifecycle: 'start', capabilities: [], permissions: [], checksum: '' })).toBe(false);
+    expect(
+      sdk.validate({
+        id: '1',
+        name: '',
+        version: '1',
+        lifecycle: 'start',
+        capabilities: [],
+        permissions: [],
+        checksum: '',
+      }),
+    ).toBe(true);
+    expect(
+      sdk.validate({
+        id: '',
+        name: '',
+        version: '1',
+        lifecycle: 'start',
+        capabilities: [],
+        permissions: [],
+        checksum: '',
+      }),
+    ).toBe(false);
   });
 
   it('validates provider manifests', () => {
     const sdk = new ProviderSDK();
-    expect(sdk.validate({ id: '1', name: '', version: '', type: '', interfaces: ['i1'], checksum: '' })).toBe(true);
-    expect(sdk.validate({ id: '', name: '', version: '', type: '', interfaces: ['i1'], checksum: '' })).toBe(false);
+    expect(
+      sdk.validate({ id: '1', name: '', version: '', type: '', interfaces: ['i1'], checksum: '' }),
+    ).toBe(true);
+    expect(
+      sdk.validate({ id: '', name: '', version: '', type: '', interfaces: ['i1'], checksum: '' }),
+    ).toBe(false);
   });
 
   it('returns workflow SDK constraints', () => {
@@ -142,7 +175,13 @@ describe('Version Policy and Migration', () => {
 
   it('adds and retrieves migrations', () => {
     const engine = new MigrationEngine();
-    engine.addMigration({ from: '1', to: '2', breakingChanges: [], deprecations: [], replacements: {} });
+    engine.addMigration({
+      from: '1',
+      to: '2',
+      breakingChanges: [],
+      deprecations: [],
+      replacements: {},
+    });
     expect(engine.getMigrations()).toHaveLength(1);
   });
 });
@@ -167,9 +206,16 @@ describe('Documentation and Diagram Generators', () => {
 describe('Developer Validator', () => {
   it('validates frozen vs active states', () => {
     const validator = new DeveloperValidator();
-    const pkg: PackageMetadata = { id: 'p1', name: '', version: '', description: '', status: 'active', checksum: '' };
-    expect(() => validator.validate(pkg, { 'p1': true })).toThrow(ValidationError);
-    expect(() => validator.validate({ ...pkg, status: 'frozen' }, { 'p1': true })).not.toThrow();
+    const pkg: PackageMetadata = {
+      id: 'p1',
+      name: '',
+      version: '',
+      description: '',
+      status: 'active',
+      checksum: '',
+    };
+    expect(() => validator.validate(pkg, { p1: true })).toThrow(ValidationError);
+    expect(() => validator.validate({ ...pkg, status: 'frozen' }, { p1: true })).not.toThrow();
   });
 });
 
@@ -177,7 +223,17 @@ describe('Architecture Report Builder', () => {
   it('builds an immutable valid report', () => {
     const builder = new ArchitectureReportBuilder();
     const rep: ArchitectureReport = {
-      id: '1', frozenAt: new Date(), checksum: '', status: 'BROKEN', metadata: { packages: [], dependencies: [], checksum: '', frozenAt: new Date(), version: '1' }
+      id: '1',
+      frozenAt: new Date(),
+      checksum: '',
+      status: 'BROKEN',
+      metadata: {
+        packages: [],
+        dependencies: [],
+        checksum: '',
+        frozenAt: new Date(),
+        version: '1',
+      },
     };
     const final = builder.build(rep);
     expect(final.status).toBe('VALID');

@@ -4,7 +4,7 @@ import { IToolValidator } from '../interfaces/index.js';
 export class ToolDiscovery implements IToolDiscovery {
   constructor(
     private readonly validator: IToolValidator,
-    private readonly registry: IToolRegistry
+    private readonly registry: IToolRegistry,
   ) {}
 
   public async loadManifest(_path: string): Promise<ToolManifest> {
@@ -19,10 +19,12 @@ export class ToolDiscovery implements IToolDiscovery {
 
     for (const tool of tools) {
       this.validator.detectDuplicate(this.registry, tool.definition.name);
-      
+
       // Ensure the tool category matches one of the declared categories in the manifest
       if (!manifest.declaredToolCategories.includes(tool.definition.category)) {
-        throw new Error(`Tool category '${tool.definition.category}' is not declared in the manifest`);
+        throw new Error(
+          `Tool category '${tool.definition.category}' is not declared in the manifest`,
+        );
       }
 
       this.registry.register(tool);

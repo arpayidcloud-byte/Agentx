@@ -13,7 +13,10 @@ export class WorkflowEngine {
   public dispatcher = new WorkflowDispatcher();
   public executor = new WorkflowExecutor();
 
-  async executeGraph(graph: WorkflowGraph, taskGenerator: (nodeId: string) => WorkflowTask): Promise<unknown[]> {
+  async executeGraph(
+    graph: WorkflowGraph,
+    taskGenerator: (nodeId: string) => WorkflowTask,
+  ): Promise<unknown[]> {
     const results: unknown[] = [];
     for (const node of graph.nodes) {
       const task = taskGenerator(node.id);

@@ -28,7 +28,9 @@ export class ResourceValidator {
       failures.push(`CPU usage ${usage.cpuUsagePercent}% exceeds ceiling ${ceilings.maxCpu}%`);
     }
     if (usage.memoryUsageMb > ceilings.maxMemory) {
-      failures.push(`Memory usage ${usage.memoryUsageMb}MB exceeds ceiling ${ceilings.maxMemory}MB`);
+      failures.push(
+        `Memory usage ${usage.memoryUsageMb}MB exceeds ceiling ${ceilings.maxMemory}MB`,
+      );
     }
     if (usage.tokens > ceilings.maxTokens) {
       failures.push(`Tokens usage ${usage.tokens} exceeds ceiling ${ceilings.maxTokens}`);
@@ -38,7 +40,10 @@ export class ResourceValidator {
     }
 
     if (failures.length > 0) {
-      throw new ResourceValidationError(`Resource validation failed: ${failures.join(', ')}`, 'resource-validator');
+      throw new ResourceValidationError(
+        `Resource validation failed: ${failures.join(', ')}`,
+        'resource-validator',
+      );
     }
 
     return {

@@ -32,20 +32,37 @@ import {
 } from '../src/index.js';
 
 const replayResult = (overrides: Partial<ReplayResult> = {}): ReplayResult => ({
-  sessionId: 's1', success: true, stepsExecuted: 3, checksumValid: true,
-  stateValid: true, eventsValid: true, decisionsValid: true,
-  deterministic: true, durationMs: 10, ...overrides,
+  sessionId: 's1',
+  success: true,
+  stepsExecuted: 3,
+  checksumValid: true,
+  stateValid: true,
+  eventsValid: true,
+  decisionsValid: true,
+  deterministic: true,
+  durationMs: 10,
+  ...overrides,
 });
 
 const workflowState = (overrides: Partial<WorkflowState> = {}): WorkflowState => ({
-  taskStates: { t1: 'DONE' }, decisions: ['d1'], resources: { cpu: 1 }, metrics: { time: 100 },
+  taskStates: { t1: 'DONE' },
+  decisions: ['d1'],
+  resources: { cpu: 1 },
+  metrics: { time: 100 },
   ...overrides,
 });
 
 // ERRORS
 describe('Hardening Errors', () => {
   it('instantiates all error types', () => {
-    const errs = [ReplayMismatchError, CheckpointCorruptionError, IntegrityError, CompensationError, CertificationError, VersionRollbackError];
+    const errs = [
+      ReplayMismatchError,
+      CheckpointCorruptionError,
+      IntegrityError,
+      CompensationError,
+      CertificationError,
+      VersionRollbackError,
+    ];
     for (const Err of errs) {
       const e = new Err('msg', 'src');
       expect(e.message).toBe('msg');
@@ -60,7 +77,9 @@ describe('Hardening Errors', () => {
 // REPLAY ENGINE
 describe('WorkflowReplayEngine', () => {
   let engine: WorkflowReplayEngine;
-  beforeEach(() => { engine = new WorkflowReplayEngine(); });
+  beforeEach(() => {
+    engine = new WorkflowReplayEngine();
+  });
 
   it('executes full replay', async () => {
     const result = await engine.fullReplay('s1', ['step1', 'step2', 'step3']);
@@ -131,7 +150,9 @@ describe('ReplayValidator', () => {
 
   it('validates replay integrity', () => {
     expect(() => validator.validateReplayIntegrity(replayResult())).not.toThrow();
-    expect(() => validator.validateReplayIntegrity(replayResult({ deterministic: false }))).toThrow(ReplayMismatchError);
+    expect(() => validator.validateReplayIntegrity(replayResult({ deterministic: false }))).toThrow(
+      ReplayMismatchError,
+    );
   });
 
   it('compares replay results', () => {
@@ -167,7 +188,9 @@ describe('WorkflowSnapshotDiff', () => {
 // VERSION REGISTRY
 describe('WorkflowVersionRegistry', () => {
   let reg: WorkflowVersionRegistry;
-  beforeEach(() => { reg = new WorkflowVersionRegistry(); });
+  beforeEach(() => {
+    reg = new WorkflowVersionRegistry();
+  });
 
   it('registers and retrieves versions', () => {
     reg.register('wf1', '1.0.0', 'minor');
@@ -246,9 +269,7 @@ describe('CompensationEngine', () => {
 
   it('fails on invalid compensation step', async () => {
     const engine = new CompensationEngine();
-    const steps: CompensationStep[] = [
-      { id: 's1', action: '', undoAction: '', order: 1 },
-    ];
+    const steps: CompensationStep[] = [{ id: 's1', action: '', undoAction: '', order: 1 }];
     const result = await engine.executeCompensation(steps);
     expect(result).toBe(false);
     expect(engine.getHistory()).toHaveLength(1);
@@ -257,9 +278,7 @@ describe('CompensationEngine', () => {
 
   it('fails on negative order', async () => {
     const engine = new CompensationEngine();
-    const steps: CompensationStep[] = [
-      { id: 's1', action: 'a', undoAction: 'ua', order: -1 },
-    ];
+    const steps: CompensationStep[] = [{ id: 's1', action: 'a', undoAction: 'ua', order: -1 }];
     const result = await engine.executeCompensation(steps);
     expect(result).toBe(false);
   });
@@ -283,10 +302,38 @@ describe('WorkflowIntegrityValidator', () => {
   });
 
   it('validates individual missing fields', () => {
-    expect(() => v.validateStateIntegrity({ taskStates: undefined, decisions: [], resources: {}, metrics: {} } as any)).toThrow(IntegrityError);
-    expect(() => v.validateStateIntegrity({ taskStates: {}, decisions: undefined, resources: {}, metrics: {} } as any)).toThrow(IntegrityError);
-    expect(() => v.validateStateIntegrity({ taskStates: {}, decisions: [], resources: undefined, metrics: {} } as any)).toThrow(IntegrityError);
-    expect(() => v.validateStateIntegrity({ taskStates: {}, decisions: [], resources: {}, metrics: undefined } as any)).toThrow(IntegrityError);
+    expect(() =>
+      v.validateStateIntegrity({
+        taskStates: undefined,
+        decisions: [],
+        resources: {},
+        metrics: {},
+      } as any),
+    ).toThrow(IntegrityError);
+    expect(() =>
+      v.validateStateIntegrity({
+        taskStates: {},
+        decisions: undefined,
+        resources: {},
+        metrics: {},
+      } as any),
+    ).toThrow(IntegrityError);
+    expect(() =>
+      v.validateStateIntegrity({
+        taskStates: {},
+        decisions: [],
+        resources: undefined,
+        metrics: {},
+      } as any),
+    ).toThrow(IntegrityError);
+    expect(() =>
+      v.validateStateIntegrity({
+        taskStates: {},
+        decisions: [],
+        resources: {},
+        metrics: undefined,
+      } as any),
+    ).toThrow(IntegrityError);
   });
 
   it('validates graph', () => {
@@ -316,7 +363,7 @@ describe('WorkflowOrchestration Coverage', () => {
   it('covers compensation engine edge cases', async () => {
     const engine = new CompensationEngine();
     const result = await engine.executeCompensation([
-      { id: 's1', action: 'a', undoAction: 'ua', order: 1 }
+      { id: 's1', action: 'a', undoAction: 'ua', order: 1 },
     ]);
     expect(result).toBe(true);
     expect(engine.getHistory()).toHaveLength(1);

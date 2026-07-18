@@ -3,7 +3,12 @@
  * @description Master orchestration engine for PCMRC.
  */
 
-import { ProviderManifest, ReleaseManifest, ReleaseCertificate, ReleaseStatus } from './interfaces.js';
+import {
+  ProviderManifest,
+  ReleaseManifest,
+  ReleaseCertificate,
+  ReleaseStatus,
+} from './interfaces.js';
 import { SemanticVersion } from './semantic-version.js';
 import { APICompatibility } from './api-compatibility.js';
 import { BreakingChangeDetector } from './breaking-change-detector.js';
@@ -17,7 +22,11 @@ import { ReleaseEventEmitter } from './compatibility-events.js';
 import { CompatibilityAuditLogger } from './compatibility-audit.js';
 import { CompatibilityMatrix } from './compatibility-matrix.js';
 import { createHash } from 'crypto';
-import { IncompatibleVersionError, BreakingChangeError, CertificationFailedError } from './errors.js';
+import {
+  IncompatibleVersionError,
+  BreakingChangeError,
+  CertificationFailedError,
+} from './errors.js';
 
 export class CompatibilityEngine {
   public metrics = new CompatibilityMetricsCollector();
@@ -38,17 +47,22 @@ export class CompatibilityEngine {
     manifest: ProviderManifest,
     runtimeVersion: string,
     releaseStatus: ReleaseStatus,
-    oldAPI: string[] = []
+    oldAPI: string[] = [],
   ): Promise<{ manifest: ReleaseManifest; certificate: ReleaseCertificate }> {
     const traceId = `release-check-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
     this.events.emit('compatibility.started', { traceId, providerId: manifest.id });
 
     // Check runtime version match
-    const isSupported = manifest.supportedRuntimeVersions.some(v => this.semver.isCompatible(v, runtimeVersion));
+    const isSupported = manifest.supportedRuntimeVersions.some((v) =>
+      this.semver.isCompatible(v, runtimeVersion),
+    );
     if (!isSupported) {
       this.metrics.rejectedProviders++;
       this.events.emit('compatibility.failed', { traceId, error: 'Incompatible runtime version' });
-      throw new IncompatibleVersionError(`Runtime version ${runtimeVersion} not supported by provider ${manifest.id}`, 'compatibility-engine');
+      throw new IncompatibleVersionError(
+        `Runtime version ${runtimeVersion} not supported by provider ${manifest.id}`,
+        'compatibility-engine',
+      );
     }
 
     // Check breaking changes against old API
@@ -57,7 +71,10 @@ export class CompatibilityEngine {
     if (breaking.length > 0) {
       this.metrics.breakingChangesDetected++;
       this.events.emit('compatibility.failed', { traceId, error: 'Breaking changes detected' });
-      throw new BreakingChangeError(`Breaking changes detected in API: ${breaking.join(', ')}`, 'compatibility-engine');
+      throw new BreakingChangeError(
+        `Breaking changes detected in API: ${breaking.join(', ')}`,
+        'compatibility-engine',
+      );
     }
 
     const score = this.scoreCalc.calculate({
@@ -72,7 +89,10 @@ export class CompatibilityEngine {
     if (!isPolicyValid) {
       this.metrics.rejectedProviders++;
       this.events.emit('compatibility.failed', { traceId, error: 'Policy verification failed' });
-      throw new CertificationFailedError(`Release score ${score.overall} does not meet requirements for status ${releaseStatus}`, 'compatibility-engine');
+      throw new CertificationFailedError(
+        `Release score ${score.overall} does not meet requirements for status ${releaseStatus}`,
+        'compatibility-engine',
+      );
     }
 
     this.matrix.setCompatibility(manifest.id, runtimeVersion, true);
@@ -134,7 +154,12 @@ export class CompatibilityEngine {
 
   generateUpgradePlan(manifest: ProviderManifest, oldVersion: string, breaking: string[]) {
     this.metrics.migrationPlansGenerated++;
-    const plan = this.migrationAnalyzer.analyze(manifest.id, oldVersion, manifest.version, breaking);
+    const plan = this.migrationAnalyzer.analyze(
+      manifest.id,
+      oldVersion,
+      manifest.version,
+      breaking,
+    );
     this.events.emit('migration.generated', { providerId: manifest.id, plan });
     return plan;
   }

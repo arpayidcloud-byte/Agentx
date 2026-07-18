@@ -40,13 +40,16 @@ export class CognitiveKernel {
   public health = new KernelHealthMonitor();
   public hooks = new KernelHookManager();
   public events = new KernelEventBus();
-  
+
   private validator = new KernelValidator();
   private stats = new KernelStatistics(this.metrics);
   private obs = new KernelObservability(this.trace);
 
   constructor(private config: KernelConfig) {
-    this.supervisor.registerComponent('budget', () => this.budget.getSnapshot().globalTokens < 100000);
+    this.supervisor.registerComponent(
+      'budget',
+      () => this.budget.getSnapshot().globalTokens < 100000,
+    );
     this.supervisor.registerComponent('health', () => this.health.getOverallHealth() > 50);
   }
 
@@ -67,7 +70,7 @@ export class CognitiveKernel {
     this.events.publish('kernel.session.created', { sessionId: sessionMeta.sessionId });
     this.trace.startTrace(sessionMeta.traceId);
     this.audit.log(sessionMeta.traceId, sessionMeta.sessionId, 'start_thinking', { input });
-    
+
     await this.hooks.runBeforeThinking(sessionMeta.sessionId);
 
     try {
@@ -80,15 +83,15 @@ export class CognitiveKernel {
 
       const engine = this.registry.resolve('thinking');
       let result = { output: 'default thinking output' };
-      
+
       if (engine) {
-        result = await this.dispatcher.dispatch(engine, input) as any;
+        result = (await this.dispatcher.dispatch(engine, input)) as any;
       }
 
       this.lifecycle.transition('CHECKPOINTING');
       const checkpoint = this.checkpoint.saveCheckpoint(sessionMeta.sessionId, { result });
       this.metrics.recordCheckpoint();
-      
+
       await this.hooks.runAfterCheckpoint(sessionMeta.sessionId, checkpoint);
       this.events.publish('kernel.checkpoint.saved', { checkpointId: checkpoint.metadata.id });
 
@@ -96,13 +99,16 @@ export class CognitiveKernel {
       this.metrics.recordSession(Date.now() - startTime);
       await this.hooks.runAfterThinking(sessionMeta.sessionId, result);
       this.events.publish('kernel.completed', { sessionId: sessionMeta.sessionId, result });
-      
+
       return result;
     } catch (err: any) {
       this.metrics.recordFailure();
       this.lifecycle.transition('FAILED');
       await this.hooks.runOnFailure(sessionMeta.sessionId, err);
-      this.events.publish('kernel.failed', { sessionId: sessionMeta.sessionId, error: err.message });
+      this.events.publish('kernel.failed', {
+        sessionId: sessionMeta.sessionId,
+        error: err.message,
+      });
       throw err;
     }
   }

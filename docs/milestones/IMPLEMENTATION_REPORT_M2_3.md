@@ -4,30 +4,30 @@
 
 ### `packages/tool-sdk/src/shell/` (17 file)
 
-| File | Deskripsi |
-|------|-----------|
-| `interfaces.ts` | Tipe data & kontrak antarmuka untuk seluruh komponen shell execution |
-| `errors.ts` | Hierarki error: `CommandBlockedError`, `CommandNotAllowedError`, `CommandInjectionError`, `ShellTimeoutError`, `ResourceLimitExceededError`, `InvalidWorkingDirectoryError`, `CommandParseError`, `ApprovalRequiredError` |
-| `sandbox.ts` | `ShellSandbox` — workspace jail, validasi CWD, validasi command, environment scrubbing, timeout, resource limits |
-| `executor.ts` | `ShellExecutor` — pipeline eksekusi lengkap dengan validasi, approval, timeout, audit |
-| `command-parser.ts` | `ShellCommandParser` — parsing command string menjadi program, args, flags, working directory |
-| `validator.ts` | `CommandValidator` — validasi allowlist, blocklist, dangerous flags, injection detection |
-| `allowlist.ts` | `AllowlistConfigLoader` — konfigurasi dari `agentx.config.yaml` |
-| `environment.ts` | `EnvironmentScrubber` — penghapusan `AGENTX_SECRET_*`, API keys, tokens |
-| `timeout.ts` | `TimeoutManager` — `AbortController`/`AbortSignal`, default 60 detik |
-| `resource-limits.ts` | `ResourceLimits` — CPU, memory, output, execution time limits |
-| `approval.ts` | `ApprovalClassification` — `shell.build` (Risk 50) vs `shell.exec` (Risk 90) |
-| `process-manager.ts` | `ProcessManager` — `child_process.spawn()` wrapper |
-| `output.ts` | `OutputCollector` — stdout, stderr, exit code, duration |
-| `audit.ts` | `AuditEmitter` — `tool.invoked`, `tool.finished`, `tool.failed` |
-| `shell-build.ts` | `ShellBuildTool` — implementasi shell.build |
-| `shell-exec.ts` | `ShellExecTool` — implementasi shell.exec |
-| `index.ts` | Barrel exports |
+| File                 | Deskripsi                                                                                                                                                                                                                 |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `interfaces.ts`      | Tipe data & kontrak antarmuka untuk seluruh komponen shell execution                                                                                                                                                      |
+| `errors.ts`          | Hierarki error: `CommandBlockedError`, `CommandNotAllowedError`, `CommandInjectionError`, `ShellTimeoutError`, `ResourceLimitExceededError`, `InvalidWorkingDirectoryError`, `CommandParseError`, `ApprovalRequiredError` |
+| `sandbox.ts`         | `ShellSandbox` — workspace jail, validasi CWD, validasi command, environment scrubbing, timeout, resource limits                                                                                                          |
+| `executor.ts`        | `ShellExecutor` — pipeline eksekusi lengkap dengan validasi, approval, timeout, audit                                                                                                                                     |
+| `command-parser.ts`  | `ShellCommandParser` — parsing command string menjadi program, args, flags, working directory                                                                                                                             |
+| `validator.ts`       | `CommandValidator` — validasi allowlist, blocklist, dangerous flags, injection detection                                                                                                                                  |
+| `allowlist.ts`       | `AllowlistConfigLoader` — konfigurasi dari `agentx.config.yaml`                                                                                                                                                           |
+| `environment.ts`     | `EnvironmentScrubber` — penghapusan `AGENTX_SECRET_*`, API keys, tokens                                                                                                                                                   |
+| `timeout.ts`         | `TimeoutManager` — `AbortController`/`AbortSignal`, default 60 detik                                                                                                                                                      |
+| `resource-limits.ts` | `ResourceLimits` — CPU, memory, output, execution time limits                                                                                                                                                             |
+| `approval.ts`        | `ApprovalClassification` — `shell.build` (Risk 50) vs `shell.exec` (Risk 90)                                                                                                                                              |
+| `process-manager.ts` | `ProcessManager` — `child_process.spawn()` wrapper                                                                                                                                                                        |
+| `output.ts`          | `OutputCollector` — stdout, stderr, exit code, duration                                                                                                                                                                   |
+| `audit.ts`           | `AuditEmitter` — `tool.invoked`, `tool.finished`, `tool.failed`                                                                                                                                                           |
+| `shell-build.ts`     | `ShellBuildTool` — implementasi shell.build                                                                                                                                                                               |
+| `shell-exec.ts`      | `ShellExecTool` — implementasi shell.exec                                                                                                                                                                                 |
+| `index.ts`           | Barrel exports                                                                                                                                                                                                            |
 
 ### `packages/tool-sdk/test/shell/` (1 file)
 
-| File | Deskripsi |
-|------|-----------|
+| File            | Deskripsi    |
+| --------------- | ------------ |
 | `shell.test.ts` | 93 test case |
 
 ---
@@ -119,7 +119,7 @@ sequenceDiagram
     P-->>S: ParsedCommand
     S->>V: validate(parsed, config)
     V-->>S: ValidationResult
-    
+
     alt Command Blocked
         V-->>S: CommandBlockedError
         S-->>E: CommandBlockedError
@@ -145,12 +145,15 @@ sequenceDiagram
 ## 4. Arsitektur Sandbox Shell
 
 ### 4.1 Workspace Jail
+
 Semua perintah shell dibatasi dalam `workspaceRoot`. Path yang mencoba keluar dari workspace akan langsung ditolak dengan `InvalidWorkingDirectoryError`.
 
 ### 4.2 Validasi CWD
+
 Setiap `workingDirectory` divalidasi harus berada dalam workspace dan merupakan direktori yang valid.
 
 ### 4.3 Pembersihan Environment
+
 Semua variabel lingkungan yang mengandung pola rahasia dihapus sebelum proses child dimulai. Ini mencegah kebocoran kredensial melalui proses child.
 
 ---
@@ -227,7 +230,7 @@ sequenceDiagram
     T-->>E: { controller, cleanup }
     E->>M: spawn(command, args, { signal: controller.signal })
     M->>S: child_process.spawn()
-    
+
     alt Normal Exit
         S-->>M: { exitCode: 0, stdout, stderr }
         M-->>E: CollectedOutput
@@ -253,9 +256,9 @@ sequenceDiagram
     Note over E: Mulai Eksekusi
     E->>AE: emit(tool.invoked)
     AE->>L: Log: tool.invoked
-    
+
     E->>E: Spawn Process
-    
+
     alt Sukses
         E->>AE: emit(tool.finished, { exitCode, duration, stdoutLen, stderrLen })
         AE->>L: Log: tool.finished
@@ -269,59 +272,61 @@ sequenceDiagram
 
 ## 10. Daftar Keamanan
 
-| Persyaratan | Status | Referensi |
-|-------------|--------|-----------|
-| Workspace jail enforcement | ✅ | Volume 7 Bab 5 |
-| Command injection detection | ✅ | Volume 7 Bab 5, Threat T-002 |
-| Pipe operator detection | ✅ | Volume 7 Bab 5 |
-| Redirection detection | ✅ | Volume 7 Bab 5 |
-| Subshell detection | ✅ | Volume 7 Bab 5 |
-| Blocked command list | ✅ | Volume 7 Bab 5 |
-| Dangerous flag detection | ✅ | Volume 7 Bab 5 |
-| Environment scrubbing | ✅ | Volume 7 Bab 5, Threat T-002 |
-| Timeout enforcement | ✅ | Volume 7 Bab 5 |
-| Resource limits | ✅ | Volume 7 Bab 5 |
-| Audit trail | ✅ | Volume 2, Volume 13 |
-| ADR-0005 classification | ✅ | shell.build=50, shell.exec=90 |
-| child_process.spawn() ONLY | ✅ | Volume 7 Bab 5 |
-| Tidak menggunakan exec() | ✅ | Volume 7 Bab 5 |
-| Tidak menggunakan shell=true | ✅ | Volume 7 Bab 5 |
-| Credential scrubbing | ✅ | Threat T-002 |
-| Structured logging | ✅ | Volume 13 |
+| Persyaratan                  | Status | Referensi                     |
+| ---------------------------- | ------ | ----------------------------- |
+| Workspace jail enforcement   | ✅     | Volume 7 Bab 5                |
+| Command injection detection  | ✅     | Volume 7 Bab 5, Threat T-002  |
+| Pipe operator detection      | ✅     | Volume 7 Bab 5                |
+| Redirection detection        | ✅     | Volume 7 Bab 5                |
+| Subshell detection           | ✅     | Volume 7 Bab 5                |
+| Blocked command list         | ✅     | Volume 7 Bab 5                |
+| Dangerous flag detection     | ✅     | Volume 7 Bab 5                |
+| Environment scrubbing        | ✅     | Volume 7 Bab 5, Threat T-002  |
+| Timeout enforcement          | ✅     | Volume 7 Bab 5                |
+| Resource limits              | ✅     | Volume 7 Bab 5                |
+| Audit trail                  | ✅     | Volume 2, Volume 13           |
+| ADR-0005 classification      | ✅     | shell.build=50, shell.exec=90 |
+| child_process.spawn() ONLY   | ✅     | Volume 7 Bab 5                |
+| Tidak menggunakan exec()     | ✅     | Volume 7 Bab 5                |
+| Tidak menggunakan shell=true | ✅     | Volume 7 Bab 5                |
+| Credential scrubbing         | ✅     | Threat T-002                  |
+| Structured logging           | ✅     | Volume 13                     |
 
 ---
 
 ## 11. Mapping RFC / ADR
 
-| Dokumen | Pemetaan |
-|---------|----------|
-| **Volume 7 Bab 5** | Seluruh validasi command, allowlist, sandboxing |
-| **Volume 2** | Event audit (`tool.invoked`, `tool.finished`, `tool.failed`) |
-| **Volume 13** | Structured logging untuk audit events |
-| **RFC-0027** | Manifest validation untuk shell tools |
-| **RFC-0042** | TypeScript strict mode, JSDoc pada semua API |
-| **ADR-0005** | `shell.build` = Risk 50 (Potentially Destructive), `shell.exec` = Risk 90 (Destructive) |
-| **ADR-0012** | Pembersihan `AGENTX_SECRET_*` dari environment |
-| **Threat T-002** | Deteksi injection, pipe, redirection, subshell |
-| **Constitution Principle 3** | Provider-agnostic — tidak ada vendor SDK |
-| **Constitution Principle 7** | Fail-closed: setiap validasi gagal sebelum I/O |
+| Dokumen                      | Pemetaan                                                                                |
+| ---------------------------- | --------------------------------------------------------------------------------------- |
+| **Volume 7 Bab 5**           | Seluruh validasi command, allowlist, sandboxing                                         |
+| **Volume 2**                 | Event audit (`tool.invoked`, `tool.finished`, `tool.failed`)                            |
+| **Volume 13**                | Structured logging untuk audit events                                                   |
+| **RFC-0027**                 | Manifest validation untuk shell tools                                                   |
+| **RFC-0042**                 | TypeScript strict mode, JSDoc pada semua API                                            |
+| **ADR-0005**                 | `shell.build` = Risk 50 (Potentially Destructive), `shell.exec` = Risk 90 (Destructive) |
+| **ADR-0012**                 | Pembersihan `AGENTX_SECRET_*` dari environment                                          |
+| **Threat T-002**             | Deteksi injection, pipe, redirection, subshell                                          |
+| **Constitution Principle 3** | Provider-agnostic — tidak ada vendor SDK                                                |
+| **Constitution Principle 7** | Fail-closed: setiap validasi gagal sebelum I/O                                          |
 
 ---
 
 ## 12. Coverage
 
-| Metrik | Nilai |
-|--------|-------|
+| Metrik         | Nilai  |
+| -------------- | ------ |
 | **Statements** | 81.12% |
-| **Branches** | 80.64% |
-| **Functions** | 85.71% |
-| **Lines** | 81.12% |
+| **Branches**   | 80.64% |
+| **Functions**  | 85.71% |
+| **Lines**      | 81.12% |
 
 **Catatan:** Coverage mencakup seluruh logika bisnis inti. Jalur yang belum tertutup adalah:
+
 - `interfaces.ts` (interface-only, tidak ada logika eksekusi)
 - Beberapa branch error handling di `process-manager.ts` dan `resource-limits.ts` yang membutuhkan mock filesystem yang kompleks
 
 ### Kategori Test (93 test)
+
 - ✅ Command Parser (16 test)
 - ✅ Dangerous Pattern Detection (14 test)
 - ✅ Injection Pattern Detection (4 test)
@@ -343,12 +348,12 @@ sequenceDiagram
 
 ## 13. Pekerjaan Tersisa
 
-| Item | Milestone | Referensi |
-|------|-----------|-----------|
-| Integration test dengan real filesystem | M2.3 Integration | Volume 7 |
-| Audit event emission ke Event Bus | M2.4 | Volume 2, Volume 13 |
-| Approval gate untuk destructive commands | M2.5 | Volume 5, Volume 7 |
-| Plugin execution sandbox | M3.x | Volume 8 |
+| Item                                     | Milestone        | Referensi           |
+| ---------------------------------------- | ---------------- | ------------------- |
+| Integration test dengan real filesystem  | M2.3 Integration | Volume 7            |
+| Audit event emission ke Event Bus        | M2.4             | Volume 2, Volume 13 |
+| Approval gate untuk destructive commands | M2.5             | Volume 5, Volume 7  |
+| Plugin execution sandbox                 | M3.x             | Volume 8            |
 
 ---
 

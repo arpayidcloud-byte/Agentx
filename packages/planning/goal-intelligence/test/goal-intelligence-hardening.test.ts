@@ -32,11 +32,23 @@ import {
 const defaultBudget: PlanningBudget = { tokens: 1000, timeMs: 10000, cost: 5 };
 
 const makeSubgoal = (id: string, deps: string[] = []): SubGoal => ({
-  id, goalId: 'g1', title: id, objective: `${id} objective`, depth: 1, priority: 5, dependencies: deps, status: 'PENDING',
+  id,
+  goalId: 'g1',
+  title: id,
+  objective: `${id} objective`,
+  depth: 1,
+  priority: 5,
+  dependencies: deps,
+  status: 'PENDING',
 });
 
 const makeStep = (id: string, order: number, parallel: boolean = false): any => ({
-  id, subgoalId: id, strategy: 'sequential', order, parallel, dependencies: [],
+  id,
+  subgoalId: id,
+  strategy: 'sequential',
+  order,
+  parallel,
+  dependencies: [],
 });
 
 // ============================================================
@@ -89,42 +101,135 @@ describe('GoalConstraintValidator', () => {
   it('validates correct constraints', () => {
     const v = new GoalConstraintValidator();
     const valid: GoalConstraints = {
-      priority: 5, budgetLimit: 100, resourceLimit: 10, maxExecutionTime: 5000, maxRetries: 3,
-      requiredCapabilities: [], approvalRequired: false, maxTokenBudget: 5000, maxCost: 10,
+      priority: 5,
+      budgetLimit: 100,
+      resourceLimit: 10,
+      maxExecutionTime: 5000,
+      maxRetries: 3,
+      requiredCapabilities: [],
+      approvalRequired: false,
+      maxTokenBudget: 5000,
+      maxCost: 10,
     };
     expect(() => v.validate(valid)).not.toThrow();
   });
 
   it('rejects invalid priority', () => {
     const v = new GoalConstraintValidator();
-    expect(() => v.validate({ priority: 0, budgetLimit: 100, resourceLimit: 10, maxExecutionTime: 5000, maxRetries: 3, requiredCapabilities: [], approvalRequired: false, maxTokenBudget: 5000, maxCost: 10 })).toThrow(GoalValidationError);
-    expect(() => v.validate({ priority: 11, budgetLimit: 100, resourceLimit: 10, maxExecutionTime: 5000, maxRetries: 3, requiredCapabilities: [], approvalRequired: false, maxTokenBudget: 5000, maxCost: 10 })).toThrow(GoalValidationError);
+    expect(() =>
+      v.validate({
+        priority: 0,
+        budgetLimit: 100,
+        resourceLimit: 10,
+        maxExecutionTime: 5000,
+        maxRetries: 3,
+        requiredCapabilities: [],
+        approvalRequired: false,
+        maxTokenBudget: 5000,
+        maxCost: 10,
+      }),
+    ).toThrow(GoalValidationError);
+    expect(() =>
+      v.validate({
+        priority: 11,
+        budgetLimit: 100,
+        resourceLimit: 10,
+        maxExecutionTime: 5000,
+        maxRetries: 3,
+        requiredCapabilities: [],
+        approvalRequired: false,
+        maxTokenBudget: 5000,
+        maxCost: 10,
+      }),
+    ).toThrow(GoalValidationError);
   });
 
   it('rejects zero budget', () => {
     const v = new GoalConstraintValidator();
-    expect(() => v.validate({ priority: 5, budgetLimit: 0, resourceLimit: 10, maxExecutionTime: 5000, maxRetries: 3, requiredCapabilities: [], approvalRequired: false, maxTokenBudget: 5000, maxCost: 10 })).toThrow(GoalValidationError);
+    expect(() =>
+      v.validate({
+        priority: 5,
+        budgetLimit: 0,
+        resourceLimit: 10,
+        maxExecutionTime: 5000,
+        maxRetries: 3,
+        requiredCapabilities: [],
+        approvalRequired: false,
+        maxTokenBudget: 5000,
+        maxCost: 10,
+      }),
+    ).toThrow(GoalValidationError);
   });
 
   it('rejects zero execution time', () => {
     const v = new GoalConstraintValidator();
-    expect(() => v.validate({ priority: 5, budgetLimit: 100, resourceLimit: 10, maxExecutionTime: 0, maxRetries: 3, requiredCapabilities: [], approvalRequired: false, maxTokenBudget: 5000, maxCost: 10 })).toThrow(GoalValidationError);
+    expect(() =>
+      v.validate({
+        priority: 5,
+        budgetLimit: 100,
+        resourceLimit: 10,
+        maxExecutionTime: 0,
+        maxRetries: 3,
+        requiredCapabilities: [],
+        approvalRequired: false,
+        maxTokenBudget: 5000,
+        maxCost: 10,
+      }),
+    ).toThrow(GoalValidationError);
   });
 
   it('rejects zero token budget', () => {
     const v = new GoalConstraintValidator();
-    expect(() => v.validate({ priority: 5, budgetLimit: 100, resourceLimit: 10, maxExecutionTime: 5000, maxRetries: 3, requiredCapabilities: [], approvalRequired: false, maxTokenBudget: 0, maxCost: 10 })).toThrow(GoalValidationError);
+    expect(() =>
+      v.validate({
+        priority: 5,
+        budgetLimit: 100,
+        resourceLimit: 10,
+        maxExecutionTime: 5000,
+        maxRetries: 3,
+        requiredCapabilities: [],
+        approvalRequired: false,
+        maxTokenBudget: 0,
+        maxCost: 10,
+      }),
+    ).toThrow(GoalValidationError);
   });
 
   it('rejects past deadline', () => {
     const v = new GoalConstraintValidator();
-    expect(() => v.validate({ priority: 5, budgetLimit: 100, resourceLimit: 10, maxExecutionTime: 5000, maxRetries: 3, requiredCapabilities: [], approvalRequired: false, maxTokenBudget: 5000, maxCost: 10, deadline: new Date(0) })).toThrow(GoalValidationError);
+    expect(() =>
+      v.validate({
+        priority: 5,
+        budgetLimit: 100,
+        resourceLimit: 10,
+        maxExecutionTime: 5000,
+        maxRetries: 3,
+        requiredCapabilities: [],
+        approvalRequired: false,
+        maxTokenBudget: 5000,
+        maxCost: 10,
+        deadline: new Date(0),
+      }),
+    ).toThrow(GoalValidationError);
   });
 
   it('allows valid future deadline', () => {
     const v = new GoalConstraintValidator();
     const future = new Date(Date.now() + 100000);
-    expect(() => v.validate({ priority: 5, budgetLimit: 100, resourceLimit: 10, maxExecutionTime: 5000, maxRetries: 3, requiredCapabilities: [], approvalRequired: false, maxTokenBudget: 5000, maxCost: 10, deadline: future })).not.toThrow();
+    expect(() =>
+      v.validate({
+        priority: 5,
+        budgetLimit: 100,
+        resourceLimit: 10,
+        maxExecutionTime: 5000,
+        maxRetries: 3,
+        requiredCapabilities: [],
+        approvalRequired: false,
+        maxTokenBudget: 5000,
+        maxCost: 10,
+        deadline: future,
+      }),
+    ).not.toThrow();
   });
 });
 
@@ -148,11 +253,16 @@ describe('PlanningScorer', () => {
   it('scores simple plans', () => {
     const scorer = new PlanningScorer();
     const plan = {
-      id: 'p1', goalId: 'g1', steps: [
+      id: 'p1',
+      goalId: 'g1',
+      steps: [
         { id: 's1', subgoalId: 's1', strategy: 'seq', order: 1, parallel: false },
         { id: 's2', subgoalId: 's2', strategy: 'seq', order: 2, parallel: true },
       ],
-      totalEstimatedTime: 2000, budget: defaultBudget, checksum: '', timestamp: new Date(),
+      totalEstimatedTime: 2000,
+      budget: defaultBudget,
+      checksum: '',
+      timestamp: new Date(),
     };
     const score = scorer.score(plan);
     expect(score.planningQualityScore).toBeGreaterThanOrEqual(0);
@@ -162,7 +272,15 @@ describe('PlanningScorer', () => {
 
   it('scores empty plans', () => {
     const scorer = new PlanningScorer();
-    const plan = { id: 'p1', goalId: 'g1', steps: [], totalEstimatedTime: 0, budget: defaultBudget, checksum: '', timestamp: new Date() };
+    const plan = {
+      id: 'p1',
+      goalId: 'g1',
+      steps: [],
+      totalEstimatedTime: 0,
+      budget: defaultBudget,
+      checksum: '',
+      timestamp: new Date(),
+    };
     const score = scorer.score(plan);
     expect(score.complexityScore).toBe(0);
   });
@@ -176,7 +294,14 @@ describe('CriticalPathAnalyzer', () => {
     const analyzer = new CriticalPathAnalyzer();
     const steps: any[] = [
       { id: 's1', subgoalId: 's1', strategy: 'seq', order: 1, parallel: false, dependencies: [] },
-      { id: 's2', subgoalId: 's2', strategy: 'seq', order: 2, parallel: false, dependencies: ['s1'] },
+      {
+        id: 's2',
+        subgoalId: 's2',
+        strategy: 'seq',
+        order: 2,
+        parallel: false,
+        dependencies: ['s1'],
+      },
     ];
     const result = analyzer.analyze(steps);
     expect(result.criticalPath).toContain('s1');
@@ -202,7 +327,15 @@ describe('CriticalPathAnalyzer', () => {
 describe('GoalIntegrityValidator', () => {
   it('validates valid plan checksum', () => {
     const validator = new GoalIntegrityValidator();
-    const plan = { id: 'p1', goalId: 'g1', steps: [{ id: 's1', subgoalId: 's1', strategy: 'seq', order: 1, parallel: false }], totalEstimatedTime: 1000, budget: defaultBudget, checksum: '', timestamp: new Date() };
+    const plan = {
+      id: 'p1',
+      goalId: 'g1',
+      steps: [{ id: 's1', subgoalId: 's1', strategy: 'seq', order: 1, parallel: false }],
+      totalEstimatedTime: 1000,
+      budget: defaultBudget,
+      checksum: '',
+      timestamp: new Date(),
+    };
     const payload = JSON.stringify({ goalId: plan.goalId, steps: plan.steps });
     const { createHash } = require('crypto');
     plan.checksum = createHash('sha256').update(payload).digest('hex');
@@ -212,19 +345,55 @@ describe('GoalIntegrityValidator', () => {
 
   it('rejects inconsistent plans', () => {
     const validator = new GoalIntegrityValidator();
-    const plan = { id: 'p1', goalId: 'g1', steps: [{ id: 's1', subgoalId: 's1', strategy: 'seq', order: 1, parallel: false, dependencies: ['missing'] }], totalEstimatedTime: 1000, budget: defaultBudget, checksum: '', timestamp: new Date() };
+    const plan = {
+      id: 'p1',
+      goalId: 'g1',
+      steps: [
+        {
+          id: 's1',
+          subgoalId: 's1',
+          strategy: 'seq',
+          order: 1,
+          parallel: false,
+          dependencies: ['missing'],
+        },
+      ],
+      totalEstimatedTime: 1000,
+      budget: defaultBudget,
+      checksum: '',
+      timestamp: new Date(),
+    };
     expect(validator.validatePlanningConsistency(plan)).toBe(false);
   });
 
   it('rejects empty plans', () => {
     const validator = new GoalIntegrityValidator();
-    const plan = { id: 'p1', goalId: 'g1', steps: [], totalEstimatedTime: 0, budget: defaultBudget, checksum: '', timestamp: new Date() };
+    const plan = {
+      id: 'p1',
+      goalId: 'g1',
+      steps: [],
+      totalEstimatedTime: 0,
+      budget: defaultBudget,
+      checksum: '',
+      timestamp: new Date(),
+    };
     expect(validator.validatePlanningConsistency(plan)).toBe(false);
   });
 
   it('rejects duplicate step IDs', () => {
     const validator = new GoalIntegrityValidator();
-    const plan = { id: 'p1', goalId: 'g1', steps: [{ id: 's1', subgoalId: 's1', strategy: 'seq', order: 1, parallel: false }, { id: 's1', subgoalId: 's1', strategy: 'seq', order: 2, parallel: false }], totalEstimatedTime: 2000, budget: defaultBudget, checksum: '', timestamp: new Date() };
+    const plan = {
+      id: 'p1',
+      goalId: 'g1',
+      steps: [
+        { id: 's1', subgoalId: 's1', strategy: 'seq', order: 1, parallel: false },
+        { id: 's1', subgoalId: 's1', strategy: 'seq', order: 2, parallel: false },
+      ],
+      totalEstimatedTime: 2000,
+      budget: defaultBudget,
+      checksum: '',
+      timestamp: new Date(),
+    };
     expect(validator.validatePlanningConsistency(plan)).toBe(false);
   });
 });
@@ -261,7 +430,9 @@ describe('GoalStatisticsCollector', () => {
 describe('Goal Engine Hardened Orchestration', () => {
   let engine: GoalEngine;
 
-  beforeEach(() => { engine = new GoalEngine(); });
+  beforeEach(() => {
+    engine = new GoalEngine();
+  });
 
   it('processes goal with cost estimation and integrity validation', async () => {
     const result = await engine.processGoal('Test Goal', 'Description', 2, 'safe');
@@ -271,7 +442,15 @@ describe('Goal Engine Hardened Orchestration', () => {
   });
 
   it('recovers planning sessions', () => {
-    engine.checkpointManager.save('g1', { id: 'p1', goalId: 'g1', steps: [], totalEstimatedTime: 0, budget: defaultBudget, checksum: '', timestamp: new Date() });
+    engine.checkpointManager.save('g1', {
+      id: 'p1',
+      goalId: 'g1',
+      steps: [],
+      totalEstimatedTime: 0,
+      budget: defaultBudget,
+      checksum: '',
+      timestamp: new Date(),
+    });
     const result = engine.recoverPlanning('g1');
     expect(result.restored).toBe(true);
     expect(engine.recoverPlanning('missing').restored).toBe(false);
@@ -307,14 +486,30 @@ describe('Hook Direct Execution Tests', () => {
     const hm = new GoalHookManager();
     const results: string[] = [];
     hm.register({
-      beforeConstraintValidation: async (id: string) => { results.push(`bc:${id}`); },
-      afterConstraintValidation: async (id: string) => { results.push(`ac:${id}`); },
-      beforePlanningScore: async (id: string) => { results.push(`bs:${id}`); },
-      afterPlanningScore: async (id: string, score: number) => { results.push(`as:${id}:${score}`); },
-      beforeIntegrityValidation: async (id: string) => { results.push(`bi:${id}`); },
-      afterIntegrityValidation: async (id: string) => { results.push(`ai:${id}`); },
-      beforeCriticalPath: async (id: string) => { results.push(`bcp:${id}`); },
-      afterCriticalPath: async (id: string, path: string[]) => { results.push(`acp:${id}:${path.length}`); },
+      beforeConstraintValidation: async (id: string) => {
+        results.push(`bc:${id}`);
+      },
+      afterConstraintValidation: async (id: string) => {
+        results.push(`ac:${id}`);
+      },
+      beforePlanningScore: async (id: string) => {
+        results.push(`bs:${id}`);
+      },
+      afterPlanningScore: async (id: string, score: number) => {
+        results.push(`as:${id}:${score}`);
+      },
+      beforeIntegrityValidation: async (id: string) => {
+        results.push(`bi:${id}`);
+      },
+      afterIntegrityValidation: async (id: string) => {
+        results.push(`ai:${id}`);
+      },
+      beforeCriticalPath: async (id: string) => {
+        results.push(`bcp:${id}`);
+      },
+      afterCriticalPath: async (id: string, path: string[]) => {
+        results.push(`acp:${id}:${path.length}`);
+      },
     });
 
     await hm.runBeforeConstraintValidation('g1');
@@ -371,7 +566,19 @@ describe('Stress and Edge Cases', () => {
 
   it('validates multiple constraint violations', () => {
     const v = new GoalConstraintValidator();
-    expect(() => v.validate({ priority: 0, budgetLimit: 0, resourceLimit: 0, maxExecutionTime: 0, maxRetries: 0, requiredCapabilities: [], approvalRequired: false, maxTokenBudget: 0, maxCost: 0 })).toThrow(GoalValidationError);
+    expect(() =>
+      v.validate({
+        priority: 0,
+        budgetLimit: 0,
+        resourceLimit: 0,
+        maxExecutionTime: 0,
+        maxRetries: 0,
+        requiredCapabilities: [],
+        approvalRequired: false,
+        maxTokenBudget: 0,
+        maxCost: 0,
+      }),
+    ).toThrow(GoalValidationError);
   });
 
   it('handles critical path with mixed parallel and serial tasks', () => {
@@ -379,7 +586,14 @@ describe('Stress and Edge Cases', () => {
     const steps: any[] = [
       { id: 's1', subgoalId: 's1', strategy: 'seq', order: 1, parallel: false, dependencies: [] },
       { id: 's2', subgoalId: 's2', strategy: 'seq', order: 2, parallel: true, dependencies: [] },
-      { id: 's3', subgoalId: 's3', strategy: 'seq', order: 3, parallel: false, dependencies: ['s2'] },
+      {
+        id: 's3',
+        subgoalId: 's3',
+        strategy: 'seq',
+        order: 3,
+        parallel: false,
+        dependencies: ['s2'],
+      },
     ];
     const result = analyzer.analyze(steps);
     expect(result.executionLayers.length).toBe(3);
@@ -388,21 +602,62 @@ describe('Stress and Edge Cases', () => {
 
   it('validates planning integrity with complex dependencies', () => {
     const validator = new GoalIntegrityValidator();
-    const plan = { id: 'p1', goalId: 'g1', steps: [{ id: 's1', subgoalId: 's1', strategy: 'seq', order: 1, parallel: false, dependencies: [] }, { id: 's2', subgoalId: 's2', strategy: 'seq', order: 2, parallel: false, dependencies: ['s1'] }], totalEstimatedTime: 2000, budget: defaultBudget, checksum: '', timestamp: new Date() };
+    const plan = {
+      id: 'p1',
+      goalId: 'g1',
+      steps: [
+        { id: 's1', subgoalId: 's1', strategy: 'seq', order: 1, parallel: false, dependencies: [] },
+        {
+          id: 's2',
+          subgoalId: 's2',
+          strategy: 'seq',
+          order: 2,
+          parallel: false,
+          dependencies: ['s1'],
+        },
+      ],
+      totalEstimatedTime: 2000,
+      budget: defaultBudget,
+      checksum: '',
+      timestamp: new Date(),
+    };
     expect(validator.validatePlanningConsistency(plan)).toBe(true);
   });
 
   it('scores plans with various structures', () => {
     const scorer = new PlanningScorer();
     // Low complexity plan
-    const plan1 = { id: 'p1', goalId: 'g1', steps: [{ id: 's1', subgoalId: 's1', strategy: 'seq', order: 1, parallel: true }], totalEstimatedTime: 1000, budget: { tokens: 50, timeMs: 5000, cost: 2 }, checksum: '', timestamp: new Date() };
+    const plan1 = {
+      id: 'p1',
+      goalId: 'g1',
+      steps: [{ id: 's1', subgoalId: 's1', strategy: 'seq', order: 1, parallel: true }],
+      totalEstimatedTime: 1000,
+      budget: { tokens: 50, timeMs: 5000, cost: 2 },
+      checksum: '',
+      timestamp: new Date(),
+    };
     const score1 = scorer.score(plan1);
     expect(score1.planningQualityScore).toBeGreaterThanOrEqual(0);
     expect(score1.planningQualityScore).toBeLessThanOrEqual(100);
     expect(['Excellent', 'Good', 'Acceptable', 'Poor']).toContain(score1.grade);
 
     // High complexity plan
-    const plan2 = { id: 'p2', goalId: 'g2', steps: Array.from({ length: 20 }, (_, i) => ({ id: `s${i}`, subgoalId: `s${i}`, strategy: 'seq', order: i, parallel: false, dependencies: [] })), totalEstimatedTime: 20000, budget: { tokens: 5000, timeMs: 50000, cost: 500 }, checksum: '', timestamp: new Date() };
+    const plan2 = {
+      id: 'p2',
+      goalId: 'g2',
+      steps: Array.from({ length: 20 }, (_, i) => ({
+        id: `s${i}`,
+        subgoalId: `s${i}`,
+        strategy: 'seq',
+        order: i,
+        parallel: false,
+        dependencies: [],
+      })),
+      totalEstimatedTime: 20000,
+      budget: { tokens: 5000, timeMs: 50000, cost: 500 },
+      checksum: '',
+      timestamp: new Date(),
+    };
     const score2 = scorer.score(plan2);
     expect(score2.planningQualityScore).toBeGreaterThanOrEqual(0);
     expect(score2.planningQualityScore).toBeLessThanOrEqual(100);
@@ -423,9 +678,9 @@ describe('Stress and Edge Cases', () => {
     collector.recordGoalCompletion(true, 3, 2, 1, 1, 20, 20, 7000);
     collector.recordRecovery();
     const stats = collector.getStatistics();
-    expect(stats.goalCompletionRatio).toBeCloseTo(2/3, 1);
-    expect(stats.planningFailureRatio).toBeCloseTo(1/3, 1);
-    expect(stats.recoveryRatio).toBeCloseTo(1/3, 1);
+    expect(stats.goalCompletionRatio).toBeCloseTo(2 / 3, 1);
+    expect(stats.planningFailureRatio).toBeCloseTo(1 / 3, 1);
+    expect(stats.recoveryRatio).toBeCloseTo(1 / 3, 1);
   });
 
   it('provenance with empty overrides', () => {

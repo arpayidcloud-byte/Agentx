@@ -3,14 +3,11 @@
  * @description Graph models and utilities for workflow execution.
  */
 
-import {
-  WorkflowDefinition,
-  WorkflowNode,
-  WorkflowEdge,
-} from './interfaces.js';
+import { WorkflowDefinition, WorkflowNode, WorkflowEdge } from './interfaces.js';
 
 /** @description Node types in a workflow graph */
-type NodeType = 'task' | 'approval' | 'conditional' | 'loop' | 'parallel' | 'tool' | 'agent' | 'retry';
+type NodeType =
+  'task' | 'approval' | 'conditional' | 'loop' | 'parallel' | 'tool' | 'agent' | 'retry';
 
 /**
  * Creates a new workflow definition
@@ -20,7 +17,7 @@ export function createWorkflow(
   name: string,
   createdBy: string,
   nodes: WorkflowNode[] = [],
-  edges: WorkflowEdge[] = []
+  edges: WorkflowEdge[] = [],
 ): WorkflowDefinition {
   const now = new Date();
   return {
@@ -47,7 +44,7 @@ export function createNode(
   type: NodeType,
   name: string,
   config: any,
-  options?: { timeout?: number; retryPolicy?: any }
+  options?: { timeout?: number; retryPolicy?: any },
 ): WorkflowNode {
   return {
     id,
@@ -62,21 +59,14 @@ export function createNode(
 /**
  * Creates a new workflow edge
  */
-export function createEdge(
-  source: string,
-  target: string,
-  condition?: string
-): WorkflowEdge {
+export function createEdge(source: string, target: string, condition?: string): WorkflowEdge {
   return { source, target, condition };
 }
 
 /**
  * Topological sort for DAG execution
  */
-export function topologicalSort(
-  nodes: WorkflowNode[],
-  edges: WorkflowEdge[]
-): WorkflowNode[] {
+export function topologicalSort(nodes: WorkflowNode[], edges: WorkflowEdge[]): WorkflowNode[] {
   const inDegree = new Map<string, number>();
   const adjacency = new Map<string, string[]>();
 
@@ -98,7 +88,7 @@ export function topologicalSort(
   }
 
   const sorted: WorkflowNode[] = [];
-  const nodeMap = new Map(nodes.map(n => [n.id, n]));
+  const nodeMap = new Map(nodes.map((n) => [n.id, n]));
 
   while (queue.length > 0) {
     const current = queue.shift()!;
@@ -124,10 +114,7 @@ export function topologicalSort(
 /**
  * Detects cycles in the graph
  */
-export function detectCycle(
-  nodes: WorkflowNode[],
-  edges: WorkflowEdge[]
-): boolean {
+export function detectCycle(nodes: WorkflowNode[], edges: WorkflowEdge[]): boolean {
   const visited = new Set<string>();
   const recursionStack = new Set<string>();
   const adjacency = new Map<string, string[]>();
@@ -168,25 +155,15 @@ export function detectCycle(
 /**
  * Gets all predecessors of a node
  */
-export function getPredecessors(
-  nodeId: string,
-  edges: WorkflowEdge[]
-): string[] {
-  return edges
-    .filter(e => e.target === nodeId)
-    .map(e => e.source);
+export function getPredecessors(nodeId: string, edges: WorkflowEdge[]): string[] {
+  return edges.filter((e) => e.target === nodeId).map((e) => e.source);
 }
 
 /**
  * Gets all successors of a node
  */
-export function getSuccessors(
-  nodeId: string,
-  edges: WorkflowEdge[]
-): string[] {
-  return edges
-    .filter(e => e.source === nodeId)
-    .map(e => e.target);
+export function getSuccessors(nodeId: string, edges: WorkflowEdge[]): string[] {
+  return edges.filter((e) => e.source === nodeId).map((e) => e.target);
 }
 
 /**
@@ -195,10 +172,10 @@ export function getSuccessors(
 export function isNodeReady(
   nodeId: string,
   edges: WorkflowEdge[],
-  completedNodes: Set<string>
+  completedNodes: Set<string>,
 ): boolean {
   const predecessors = getPredecessors(nodeId, edges);
-  return predecessors.every(p => completedNodes.has(p));
+  return predecessors.every((p) => completedNodes.has(p));
 }
 
 /**
@@ -208,11 +185,12 @@ export function findReadyNodes(
   nodes: WorkflowNode[],
   edges: WorkflowEdge[],
   completedNodes: Set<string>,
-  activeNodes: Set<string>
+  activeNodes: Set<string>,
 ): WorkflowNode[] {
   return nodes.filter(
-    n => !completedNodes.has(n.id) &&
-    !activeNodes.has(n.id) &&
-    isNodeReady(n.id, edges, completedNodes)
+    (n) =>
+      !completedNodes.has(n.id) &&
+      !activeNodes.has(n.id) &&
+      isNodeReady(n.id, edges, completedNodes),
   );
 }

@@ -19,7 +19,10 @@ export class ExecutionHistory {
   record(workflowId: string, goalId: string, status: string): void {
     const payload = JSON.stringify({ workflowId, goalId, status });
     const record: ExecutionHistoryRecord = {
-      workflowId, goalId, status, timestamp: new Date(),
+      workflowId,
+      goalId,
+      status,
+      timestamp: new Date(),
       checksum: createHash('sha256').update(payload).digest('hex'),
     };
     this.records.push(Object.freeze(record));

@@ -6,20 +6,65 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import {
   InvariantViolationError,
-  RuntimeLifecycleManager, RuntimeStateManager, RuntimeSupervisor, RuntimeHealthManager,
-  RuntimeState, HealthStatus,
-  ServiceRegistry, ServiceDiscovery, PluginManager, ExtensionManager,
-  ConfigurationManager, SecretManager, FeatureFlagManager,
-  MultiTenantManager, WorkspaceManager, SessionManager,
-  RuntimePolicyEngine, RuntimeSecurityEngine, RuntimeCompatibilityEngine, ResourceManager,
-  RuntimeOrchestrator, RuntimeBootstrapper, ServiceCoordinator, PluginCoordinator,
-  ConfigurationCoordinator, TenantCoordinator, RuntimeMigrationCoordinator, RuntimeUpgradeCoordinator,
-  APIGateway, RESTGateway, WebSocketGateway, EventStreaming, InternalServiceBus,
-  DistributedCache, BackgroundJobScheduler, QueueManager, DistributedLockManager,
-  StructuredLogging, MetricsCollector, DistributedTracing, HealthEndpoint, ReadinessProbe, LivenessProbe, DiagnosticEngine,
-  AuthenticationManager, AuthorizationManager, RBACEngine, APIKeyManager, TokenManager, SecretRotation, AuditLogging,
-  DockerRuntime, KubernetesRuntime, RuntimeConfigurationLoader, RuntimeEnvironmentManager,
-  AutoscalingSupport, HighAvailabilitySupport, GracefulShutdown, RollingUpgradeSupport,
+  RuntimeLifecycleManager,
+  RuntimeStateManager,
+  RuntimeSupervisor,
+  RuntimeHealthManager,
+  RuntimeState,
+  HealthStatus,
+  ServiceRegistry,
+  ServiceDiscovery,
+  PluginManager,
+  ExtensionManager,
+  ConfigurationManager,
+  SecretManager,
+  FeatureFlagManager,
+  MultiTenantManager,
+  WorkspaceManager,
+  SessionManager,
+  RuntimePolicyEngine,
+  RuntimeSecurityEngine,
+  RuntimeCompatibilityEngine,
+  ResourceManager,
+  RuntimeOrchestrator,
+  RuntimeBootstrapper,
+  ServiceCoordinator,
+  PluginCoordinator,
+  ConfigurationCoordinator,
+  TenantCoordinator,
+  RuntimeMigrationCoordinator,
+  RuntimeUpgradeCoordinator,
+  APIGateway,
+  RESTGateway,
+  WebSocketGateway,
+  EventStreaming,
+  InternalServiceBus,
+  DistributedCache,
+  BackgroundJobScheduler,
+  QueueManager,
+  DistributedLockManager,
+  StructuredLogging,
+  MetricsCollector,
+  DistributedTracing,
+  HealthEndpoint,
+  ReadinessProbe,
+  LivenessProbe,
+  DiagnosticEngine,
+  AuthenticationManager,
+  AuthorizationManager,
+  RBACEngine,
+  APIKeyManager,
+  TokenManager,
+  SecretRotation,
+  AuditLogging,
+  DockerRuntime,
+  KubernetesRuntime,
+  RuntimeConfigurationLoader,
+  RuntimeEnvironmentManager,
+  AutoscalingSupport,
+  HighAvailabilitySupport,
+  GracefulShutdown,
+  RollingUpgradeSupport,
 } from '../src/index.js';
 
 // ============================================================================
@@ -40,7 +85,9 @@ describe('InvariantViolationError', () => {
 // ============================================================================
 describe('RuntimeLifecycleManager', () => {
   let lm: RuntimeLifecycleManager;
-  beforeEach(() => { lm = new RuntimeLifecycleManager(); });
+  beforeEach(() => {
+    lm = new RuntimeLifecycleManager();
+  });
 
   it('starts at CREATED', () => {
     expect(lm.getState()).toBe('CREATED');
@@ -69,7 +116,9 @@ describe('RuntimeLifecycleManager', () => {
 // ============================================================================
 describe('RuntimeStateManager', () => {
   let sm: RuntimeStateManager;
-  beforeEach(() => { sm = new RuntimeStateManager(); });
+  beforeEach(() => {
+    sm = new RuntimeStateManager();
+  });
 
   it('sets and gets values', () => {
     sm.set('k1', { data: 1 });
@@ -106,14 +155,24 @@ describe('RuntimeStateManager', () => {
 describe('RuntimeSupervisor', () => {
   it('registers and checks health', () => {
     const sup = new RuntimeSupervisor();
-    sup.register('c1', () => ({ componentId: 'c1', status: 'HEALTHY', lastCheck: new Date(), details: {} }));
+    sup.register('c1', () => ({
+      componentId: 'c1',
+      status: 'HEALTHY',
+      lastCheck: new Date(),
+      details: {},
+    }));
     expect(sup.checkAll()).toHaveLength(1);
     expect(sup.isHealthy()).toBe(true);
   });
 
   it('unregisters components', () => {
     const sup = new RuntimeSupervisor();
-    sup.register('c1', () => ({ componentId: 'c1', status: 'HEALTHY', lastCheck: new Date(), details: {} }));
+    sup.register('c1', () => ({
+      componentId: 'c1',
+      status: 'HEALTHY',
+      lastCheck: new Date(),
+      details: {},
+    }));
     sup.unregister('c1');
     expect(sup.checkAll()).toHaveLength(0);
   });
@@ -148,7 +207,9 @@ describe('RuntimeHealthManager', () => {
 // ============================================================================
 describe('ServiceRegistry', () => {
   let reg: ServiceRegistry;
-  beforeEach(() => { reg = new ServiceRegistry(); });
+  beforeEach(() => {
+    reg = new ServiceRegistry();
+  });
 
   it('registers services', () => {
     const svc = reg.register('auth', '1.0.0');
@@ -200,7 +261,9 @@ describe('ServiceDiscovery', () => {
 // ============================================================================
 describe('PluginManager', () => {
   let pm: PluginManager;
-  beforeEach(() => { pm = new PluginManager(); });
+  beforeEach(() => {
+    pm = new PluginManager();
+  });
 
   it('loads and unloads plugins', () => {
     const p = pm.load('my-plugin', '1.0.0');
@@ -279,7 +342,9 @@ describe('ExtensionManager', () => {
 // ============================================================================
 describe('ConfigurationManager', () => {
   let cm: ConfigurationManager;
-  beforeEach(() => { cm = new ConfigurationManager(); });
+  beforeEach(() => {
+    cm = new ConfigurationManager();
+  });
 
   it('sets and gets config', () => {
     cm.set('k1', { value: 1 }, 'env');
@@ -414,32 +479,71 @@ describe('FeatureFlagManager', () => {
 // ============================================================================
 describe('MultiTenantManager', () => {
   let tm: MultiTenantManager;
-  beforeEach(() => { tm = new MultiTenantManager(); });
+  beforeEach(() => {
+    tm = new MultiTenantManager();
+  });
 
   it('creates tenants', () => {
-    const t = tm.create('Acme', 'enterprise', { maxServices: 100, maxPlugins: 50, maxRequestsPerSecond: 10000, storageMb: 10240 });
+    const t = tm.create('Acme', 'enterprise', {
+      maxServices: 100,
+      maxPlugins: 50,
+      maxRequestsPerSecond: 10000,
+      storageMb: 10240,
+    });
     expect(t.name).toBe('Acme');
     expect(tm.getAll()).toHaveLength(1);
   });
 
   it('updates quota', () => {
-    const t = tm.create('Acme', 'enterprise', { maxServices: 100, maxPlugins: 50, maxRequestsPerSecond: 10000, storageMb: 10240 });
-    const updated = tm.updateQuota(t.tenantId, { maxServices: 200, maxPlugins: 50, maxRequestsPerSecond: 10000, storageMb: 20480 });
+    const t = tm.create('Acme', 'enterprise', {
+      maxServices: 100,
+      maxPlugins: 50,
+      maxRequestsPerSecond: 10000,
+      storageMb: 10240,
+    });
+    const updated = tm.updateQuota(t.tenantId, {
+      maxServices: 200,
+      maxPlugins: 50,
+      maxRequestsPerSecond: 10000,
+      storageMb: 20480,
+    });
     expect(updated.quota.maxServices).toBe(200);
   });
 
   it('throws on update for missing tenant', () => {
-    expect(() => tm.updateQuota('missing', { maxServices: 1, maxPlugins: 1, maxRequestsPerSecond: 1, storageMb: 1 })).toThrow('Tenant not found');
+    expect(() =>
+      tm.updateQuota('missing', {
+        maxServices: 1,
+        maxPlugins: 1,
+        maxRequestsPerSecond: 1,
+        storageMb: 1,
+      }),
+    ).toThrow('Tenant not found');
   });
 
   it('deletes tenants', () => {
-    const t = tm.create('Acme', 'enterprise', { maxServices: 100, maxPlugins: 50, maxRequestsPerSecond: 10000, storageMb: 10240 });
+    const t = tm.create('Acme', 'enterprise', {
+      maxServices: 100,
+      maxPlugins: 50,
+      maxRequestsPerSecond: 10000,
+      storageMb: 10240,
+    });
     expect(tm.delete(t.tenantId)).toBe(true);
   });
 
   it('gets all tenants', () => {
-    tm.create('A', 'free', { maxServices: 1, maxPlugins: 1, maxRequestsPerSecond: 1, storageMb: 1 });
-    tm.create('B', 'pro', { maxServices: 10, maxPlugins: 10, maxRequestsPerSecond: 100, storageMb: 100 });
+    tm.create('A', 'free', {
+      maxServices: 1,
+      maxPlugins: 1,
+      maxRequestsPerSecond: 1,
+      storageMb: 1,
+    });
+    tm.create('B', 'pro', {
+      maxServices: 10,
+      maxPlugins: 10,
+      maxRequestsPerSecond: 100,
+      storageMb: 100,
+    });
     expect(tm.getAll()).toHaveLength(2);
   });
 });
@@ -676,9 +780,12 @@ describe('ServiceCoordinator', () => {
   it('registers and deregisters services', () => {
     const reg = new ServiceRegistry();
     const sc = new ServiceCoordinator(reg);
-    const results = sc.registerAll([{ name: 'a', version: '1' }, { name: 'b', version: '2' }]);
+    const results = sc.registerAll([
+      { name: 'a', version: '1' },
+      { name: 'b', version: '2' },
+    ]);
     expect(results).toHaveLength(2);
-    sc.deregisterAll(results.map(r => r.serviceId));
+    sc.deregisterAll(results.map((r) => r.serviceId));
     expect(reg.getAll()).toHaveLength(0);
   });
 });
@@ -689,9 +796,9 @@ describe('PluginCoordinator', () => {
     const pc = new PluginCoordinator(pm);
     const results = pc.loadAll([{ name: 'p1', version: '1' }]);
     expect(results).toHaveLength(1);
-    pc.disableAll(results.map(r => r.pluginId));
+    pc.disableAll(results.map((r) => r.pluginId));
     expect(pm.getEnabled()).toHaveLength(0);
-    pc.enableAll(results.map(r => r.pluginId));
+    pc.enableAll(results.map((r) => r.pluginId));
     expect(pm.getEnabled()).toHaveLength(1);
   });
 });
@@ -1196,7 +1303,17 @@ describe('Enterprise Runtime Integration', () => {
     const tenants = new MultiTenantManager();
     const policy = new RuntimePolicyEngine();
 
-    const orchestrator = new RuntimeOrchestrator(lifecycle, state, supervisor, health, services, plugins, config, tenants, policy);
+    const orchestrator = new RuntimeOrchestrator(
+      lifecycle,
+      state,
+      supervisor,
+      health,
+      services,
+      plugins,
+      config,
+      tenants,
+      policy,
+    );
 
     await orchestrator.startup();
     expect(orchestrator.getStatus()).toBe('RUNNING');
@@ -1205,7 +1322,12 @@ describe('Enterprise Runtime Integration', () => {
     services.register('api', '1.0.0');
     expect(services.getAll()).toHaveLength(2);
 
-    tenants.create('Acme', 'enterprise', { maxServices: 100, maxPlugins: 50, maxRequestsPerSecond: 10000, storageMb: 10240 });
+    tenants.create('Acme', 'enterprise', {
+      maxServices: 100,
+      maxPlugins: 50,
+      maxRequestsPerSecond: 10000,
+      storageMb: 10240,
+    });
     expect(tenants.getAll()).toHaveLength(1);
 
     policy.addRule('allow-read', 'read', 'ALLOW');

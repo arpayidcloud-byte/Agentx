@@ -3,7 +3,12 @@
  * @description Native Anthropic provider integration adapter.
  */
 
-import { IConfigurationProvider, INativeProvider, CompletionOptions, CompletionResponse } from '../interfaces.js';
+import {
+  IConfigurationProvider,
+  INativeProvider,
+  CompletionOptions,
+  CompletionResponse,
+} from '../interfaces.js';
 import { ConfigurationError } from '../errors.js';
 
 export class AnthropicProvider implements INativeProvider {
@@ -32,7 +37,7 @@ export class AnthropicProvider implements INativeProvider {
   }
 
   async getHealth() {
-    return { status: this.connected ? 'UP' : 'DOWN' as const, latencyMs: 18 };
+    return { status: this.connected ? 'UP' : ('DOWN' as const), latencyMs: 18 };
   }
 
   getMetadata() {

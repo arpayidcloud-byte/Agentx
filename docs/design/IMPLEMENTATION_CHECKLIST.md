@@ -1,6 +1,7 @@
 # IMPLEMENTATION CHECKLIST — agentx Platform
+
 **Version:** 1.0-draft  
-**Date:** 2026-07-14  
+**Date:** 2026-07-14
 
 This checklist is used by the Implementation Team to track progress and unblock downstream phases. It maps directly to the exit criteria defined in the EEP.
 
@@ -9,6 +10,7 @@ This checklist is used by the Implementation Team to track progress and unblock 
 ## [ ] PHASE 0: Foundation Validation
 
 ### Governance Gates
+
 - [ ] `PERFORMANCE_TARGETS.md` ratified via RFC + ADR (Blocker B-01)
 - [ ] Interaction-matrix diagram complete (ADR-0015)
 - [ ] Task lifecycle sequence diagram complete
@@ -16,6 +18,7 @@ This checklist is used by the Implementation Team to track progress and unblock 
 - [ ] All 16 Volume statuses ≥ "Approved — Architecture"
 
 ### Tooling Gates
+
 - [ ] Monorepo layout scaffolded (Vol 1 Ch.4)
 - [ ] TypeScript `strict: true` across all packages (RFC-0042)
 - [ ] `handbook-lint` package built and running in CI (RFC-0040)
@@ -27,18 +30,21 @@ This checklist is used by the Implementation Team to track progress and unblock 
 ## [ ] PHASE 1: Core Runtime
 
 ### Secrets Package
+
 - [ ] `SecretStore` interfaces defined
 - [ ] `EnvVarSecretStore` reads from `process.env`; throws on `set()`
 - [ ] `CachedCredentialResolver` implemented (LRU cache, 5-min TTL, 5s negative TTL)
 - [ ] **Contract Test Pass:** `CredentialResolver.resolve()` never logs credential value
 
 ### Event Bus & Scheduler
+
 - [ ] `EventTopic` enum canonical list defined
 - [ ] `EventBus` implemented with at-least-once delivery (ADR-0001)
 - [ ] **Contract Test Pass:** Duplicate publish with same `event.id` → handler called exactly once
 - [ ] `Scheduler` implements `enqueue`, `pause`, `resume` with `maxParallelAgents` config
 
 ### Orchestrator & Logging
+
 - [ ] `Decomposer` interface defined
 - [ ] State machine enforces Queued → Planning → AwaitingApproval/Running → Completed/Failed
 - [ ] **Contract Test Pass:** All 8 valid transitions succeed, invalid throw
@@ -49,6 +55,7 @@ This checklist is used by the Implementation Team to track progress and unblock 
 ## [ ] PHASE 2: SDK Layer
 
 ### Tool SDK
+
 - [ ] Sandbox filesystem jail enforces `workingDirectory` via `fs.realpath()`
 - [ ] Shell allowlist restricts `shell.build`
 - [ ] All `fs.write` classified as destructive (ADR-0005)
@@ -56,11 +63,13 @@ This checklist is used by the Implementation Team to track progress and unblock 
 - [ ] STRIDE threat-model checklist on every tool PR (RFC-0021)
 
 ### Provider SDK
+
 - [ ] `AnthropicProvider` adapter complete
 - [ ] `GoogleProvider` adapter complete
 - [ ] **Contract Test Pass:** Two different provider adapters pass identical contract tests (ADR-0003)
 
 ### Agent SDK
+
 - [ ] 4 fixed agents registered (coding, review, test, security)
 - [ ] `LlmDecomposer` output schema-validated (RFC-0004)
 - [ ] **Contract Test Pass:** Agent tool call outside `allowedToolCategories` throws `PermissionDeniedError`
@@ -70,6 +79,7 @@ This checklist is used by the Implementation Team to track progress and unblock 
 ## [ ] PHASE 3: Workflow Layer
 
 ### Memory Engine (Database)
+
 - [ ] Prisma schema defined (`Task`, `TaskGraph`, `AgentResult`, `AuditEvent`, `CostRecord`)
 - [ ] PostgreSQL trigger blocks UPDATE/DELETE on `audit_log` (ADR-0014)
 - [ ] `agentx_app` role REVOKE UPDATE, DELETE ON `audit_log` applied
@@ -77,6 +87,7 @@ This checklist is used by the Implementation Team to track progress and unblock 
 - [ ] **Contract Test Pass:** Attempt UPDATE/DELETE on `audit_log` throws database exception
 
 ### Context Engine & Workflow
+
 - [ ] `TaskContext` retrieval bounded to last-N + rolling summary (RFC-0008)
 - [ ] `buildGraph()` rejects cyclic dependencies (RFC-0004)
 - [ ] Default Workflow Policy: gate before any coding node with "commit" in description
@@ -88,6 +99,7 @@ This checklist is used by the Implementation Team to track progress and unblock 
 ## [ ] PHASE 4: Extensibility
 
 ### Plugin SDK
+
 - [ ] **Gate:** Agent SDK + Provider SDK + RFC-0027 complete
 - [ ] Plugin loader uses `child_process.fork()` with memory (128MB) / CPU (30s) limits
 - [ ] Custom `require` hook blocks `fs`, `net`, `child_process`
@@ -99,12 +111,14 @@ This checklist is used by the Implementation Team to track progress and unblock 
 ## [ ] PHASE 5: Product Surface / v0.1 Release
 
 ### CLI Commands
+
 - [ ] `agentx submit`, `status`, `watch`, `approve`, `reject` functional
 - [ ] `agentx cost`, `audit` read-only functional
 - [ ] Approval prompt shows concrete action, NO default, NO timeout (RFC-0010)
 - [ ] **Contract Test Pass:** CLI output at all verbosity levels contains NO credential substrings
 
 ### v0.1 Exit Criteria
+
 - [ ] End-to-end test passes: `agentx submit` → decompose → plan → execute → approve → result
 - [ ] Provider failover test passes (primary 503 → secondary responds)
 - [ ] `docker-compose up` brings up working self-hosted stack (ADR-0007)

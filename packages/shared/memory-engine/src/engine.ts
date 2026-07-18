@@ -1,4 +1,10 @@
-import { IMemoryEngine, IMemoryStore, Memory, MemorySearchOptions, MemoryMetrics } from './interfaces.js';
+import {
+  IMemoryEngine,
+  IMemoryStore,
+  Memory,
+  MemorySearchOptions,
+  MemoryMetrics,
+} from './interfaces.js';
 import { IEventBus } from '@agentx/core-runtime';
 
 export class MemoryEngine implements IMemoryEngine {
@@ -6,12 +12,12 @@ export class MemoryEngine implements IMemoryEngine {
     totalMemories: 0,
     averageImportance: 0,
     compactCount: 0,
-    expiredCount: 0
+    expiredCount: 0,
   };
 
   constructor(
     private memoryStore: IMemoryStore,
-    private eventBus: IEventBus
+    private eventBus: IEventBus,
   ) {}
 
   public async store(data: Partial<Memory>): Promise<Memory> {
@@ -23,7 +29,7 @@ export class MemoryEngine implements IMemoryEngine {
       importance: data.importance || 1,
       ttl: data.ttl,
       createdAt: now,
-      metadata: data.metadata || {}
+      metadata: data.metadata || {},
     };
 
     if (memory.ttl) {
@@ -32,7 +38,7 @@ export class MemoryEngine implements IMemoryEngine {
 
     await this.memoryStore.save(memory);
     this.updateMetrics();
-    
+
     await this.eventBus.publish('memory.created', memory, `trace_${memory.id}`);
     return memory;
   }
@@ -45,7 +51,7 @@ export class MemoryEngine implements IMemoryEngine {
   public async forget(memoryId: string): Promise<void> {
     const mem = await this.memoryStore.find(memoryId);
     if (!mem) return;
-    
+
     await this.memoryStore.delete(memoryId);
     this.updateMetrics();
     await this.eventBus.publish('memory.deleted', { id: memoryId }, `trace_${memoryId}`);
@@ -106,21 +112,21 @@ export class InMemoryStore implements IMemoryStore {
 
   async search(query: string, options?: MemorySearchOptions): Promise<Memory[]> {
     let results = Array.from(this.memories.values());
-    
+
     // Simple mock search
     if (query) {
-      results = results.filter(m => m.content.includes(query));
+      results = results.filter((m) => m.content.includes(query));
     }
     if (options?.type) {
-      results = results.filter(m => m.type === options.type);
+      results = results.filter((m) => m.type === options.type);
     }
     if (options?.minImportance) {
-      results = results.filter(m => m.importance >= options.minImportance!);
+      results = results.filter((m) => m.importance >= options.minImportance!);
     }
     if (options?.limit) {
       results = results.slice(0, options.limit);
     }
-    
+
     return results;
   }
 

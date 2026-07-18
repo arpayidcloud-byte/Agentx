@@ -6,7 +6,7 @@ export class MergeEngine {
 
     for (const output of outputs) {
       if (typeof output !== 'object' || output === null) continue;
-      
+
       const record = output as Record<string, unknown>;
       for (const [key, val] of Object.entries(record)) {
         if (merged[key] !== undefined && JSON.stringify(merged[key]) !== JSON.stringify(val)) {
@@ -29,7 +29,7 @@ export class ConflictResolver {
       architectOverride?: boolean;
       coverageScore1?: number;
       coverageScore2?: number;
-    }
+    },
   ): unknown {
     if (criteria.architectOverride) {
       return val1; // Assume val1 is from architect

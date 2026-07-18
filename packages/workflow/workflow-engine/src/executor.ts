@@ -29,7 +29,7 @@ export class WorkflowExecutor {
 
   public async executeWorkflow(
     workflow: any,
-    onStateChange: (state: string) => void
+    onStateChange: (state: string) => void,
   ): Promise<ExtendedWorkflowMetrics> {
     const plan = this.planner.plan(workflow);
     for (const hook of this.hooks) {
@@ -81,11 +81,17 @@ export class WorkflowExecutor {
 
           while (retries <= maxRetries) {
             try {
-              result = await this.nodeExecutor.executeNode(node, { workflowId: workflow.id, nodeStates, results });
+              result = await this.nodeExecutor.executeNode(node, {
+                workflowId: workflow.id,
+                nodeStates,
+                results,
+              });
               break;
             } catch (error: unknown) {
               const decision = this.retryCoordinator.shouldRetry(
-                node.id, error instanceof Error ? error : new Error(String(error)), retries
+                node.id,
+                error instanceof Error ? error : new Error(String(error)),
+                retries,
               );
               if (!decision.shouldRetry) throw error;
               retries++;
@@ -93,7 +99,7 @@ export class WorkflowExecutor {
               for (const hook of this.hooks) {
                 if (hook.onRetry) await hook.onRetry(node, retries);
               }
-              await new Promise(r => setTimeout(r, Math.min(decision.delayMs, 1000)));
+              await new Promise((r) => setTimeout(r, Math.min(decision.delayMs, 1000)));
             }
           }
 
@@ -119,7 +125,8 @@ export class WorkflowExecutor {
           timelineEntry.durationMs = Date.now() - nodeStart;
           timelineEntry.status = 'FAILED';
           for (const hook of this.hooks) {
-            if (hook.onFailure) await hook.onFailure(node, error instanceof Error ? error : new Error(String(error)));
+            if (hook.onFailure)
+              await hook.onFailure(node, error instanceof Error ? error : new Error(String(error)));
           }
         }
 
@@ -141,7 +148,7 @@ export class WorkflowExecutor {
     }
 
     const totalDurationMs = Date.now() - startTime;
-    const completedNodes = Array.from(nodeStates.values()).filter(s => s === 'COMPLETED').length;
+    const completedNodes = Array.from(nodeStates.values()).filter((s) => s === 'COMPLETED').length;
 
     const metrics: ExtendedWorkflowMetrics = {
       workflowId: workflow.id,

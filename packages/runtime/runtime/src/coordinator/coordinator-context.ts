@@ -16,20 +16,21 @@ export function createCoordinatorContext(
   traceId: string,
   sessionId: string,
   executionId: string,
-  correlationId?: string
+  correlationId?: string,
 ): CoordinatorContext {
   return {
     traceId,
     sessionId,
     executionId,
-    correlationId: correlationId || `corr-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,
+    correlationId:
+      correlationId || `corr-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,
     metadata: {},
   };
 }
 
 export function extendCoordinatorContext(
   ctx: CoordinatorContext,
-  updates: Partial<CoordinatorContext>
+  updates: Partial<CoordinatorContext>,
 ): CoordinatorContext {
   return {
     ...ctx,
