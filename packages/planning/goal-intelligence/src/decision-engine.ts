@@ -3,7 +3,7 @@
  * @description Determines optimal strategies using symbolic reasoning.
  */
 
-import { DecisionChoice } from './interfaces.js';
+import type { DecisionChoice } from './interfaces.js';
 
 export class DecisionEngine {
   evaluate(choices: DecisionChoice[]): DecisionChoice {

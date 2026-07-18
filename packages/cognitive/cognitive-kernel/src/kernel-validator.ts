@@ -3,7 +3,7 @@
  * @description Input and state verification.
  */
 
-import { SessionMetadata } from './interfaces.js';
+import type { SessionMetadata } from './interfaces.js';
 import { SessionError } from './errors.js';
 
 export class KernelValidator {

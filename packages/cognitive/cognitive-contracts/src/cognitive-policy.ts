@@ -3,7 +3,7 @@
  * @description Safety and policy verification.
  */
 
-import { SafetyPolicy } from './interfaces.js';
+import type { SafetyPolicy } from './interfaces.js';
 import { SafetyViolationError } from './errors.js';
 
 export class CognitivePolicyEnforcer {

@@ -3,7 +3,7 @@
  * @description Parses user goals into structured objectives.
  */
 
-import { Goal } from './interfaces.js';
+import type { Goal } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class GoalParser {

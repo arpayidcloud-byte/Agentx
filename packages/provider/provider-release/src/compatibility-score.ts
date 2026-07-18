@@ -3,7 +3,7 @@
  * @description Evaluates provider overall operational capability score.
  */
 
-import { CompatibilityScore } from './interfaces.js';
+import type { CompatibilityScore } from './interfaces.js';
 
 export class CompatibilityScoreCalculator {
   calculate(metrics: {

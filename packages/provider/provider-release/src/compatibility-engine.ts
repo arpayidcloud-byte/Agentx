@@ -3,7 +3,7 @@
  * @description Master orchestration engine for PCMRC.
  */
 
-import {
+import type {
   ProviderManifest,
   ReleaseManifest,
   ReleaseCertificate,

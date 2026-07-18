@@ -1,12 +1,12 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { BaseProvider } from '../../base-provider.js';
-import {
+import type {
   CompletionRequest,
   CompletionResponse,
   ProviderCapabilities,
   ProviderConfiguration,
 } from '../../interfaces.js';
-import { CredentialResolver } from '../../conformance/credential-resolver.js';
+import type { CredentialResolver } from '../../conformance/credential-resolver.js';
 import { ProviderInvalidCredentialsError, ProviderError } from '../../errors.js';
 
 export interface GoogleProviderConfig extends ProviderConfiguration {
@@ -75,7 +75,7 @@ export class GoogleProvider extends BaseProvider {
       systemInstruction: req.systemPrompt
         ? { role: 'system', parts: [{ text: req.systemPrompt }] }
         : undefined,
-      tools: tools as any,
+      tools: tools,
       generationConfig: {
         maxOutputTokens: req.maxTokens,
         temperature: req.temperature,

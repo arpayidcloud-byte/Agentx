@@ -3,8 +3,8 @@
  * @description Automatically verifies interface contracts.
  */
 
-import { IProvider } from '@agentx/runtime-adapters';
-import { HarnessResult } from './interfaces.js';
+import type { IProvider } from '@agentx/runtime-adapters';
+import type { HarnessResult } from './interfaces.js';
 
 export class ContractHarness {
   async run(provider: IProvider): Promise<HarnessResult> {

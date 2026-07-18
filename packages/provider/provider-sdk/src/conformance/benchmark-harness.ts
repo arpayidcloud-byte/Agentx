@@ -3,8 +3,8 @@
  * @description Benchmark metrics profiling.
  */
 
-import { IProvider } from '@agentx/runtime-adapters';
-import { HarnessResult } from './interfaces.js';
+import type { IProvider } from '@agentx/runtime-adapters';
+import type { HarnessResult } from './interfaces.js';
 
 export class BenchmarkHarness {
   async run(_provider: IProvider): Promise<HarnessResult> {

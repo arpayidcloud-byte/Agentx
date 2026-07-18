@@ -3,7 +3,7 @@
  * @description Health check endpoints for all runtime components.
  */
 
-import { HealthStatus } from './interfaces.js';
+import type { HealthStatus } from './interfaces.js';
 
 export class HealthChecker {
   private checks = new Map<string, () => HealthStatus>();

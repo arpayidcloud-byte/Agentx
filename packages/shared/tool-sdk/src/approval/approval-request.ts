@@ -4,7 +4,7 @@
  * Creates and manages approval requests with proper state transitions.
  */
 
-import { ApprovalRequest, ApprovalState, CreateApprovalRequestParams } from './interfaces.js';
+import type { ApprovalRequest, ApprovalState, CreateApprovalRequestParams } from './interfaces.js';
 import { classifyRiskLevel, createApprovalPolicy } from './approval-policy.js';
 
 /**

@@ -3,7 +3,7 @@
  * @description Priority assignment based on symbolic policies.
  */
 
-import { SubGoal } from './interfaces.js';
+import type { SubGoal } from './interfaces.js';
 
 export class TaskPriorityEngine {
   assignPriority(subgoal: SubGoal, basePriority: number): number {

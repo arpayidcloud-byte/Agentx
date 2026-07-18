@@ -2,7 +2,7 @@
  * @module runtime-adapters/memory/memory-lock
  * @description Reference in-memory distributed lock provider.
  */
-import { ILockProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics } from '../interfaces.js';
+import type { ILockProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics } from '../interfaces.js';
 export declare class MemoryLockProvider implements ILockProvider {
     private locks;
     private total;

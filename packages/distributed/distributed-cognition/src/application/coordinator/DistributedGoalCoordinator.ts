@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-import { NodeRegistry } from '../../domain/node/NodeRegistry.js';
+import type { NodeRegistry } from '../../domain/node/NodeRegistry.js';
 
 export interface GoalPlan {
   readonly goalId: string;

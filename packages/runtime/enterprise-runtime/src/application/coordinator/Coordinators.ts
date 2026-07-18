@@ -1,13 +1,13 @@
-import {
+import type {
   RuntimeLifecycleManager,
   RuntimeStateManager,
   RuntimeSupervisor,
   RuntimeHealthManager,
 } from '../../domain/runtime/RuntimeManager.js';
-import { ServiceRegistry, PluginManager } from '../../domain/service/ServiceManager.js';
-import { ConfigurationManager } from '../../domain/config/ConfigManager.js';
-import { MultiTenantManager } from '../../domain/multitenant/TenantManager.js';
-import { RuntimePolicyEngine } from '../../domain/security/SecurityEngine.js';
+import type { ServiceRegistry, PluginManager } from '../../domain/service/ServiceManager.js';
+import type { ConfigurationManager } from '../../domain/config/ConfigManager.js';
+import type { MultiTenantManager } from '../../domain/multitenant/TenantManager.js';
+import type { RuntimePolicyEngine } from '../../domain/security/SecurityEngine.js';
 import { createHash } from 'crypto';
 
 export class RuntimeOrchestrator {

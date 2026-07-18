@@ -3,7 +3,7 @@
  * @description Recovers interrupted planning sessions.
  */
 
-import { PlanningCheckpointManager } from './planning-checkpoint.js';
+import type { PlanningCheckpointManager } from './planning-checkpoint.js';
 
 export class PlanningRecoveryManager {
   constructor(private checkpointManager: PlanningCheckpointManager) {}

@@ -3,7 +3,7 @@
  * @description Selects optimal symbolic execution strategy.
  */
 
-import { SubGoal } from './interfaces.js';
+import type { SubGoal } from './interfaces.js';
 
 export interface StrategyOption {
   name: string;

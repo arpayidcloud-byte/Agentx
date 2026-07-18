@@ -3,8 +3,8 @@
  * @description Compatibility verification against runtime components.
  */
 
-import { IProvider } from '@agentx/runtime-adapters';
-import { HarnessResult } from './interfaces.js';
+import type { IProvider } from '@agentx/runtime-adapters';
+import type { HarnessResult } from './interfaces.js';
 
 export class CompatibilityHarness {
   async run(_provider: IProvider): Promise<HarnessResult> {

@@ -3,7 +3,7 @@
  * @description Immutable decision history.
  */
 
-import { DecisionChoice } from './interfaces.js';
+import type { DecisionChoice } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class DecisionHistory {

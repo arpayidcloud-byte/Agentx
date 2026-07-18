@@ -3,7 +3,7 @@
  * @description Selects optimal symbolic strategy based on history and patterns.
  */
 
-import { Pattern, StrategyRecord } from './interfaces.js';
+import type { Pattern, StrategyRecord } from './interfaces.js';
 import { LearningError } from './errors.js';
 
 export class StrategySelector {

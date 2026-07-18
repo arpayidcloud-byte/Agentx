@@ -3,7 +3,7 @@
  * @description Maintains historical records of certifications.
  */
 
-import { CertificationReport } from './interfaces.js';
+import type { CertificationReport } from './interfaces.js';
 
 export class CertificationHistory {
   private history: CertificationReport[] = [];

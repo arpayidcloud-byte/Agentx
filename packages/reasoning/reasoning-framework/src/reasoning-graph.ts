@@ -3,7 +3,7 @@
  * @description Reasoning graph contracts.
  */
 
-import { ReasoningGraph, ReasoningNode, ReasoningEdge } from './interfaces.js';
+import type { ReasoningGraph, ReasoningNode, ReasoningEdge } from './interfaces.js';
 
 export class ReasoningGraphManager {
   private graph: ReasoningGraph = { nodes: [], edges: [], checksum: '' };

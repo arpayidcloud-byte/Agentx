@@ -3,7 +3,7 @@
  * @description State rollback and recovery manager.
  */
 
-import { SessionCheckpoint } from './interfaces.js';
+import type { SessionCheckpoint } from './interfaces.js';
 
 export class KernelRecoveryManager {
   recover(checkpoint: SessionCheckpoint): Record<string, unknown> {

@@ -3,7 +3,7 @@
  * @description State machine for goal decomposition lifecycle.
  */
 
-import { GoalState } from './interfaces.js';
+import type { GoalState } from './interfaces.js';
 import { GoalError } from './errors.js';
 
 const validTransitions: Record<GoalState, GoalState[]> = {

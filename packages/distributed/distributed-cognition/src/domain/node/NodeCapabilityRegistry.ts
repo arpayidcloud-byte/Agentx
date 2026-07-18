@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-import { NodeCapability } from './interfaces.js';
+import type { NodeCapability } from './interfaces.js';
 
 export interface NodeCapabilityEntry {
   readonly nodeId: string;

@@ -3,7 +3,7 @@
  * @description Execution replay for debugging and step-by-step analysis.
  */
 
-import { ReplayMode, ReplaySnapshot, ReplayHistory } from './interfaces-v2.js';
+import type { ReplayMode, ReplaySnapshot, ReplayHistory } from './interfaces-v2.js';
 
 export class ExecutionReplay {
   public async startReplay(workflowId: string, _mode: ReplayMode): Promise<ReplayHistory> {

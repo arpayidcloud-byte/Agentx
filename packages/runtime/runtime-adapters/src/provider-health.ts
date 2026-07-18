@@ -3,7 +3,7 @@
  * @description Provider health monitoring abstraction.
  */
 
-import { IProvider, ProviderHealth } from './interfaces.js';
+import type { IProvider, ProviderHealth } from './interfaces.js';
 
 export class ProviderHealthMonitor {
   private history = new Map<string, ProviderHealth[]>();

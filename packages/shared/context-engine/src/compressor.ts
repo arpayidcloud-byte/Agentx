@@ -1,4 +1,4 @@
-import { IContextCompressor } from './interfaces.js';
+import type { IContextCompressor } from './interfaces.js';
 
 export class ContextCompressor implements IContextCompressor {
   public compress(data: Record<string, unknown>, ratio: number): Record<string, unknown> {

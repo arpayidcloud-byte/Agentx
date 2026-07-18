@@ -3,7 +3,7 @@
  * @description Registry for discovering and tracking active worker nodes.
  */
 
-import { WorkerMetadata } from './interfaces.js';
+import type { WorkerMetadata } from './interfaces.js';
 import { WorkerRegistryError } from './errors.js';
 
 export class WorkerRegistry {

@@ -3,7 +3,7 @@
  * @description Analyzes successful executions to extract reusable rules.
  */
 
-import { Experience } from './interfaces.js';
+import type { Experience } from './interfaces.js';
 
 export class SuccessAnalyzer {
   analyze(experiences: Experience[]): string[] {

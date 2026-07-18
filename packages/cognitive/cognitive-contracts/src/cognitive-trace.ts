@@ -3,7 +3,7 @@
  * @description Cognitive trace contract base implementation.
  */
 
-import { ReasoningTrace } from './reasoning-trace.js';
+import type { ReasoningTrace } from './reasoning-trace.js';
 
 export class CognitiveTraceBase {
   private traces: ReasoningTrace[] = [];

@@ -3,7 +3,7 @@
  * @description Master architecture freeze validator.
  */
 
-import { ArchitectureMetadata, ArchitectureReport } from './interfaces.js';
+import type { ArchitectureMetadata, ArchitectureReport } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class ArchitectureFreeze {

@@ -3,7 +3,7 @@
  * @description Validates testing of all fail-closed paths.
  */
 
-import { ValidationResult } from './interfaces.js';
+import type { ValidationResult } from './interfaces.js';
 
 export class FailurePathValidator {
   validate(testedFailures: string[]): ValidationResult {

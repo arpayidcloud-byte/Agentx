@@ -1,5 +1,5 @@
-import { TaskMigration } from '../scheduler/interfaces.js';
-import { DistributedScheduler } from '../scheduler/DistributedScheduler.js';
+import type { TaskMigration } from '../scheduler/interfaces.js';
+import type { DistributedScheduler } from '../scheduler/DistributedScheduler.js';
 
 export class DistributedTaskDispatcher {
   private migrations: TaskMigration[] = [];

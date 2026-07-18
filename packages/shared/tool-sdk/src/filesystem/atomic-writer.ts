@@ -1,6 +1,6 @@
 import * as fs from 'fs/promises';
 import * as path from 'path';
-import { IAtomicWriter } from './interfaces.js';
+import type { IAtomicWriter } from './interfaces.js';
 import { AtomicWriteError } from './errors.js';
 
 export class AtomicWriter implements IAtomicWriter {

@@ -2,7 +2,7 @@
  * @module runtime-adapters/memory/memory-secret
  * @description Reference in-memory secret storage provider.
  */
-import { ISecretProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics } from '../interfaces.js';
+import type { ISecretProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics } from '../interfaces.js';
 export declare class MemorySecretProvider implements ISecretProvider {
     private secrets;
     private total;

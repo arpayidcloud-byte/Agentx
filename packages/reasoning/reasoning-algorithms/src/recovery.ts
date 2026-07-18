@@ -3,7 +3,7 @@
  * @description Recovery logic for symbolic engines.
  */
 
-import { CheckpointManager } from './checkpoint.js';
+import type { CheckpointManager } from './checkpoint.js';
 
 export class RecoveryManager {
   constructor(private checkpointManager: CheckpointManager) {}

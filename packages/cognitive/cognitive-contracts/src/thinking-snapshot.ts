@@ -3,7 +3,7 @@
  * @description Thinking snapshot contract base implementation.
  */
 
-import { ThinkingSnapshot } from './interfaces.js';
+import type { ThinkingSnapshot } from './interfaces.js';
 
 export class ThinkingSnapshotBase {
   private snapshot: ThinkingSnapshot;

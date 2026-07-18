@@ -3,7 +3,7 @@
  * @description Task queue management.
  */
 
-import { WorkflowTask } from './interfaces.js';
+import type { WorkflowTask } from './interfaces.js';
 
 export class WorkflowQueue {
   private queue: WorkflowTask[] = [];

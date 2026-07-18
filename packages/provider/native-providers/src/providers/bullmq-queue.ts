@@ -3,14 +3,14 @@
  * @description Native BullMQ provider wrapper (Stub implementation for architecture validation).
  */
 
-import {
+import type {
   IQueueProvider,
   ProviderMetadata,
   ProviderCapabilities,
   ProviderHealth,
   ProviderMetrics,
 } from '@agentx/runtime-adapters';
-import { IConfigurationProvider, INativeProvider } from '../interfaces.js';
+import type { IConfigurationProvider, INativeProvider } from '../interfaces.js';
 import { ConfigurationError } from '../errors.js';
 
 export class BullMQQueueProvider implements IQueueProvider, INativeProvider {

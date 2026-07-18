@@ -1,4 +1,4 @@
-import { SecretStore, SecretEntry, SecretMetadata } from './interfaces.js';
+import type { SecretStore, SecretEntry, SecretMetadata } from './interfaces.js';
 import { OperationNotSupportedError, SecretNotFoundError } from './errors.js';
 
 export class EnvVarSecretStore implements SecretStore {

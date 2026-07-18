@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-import { ClusterState, ClusterStatus } from './interfaces.js';
+import type { ClusterState, ClusterStatus } from './interfaces.js';
 
 export class ClusterCoordinator {
   private states = new Map<string, ClusterState>();

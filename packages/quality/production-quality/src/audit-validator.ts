@@ -3,7 +3,7 @@
  * @description Validates audit trail integrity and trace compliance.
  */
 
-import { ValidationResult } from './interfaces.js';
+import type { ValidationResult } from './interfaces.js';
 
 export interface AuditLog {
   traceId: string;

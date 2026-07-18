@@ -3,7 +3,7 @@
  * @description Manages token and time budgets.
  */
 
-import { PipelineBudget } from './interfaces.js';
+import type { PipelineBudget } from './interfaces.js';
 
 export class PipelineBudgetManager {
   private budget: PipelineBudget;

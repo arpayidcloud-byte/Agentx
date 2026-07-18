@@ -3,7 +3,7 @@
  * @description Splits parallel workflow branches.
  */
 
-import { WorkflowNode, WorkflowEdge } from './interfaces.js';
+import type { WorkflowNode, WorkflowEdge } from './interfaces.js';
 
 export class WorkflowSplitter {
   split(

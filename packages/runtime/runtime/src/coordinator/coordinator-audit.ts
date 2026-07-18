@@ -3,7 +3,7 @@
  * @description Immutable audit log generation for coordinator events.
  */
 
-import { CoordinatorAuditRecord, ExecutionPhase } from './interfaces.js';
+import type { CoordinatorAuditRecord, ExecutionPhase } from './interfaces.js';
 
 export class CoordinatorAuditLogger {
   private records: CoordinatorAuditRecord[] = [];

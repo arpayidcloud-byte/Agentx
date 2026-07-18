@@ -4,7 +4,7 @@ import {
   ProviderUnavailableError,
   CircuitBreakerOpenError,
 } from './errors.js';
-import { CircuitBreakerConfig, RetryPolicy } from './interfaces.js';
+import type { CircuitBreakerConfig, RetryPolicy } from './interfaces.js';
 
 export class CircuitBreaker {
   private failures = 0;

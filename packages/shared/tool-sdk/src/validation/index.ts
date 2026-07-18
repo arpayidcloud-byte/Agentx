@@ -1,4 +1,4 @@
-import { IToolValidator, ToolManifest, ITool, IToolRegistry } from '../interfaces/index.js';
+import type { IToolValidator, ToolManifest, ITool, IToolRegistry } from '../interfaces/index.js';
 import {
   SchemaValidationError,
   ManifestValidationError,

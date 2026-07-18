@@ -3,7 +3,7 @@
  * @description Hook execution manager.
  */
 
-import { PipelineHook, PipelineStageName } from './interfaces.js';
+import type { PipelineHook, PipelineStageName } from './interfaces.js';
 
 export class PipelineHookManager {
   private hooks: PipelineHook[] = [];

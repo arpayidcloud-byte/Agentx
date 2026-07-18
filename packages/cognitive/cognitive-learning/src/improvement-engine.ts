@@ -3,7 +3,7 @@
  * @description Generates symbolic improvement recommendations.
  */
 
-import { Experience, Pattern, Improvement } from './interfaces.js';
+import type { Experience, Pattern, Improvement } from './interfaces.js';
 
 export class ImprovementEngine {
   generate(experiences: Experience[], patterns: Pattern[]): Improvement[] {

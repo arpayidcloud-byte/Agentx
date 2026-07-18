@@ -3,7 +3,7 @@
  * @description Instantiates cognitive engines.
  */
 
-import { EngineContract } from './interfaces.js';
+import type { EngineContract } from './interfaces.js';
 
 export class KernelFactory {
   create(id: string, name: string): EngineContract {

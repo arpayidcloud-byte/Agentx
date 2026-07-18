@@ -3,7 +3,7 @@
  * @description Tracks learning execution sessions.
  */
 
-import { LearningState } from './interfaces.js';
+import type { LearningState } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class LearningSession {

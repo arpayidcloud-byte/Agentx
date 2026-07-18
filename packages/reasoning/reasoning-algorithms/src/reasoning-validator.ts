@@ -3,7 +3,7 @@
  * @description Graph and rule validator.
  */
 
-import { Rule } from './interfaces.js';
+import type { Rule } from './interfaces.js';
 import { IntegrityError } from './errors.js';
 
 export class ReasoningValidator {

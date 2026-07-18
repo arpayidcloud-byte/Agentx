@@ -1,4 +1,4 @@
-import { CollaborationMessage } from '../../domain/collaboration/interfaces.js';
+import type { CollaborationMessage } from '../../domain/collaboration/interfaces.js';
 
 export type MessageHandler = (message: CollaborationMessage) => void;
 

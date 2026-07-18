@@ -3,8 +3,8 @@
  * @description Validates security concerns like secret leakage and permissions.
  */
 
-import { IProvider } from '@agentx/runtime-adapters';
-import { HarnessResult } from './interfaces.js';
+import type { IProvider } from '@agentx/runtime-adapters';
+import type { HarnessResult } from './interfaces.js';
 
 export class SecurityHarness {
   async run(_provider: IProvider): Promise<HarnessResult> {

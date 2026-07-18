@@ -1,6 +1,11 @@
 import * as fs from 'fs/promises';
 import * as path from 'path';
-import { ISandbox, IAtomicWriter, IFilesystemValidator, IFilesystemPolicy } from './interfaces.js';
+import type {
+  ISandbox,
+  IAtomicWriter,
+  IFilesystemValidator,
+  IFilesystemPolicy,
+} from './interfaces.js';
 
 export class FilesystemWriteTool {
   constructor(

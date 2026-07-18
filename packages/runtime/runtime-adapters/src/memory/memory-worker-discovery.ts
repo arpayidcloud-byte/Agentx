@@ -3,7 +3,7 @@
  * @description Reference in-memory service discovery provider.
  */
 
-import {
+import type {
   IWorkerDiscoveryProvider,
   ProviderMetadata,
   ProviderCapabilities,

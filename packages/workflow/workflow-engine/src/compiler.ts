@@ -3,7 +3,7 @@
  * @description Workflow compiler for converting definitions to executable form.
  */
 
-import { WorkflowDefinition } from './interfaces.js';
+import type { WorkflowDefinition } from './interfaces.js';
 import { validateWorkflow, validateNodeConfig, validateEdges } from './validator.js';
 import { topologicalSort } from './graph.js';
 

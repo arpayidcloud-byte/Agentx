@@ -3,8 +3,8 @@
  * @description CriticalPathAnalyzer for identifying bottlenecks and parallel efficiency.
  */
 
-import { WorkflowDefinition } from './interfaces.js';
-import { CriticalPathAnalysis } from './interfaces-v2.js';
+import type { WorkflowDefinition } from './interfaces.js';
+import type { CriticalPathAnalysis } from './interfaces-v2.js';
 import { topologicalSort } from './graph.js';
 
 export class CriticalPathAnalyzer {

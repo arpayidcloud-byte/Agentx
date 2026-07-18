@@ -3,7 +3,7 @@
  * @description Thinking session contract base implementation.
  */
 
-import { ThinkingSession } from './interfaces.js';
+import type { ThinkingSession } from './interfaces.js';
 
 export class ThinkingSessionBase {
   private session: ThinkingSession;

@@ -3,7 +3,7 @@
  * @description Reasoning context contract base implementation.
  */
 
-import { ReasoningContext } from './interfaces.js';
+import type { ReasoningContext } from './interfaces.js';
 
 export class ReasoningContextBase {
   private context: ReasoningContext;

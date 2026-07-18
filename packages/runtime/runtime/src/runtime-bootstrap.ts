@@ -3,7 +3,7 @@
  * @description Runtime bootstrap configuration and setup.
  */
 
-import { RuntimeConfig, ResourceLimits } from './interfaces.js';
+import type { RuntimeConfig, ResourceLimits } from './interfaces.js';
 import { createRuntimeConfig, createResourceLimits } from './runtime-config.js';
 
 export interface BootstrapOptions {

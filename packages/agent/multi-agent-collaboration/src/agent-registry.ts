@@ -3,7 +3,7 @@
  * @description Agent registration and lifecycle management.
  */
 
-import { AgentRegistration, AgentMetadata } from './interfaces.js';
+import type { AgentRegistration, AgentMetadata } from './interfaces.js';
 import { AgentError } from './errors.js';
 import { createHash } from 'crypto';
 

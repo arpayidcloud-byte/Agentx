@@ -3,7 +3,7 @@
  * @description Immutable workflow checkpoint management.
  */
 
-import { WorkflowCheckpoint } from './interfaces.js';
+import type { WorkflowCheckpoint } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class WorkflowCheckpointManager {

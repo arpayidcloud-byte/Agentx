@@ -3,7 +3,7 @@
  * @description Deterministic replanning engine.
  */
 
-import { WorkflowGraph } from './interfaces.js';
+import type { WorkflowGraph } from './interfaces.js';
 
 export class ReplanningEngine {
   replan(graph: WorkflowGraph, reason: string): WorkflowGraph {

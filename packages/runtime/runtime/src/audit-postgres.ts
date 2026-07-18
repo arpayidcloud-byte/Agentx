@@ -3,7 +3,7 @@
  * @description Postgres-backed audit store implementation.
  */
 
-import { IAuditStore, AuditRecord } from './audit-store.js';
+import type { IAuditStore, AuditRecord } from './audit-store.js';
 
 export class PostgresAuditStore implements IAuditStore {
   private _connectionString: string;

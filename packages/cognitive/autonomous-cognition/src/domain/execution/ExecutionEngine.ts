@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-import { Goal } from '../goal/interfaces.js';
+import type { Goal } from '../goal/interfaces.js';
 
 export interface ExecutionPlan {
   readonly planId: string;

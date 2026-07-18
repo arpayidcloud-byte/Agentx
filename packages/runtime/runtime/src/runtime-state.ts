@@ -3,7 +3,7 @@
  * @description Runtime lifecycle state machine.
  */
 
-import { RuntimeState } from './interfaces.js';
+import type { RuntimeState } from './interfaces.js';
 
 export class RuntimeStateMachine {
   private static readonly validTransitions: Record<RuntimeState, RuntimeState[]> = {

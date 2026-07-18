@@ -3,7 +3,7 @@
  * @description Goal-driven backward chaining inference strategy.
  */
 
-import { Rule } from './interfaces.js';
+import type { Rule } from './interfaces.js';
 
 export class BackwardChaining {
   execute(goal: string, facts: Set<string>, rules: Rule[]): boolean {

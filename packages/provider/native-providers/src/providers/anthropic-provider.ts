@@ -3,7 +3,7 @@
  * @description Native Anthropic provider integration adapter.
  */
 
-import {
+import type {
   IConfigurationProvider,
   INativeProvider,
   CompletionOptions,

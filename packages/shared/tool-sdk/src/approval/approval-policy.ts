@@ -4,7 +4,7 @@
  * Implements risk-based approval policies per Volume 7 and ADR-0005.
  */
 
-import { ApprovalPolicyConfig, RiskLevel } from './interfaces.js';
+import type { ApprovalPolicyConfig, RiskLevel } from './interfaces.js';
 
 /** Default approval policy configuration */
 const DEFAULT_POLICY_CONFIG: ApprovalPolicyConfig = {

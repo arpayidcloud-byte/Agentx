@@ -1,5 +1,5 @@
-import { NodeMetadata, NodeRegistration } from './interfaces.js';
-import { NodeRegistry } from './NodeRegistry.js';
+import type { NodeMetadata, NodeRegistration } from './interfaces.js';
+import type { NodeRegistry } from './NodeRegistry.js';
 
 export class NodeDiscoveryEngine {
   private knownNodes = new Map<string, NodeRegistration>();

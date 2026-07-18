@@ -3,7 +3,7 @@
  * @description Injects chaos triggers to test resilience.
  */
 
-import { ChaosResult } from './interfaces.js';
+import type { ChaosResult } from './interfaces.js';
 
 export class ChaosEngine {
   async simulateFailure(failures: string[]): Promise<ChaosResult> {

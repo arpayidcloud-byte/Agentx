@@ -3,7 +3,7 @@
  * @description Validates feedback records.
  */
 
-import { Feedback } from './interfaces.js';
+import type { Feedback } from './interfaces.js';
 import { InvalidExperienceError } from './errors.js';
 
 export class FeedbackValidator {

@@ -3,7 +3,7 @@
  * @description Native OpenTelemetry metrics and tracing provider wrapper (Stub implementation).
  */
 
-import {
+import type {
   ITelemetryProvider,
   ProviderMetadata,
   ProviderCapabilities,
@@ -11,7 +11,7 @@ import {
   ProviderMetrics,
   ProviderContext,
 } from '@agentx/runtime-adapters';
-import { IConfigurationProvider, INativeProvider } from '../interfaces.js';
+import type { IConfigurationProvider, INativeProvider } from '../interfaces.js';
 import { ConfigurationError } from '../errors.js';
 
 export class OTELTelemetryProvider implements ITelemetryProvider, INativeProvider {

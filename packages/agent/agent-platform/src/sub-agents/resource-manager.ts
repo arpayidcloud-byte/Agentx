@@ -1,4 +1,4 @@
-import { ResourceAllocation, ResourceUsage } from './interfaces.js';
+import type { ResourceAllocation, ResourceUsage } from './interfaces.js';
 import { ResourceLimitExceededError } from './errors.js';
 
 export class ResourceManager {

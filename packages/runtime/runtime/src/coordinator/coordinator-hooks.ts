@@ -3,7 +3,7 @@
  * @description Hook manager for execution lifecycle integration.
  */
 
-import { CoordinatorHook, CoordinatorSession, ExecutionPhase } from './interfaces.js';
+import type { CoordinatorHook, CoordinatorSession, ExecutionPhase } from './interfaces.js';
 
 export class CoordinatorHookManager {
   private hooks: CoordinatorHook[] = [];

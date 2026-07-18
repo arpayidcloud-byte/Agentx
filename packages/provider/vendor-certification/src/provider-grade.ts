@@ -3,7 +3,7 @@
  * @description Maps scores to provider grades.
  */
 
-import { ProviderGrade } from './interfaces.js';
+import type { ProviderGrade } from './interfaces.js';
 
 export class ProviderGrader {
   getGrade(score: number): ProviderGrade {

@@ -3,7 +3,7 @@
  * @description Core workflow execution engine.
  */
 
-import {
+import type {
   WorkflowDefinition,
   WorkflowState,
   NodeState,

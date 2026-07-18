@@ -3,7 +3,7 @@
  * @description Validates provider recovery mechanisms.
  */
 
-import { IProvider, AuditResult } from './interfaces.js';
+import type { IProvider, AuditResult } from './interfaces.js';
 
 export class ProviderRecoveryAudit {
   async run(_provider: IProvider): Promise<AuditResult> {

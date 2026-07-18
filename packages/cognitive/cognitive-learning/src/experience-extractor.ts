@@ -3,7 +3,7 @@
  * @description Extracts knowledge from execution history.
  */
 
-import { Experience, Pattern } from './interfaces.js';
+import type { Experience, Pattern } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class ExperienceExtractor {

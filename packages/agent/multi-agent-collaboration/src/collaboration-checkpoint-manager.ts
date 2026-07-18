@@ -3,7 +3,7 @@
  * @description Manages immutable collaboration checkpoints.
  */
 
-import { CollaborationCheckpoint } from './interfaces.js';
+import type { CollaborationCheckpoint } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class CollaborationCheckpointManager {

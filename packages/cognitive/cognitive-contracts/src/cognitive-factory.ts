@@ -3,7 +3,7 @@
  * @description Factory method for cognitive engine instantiation.
  */
 
-import { ICognitiveEngine } from './contracts.js';
+import type { ICognitiveEngine } from './contracts.js';
 import { CognitiveEngineBase } from './cognitive-engine.js';
 
 export class CognitiveFactory {

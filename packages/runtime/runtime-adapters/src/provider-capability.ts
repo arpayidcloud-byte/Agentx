@@ -3,7 +3,7 @@
  * @description Validates provider capabilities against required features.
  */
 
-import { ProviderCapabilities } from './interfaces.js';
+import type { ProviderCapabilities } from './interfaces.js';
 import { UnsupportedProviderCapabilityError } from './errors.js';
 
 export class ProviderCapabilityResolver {

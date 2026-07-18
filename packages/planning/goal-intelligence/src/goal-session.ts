@@ -3,7 +3,7 @@
  * @description Session tracking for goal decomposition.
  */
 
-import { Goal, GoalState } from './interfaces.js';
+import type { Goal, GoalState } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class GoalSession {

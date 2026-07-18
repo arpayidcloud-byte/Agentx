@@ -5,7 +5,7 @@
  * Implements Threat Model T-002 mitigation.
  */
 
-import { EnvironmentScrubberConfig } from './interfaces.js';
+import type { EnvironmentScrubberConfig } from './interfaces.js';
 
 /** Default sensitive patterns to scrub */
 const DEFAULT_SCRUB_PATTERNS = [

@@ -3,7 +3,7 @@
  * @description Resource budget tracking.
  */
 
-import { WorkflowBudget } from './interfaces.js';
+import type { WorkflowBudget } from './interfaces.js';
 import { ResourceExhaustedError } from './errors.js';
 
 export class ResourceBudgetManager {

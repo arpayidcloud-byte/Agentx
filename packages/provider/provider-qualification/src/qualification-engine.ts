@@ -3,8 +3,8 @@
  * @description Master orchestration engine for Provider Qualification Framework.
  */
 
-import { IProvider } from '@agentx/runtime-adapters';
-import { CertificationReport } from './interfaces.js';
+import type { IProvider } from '@agentx/runtime-adapters';
+import type { CertificationReport } from './interfaces.js';
 import { ContractValidator } from './contract-validator.js';
 import { CompatibilityValidator } from './compatibility-validator.js';
 import { BenchmarkEngine } from './benchmark-engine.js';

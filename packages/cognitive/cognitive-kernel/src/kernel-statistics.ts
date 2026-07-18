@@ -3,7 +3,7 @@
  * @description Advanced execution insights.
  */
 
-import { KernelMetricsCollector } from './kernel-metrics.js';
+import type { KernelMetricsCollector } from './kernel-metrics.js';
 
 export class KernelStatistics {
   constructor(private metrics: KernelMetricsCollector) {}

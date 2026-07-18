@@ -3,7 +3,7 @@
  * @description Validates that improvements are safe and deterministic.
  */
 
-import { Improvement } from './interfaces.js';
+import type { Improvement } from './interfaces.js';
 import { InvalidExperienceError } from './errors.js';
 
 export class ImprovementValidator {

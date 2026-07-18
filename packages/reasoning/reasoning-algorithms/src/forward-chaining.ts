@@ -3,7 +3,7 @@
  * @description Forward chaining inference strategy.
  */
 
-import { Rule } from './interfaces.js';
+import type { Rule } from './interfaces.js';
 
 export class ForwardChaining {
   execute(facts: Set<string>, rules: Rule[]): Set<string> {

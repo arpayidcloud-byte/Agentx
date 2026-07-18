@@ -3,7 +3,7 @@
  * @description Central registry for certified providers.
  */
 
-import { CertificationReport, QualificationSnapshot } from './interfaces.js';
+import type { CertificationReport, QualificationSnapshot } from './interfaces.js';
 import { QualificationRegistryError } from './errors.js';
 
 export class QualificationRegistry {

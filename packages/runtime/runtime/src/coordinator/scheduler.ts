@@ -3,7 +3,7 @@
  * @description Scheduler for ordering, batching, and queuing execution tickets.
  */
 
-import { ExecutionTicket, ExecutionSchedule, ExecutionBatch } from './interfaces.js';
+import type { ExecutionTicket, ExecutionSchedule, ExecutionBatch } from './interfaces.js';
 
 export class ExecutionScheduler {
   private queue: ExecutionTicket[] = [];

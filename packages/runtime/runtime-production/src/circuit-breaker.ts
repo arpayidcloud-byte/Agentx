@@ -3,7 +3,7 @@
  * @description Circuit breaker pattern implementation for fault tolerance.
  */
 
-import { CircuitBreakerConfig, CircuitBreakerMetrics } from './interfaces.js';
+import type { CircuitBreakerConfig, CircuitBreakerMetrics } from './interfaces.js';
 import { CircuitOpenError } from './errors.js';
 
 export class CircuitBreaker {

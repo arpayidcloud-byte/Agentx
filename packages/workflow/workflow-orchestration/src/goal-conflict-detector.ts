@@ -3,7 +3,7 @@
  * @description Detects conflicts between simultaneous goals.
  */
 
-import { GoalConflict } from './interfaces.js';
+import type { GoalConflict } from './interfaces.js';
 
 export class GoalConflictDetector {
   detect(goalIds: string[]): GoalConflict[] {

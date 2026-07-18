@@ -1,4 +1,4 @@
-import { ILogger, LogLevel, LogContext, LogEntry, LoggerConfiguration } from './interfaces.js';
+import type { ILogger, LogLevel, LogContext, LogEntry, LoggerConfiguration } from './interfaces.js';
 export declare abstract class BaseLogger implements ILogger {
     protected readonly moduleName: string;
     protected readonly config: LoggerConfiguration;

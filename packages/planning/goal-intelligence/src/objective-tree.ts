@@ -3,7 +3,7 @@
  * @description Immutable objective hierarchy.
  */
 
-import { ObjectiveNode } from './interfaces.js';
+import type { ObjectiveNode } from './interfaces.js';
 
 export class ObjectiveTree {
   private nodes = new Map<string, ObjectiveNode>();

@@ -3,7 +3,7 @@
  * @description Reference in-memory secret storage provider.
  */
 
-import {
+import type {
   ISecretProvider,
   ProviderMetadata,
   ProviderCapabilities,

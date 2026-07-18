@@ -3,7 +3,7 @@
  * @description Token and resource budget management contracts.
  */
 
-import { CognitiveBudget } from './interfaces.js';
+import type { CognitiveBudget } from './interfaces.js';
 import { BudgetExceededError } from './errors.js';
 
 export class CognitiveBudgetManager {

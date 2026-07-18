@@ -3,7 +3,7 @@
  * @description Manages recovery from checkpoints.
  */
 
-import { CollaborationCheckpoint } from '../collaboration/interfaces.js';
+import type { CollaborationCheckpoint } from '../collaboration/interfaces.js';
 import { createHash } from 'crypto';
 
 export class RecoveryManager {

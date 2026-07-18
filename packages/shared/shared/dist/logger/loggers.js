@@ -137,7 +137,9 @@ export class ConsoleLogger extends BaseLogger {
         const color = colorMap[entry.level] || '';
         const ctxString = entry.context ? ` [ctx:${JSON.stringify(entry.context)}]` : '';
         const metaString = entry.metadata ? ` [meta:${JSON.stringify(entry.metadata)}]` : '';
-        const errString = entry.error ? `\nError: ${entry.error.message}\n${entry.error.stack || ''}` : '';
+        const errString = entry.error
+            ? `\nError: ${entry.error.message}\n${entry.error.stack || ''}`
+            : '';
         const logLine = `${entry.timestamp} ${color}[${entry.level}]${reset} [${entry.module}] ${entry.message}${ctxString}${metaString}${errString}`;
         if (entry.level === 'ERROR' || entry.level === 'FATAL') {
             console.error(logLine);

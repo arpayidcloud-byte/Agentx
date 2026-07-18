@@ -3,7 +3,7 @@
  * @description Limits token consumption across all cognitive engines.
  */
 
-import { BudgetSnapshot } from './interfaces.js';
+import type { BudgetSnapshot } from './interfaces.js';
 
 export class KernelBudgetManager {
   private budget: BudgetSnapshot;

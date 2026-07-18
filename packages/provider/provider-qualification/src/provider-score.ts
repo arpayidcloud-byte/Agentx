@@ -3,7 +3,7 @@
  * @description Scoring matrix calculation.
  */
 
-import { QualificationScore } from './interfaces.js';
+import type { QualificationScore } from './interfaces.js';
 
 export class ProviderScoreCalculator {
   calculate(components: {

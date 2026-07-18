@@ -3,7 +3,7 @@
  * @description Recovery manager operations.
  */
 
-import { ReasoningSnapshot } from './interfaces.js';
+import type { ReasoningSnapshot } from './interfaces.js';
 
 export class ReasoningRecoveryManager {
   recover(snapshot: ReasoningSnapshot): Record<string, unknown> {

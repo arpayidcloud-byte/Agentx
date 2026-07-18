@@ -1,4 +1,4 @@
-import { ILogger, LogLevel, LogContext, LogEntry, LoggerConfiguration } from './interfaces.js';
+import type { ILogger, LogLevel, LogContext, LogEntry, LoggerConfiguration } from './interfaces.js';
 import { SecretRedactor } from '../redaction/redactor.js';
 import { TraceContext } from '../trace/context.js';
 

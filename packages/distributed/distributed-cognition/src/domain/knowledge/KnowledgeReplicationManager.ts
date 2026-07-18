@@ -1,4 +1,4 @@
-import { KnowledgeEntry } from './interfaces.js';
+import type { KnowledgeEntry } from './interfaces.js';
 
 export interface KnowledgeReplica {
   readonly entryId: string;

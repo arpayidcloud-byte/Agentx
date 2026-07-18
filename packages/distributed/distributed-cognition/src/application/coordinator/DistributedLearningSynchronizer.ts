@@ -1,6 +1,6 @@
 import { createHash } from 'crypto';
-import { KnowledgeEntry } from '../../domain/knowledge/interfaces.js';
-import { KnowledgeReplicationManager } from '../../domain/knowledge/KnowledgeReplicationManager.js';
+import type { KnowledgeEntry } from '../../domain/knowledge/interfaces.js';
+import type { KnowledgeReplicationManager } from '../../domain/knowledge/KnowledgeReplicationManager.js';
 
 export interface LearningSyncResult {
   readonly sessionId: string;

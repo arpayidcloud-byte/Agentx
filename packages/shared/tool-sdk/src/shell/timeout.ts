@@ -4,7 +4,7 @@
  * Default timeout is 60 seconds, configurable per Volume 7.
  */
 
-import { TimeoutConfig } from './interfaces.js';
+import type { TimeoutConfig } from './interfaces.js';
 
 /** Default timeout configuration */
 const DEFAULT_TIMEOUT_CONFIG: TimeoutConfig = {

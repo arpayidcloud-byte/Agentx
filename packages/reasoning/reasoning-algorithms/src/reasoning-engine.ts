@@ -3,7 +3,8 @@
  * @description Master orchestrator for all symbolic reasoning algorithms.
  */
 
-import { Rule, DecisionTree, Hypothesis, ReasoningMetrics } from './interfaces.js';
+import type { Rule, DecisionTree, ReasoningMetrics } from './interfaces.js';
+import { Hypothesis } from './interfaces.js';
 import { ForwardChaining } from './forward-chaining.js';
 import { BackwardChaining } from './backward-chaining.js';
 import { DecisionTreeEngine } from './decision-tree.js';

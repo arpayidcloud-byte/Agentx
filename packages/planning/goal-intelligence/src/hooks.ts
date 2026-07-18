@@ -3,7 +3,7 @@
  * @description Lifecycle hook support for goal intelligence.
  */
 
-import { CognitiveHook } from './interfaces.js';
+import type { CognitiveHook } from './interfaces.js';
 
 export class GoalHookManager {
   private hooks: CognitiveHook[] = [];

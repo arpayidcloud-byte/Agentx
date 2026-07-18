@@ -3,7 +3,7 @@
  * @description SDK contract definition for third-party plugins.
  */
 
-import { PluginManifest } from './interfaces.js';
+import type { PluginManifest } from './interfaces.js';
 
 export class PluginSDK {
   validate(manifest: PluginManifest): boolean {

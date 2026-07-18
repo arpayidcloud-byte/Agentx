@@ -3,7 +3,7 @@
  * @description Runtime lifecycle management.
  */
 
-import { RuntimeState } from './interfaces.js';
+import type { RuntimeState } from './interfaces.js';
 import { RuntimeStateMachine } from './runtime-state.js';
 
 export class RuntimeLifecycle {

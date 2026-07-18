@@ -3,7 +3,7 @@
  * @description Core reasoning pipeline orchestration.
  */
 
-import { PipelineStageName, ReasoningSession } from './interfaces.js';
+import type { PipelineStageName, ReasoningSession } from './interfaces.js';
 import { PipelineStateMachine } from './pipeline-state.js';
 import { PipelineValidator } from './pipeline-validator.js';
 import { PipelineHookManager } from './pipeline-hooks.js';

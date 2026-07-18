@@ -3,8 +3,8 @@
  * @description Automatically configures and executes test pipelines.
  */
 
-import { IProvider } from '@agentx/runtime-adapters';
-import { ConformanceReport } from './interfaces.js';
+import type { IProvider } from '@agentx/runtime-adapters';
+import type { ConformanceReport } from './interfaces.js';
 import { ContractHarness } from './contract-harness.js';
 import { CompatibilityHarness } from './compatibility-harness.js';
 import { BenchmarkHarness } from './benchmark-harness.js';

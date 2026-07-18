@@ -3,7 +3,7 @@
  * @description Validates provider version against compatible runtime bounds.
  */
 
-import { IProvider, AuditResult } from './interfaces.js';
+import type { IProvider, AuditResult } from './interfaces.js';
 import { VersionMismatchError } from './errors.js';
 
 export class ProviderVersionValidator {

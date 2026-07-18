@@ -3,7 +3,7 @@
  * @description Hypothesis candidate management and pruning.
  */
 
-import { Hypothesis } from './interfaces.js';
+import type { Hypothesis } from './interfaces.js';
 
 export class HypothesisEngine {
   rank(candidates: Hypothesis[]): Hypothesis[] {

@@ -1,4 +1,4 @@
-import { ITokenEstimator } from './interfaces.js';
+import type { ITokenEstimator } from './interfaces.js';
 
 export class SimpleTokenEstimator implements ITokenEstimator {
   public estimate(data: unknown): number {

@@ -3,7 +3,7 @@
  * @description Runtime lifecycle hooks.
  */
 
-import { RuntimeState, RuntimeSession, RuntimeMetrics } from './interfaces.js';
+import type { RuntimeState, RuntimeSession, RuntimeMetrics } from './interfaces.js';
 
 export interface RuntimeHook {
   name: string;

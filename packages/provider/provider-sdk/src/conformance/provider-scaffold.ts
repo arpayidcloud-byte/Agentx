@@ -3,7 +3,7 @@
  * @description Automatic generation of provider boilerplate.
  */
 
-import { ProviderScaffoldOptions } from './interfaces.js';
+import type { ProviderScaffoldOptions } from './interfaces.js';
 
 export class ProviderScaffolder {
   generate(options: ProviderScaffoldOptions): Record<string, string> {

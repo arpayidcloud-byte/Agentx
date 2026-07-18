@@ -4,7 +4,7 @@
  * Provides read-only git log query within sandbox.
  */
 
-import {
+import type {
   GitExecutionRequest,
   GitExecutionResult,
   GitExecutionContext,

@@ -4,7 +4,7 @@
  * These interfaces extend M3.1 without breaking existing API.
  */
 
-import {
+import type {
   WorkflowDefinition,
   WorkflowNode,
   WorkflowState,

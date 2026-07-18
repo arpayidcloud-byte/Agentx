@@ -3,7 +3,7 @@
  * @description RetryCoordinator for managing retry logic with backoff policies.
  */
 
-import { RetryBudget, RetryDecision, BackoffPolicy } from './interfaces-v2.js';
+import type { RetryBudget, RetryDecision, BackoffPolicy } from './interfaces-v2.js';
 
 export class RetryCoordinator {
   private budgets = new Map<string, RetryBudget>();
@@ -56,7 +56,7 @@ export class RetryCoordinator {
         remainingRetries: 3,
       });
     }
-    return this.budgets.get(nodeId)!;
+    return this.budgets.get(nodeId);
   }
 
   public recordAttempt(nodeId: string): void {

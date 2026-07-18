@@ -3,7 +3,7 @@
  * @description Metrics collection and aggregation for the coordinator.
  */
 
-import { ExecutionCoordinatorMetrics } from './interfaces.js';
+import type { ExecutionCoordinatorMetrics } from './interfaces.js';
 
 export class CoordinatorMetricsCollector {
   private total = 0;

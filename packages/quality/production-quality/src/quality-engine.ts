@@ -3,7 +3,7 @@
  * @description Master orchestrator for production readiness quality verification.
  */
 
-import { ValidationContext, ProductionQualityReport, CoverageReport } from './interfaces.js';
+import type { ValidationContext, ProductionQualityReport, CoverageReport } from './interfaces.js';
 import { QualityGates } from './quality-gates.js';
 import { QualityRules } from './quality-rules.js';
 import { MutationValidator } from './mutation-validator.js';

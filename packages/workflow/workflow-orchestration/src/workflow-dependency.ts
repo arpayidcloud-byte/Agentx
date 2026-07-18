@@ -3,7 +3,7 @@
  * @description DAG dependency management.
  */
 
-import { WorkflowEdge } from './interfaces.js';
+import type { WorkflowEdge } from './interfaces.js';
 
 export class WorkflowDependencyManager {
   private edges: WorkflowEdge[] = [];

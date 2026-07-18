@@ -3,7 +3,7 @@
  * @description Analyzes execution for potential race conditions.
  */
 
-import { ValidationResult } from './interfaces.js';
+import type { ValidationResult } from './interfaces.js';
 
 export class RaceConditionValidator {
   validate(parallelRunResults: boolean[]): ValidationResult {

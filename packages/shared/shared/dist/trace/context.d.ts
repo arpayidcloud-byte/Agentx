@@ -1,4 +1,4 @@
-import { LogContext } from '../logger/interfaces.js';
+import type { LogContext } from '../logger/interfaces.js';
 export declare class TraceContext {
     private static storage;
     /**

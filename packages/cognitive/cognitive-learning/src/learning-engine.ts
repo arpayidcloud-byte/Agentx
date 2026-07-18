@@ -30,7 +30,8 @@ import { LearningRecoveryManager } from './recovery.js';
 import { LearningEventBus } from './events.js';
 import { LearningHookManager } from './hooks.js';
 import { LearningMetricsCollector } from './metrics.js';
-import { Experience, Pattern, Feedback, StrategyRecord, AdaptationPolicy } from './interfaces.js';
+import type { Experience, AdaptationPolicy } from './interfaces.js';
+import { Pattern, Feedback, StrategyRecord } from './interfaces.js';
 
 export class LearningEngine {
   public stateMachine = new LearningStateMachine();

@@ -3,7 +3,7 @@
  * @description Dependency mapping and direction validation.
  */
 
-import { DependencyNode } from './interfaces.js';
+import type { DependencyNode } from './interfaces.js';
 
 export class DependencyMap {
   private nodes: DependencyNode[] = [];

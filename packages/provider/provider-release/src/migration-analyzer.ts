@@ -3,7 +3,7 @@
  * @description Generates migration pathways for major version updates.
  */
 
-import { UpgradePlan } from './interfaces.js';
+import type { UpgradePlan } from './interfaces.js';
 
 export class MigrationAnalyzer {
   analyze(

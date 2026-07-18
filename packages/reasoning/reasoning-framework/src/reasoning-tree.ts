@@ -3,7 +3,8 @@
  * @description Reasoning tree contracts.
  */
 
-import { ReasoningTree, TreeNode, TreeMetadata } from './interfaces.js';
+import type { ReasoningTree, TreeNode } from './interfaces.js';
+import { TreeMetadata } from './interfaces.js';
 
 export class ReasoningTreeManager {
   private tree: ReasoningTree = {

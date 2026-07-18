@@ -1,8 +1,8 @@
 import { createHash } from 'crypto';
-import { DistributedScheduler } from '../../domain/scheduler/DistributedScheduler.js';
-import { DistributedTaskDispatcher } from '../../domain/task/DistributedTaskDispatcher.js';
-import { NodeRegistry } from '../../domain/node/NodeRegistry.js';
-import { DistributedTask } from '../../domain/scheduler/interfaces.js';
+import type { DistributedScheduler } from '../../domain/scheduler/DistributedScheduler.js';
+import type { DistributedTaskDispatcher } from '../../domain/task/DistributedTaskDispatcher.js';
+import type { NodeRegistry } from '../../domain/node/NodeRegistry.js';
+import type { DistributedTask } from '../../domain/scheduler/interfaces.js';
 
 export interface WorkflowPlan {
   readonly planId: string;

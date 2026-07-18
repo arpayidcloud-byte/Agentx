@@ -4,7 +4,7 @@
  * Enforces workspace jail for all git operations.
  */
 
-import {
+import type {
   GitSandboxConfig,
   GitExecutionRequest,
   GitRepositoryInfo,

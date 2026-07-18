@@ -5,7 +5,7 @@
  * Follows Volume 2 Event Bus patterns and Volume 13 Observability requirements.
  */
 
-import { ShellAuditEvent, ToolCategory } from './interfaces.js';
+import type { ShellAuditEvent, ToolCategory } from './interfaces.js';
 
 /**
  * In-memory audit emitter for shell execution events

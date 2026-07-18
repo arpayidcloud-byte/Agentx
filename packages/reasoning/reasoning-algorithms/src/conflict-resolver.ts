@@ -3,7 +3,7 @@
  * @description Logic conflict resolution strategies.
  */
 
-import { Rule } from './interfaces.js';
+import type { Rule } from './interfaces.js';
 
 export class ConflictResolver {
   resolve(conflicts: Rule[], strategy: 'priority' | 'weight' | 'latest'): Rule | undefined {

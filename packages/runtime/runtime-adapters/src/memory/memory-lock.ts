@@ -3,7 +3,7 @@
  * @description Reference in-memory distributed lock provider.
  */
 
-import {
+import type {
   ILockProvider,
   ProviderMetadata,
   ProviderCapabilities,

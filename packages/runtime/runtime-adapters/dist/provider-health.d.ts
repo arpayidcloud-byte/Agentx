@@ -2,7 +2,7 @@
  * @module runtime-adapters/provider-health
  * @description Provider health monitoring abstraction.
  */
-import { IProvider, ProviderHealth } from './interfaces.js';
+import type { IProvider, ProviderHealth } from './interfaces.js';
 export declare class ProviderHealthMonitor {
     private history;
     health(provider: IProvider): Promise<ProviderHealth>;

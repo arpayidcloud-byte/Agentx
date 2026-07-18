@@ -5,7 +5,7 @@
  * Per ADR-0005, shell.exec is Destructive (Risk 90) and requires approval.
  */
 
-import {
+import type {
   ShellExecutionRequest,
   ShellExecutionResult,
   ShellExecutionContext,

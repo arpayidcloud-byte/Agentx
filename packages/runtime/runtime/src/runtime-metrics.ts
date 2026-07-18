@@ -3,7 +3,7 @@
  * @description Runtime metrics collection and aggregation.
  */
 
-import { RuntimeMetrics } from './interfaces.js';
+import type { RuntimeMetrics } from './interfaces.js';
 import { createEmptyMetrics } from './runtime-session.js';
 
 export class MetricsCollector {

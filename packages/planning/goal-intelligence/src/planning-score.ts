@@ -3,7 +3,7 @@
  * @description Deterministic scoring of planning quality.
  */
 
-import { PlanningPlan } from './interfaces.js';
+import type { PlanningPlan } from './interfaces.js';
 
 export interface PlanningScoreData {
   complexityScore: number;

@@ -1,5 +1,5 @@
-import { SubAgent, AgentRole } from './interfaces.js';
-import { TaskModel } from '@agentx/core-runtime';
+import type { SubAgent, AgentRole } from './interfaces.js';
+import type { TaskModel } from '@agentx/core-runtime';
 
 export class BaseSubAgent implements SubAgent {
   public readonly id: string;

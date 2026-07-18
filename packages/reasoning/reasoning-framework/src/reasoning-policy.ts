@@ -3,7 +3,7 @@
  * @description Operational safety policies.
  */
 
-import { ReasoningContext } from './interfaces.js';
+import type { ReasoningContext } from './interfaces.js';
 
 export class ReasoningPolicy {
   validate(context: ReasoningContext): boolean {

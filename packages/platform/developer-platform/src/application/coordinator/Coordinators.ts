@@ -1,12 +1,12 @@
 import { createHash } from 'crypto';
-import {
+import type {
   SDKRegistry,
   SDKGenerator,
   APISpecManager,
   OpenAPIGenerator,
   ClientGenerator,
 } from '../../domain/sdk/SDKManager.js';
-import {
+import type {
   DeveloperProjectManager,
   PackageRegistry,
   ReleaseManager,

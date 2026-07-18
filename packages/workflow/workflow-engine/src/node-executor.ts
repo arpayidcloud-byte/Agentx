@@ -3,8 +3,8 @@
  * @description NodeExecutor provides isolated execution logic for each node type.
  */
 
-import { WorkflowNode } from './interfaces.js';
-import { INodeExecutor } from './interfaces-v2.js';
+import type { WorkflowNode } from './interfaces.js';
+import type { INodeExecutor } from './interfaces-v2.js';
 
 export class NodeExecutor implements INodeExecutor {
   public async executeNode(

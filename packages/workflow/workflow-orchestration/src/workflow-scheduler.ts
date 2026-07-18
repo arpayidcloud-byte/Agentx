@@ -3,7 +3,7 @@
  * @description Deterministic task scheduling.
  */
 
-import { WorkflowTask } from './interfaces.js';
+import type { WorkflowTask } from './interfaces.js';
 
 export class WorkflowScheduler {
   private queue: WorkflowTask[] = [];

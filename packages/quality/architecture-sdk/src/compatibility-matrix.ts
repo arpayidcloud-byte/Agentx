@@ -3,7 +3,7 @@
  * @description Renders canonical package compatibility matrix.
  */
 
-import { CompatibilityMatrix } from './interfaces.js';
+import type { CompatibilityMatrix } from './interfaces.js';
 
 export class CompatibilityMatrixManager {
   private matrix: Record<string, Record<string, boolean>> = {};

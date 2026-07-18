@@ -1,4 +1,4 @@
-import { SubAgentHeartbeat } from './interfaces.js';
+import type { SubAgentHeartbeat } from './interfaces.js';
 import { AgentHeartbeatLostError } from './errors.js';
 import { EventEmitter } from 'events';
 

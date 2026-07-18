@@ -3,7 +3,7 @@
  * @description Exposes tracing hooks.
  */
 
-import { PipelineTraceManager } from './pipeline-trace.js';
+import type { PipelineTraceManager } from './pipeline-trace.js';
 
 export class ReasoningObservability {
   constructor(private traceManager: PipelineTraceManager) {}

@@ -3,7 +3,7 @@
  * @description Enforces minimum thresholds for release categorizations.
  */
 
-import { ReleaseStatus } from './interfaces.js';
+import type { ReleaseStatus } from './interfaces.js';
 
 export interface PolicyThreshold {
   minimumScore: number;

@@ -1,5 +1,5 @@
-import { AgentMessage } from './interfaces.js';
-import { IEventBus } from '@agentx/core-runtime';
+import type { AgentMessage } from './interfaces.js';
+import type { IEventBus } from '@agentx/core-runtime';
 
 export class MessageBus {
   private handlers = new Map<string, Set<(msg: AgentMessage) => void>>();
@@ -10,7 +10,7 @@ export class MessageBus {
     if (!this.handlers.has(topic)) {
       this.handlers.set(topic, new Set());
     }
-    this.handlers.get(topic)!.add(handler);
+    this.handlers.get(topic).add(handler);
   }
 
   public publish(message: AgentMessage): void {

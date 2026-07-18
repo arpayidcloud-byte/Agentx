@@ -1,4 +1,4 @@
-import { DistributedCheckpointManager } from './DistributedCheckpointManager.js';
+import type { DistributedCheckpointManager } from './DistributedCheckpointManager.js';
 
 export interface RecoveryPlan {
   readonly sessionId: string;

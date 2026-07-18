@@ -3,7 +3,7 @@
  * @description State transitions for the reasoning pipeline.
  */
 
-import { PipelineStageName } from './interfaces.js';
+import type { PipelineStageName } from './interfaces.js';
 import { PipelineError } from './errors.js';
 
 const validTransitions: Record<PipelineStageName, PipelineStageName[]> = {

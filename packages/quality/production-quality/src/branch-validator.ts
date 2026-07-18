@@ -3,7 +3,7 @@
  * @description Ensures logic branching coverage reaches required targets.
  */
 
-import { ValidationResult } from './interfaces.js';
+import type { ValidationResult } from './interfaces.js';
 
 export class BranchValidator {
   validate(uncoveredBranches: string[]): ValidationResult {

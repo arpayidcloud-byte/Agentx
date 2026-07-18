@@ -3,7 +3,7 @@
  * @description Workflow hook registration and management.
  */
 
-import { WorkflowHook } from './interfaces-v2.js';
+import type { WorkflowHook } from './interfaces-v2.js';
 
 export class WorkflowHookManager {
   private hooks: WorkflowHook[] = [];

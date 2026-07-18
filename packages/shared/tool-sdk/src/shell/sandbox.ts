@@ -5,7 +5,7 @@
  * environment scrubbing, timeout, resource limits, and audit integration.
  */
 
-import {
+import type {
   ShellSandboxConfig,
   ShellExecutionContext,
   ShellExecutionRequest,

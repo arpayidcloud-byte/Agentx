@@ -1,6 +1,8 @@
-import { IScheduler, ITaskRepository } from '../interfaces/scheduler.js';
-import { TaskModel, TaskStatus } from '../interfaces/task.js';
-import { IEventBus, EventTopic } from '../interfaces/events.js';
+import type { IScheduler, ITaskRepository } from '../interfaces/scheduler.js';
+import type { TaskModel } from '../interfaces/task.js';
+import { TaskStatus } from '../interfaces/task.js';
+import type { IEventBus } from '../interfaces/events.js';
+import { EventTopic } from '../interfaces/events.js';
 import { TaskStateMachine } from '../state-machine/index.js';
 import { TaskNotFoundError } from '../errors.js';
 

@@ -3,7 +3,7 @@
  * @description Immutable store of execution experiences.
  */
 
-import { Experience } from './interfaces.js';
+import type { Experience } from './interfaces.js';
 import { InvalidExperienceError } from './errors.js';
 import { createHash } from 'crypto';
 

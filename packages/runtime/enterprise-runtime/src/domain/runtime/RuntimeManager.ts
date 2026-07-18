@@ -1,4 +1,4 @@
-import { RuntimeState, HealthStatus } from './interfaces.js';
+import type { RuntimeState, HealthStatus } from './interfaces.js';
 import { InvariantViolationError } from '../shared/errors.js';
 
 export class RuntimeLifecycleManager {

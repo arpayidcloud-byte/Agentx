@@ -4,7 +4,7 @@
  * Provides a unified API for approval operations.
  */
 
-import {
+import type {
   IApprovalEngine,
   IApprovalStore,
   ApprovalRequest,

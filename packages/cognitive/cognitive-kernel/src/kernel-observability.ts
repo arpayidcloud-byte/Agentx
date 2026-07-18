@@ -3,7 +3,7 @@
  * @description Exposes global tracing and logging vectors.
  */
 
-import { KernelTraceManager } from './kernel-trace.js';
+import type { KernelTraceManager } from './kernel-trace.js';
 
 export class KernelObservability {
   constructor(private traceManager: KernelTraceManager) {}

@@ -3,7 +3,7 @@
  * @description Rejects invalid patterns.
  */
 
-import { Pattern } from './interfaces.js';
+import type { Pattern } from './interfaces.js';
 import { InvalidPatternError } from './errors.js';
 
 export class PatternValidator {

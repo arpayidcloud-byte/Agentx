@@ -3,7 +3,10 @@
  * @description Agent capability and slot management.
  */
 
-import { AgentDirectoryEntry, CapabilityMatch } from '../../domain/collaboration/interfaces.js';
+import type {
+  AgentDirectoryEntry,
+  CapabilityMatch,
+} from '../../domain/collaboration/interfaces.js';
 
 export class AgentDirectory {
   private entries = new Map<string, AgentDirectoryEntry>();

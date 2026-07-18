@@ -3,7 +3,7 @@
  * @description Stores certified production providers.
  */
 
-import { CertificationCertificate } from './interfaces.js';
+import type { CertificationCertificate } from './interfaces.js';
 import { IntegrityError } from './errors.js';
 
 export class ProviderRegistry {

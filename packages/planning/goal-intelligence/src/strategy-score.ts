@@ -3,7 +3,7 @@
  * @description Scores strategies based on symbolic metrics.
  */
 
-import { DecisionChoice } from './interfaces.js';
+import type { DecisionChoice } from './interfaces.js';
 
 export class StrategyScorer {
   score(choice: DecisionChoice, historicalSuccesses: number, failureCount: number): number {

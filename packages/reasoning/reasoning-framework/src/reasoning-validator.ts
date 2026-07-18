@@ -3,7 +3,7 @@
  * @description Validates reasoning context integrity.
  */
 
-import { ReasoningContext, ReasoningGraph } from './interfaces.js';
+import type { ReasoningContext, ReasoningGraph } from './interfaces.js';
 import { ValidationError, GraphIntegrityError } from './errors.js';
 
 export class ReasoningValidator {

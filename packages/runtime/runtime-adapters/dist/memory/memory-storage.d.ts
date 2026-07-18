@@ -2,7 +2,7 @@
  * @module runtime-adapters/memory/memory-storage
  * @description Reference in-memory database and storage provider.
  */
-import { IStorageProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics } from '../interfaces.js';
+import type { IStorageProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics } from '../interfaces.js';
 export declare class MemoryStorageProvider implements IStorageProvider {
     private store;
     private total;

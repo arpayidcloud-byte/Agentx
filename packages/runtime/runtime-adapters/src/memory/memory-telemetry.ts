@@ -3,7 +3,7 @@
  * @description Reference in-memory telemetry, metrics, and tracing provider.
  */
 
-import {
+import type {
   ITelemetryProvider,
   ProviderMetadata,
   ProviderCapabilities,

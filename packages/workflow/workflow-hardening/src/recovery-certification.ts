@@ -3,7 +3,7 @@
  * @description Verifies recovery correctness and rollback integrity.
  */
 
-import { RecoveryCertification } from './interfaces.js';
+import type { RecoveryCertification } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class RecoveryCertificationEngine {

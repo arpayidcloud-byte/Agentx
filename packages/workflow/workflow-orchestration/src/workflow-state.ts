@@ -3,7 +3,7 @@
  * @description State machine for workflow lifecycle.
  */
 
-import { WorkflowState } from './interfaces.js';
+import type { WorkflowState } from './interfaces.js';
 import { WorkflowStateError } from './errors.js';
 
 const validTransitions: Record<WorkflowState, WorkflowState[]> = {

@@ -2,7 +2,7 @@
  * @module runtime-adapters/provider-capability
  * @description Validates provider capabilities against required features.
  */
-import { ProviderCapabilities } from './interfaces.js';
+import type { ProviderCapabilities } from './interfaces.js';
 export declare class ProviderCapabilityResolver {
     validateCapabilities(required: Partial<ProviderCapabilities>, actual: ProviderCapabilities): void;
     supportsTransactions(capabilities: ProviderCapabilities): boolean;

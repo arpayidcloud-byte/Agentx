@@ -3,12 +3,8 @@
  * @description Generates immutable certification certificates.
  */
 
-import {
-  ProviderMetadata,
-  ReadinessScore,
-  ProviderGrade,
-  CertificationCertificate,
-} from './interfaces.js';
+import type { ProviderMetadata, ProviderGrade, CertificationCertificate } from './interfaces.js';
+import { ReadinessScore } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class ProviderCertificate {

@@ -3,7 +3,7 @@
  * @description Core workflow execution engine.
  */
 
-import { WorkflowGraph, WorkflowTask } from './interfaces.js';
+import type { WorkflowGraph, WorkflowTask } from './interfaces.js';
 import { WorkflowScheduler } from './workflow-scheduler.js';
 import { WorkflowDispatcher } from './workflow-dispatcher.js';
 import { WorkflowExecutor } from './workflow-executor.js';

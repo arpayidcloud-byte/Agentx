@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as fs from 'fs/promises';
-import { IPathResolver } from './interfaces.js';
+import type { IPathResolver } from './interfaces.js';
 import { PathTraversalError, WorkspaceEscapeError } from './errors.js';
 
 export class PathResolver implements IPathResolver {

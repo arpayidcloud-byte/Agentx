@@ -3,7 +3,7 @@
  * @description Rank providers automatically based on score.
  */
 
-import { ProviderRank } from './interfaces.js';
+import type { ProviderRank } from './interfaces.js';
 
 export class ProviderRanking {
   getRank(score: number): ProviderRank {

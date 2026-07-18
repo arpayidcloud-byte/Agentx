@@ -3,8 +3,8 @@
  * @description Provider creation and validation builder.
  */
 
-import { IProvider } from '@agentx/runtime-adapters';
-import { ProviderConfiguration } from './interfaces.js';
+import type { IProvider } from '@agentx/runtime-adapters';
+import type { ProviderConfiguration } from './interfaces.js';
 
 export class ProviderBuilder<T extends IProvider> {
   private provider!: T;

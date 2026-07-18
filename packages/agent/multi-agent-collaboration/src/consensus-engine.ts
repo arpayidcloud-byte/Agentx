@@ -3,7 +3,7 @@
  * @description Deterministic consensus mechanism.
  */
 
-import { ConsensusRequest, ConsensusResult } from './interfaces.js';
+import type { ConsensusRequest, ConsensusResult } from './interfaces.js';
 
 export class ConsensusEngine {
   private results: ConsensusResult[] = [];

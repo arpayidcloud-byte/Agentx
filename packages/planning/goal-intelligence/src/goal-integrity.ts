@@ -3,7 +3,7 @@
  * @description Validates integrity of planning state.
  */
 
-import { PlanningPlan } from './interfaces.js';
+import type { PlanningPlan } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class GoalIntegrityValidator {

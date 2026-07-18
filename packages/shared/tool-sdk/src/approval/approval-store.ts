@@ -4,7 +4,7 @@
  * Stores approval requests with state management.
  */
 
-import { IApprovalStore, ApprovalRequest, ApprovalState } from './interfaces.js';
+import type { IApprovalStore, ApprovalRequest, ApprovalState } from './interfaces.js';
 import { ApprovalNotFoundError } from './errors.js';
 
 /**

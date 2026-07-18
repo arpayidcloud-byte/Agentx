@@ -1,4 +1,4 @@
-import { IEventBus, EventEnvelope } from '../interfaces/events.js';
+import type { IEventBus, EventEnvelope } from '../interfaces/events.js';
 import { EventBusError } from '../errors.js';
 import { Queue, Worker } from 'bullmq';
 import { Redis } from 'ioredis';
@@ -35,7 +35,7 @@ export class InMemoryEventBus implements IEventBus {
     if (!this.handlers.has(topic)) {
       this.handlers.set(topic, new Set());
     }
-    this.handlers.get(topic)!.add(handler);
+    this.handlers.get(topic).add(handler);
   }
 
   public async unsubscribe(topic: string): Promise<void> {
@@ -130,7 +130,7 @@ export class BullMQEventBus implements IEventBus {
     if (!this.queues.has(topic)) {
       this.queues.set(topic, new Queue(topic, { connection: this.redisConnection as any }));
     }
-    const queue = this.queues.get(topic)!;
+    const queue = this.queues.get(topic);
     const event: EventEnvelope<T> = {
       id: Math.random().toString(36).substring(2) + Date.now().toString(36),
       topic,

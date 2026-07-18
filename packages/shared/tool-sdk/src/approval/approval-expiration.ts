@@ -4,7 +4,7 @@
  * Handles TTL checks and automatic expiration of approval requests.
  */
 
-import { ApprovalRequest, ExpirationCheckResult } from './interfaces.js';
+import type { ApprovalRequest, ExpirationCheckResult } from './interfaces.js';
 
 /**
  * Checks if an approval request has expired

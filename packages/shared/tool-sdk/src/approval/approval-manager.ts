@@ -4,7 +4,7 @@
  * Manages approval sessions, expiration checks, and lifecycle.
  */
 
-import {
+import type {
   ApprovalRequest,
   ApprovalResult,
   ApprovalSession,

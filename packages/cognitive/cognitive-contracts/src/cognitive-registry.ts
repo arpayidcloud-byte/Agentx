@@ -3,7 +3,7 @@
  * @description Manages registered cognitive engines.
  */
 
-import { ICognitiveEngine } from './contracts.js';
+import type { ICognitiveEngine } from './contracts.js';
 
 export class CognitiveRegistry {
   private engines = new Map<string, ICognitiveEngine>();

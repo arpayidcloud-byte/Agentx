@@ -3,7 +3,7 @@
  * @description Validates provider health characteristics.
  */
 
-import { IProvider, AuditResult } from './interfaces.js';
+import type { IProvider, AuditResult } from './interfaces.js';
 import { ValidationError } from './errors.js';
 
 export class ProviderHealthAudit {

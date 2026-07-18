@@ -3,7 +3,7 @@
  * @description Validates retry budgets, backoff, and exhaustion paths.
  */
 
-import { ValidationResult } from './interfaces.js';
+import type { ValidationResult } from './interfaces.js';
 
 export class RetryValidator {
   validate(retries: { count: number; maxRetries: number; exhausted: boolean }): ValidationResult {

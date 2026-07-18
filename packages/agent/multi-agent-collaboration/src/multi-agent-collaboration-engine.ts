@@ -3,13 +3,8 @@
  * @description Master orchestrator for multi-agent cognitive collaboration.
  */
 
-import {
-  AgentMetadata,
-  CollaborationSession,
-  SharedContext,
-  TaskDelegation,
-  ConsensusRequest,
-} from './interfaces.js';
+import type { CollaborationSession, ConsensusRequest } from './interfaces.js';
+import { AgentMetadata, SharedContext, TaskDelegation } from './interfaces.js';
 import { AgentRegistry } from './agent-registry.js';
 import { AgentDirectory } from './agent-directory.js';
 import { AgentSelectionEngine } from './agent-selection-engine.js';

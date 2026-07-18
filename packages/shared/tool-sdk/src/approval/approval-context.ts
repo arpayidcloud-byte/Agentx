@@ -4,7 +4,7 @@
  * Provides context information needed for approval and execution.
  */
 
-import { ApprovalExecutionContext } from './interfaces.js';
+import type { ApprovalExecutionContext } from './interfaces.js';
 
 /**
  * Creates an approval execution context

@@ -1,11 +1,11 @@
-import {
+import type {
   IMemoryEngine,
   IMemoryStore,
   Memory,
   MemorySearchOptions,
   MemoryMetrics,
 } from './interfaces.js';
-import { IEventBus } from '@agentx/core-runtime';
+import type { IEventBus } from '@agentx/core-runtime';
 
 export class MemoryEngine implements IMemoryEngine {
   private metrics: MemoryMetrics = {
@@ -121,7 +121,7 @@ export class InMemoryStore implements IMemoryStore {
       results = results.filter((m) => m.type === options.type);
     }
     if (options?.minImportance) {
-      results = results.filter((m) => m.importance >= options.minImportance!);
+      results = results.filter((m) => m.importance >= options.minImportance);
     }
     if (options?.limit) {
       results = results.slice(0, options.limit);

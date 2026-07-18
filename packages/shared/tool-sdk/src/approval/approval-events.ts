@@ -4,7 +4,7 @@
  * Implements audit trail for approval lifecycle events.
  */
 
-import { ApprovalEventType, ApprovalAuditEvent, ApprovalRequest } from './interfaces.js';
+import type { ApprovalEventType, ApprovalAuditEvent, ApprovalRequest } from './interfaces.js';
 
 /**
  * Creates an approval audit event

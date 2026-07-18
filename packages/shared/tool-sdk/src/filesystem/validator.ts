@@ -1,4 +1,4 @@
-import { IFilesystemValidator } from './interfaces.js';
+import type { IFilesystemValidator } from './interfaces.js';
 
 export class FilesystemValidator implements IFilesystemValidator {
   public validateEncoding(buffer: Buffer): boolean {

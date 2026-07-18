@@ -4,7 +4,7 @@
  * Enforces CPU, memory, output size, and execution time limits.
  */
 
-import { ResourceLimitsConfig } from './interfaces.js';
+import type { ResourceLimitsConfig } from './interfaces.js';
 
 /** Default resource limits */
 const DEFAULT_RESOURCE_LIMITS: ResourceLimitsConfig = {

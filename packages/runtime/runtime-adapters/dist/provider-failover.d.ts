@@ -2,7 +2,7 @@
  * @module runtime-adapters/provider-failover
  * @description Provider Failover Management abstraction.
  */
-import { IProvider } from './interfaces.js';
+import type { IProvider } from './interfaces.js';
 export declare class ProviderFailoverManager {
     private primary;
     private secondary;

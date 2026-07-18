@@ -3,7 +3,7 @@
  * @description Hook contract definitions.
  */
 
-import { ThinkingSession } from './interfaces.js';
+import type { ThinkingSession } from './interfaces.js';
 
 export interface CognitiveHooks {
   beforeThinking?: (session: ThinkingSession) => Promise<void>;

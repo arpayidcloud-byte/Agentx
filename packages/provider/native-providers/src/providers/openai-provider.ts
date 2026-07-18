@@ -3,7 +3,7 @@
  * @description Native OpenAI provider integration adapter.
  */
 
-import {
+import type {
   IConfigurationProvider,
   INativeProvider,
   CompletionOptions,

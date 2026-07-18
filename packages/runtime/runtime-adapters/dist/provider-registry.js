@@ -21,14 +21,14 @@ export class ProviderRegistry {
         return provider;
     }
     resolveByType(type) {
-        const providers = Array.from(this.providers.values()).filter(p => p.getMetadata().type === type);
+        const providers = Array.from(this.providers.values()).filter((p) => p.getMetadata().type === type);
         if (providers.length === 0) {
             throw new ProviderResolutionError(`No provider found for type: ${type}`, 'registry');
         }
         return providers[0];
     }
     resolveByCapability(requiredCapabilities) {
-        return Array.from(this.providers.values()).filter(provider => {
+        return Array.from(this.providers.values()).filter((provider) => {
             try {
                 this.capabilityResolver.validateCapabilities(requiredCapabilities, provider.getCapabilities());
                 return true;
@@ -39,7 +39,7 @@ export class ProviderRegistry {
         });
     }
     listProviders() {
-        return Array.from(this.providers.values()).map(p => p.getMetadata());
+        return Array.from(this.providers.values()).map((p) => p.getMetadata());
     }
     async healthCheck() {
         for (const provider of this.providers.values()) {

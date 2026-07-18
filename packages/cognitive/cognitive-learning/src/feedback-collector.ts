@@ -3,7 +3,7 @@
  * @description Collects feedback from various system sources.
  */
 
-import { Feedback } from './interfaces.js';
+import type { Feedback } from './interfaces.js';
 
 export class FeedbackCollector {
   private collected: Feedback[] = [];

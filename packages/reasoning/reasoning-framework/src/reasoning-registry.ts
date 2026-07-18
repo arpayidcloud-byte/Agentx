@@ -3,7 +3,7 @@
  * @description Strategy registry manager.
  */
 
-import { IReasoningStrategy } from './interfaces.js';
+import type { IReasoningStrategy } from './interfaces.js';
 
 export class ReasoningRegistry {
   private strategies = new Map<string, IReasoningStrategy>();

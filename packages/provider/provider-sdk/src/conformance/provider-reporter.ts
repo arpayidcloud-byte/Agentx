@@ -3,7 +3,7 @@
  * @description Generates readable markdown/text reports.
  */
 
-import { ConformanceReport } from './interfaces.js';
+import type { ConformanceReport } from './interfaces.js';
 
 export class ProviderReporter {
   generateMarkdown(report: ConformanceReport): string {

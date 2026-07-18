@@ -3,7 +3,7 @@
  * @description Manages shared memory between agents.
  */
 
-import { SharedMemory } from './interfaces.js';
+import type { SharedMemory } from './interfaces.js';
 import { SharedMemoryError } from './errors.js';
 
 export class SharedMemoryCoordinator {

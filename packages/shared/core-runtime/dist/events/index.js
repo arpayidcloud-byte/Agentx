@@ -67,7 +67,7 @@ export class InMemoryEventBus {
                 try {
                     const promise = handler(event);
                     if (promise && typeof promise.catch === 'function') {
-                        promise.catch(err => {
+                        promise.catch((err) => {
                             console.error(`Error in event handler for topic ${topic}`, err);
                         });
                     }

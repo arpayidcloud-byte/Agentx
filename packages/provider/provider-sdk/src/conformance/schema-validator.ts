@@ -3,7 +3,7 @@
  * @description Manifest configuration validation.
  */
 
-import { ProviderManifest } from './interfaces.js';
+import type { ProviderManifest } from './interfaces.js';
 import { ValidationFailedError } from './errors.js';
 
 export class SchemaValidator {

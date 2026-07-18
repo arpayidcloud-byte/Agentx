@@ -4,7 +4,7 @@
  * Creates new commits within sandbox.
  */
 
-import { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
+import type { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
 import { GitExecutor } from './executor.js';
 import { validateCommitMessage } from './validator.js';
 

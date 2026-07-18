@@ -3,8 +3,8 @@
  * @description ExecutionPlanner for dependency ordering, priority calculation, and parallel batching.
  */
 
-import { WorkflowDefinition, WorkflowNode, WorkflowEdge } from './interfaces.js';
-import { ExecutionPlan, ExecutionBatch } from './interfaces-v2.js';
+import type { WorkflowDefinition, WorkflowNode, WorkflowEdge } from './interfaces.js';
+import type { ExecutionPlan, ExecutionBatch } from './interfaces-v2.js';
 import { topologicalSort, isNodeReady } from './graph.js';
 
 export class ExecutionPlanner {

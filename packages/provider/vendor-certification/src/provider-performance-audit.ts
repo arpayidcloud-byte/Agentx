@@ -3,7 +3,7 @@
  * @description Validates performance characteristics.
  */
 
-import { IProvider, AuditResult } from './interfaces.js';
+import type { IProvider, AuditResult } from './interfaces.js';
 
 export class ProviderPerformanceAudit {
   async run(_provider: IProvider): Promise<AuditResult> {

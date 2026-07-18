@@ -3,7 +3,7 @@
  * @description Immutable registry of learned patterns.
  */
 
-import { Pattern } from './interfaces.js';
+import type { Pattern } from './interfaces.js';
 
 export class PatternRegistry {
   private patterns = new Map<string, Pattern>();

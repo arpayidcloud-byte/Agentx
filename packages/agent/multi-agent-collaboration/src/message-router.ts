@@ -3,7 +3,7 @@
  * @description Deterministic message routing between agents.
  */
 
-import { AgentMessage } from './interfaces.js';
+import type { AgentMessage } from './interfaces.js';
 
 export class MessageRouter {
   private inbox = new Map<string, AgentMessage[]>();

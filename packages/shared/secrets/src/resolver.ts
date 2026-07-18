@@ -1,4 +1,4 @@
-import { CredentialResolver, SecretStore, SecretMetadata } from './interfaces.js';
+import type { CredentialResolver, SecretStore, SecretMetadata } from './interfaces.js';
 import { SecretCache } from './cache.js';
 import { RedactedString } from './scrubber.js';
 import { SecretNotFoundError, CredentialResolutionError } from './errors.js';

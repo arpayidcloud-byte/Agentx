@@ -3,7 +3,7 @@
  * @description Snapshot manager for immutable historical storage.
  */
 
-import { QualificationSnapshot, CertificationReport } from './interfaces.js';
+import type { QualificationSnapshot, CertificationReport } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class SnapshotManager {

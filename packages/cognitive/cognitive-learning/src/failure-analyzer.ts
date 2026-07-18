@@ -3,7 +3,7 @@
  * @description Identifies root causes of failures.
  */
 
-import { Experience } from './interfaces.js';
+import type { Experience } from './interfaces.js';
 
 export class FailureAnalyzer {
   analyze(experiences: Experience[]): string[] {

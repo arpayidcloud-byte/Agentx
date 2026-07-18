@@ -4,7 +4,7 @@
  * These interfaces implement the final approval gate before tool execution.
  */
 
-import { ToolCategory } from '../interfaces/index.js';
+import type { ToolCategory } from '../interfaces/index.js';
 
 /** @description Approval request states */
 export type ApprovalState =

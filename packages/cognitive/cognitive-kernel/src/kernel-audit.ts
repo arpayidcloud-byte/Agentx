@@ -3,7 +3,7 @@
  * @description Immutable chronological record storage.
  */
 
-import { AuditRecord } from './interfaces.js';
+import type { AuditRecord } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class KernelAuditManager {

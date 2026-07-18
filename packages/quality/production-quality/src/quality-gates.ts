@@ -3,7 +3,7 @@
  * @description Hard limits for validating quality gates.
  */
 
-import { CoverageReport, ValidationResult } from './interfaces.js';
+import type { CoverageReport, ValidationResult } from './interfaces.js';
 import { CoverageValidator } from './coverage-validator.js';
 
 export class QualityGates {

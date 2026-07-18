@@ -3,7 +3,7 @@
  * @description Deterministic collaboration scheduling.
  */
 
-import { TaskDelegation } from './interfaces.js';
+import type { TaskDelegation } from './interfaces.js';
 
 export class CollaborationScheduler {
   private queue: TaskDelegation[] = [];

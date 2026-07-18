@@ -28,16 +28,16 @@ export class ProviderHealthMonitor {
         const history = this.history.get(providerId) || [];
         if (history.length === 0)
             return 100;
-        const healthy = history.filter(h => h.healthy).length;
+        const healthy = history.filter((h) => h.healthy).length;
         return (healthy / history.length) * 100;
     }
     failureCount(providerId) {
         const history = this.history.get(providerId) || [];
-        return history.filter(h => !h.healthy).length;
+        return history.filter((h) => !h.healthy).length;
     }
     lastFailure(providerId) {
         const history = this.history.get(providerId) || [];
-        const failed = history.filter(h => !h.healthy);
+        const failed = history.filter((h) => !h.healthy);
         const last = failed[failed.length - 1];
         return last ? last.lastChecked : undefined;
     }

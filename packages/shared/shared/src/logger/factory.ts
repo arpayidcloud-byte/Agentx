@@ -1,4 +1,4 @@
-import { ILogger, LoggerConfiguration, LoggerFactory } from './interfaces.js';
+import type { ILogger, LoggerConfiguration, LoggerFactory } from './interfaces.js';
 import { JsonLogger, NullLogger, ConsoleLogger } from './loggers.js';
 
 export class AgentXLoggerFactory implements LoggerFactory {

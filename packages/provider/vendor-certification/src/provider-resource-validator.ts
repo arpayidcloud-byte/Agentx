@@ -3,7 +3,7 @@
  * @description Validates provider resource limits.
  */
 
-import { IProvider, AuditResult } from './interfaces.js';
+import type { IProvider, AuditResult } from './interfaces.js';
 
 export class ProviderResourceValidator {
   async run(_provider: IProvider): Promise<AuditResult> {

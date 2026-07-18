@@ -3,7 +3,7 @@
  * @description Ensures architectural boundaries (e.g. Hexagonal Architecture).
  */
 
-import { ValidationResult } from './interfaces.js';
+import type { ValidationResult } from './interfaces.js';
 import { DependencyError } from './errors.js';
 
 export class DependencyValidator {

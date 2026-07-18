@@ -3,7 +3,7 @@
  * @description Validates CPU, memory, and token ceilings.
  */
 
-import { ValidationResult } from './interfaces.js';
+import type { ValidationResult } from './interfaces.js';
 import { ResourceValidationError } from './errors.js';
 
 export interface ResourceUsage {

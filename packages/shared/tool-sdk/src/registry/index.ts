@@ -1,4 +1,4 @@
-import { IToolRegistry, ITool, ToolCategory, ToolCapability } from '../interfaces/index.js';
+import type { IToolRegistry, ITool, ToolCategory, ToolCapability } from '../interfaces/index.js';
 import { DuplicateToolError, ToolNotFoundError } from '../errors/index.js';
 
 export class ToolRegistry implements IToolRegistry {
@@ -17,7 +17,7 @@ export class ToolRegistry implements IToolRegistry {
     if (!this.categories.has(category)) {
       this.categories.set(category, new Set());
     }
-    this.categories.get(category)!.add(name);
+    this.categories.get(category).add(name);
   }
 
   public unregister(toolName: string): void {

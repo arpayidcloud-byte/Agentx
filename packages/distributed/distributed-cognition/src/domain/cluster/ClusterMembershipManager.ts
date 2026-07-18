@@ -1,4 +1,4 @@
-import { ClusterConfig, ClusterMembership } from './interfaces.js';
+import type { ClusterConfig, ClusterMembership } from './interfaces.js';
 import { InvariantViolationError } from '../shared/errors.js';
 
 /**

@@ -3,7 +3,7 @@
  * @description Validates goals before decomposition.
  */
 
-import { Goal } from './interfaces.js';
+import type { Goal } from './interfaces.js';
 import { GoalValidationError } from './errors.js';
 
 export class GoalValidator {

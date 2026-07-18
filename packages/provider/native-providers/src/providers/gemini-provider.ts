@@ -3,7 +3,7 @@
  * @description Native Gemini provider integration adapter.
  */
 
-import {
+import type {
   IConfigurationProvider,
   INativeProvider,
   CompletionOptions,

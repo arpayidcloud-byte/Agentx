@@ -1,4 +1,4 @@
-import { TaskModel } from './task.js';
+import type { TaskModel } from './task.js';
 
 export interface IRetryPolicy {
   readonly type: 'exponential' | 'linear' | 'constant';

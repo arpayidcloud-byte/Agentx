@@ -3,7 +3,7 @@
  * @description Immutable chronological log manager.
  */
 
-import { ReasoningAuditRecord } from './interfaces.js';
+import type { ReasoningAuditRecord } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class ReasoningAuditManager {

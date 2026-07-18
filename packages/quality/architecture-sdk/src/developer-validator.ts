@@ -3,7 +3,7 @@
  * @description Validates developer adherence to architecture constraints.
  */
 
-import { PackageMetadata } from './interfaces.js';
+import type { PackageMetadata } from './interfaces.js';
 import { ValidationError } from './errors.js';
 
 export class DeveloperValidator {

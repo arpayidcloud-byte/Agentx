@@ -11,13 +11,21 @@ export class RetryPolicy {
         this.initialDelayMs = config.initialDelayMs ?? 1000;
         this.backoffMultiplier = config.backoffMultiplier ?? 2.0;
         this.maxDelayMs = config.maxDelayMs;
-        this.retryableErrors = config.retryableErrors || ['ECONNRESET', 'ETIMEDOUT', 'EAI_AGAIN', '429', '500', '502', '503'];
+        this.retryableErrors = config.retryableErrors || [
+            'ECONNRESET',
+            'ETIMEDOUT',
+            'EAI_AGAIN',
+            '429',
+            '500',
+            '502',
+            '503',
+        ];
     }
     calculateDelay(attempt) {
         let delay = this.initialDelayMs;
         switch (this.type) {
             case 'linear':
-                delay = this.initialDelayMs + (this.initialDelayMs * attempt);
+                delay = this.initialDelayMs + this.initialDelayMs * attempt;
                 break;
             case 'constant':
                 delay = this.initialDelayMs;
@@ -36,7 +44,7 @@ export class RetryPolicy {
     }
     isRetryable(error) {
         const msg = error.message.toUpperCase();
-        return this.retryableErrors.some(code => msg.includes(code));
+        return this.retryableErrors.some((code) => msg.includes(code));
     }
     async execute(operation, cancellationToken) {
         let lastError;
@@ -53,7 +61,7 @@ export class RetryPolicy {
                     throw lastError;
                 }
                 const delay = this.calculateDelay(attempt);
-                await new Promise(resolve => setTimeout(resolve, delay));
+                await new Promise((resolve) => setTimeout(resolve, delay));
             }
         }
         throw lastError;

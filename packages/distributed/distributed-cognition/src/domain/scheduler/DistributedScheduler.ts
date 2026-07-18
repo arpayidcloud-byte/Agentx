@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-import { DistributedTask, TaskState, SchedulePolicy } from './interfaces.js';
+import type { DistributedTask, TaskState, SchedulePolicy } from './interfaces.js';
 
 export class DistributedScheduler {
   private tasks = new Map<string, DistributedTask>();

@@ -4,7 +4,7 @@
  * Manages the full approval lifecycle: create, approve, reject, expire, cancel, execute.
  */
 
-import {
+import type {
   IApprovalEngine,
   IApprovalStore,
   ApprovalRequest,

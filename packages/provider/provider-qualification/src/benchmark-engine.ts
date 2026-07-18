@@ -3,7 +3,7 @@
  * @description Latency, throughput, and system resource profiler.
  */
 
-import { BenchmarkMetrics } from './interfaces.js';
+import type { BenchmarkMetrics } from './interfaces.js';
 
 export class BenchmarkEngine {
   async run(_rateRps: number, durationMs: number): Promise<BenchmarkMetrics> {

@@ -2,7 +2,7 @@
  * @module runtime-adapters/memory/memory-worker-discovery
  * @description Reference in-memory service discovery provider.
  */
-import { IWorkerDiscoveryProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics } from '../interfaces.js';
+import type { IWorkerDiscoveryProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics } from '../interfaces.js';
 export declare class MemoryWorkerDiscoveryProvider implements IWorkerDiscoveryProvider {
     private workers;
     private total;

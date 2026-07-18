@@ -3,7 +3,7 @@
  * @description Routes tasks to correct execution components.
  */
 
-import { WorkflowTask } from './interfaces.js';
+import type { WorkflowTask } from './interfaces.js';
 
 export class WorkflowRouter {
   route(task: WorkflowTask): string {

@@ -5,9 +5,11 @@
  * Implements process lifecycle management with abort support.
  */
 
-import { spawn, ChildProcess } from 'child_process';
-import { CollectedOutput, createEmptyOutput } from './output.js';
-import { ResourceLimitsConfig } from './interfaces.js';
+import type { ChildProcess } from 'child_process';
+import { spawn } from 'child_process';
+import type { CollectedOutput } from './output.js';
+import { createEmptyOutput } from './output.js';
+import type { ResourceLimitsConfig } from './interfaces.js';
 
 /**
  * Manages a spawned shell process

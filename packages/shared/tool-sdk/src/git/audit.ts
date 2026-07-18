@@ -4,8 +4,8 @@
  * Follows Volume 2 Event Bus patterns and Volume 13 Observability requirements.
  */
 
-import { GitAuditEvent, GitOperation } from './interfaces.js';
-import { ToolCategory } from '../interfaces/index.js';
+import type { GitAuditEvent, GitOperation } from './interfaces.js';
+import type { ToolCategory } from '../interfaces/index.js';
 import { ShellAuditEmitter } from '../shell/audit.js';
 
 /**
@@ -40,7 +40,7 @@ export class GitAuditEmitter extends ShellAuditEmitter {
    */
   getEventsByOperation(_operation: GitOperation): GitAuditEvent[] {
     return this.getEvents().map((e) => ({
-      eventType: e.eventType as GitAuditEvent['eventType'],
+      eventType: e.eventType,
       category: e.category,
       operation: e.command as GitOperation,
       repository: '',

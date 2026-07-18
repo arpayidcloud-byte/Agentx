@@ -3,7 +3,7 @@
  * @description State checkpoint and snapshot saving for failure rollbacks.
  */
 
-import { SessionCheckpoint } from './interfaces.js';
+import type { SessionCheckpoint } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class KernelCheckpointManager {

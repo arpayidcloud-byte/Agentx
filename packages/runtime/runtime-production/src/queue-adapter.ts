@@ -3,7 +3,7 @@
  * @description Persistent queue adapters with multiple message queue providers.
  */
 
-import { QueueMessage } from './interfaces.js';
+import type { QueueMessage } from './interfaces.js';
 import { QueueError } from './errors.js';
 
 export interface IExecutionQueue {

@@ -22,7 +22,12 @@ export class MemoryTelemetryProvider {
         return { healthy: true, latencyMs: 0, lastChecked: new Date(), status: 'ACTIVE' };
     }
     getMetrics() {
-        return { totalRequests: this.total, successfulRequests: this.total, failedRequests: 0, averageLatencyMs: 0 };
+        return {
+            totalRequests: this.total,
+            successfulRequests: this.total,
+            failedRequests: 0,
+            averageLatencyMs: 0,
+        };
     }
     startSpan(name, context) {
         this.total++;

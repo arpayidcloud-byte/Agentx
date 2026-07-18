@@ -3,7 +3,7 @@
  * @description Permanent storage for unprocessable execution messages.
  */
 
-import { QueueMessage } from './interfaces.js';
+import type { QueueMessage } from './interfaces.js';
 
 export class DeadLetterQueue {
   private messages: QueueMessage[] = [];

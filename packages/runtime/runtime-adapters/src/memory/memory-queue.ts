@@ -3,7 +3,7 @@
  * @description Reference in-memory queue provider.
  */
 
-import {
+import type {
   IQueueProvider,
   ProviderMetadata,
   ProviderCapabilities,

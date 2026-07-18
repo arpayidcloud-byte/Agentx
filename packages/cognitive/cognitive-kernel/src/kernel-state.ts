@@ -3,7 +3,7 @@
  * @description Manages transitions between cognitive lifecycle states.
  */
 
-import { KernelState } from './interfaces.js';
+import type { KernelState } from './interfaces.js';
 import { LifecycleError } from './errors.js';
 
 const validTransitions: Record<KernelState, KernelState[]> = {

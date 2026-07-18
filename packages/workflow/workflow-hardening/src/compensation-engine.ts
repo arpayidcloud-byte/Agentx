@@ -3,7 +3,7 @@
  * @description Deterministic saga compensation support.
  */
 
-import { CompensationStep } from './interfaces.js';
+import type { CompensationStep } from './interfaces.js';
 
 export interface UndoResult {
   success: boolean;

@@ -3,7 +3,7 @@
  * @description Provider Failover Management abstraction.
  */
 
-import { IProvider } from './interfaces.js';
+import type { IProvider } from './interfaces.js';
 
 export class ProviderFailoverManager {
   private primary: IProvider | null = null;

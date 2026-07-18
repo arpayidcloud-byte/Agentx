@@ -3,7 +3,7 @@
  * @description Thinking state contract base implementation.
  */
 
-import { ThinkingState } from './interfaces.js';
+import type { ThinkingState } from './interfaces.js';
 
 export class ThinkingStateBase {
   private state: ThinkingState;

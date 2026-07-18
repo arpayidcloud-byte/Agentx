@@ -5,7 +5,7 @@
  * dangerous flag detection, and injection pattern detection.
  */
 
-import { ParsedCommand, ValidationResult, ShellSandboxConfig } from './interfaces.js';
+import type { ParsedCommand, ValidationResult, ShellSandboxConfig } from './interfaces.js';
 import { isProgramAllowed, isProgramBlocked, isFlagDangerous } from './allowlist.js';
 import { detectInjectionPatterns } from './command-parser.js';
 

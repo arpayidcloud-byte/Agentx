@@ -3,7 +3,7 @@
  * @description Master registry of all canonical M4 packages.
  */
 
-import { PackageMetadata } from './interfaces.js';
+import type { PackageMetadata } from './interfaces.js';
 
 export class PackageRegistry {
   private packages = new Map<string, PackageMetadata>();

@@ -3,7 +3,7 @@
  * @description Semantic Versioning policies.
  */
 
-import { VersionPolicy } from './interfaces.js';
+import type { VersionPolicy } from './interfaces.js';
 
 export class VersionPolicyManager {
   getPolicy(): VersionPolicy {

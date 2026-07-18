@@ -3,7 +3,7 @@
  * @description Selects optimal agent for task delegation.
  */
 
-import { AgentDirectoryEntry } from './interfaces.js';
+import type { AgentDirectoryEntry } from './interfaces.js';
 
 export class AgentSelectionEngine {
   selectBestCandidate(

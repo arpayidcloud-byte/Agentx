@@ -21,7 +21,12 @@ export class MemorySecretProvider {
         return { healthy: true, latencyMs: 0, lastChecked: new Date(), status: 'ACTIVE' };
     }
     getMetrics() {
-        return { totalRequests: this.total, successfulRequests: this.successes, failedRequests: 0, averageLatencyMs: 0 };
+        return {
+            totalRequests: this.total,
+            successfulRequests: this.successes,
+            failedRequests: 0,
+            averageLatencyMs: 0,
+        };
     }
     async getSecret(key) {
         this.total++;

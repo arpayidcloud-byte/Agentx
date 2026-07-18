@@ -3,7 +3,7 @@
  * @description Workflow lifecycle hooks.
  */
 
-import { WorkflowHook } from './interfaces.js';
+import type { WorkflowHook } from './interfaces.js';
 
 export class WorkflowHookManager {
   private hooks: WorkflowHook[] = [];

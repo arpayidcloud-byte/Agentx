@@ -3,7 +3,7 @@
  * @description Master definition file representation for an AgentX provider.
  */
 
-import { ProviderManifest } from './interfaces.js';
+import type { ProviderManifest } from './interfaces.js';
 
 export function createManifest(id: string, name: string, type: string): ProviderManifest {
   return {

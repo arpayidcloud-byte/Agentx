@@ -1,4 +1,4 @@
-import { DistributedProposal, ConsensusVote, ConsensusResult } from './interfaces.js';
+import type { DistributedProposal, ConsensusVote, ConsensusResult } from './interfaces.js';
 import { InvariantViolationError } from '../shared/errors.js';
 import { createHash } from 'crypto';
 

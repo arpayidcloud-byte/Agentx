@@ -4,7 +4,7 @@
  * Manages operator sessions for approval workflows.
  */
 
-import { ApprovalSession } from './interfaces.js';
+import type { ApprovalSession } from './interfaces.js';
 
 /**
  * Generates a unique session ID

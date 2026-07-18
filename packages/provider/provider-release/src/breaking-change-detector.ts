@@ -3,7 +3,7 @@
  * @description Detects incompatible transformations between versions.
  */
 
-import { APIChange } from './interfaces.js';
+import type { APIChange } from './interfaces.js';
 
 export class BreakingChangeDetector {
   detect(changes: APIChange[]): string[] {

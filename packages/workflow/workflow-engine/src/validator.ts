@@ -3,7 +3,7 @@
  * @description Workflow validation and graph integrity checks.
  */
 
-import { WorkflowDefinition, WorkflowNode, WorkflowEdge } from './interfaces.js';
+import type { WorkflowDefinition, WorkflowNode, WorkflowEdge } from './interfaces.js';
 import { detectCycle, topologicalSort } from './graph.js';
 import { CycleDetectedError, WorkflowValidationError, NodeNotFoundError } from './errors.js';
 

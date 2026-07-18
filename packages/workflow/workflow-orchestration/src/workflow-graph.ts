@@ -3,7 +3,7 @@
  * @description Immutable DAG operations for workflow graphs.
  */
 
-import { WorkflowNode, WorkflowEdge } from './interfaces.js';
+import type { WorkflowNode, WorkflowEdge } from './interfaces.js';
 
 export class WorkflowGraphManager {
   detectCycles(nodes: WorkflowNode[], edges: WorkflowEdge[]): boolean {

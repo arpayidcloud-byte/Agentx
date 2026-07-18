@@ -3,7 +3,7 @@
  * @description Immutable planning snapshots.
  */
 
-import { PlanningPlan } from './interfaces.js';
+import type { PlanningPlan } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export interface PlanningCheckpoint {

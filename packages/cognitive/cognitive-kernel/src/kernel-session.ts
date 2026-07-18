@@ -3,7 +3,7 @@
  * @description Manages isolation of cognitive thinking sessions.
  */
 
-import { SessionMetadata } from './interfaces.js';
+import type { SessionMetadata } from './interfaces.js';
 import { SessionError } from './errors.js';
 
 export class KernelSession {

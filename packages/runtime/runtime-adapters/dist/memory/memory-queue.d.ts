@@ -2,7 +2,7 @@
  * @module runtime-adapters/memory/memory-queue
  * @description Reference in-memory queue provider.
  */
-import { IQueueProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics } from '../interfaces.js';
+import type { IQueueProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics } from '../interfaces.js';
 export declare class MemoryQueueProvider implements IQueueProvider {
     private queue;
     private total;

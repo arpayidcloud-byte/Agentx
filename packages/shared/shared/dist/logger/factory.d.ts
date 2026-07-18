@@ -1,4 +1,4 @@
-import { ILogger, LoggerConfiguration, LoggerFactory } from './interfaces.js';
+import type { ILogger, LoggerConfiguration, LoggerFactory } from './interfaces.js';
 export declare class AgentXLoggerFactory implements LoggerFactory {
     private configuration;
     constructor();

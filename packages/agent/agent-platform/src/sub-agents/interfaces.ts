@@ -3,7 +3,7 @@
  * @description Interfaces for the Multi-Agent Orchestration Foundation.
  */
 
-import { TaskModel, TaskStatus } from '@agentx/core-runtime';
+import type { TaskModel, TaskStatus } from '@agentx/core-runtime';
 
 export type AgentRole =
   'planner' | 'architect' | 'coder' | 'reviewer' | 'tester' | 'security' | 'documentation' | 'qa';

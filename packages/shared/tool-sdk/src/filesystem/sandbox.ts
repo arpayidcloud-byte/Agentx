@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as fs from 'fs/promises';
-import { ISandbox, IPathResolver, IFilesystemPolicy } from './interfaces.js';
+import type { ISandbox, IPathResolver, IFilesystemPolicy } from './interfaces.js';
 import { SandboxViolationError, AllowlistViolationError } from './errors.js';
 
 export class FilesystemSandbox implements ISandbox {

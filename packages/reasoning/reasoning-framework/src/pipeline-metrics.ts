@@ -3,7 +3,7 @@
  * @description Operational metrics collector.
  */
 
-import { PipelineStageName } from './interfaces.js';
+import type { PipelineStageName } from './interfaces.js';
 
 export class PipelineMetrics {
   private stageDurations: Record<string, number> = {};

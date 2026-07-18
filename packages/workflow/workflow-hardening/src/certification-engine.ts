@@ -3,7 +3,7 @@
  * @description Validates workflow for production certification.
  */
 
-import { WorkflowCertificate, WorkflowState } from './interfaces.js';
+import type { WorkflowCertificate, WorkflowState } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class WorkflowCertificationEngine {

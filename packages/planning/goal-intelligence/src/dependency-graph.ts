@@ -3,7 +3,7 @@
  * @description DAG-based dependency management with cycle detection.
  */
 
-import { DependencyEdge } from './interfaces.js';
+import type { DependencyEdge } from './interfaces.js';
 import { CycleDetectedError } from './errors.js';
 
 export class DependencyGraph {
@@ -24,7 +24,7 @@ export class DependencyGraph {
 
     for (const edge of this.edges) {
       if (!adj.has(edge.source)) adj.set(edge.source, []);
-      adj.get(edge.source)!.push(edge.target);
+      adj.get(edge.source).push(edge.target);
     }
 
     const dfs = (node: string): boolean => {

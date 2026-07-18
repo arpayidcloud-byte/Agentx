@@ -3,7 +3,7 @@
  * @description Holds all cognitive engine implementations.
  */
 
-import { EngineContract } from './interfaces.js';
+import type { EngineContract } from './interfaces.js';
 
 export class KernelRegistry {
   private engines = new Map<string, EngineContract>();

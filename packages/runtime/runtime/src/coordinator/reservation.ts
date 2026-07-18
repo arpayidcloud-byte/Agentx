@@ -3,7 +3,7 @@
  * @description Reservation manager for critical system resources.
  */
 
-import { ExecutionReservation } from './interfaces.js';
+import type { ExecutionReservation } from './interfaces.js';
 import { CoordinatorReservationError } from './errors.js';
 
 export class ExecutionReservationManager {

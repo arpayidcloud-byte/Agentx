@@ -4,7 +4,7 @@
  * working directory, and detects dangerous patterns.
  */
 
-import { ParsedCommand } from './interfaces.js';
+import type { ParsedCommand } from './interfaces.js';
 import { CommandParseError } from './errors.js';
 
 /** Dangerous shell patterns per Volume 7 and Threat Model T-002 */
@@ -57,9 +57,9 @@ export function parseCommand(command: string): ParsedCommand {
 
   // Extract working directory if present (-C or --directory)
   let workingDirectory: string | undefined;
-  let args: string[] = [];
-  let flags: string[] = [];
-  let envOverrides: Record<string, string> = {};
+  const args: string[] = [];
+  const flags: string[] = [];
+  const envOverrides: Record<string, string> = {};
 
   for (let i = 0; i < rest.length; i++) {
     const token = rest[i] || '';

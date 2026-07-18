@@ -3,7 +3,7 @@
  * @description Traces stage execution paths.
  */
 
-import { PipelineStageName } from './interfaces.js';
+import type { PipelineStageName } from './interfaces.js';
 
 export interface TraceRecord {
   stage: PipelineStageName;

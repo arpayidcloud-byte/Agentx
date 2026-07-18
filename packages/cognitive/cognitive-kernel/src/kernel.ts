@@ -3,7 +3,8 @@
  * @description Master Cognitive Intelligence Kernel (CIK).
  */
 
-import { KernelConfig, SessionMetadata, SessionCheckpoint, EngineContract } from './interfaces.js';
+import type { KernelConfig, SessionMetadata } from './interfaces.js';
+import { SessionCheckpoint, EngineContract } from './interfaces.js';
 import { KernelLifecycle } from './kernel-lifecycle.js';
 import { KernelSupervisor } from './kernel-supervisor.js';
 import { KernelScheduler } from './kernel-scheduler.js';

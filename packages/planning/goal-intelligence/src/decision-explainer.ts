@@ -3,7 +3,7 @@
  * @description Explains decision reasoning in human-readable format.
  */
 
-import { DecisionChoice } from './interfaces.js';
+import type { DecisionChoice } from './interfaces.js';
 
 export class DecisionExplainer {
   explain(chosen: DecisionChoice, alternatives: DecisionChoice[]): string {

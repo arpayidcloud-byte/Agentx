@@ -3,7 +3,7 @@
  * @description Primary cognitive engine port contracts.
  */
 
-import {
+import type {
   ThinkingSession,
   ReasoningContext,
   ReasoningResult,

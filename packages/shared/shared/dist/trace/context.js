@@ -27,7 +27,7 @@ export class TraceContext {
      * Create a new unique correlation ID.
      */
     static generateId() {
-        return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        return (Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15));
     }
 }
 //# sourceMappingURL=context.js.map

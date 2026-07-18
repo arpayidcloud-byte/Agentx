@@ -3,7 +3,7 @@
  * @description Deterministic consensus mechanism.
  */
 
-import { ConsensusResult } from './interfaces.js';
+import type { ConsensusResult } from './interfaces.js';
 import { ConsensusProtocolError } from './errors.js';
 
 export interface ConsensusRound {

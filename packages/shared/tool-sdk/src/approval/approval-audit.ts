@@ -4,7 +4,7 @@
  * Records all approval lifecycle events for observability.
  */
 
-import { ApprovalAuditEvent } from './interfaces.js';
+import type { ApprovalAuditEvent } from './interfaces.js';
 
 /**
  * Approval audit logger

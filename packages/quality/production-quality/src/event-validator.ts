@@ -3,7 +3,7 @@
  * @description Validates emitted event metadata structure.
  */
 
-import { ValidationResult } from './interfaces.js';
+import type { ValidationResult } from './interfaces.js';
 
 export interface EventEnvelope {
   traceId: string;

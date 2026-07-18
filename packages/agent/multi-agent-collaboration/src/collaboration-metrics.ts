@@ -3,7 +3,7 @@
  * @description Collaboration metrics collector.
  */
 
-import { CollaborationMetrics as ICollaborationMetrics } from './interfaces.js';
+import type { CollaborationMetrics as ICollaborationMetrics } from './interfaces.js';
 
 export class CollaborationMetricsCollector implements ICollaborationMetrics {
   agentsRegistered = 0;

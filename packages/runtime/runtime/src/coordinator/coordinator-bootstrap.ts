@@ -3,9 +3,9 @@
  * @description Bootstrap configuration for the Execution Coordinator.
  */
 
-import { CoordinatorConfig } from './interfaces.js';
+import type { CoordinatorConfig } from './interfaces.js';
 import { ProductionExecutionCoordinator } from './coordinator.js';
-import { IEventBus } from '@agentx/core-runtime';
+import type { IEventBus } from '@agentx/core-runtime';
 
 export interface CoordinatorBootstrapOptions {
   config?: Partial<CoordinatorConfig>;

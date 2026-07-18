@@ -3,7 +3,7 @@
  * @description Immutable registry of reasoning strategies.
  */
 
-import { StrategyRecord } from './interfaces.js';
+import type { StrategyRecord } from './interfaces.js';
 
 export class StrategyRegistry {
   private strategies = new Map<string, StrategyRecord>();

@@ -3,7 +3,7 @@
  * @description Collaboration lifecycle hook execution.
  */
 
-import { CollaborationHook } from './interfaces.js';
+import type { CollaborationHook } from './interfaces.js';
 
 export class CollaborationHookManager {
   private hooks: CollaborationHook[] = [];

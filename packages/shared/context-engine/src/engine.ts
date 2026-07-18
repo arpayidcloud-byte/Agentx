@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-import {
+import type {
   IContextEngine,
   ContextScope,
   ContextSnapshot,
@@ -7,7 +7,7 @@ import {
   IContextCompressor,
   ContextMetrics,
 } from './interfaces.js';
-import { IEventBus } from '@agentx/core-runtime';
+import type { IEventBus } from '@agentx/core-runtime';
 
 export class ContextEngine implements IContextEngine {
   private contexts = new Map<string, ContextSnapshot>();

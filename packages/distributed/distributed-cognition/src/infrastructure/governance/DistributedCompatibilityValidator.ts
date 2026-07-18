@@ -1,4 +1,4 @@
-import { DistributedVersionManager } from './DistributedVersionManager.js';
+import type { DistributedVersionManager } from './DistributedVersionManager.js';
 
 export interface CompatibilityCheck {
   readonly packageName: string;

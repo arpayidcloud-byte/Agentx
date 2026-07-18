@@ -3,7 +3,7 @@
  * @description Deterministic collaboration planning.
  */
 
-import { CollaborationPlan } from '../../domain/collaboration/interfaces.js';
+import type { CollaborationPlan } from '../../domain/collaboration/interfaces.js';
 import { createHash } from 'crypto';
 
 export class CollaborationPlanner {

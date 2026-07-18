@@ -1,16 +1,17 @@
-import {
+import type {
   IMultiAgentOrchestrator,
   ResourceAllocation,
   ExecutionHistoryEntry,
 } from './interfaces.js';
-import { TaskSplitter, DependencyAnalyzer, TaskGraphNode } from './task-splitter.js';
+import type { TaskGraphNode } from './task-splitter.js';
+import { TaskSplitter, DependencyAnalyzer } from './task-splitter.js';
 import { AgentPool } from './agent-pool.js';
 import { ParallelRunner } from './parallel-runner.js';
 import { MessageBus } from './message-bus.js';
 import { ResourceManager } from './resource-manager.js';
 import { HeartbeatMonitor } from './heartbeat.js';
 import { SubAgentFactory } from './sub-agent-factory.js';
-import { IEventBus } from '@agentx/core-runtime';
+import type { IEventBus } from '@agentx/core-runtime';
 
 export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
   private splitter: TaskSplitter;
@@ -117,7 +118,7 @@ export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
 
         // Execute ready nodes in parallel
         const promises = readyNodes.map(async (node) => {
-          this.resourceManager.registerAgent(node.task.assignedAgentRole!, node.estimatedBudget);
+          this.resourceManager.registerAgent(node.task.assignedAgentRole, node.estimatedBudget);
 
           const result = await this.runner.runParallel(
             node.task,
@@ -125,14 +126,14 @@ export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
             {},
           );
 
-          this.resourceManager.unregisterAgent(node.task.assignedAgentRole!);
+          this.resourceManager.unregisterAgent(node.task.assignedAgentRole);
 
           wf.completedNodes.add(node.task.id);
           executionResults[node.task.id] = result;
 
           wf.history.push({
             timestamp: new Date(),
-            agentId: node.task.assignedAgentRole!,
+            agentId: node.task.assignedAgentRole,
             taskId: node.task.id,
             approvalRequired: false,
             retries: 0,

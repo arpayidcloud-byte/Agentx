@@ -1,4 +1,4 @@
-import { OperationNotSupportedError, SecretNotFoundError, } from './errors.js';
+import { OperationNotSupportedError, SecretNotFoundError } from './errors.js';
 export class EnvVarSecretStore {
     env;
     backendId = 'env';

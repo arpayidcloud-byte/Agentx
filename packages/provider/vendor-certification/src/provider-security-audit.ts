@@ -3,7 +3,7 @@
  * @description Validates provider security postures.
  */
 
-import { IProvider, AuditResult } from './interfaces.js';
+import type { IProvider, AuditResult } from './interfaces.js';
 import { SecurityError } from './errors.js';
 
 export class ProviderSecurityAudit {

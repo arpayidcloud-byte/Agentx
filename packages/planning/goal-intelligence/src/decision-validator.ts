@@ -3,7 +3,7 @@
  * @description Validates decisions before execution.
  */
 
-import { DecisionChoice } from './interfaces.js';
+import type { DecisionChoice } from './interfaces.js';
 import { DecisionError } from './errors.js';
 
 export class DecisionValidator {

@@ -3,7 +3,7 @@
  * @description Planning engine contract implementation base.
  */
 
-import { IPlanningEngine } from './contracts.js';
+import type { IPlanningEngine } from './contracts.js';
 
 export class PlanningEngineBase implements IPlanningEngine {
   async generatePlan(_goal: string, _context: Record<string, unknown>): Promise<string[]> {

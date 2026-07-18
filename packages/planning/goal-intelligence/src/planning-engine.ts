@@ -3,7 +3,7 @@
  * @description Generates executable plans from subgoals.
  */
 
-import { SubGoal, PlanningPlan, PlanningStep, PlanningBudget } from './interfaces.js';
+import type { SubGoal, PlanningPlan, PlanningStep, PlanningBudget } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class PlanningEngine {

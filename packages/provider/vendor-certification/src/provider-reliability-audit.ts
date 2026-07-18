@@ -3,7 +3,7 @@
  * @description Validates reliability metrics.
  */
 
-import { IProvider, AuditResult } from './interfaces.js';
+import type { IProvider, AuditResult } from './interfaces.js';
 
 export class ProviderReliabilityAudit {
   async run(_provider: IProvider): Promise<AuditResult> {

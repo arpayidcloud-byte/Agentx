@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-import { MemoryEntry, MemorySnapshot } from './interfaces.js';
+import type { MemoryEntry, MemorySnapshot } from './interfaces.js';
 
 export class DistributedMemoryCoordinator {
   private entries = new Map<string, MemoryEntry>();

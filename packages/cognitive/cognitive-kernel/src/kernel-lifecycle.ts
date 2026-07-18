@@ -4,7 +4,7 @@
  */
 
 import { KernelStateMachine } from './kernel-state.js';
-import { KernelState } from './interfaces.js';
+import type { KernelState } from './interfaces.js';
 
 export class KernelLifecycle {
   private stateMachine = new KernelStateMachine();

@@ -1,5 +1,5 @@
-import { IToolDiscovery, ToolManifest, ITool, IToolRegistry } from '../interfaces/index.js';
-import { IToolValidator } from '../interfaces/index.js';
+import type { IToolDiscovery, ToolManifest, ITool, IToolRegistry } from '../interfaces/index.js';
+import type { IToolValidator } from '../interfaces/index.js';
 
 export class ToolDiscovery implements IToolDiscovery {
   constructor(

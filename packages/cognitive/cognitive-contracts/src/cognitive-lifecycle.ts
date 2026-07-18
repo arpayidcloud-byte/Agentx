@@ -3,7 +3,7 @@
  * @description Cognitive lifecycle contract management.
  */
 
-import { CognitiveState } from './interfaces.js';
+import type { CognitiveState } from './interfaces.js';
 import { ValidationError } from './errors.js';
 
 const validTransitions: Record<CognitiveState, CognitiveState[]> = {

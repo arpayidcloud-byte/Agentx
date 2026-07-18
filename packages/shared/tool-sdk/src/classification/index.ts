@@ -1,9 +1,5 @@
-import {
-  ToolCategory,
-  ToolClassification,
-  RiskScore,
-  PermissionLevel,
-} from '../interfaces/index.js';
+import type { ToolCategory, ToolClassification, RiskScore } from '../interfaces/index.js';
+import { PermissionLevel } from '../interfaces/index.js';
 
 export class ToolClassifier {
   public static classifyCategory(category: ToolCategory): ToolClassification {

@@ -1,4 +1,4 @@
-import { SecretStore, SecretEntry, SecretMetadata } from './interfaces.js';
+import type { SecretStore, SecretEntry, SecretMetadata } from './interfaces.js';
 export declare class EnvVarSecretStore implements SecretStore {
     private readonly env;
     readonly backendId = "env";

@@ -3,7 +3,7 @@
  * @description Builds official report from evaluation.
  */
 
-import { CertificationReport, QualificationScore, ProviderRank } from './interfaces.js';
+import type { CertificationReport, QualificationScore, ProviderRank } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class CertificationReportBuilder {

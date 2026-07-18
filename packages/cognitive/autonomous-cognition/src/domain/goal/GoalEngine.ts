@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-import { Goal, GoalAnalysis, GoalDecomposition, GoalState } from './interfaces.js';
+import type { Goal, GoalAnalysis, GoalDecomposition, GoalState } from './interfaces.js';
 import { InvariantViolationError } from '../shared/errors.js';
 
 export class GoalIntakeEngine {

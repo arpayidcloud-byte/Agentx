@@ -3,7 +3,7 @@
  * @description Validates pipeline stage inputs.
  */
 
-import { ReasoningSession, PipelineStageName } from './interfaces.js';
+import type { ReasoningSession, PipelineStageName } from './interfaces.js';
 import { ValidationError } from './errors.js';
 
 export class PipelineValidator {

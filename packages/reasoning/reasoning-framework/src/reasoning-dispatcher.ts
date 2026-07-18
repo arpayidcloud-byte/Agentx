@@ -3,7 +3,7 @@
  * @description Strategy dispatcher.
  */
 
-import { IReasoningStrategy, ReasoningGraph } from './interfaces.js';
+import type { IReasoningStrategy, ReasoningGraph } from './interfaces.js';
 import { StrategyError } from './errors.js';
 
 export class ReasoningDispatcher {

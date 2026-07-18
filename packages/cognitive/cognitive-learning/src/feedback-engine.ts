@@ -3,7 +3,7 @@
  * @description Processes structured feedback from multiple sources.
  */
 
-import { Feedback } from './interfaces.js';
+import type { Feedback } from './interfaces.js';
 
 export class FeedbackEngine {
   process(feedback: Feedback): { accepted: boolean; delta: number } {

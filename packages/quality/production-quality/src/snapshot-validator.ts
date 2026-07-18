@@ -3,7 +3,7 @@
  * @description Validates immutable snapshot serialization and integrity.
  */
 
-import { ValidationResult } from './interfaces.js';
+import type { ValidationResult } from './interfaces.js';
 
 export class SnapshotValidator {
   validate(snapshot: any): ValidationResult {

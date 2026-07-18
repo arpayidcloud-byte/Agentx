@@ -1,6 +1,6 @@
-import { ResourceAllocation } from './interfaces.js';
+import type { ResourceAllocation } from './interfaces.js';
 import { DependencyGraphError } from './errors.js';
-import { TaskModel } from '@agentx/core-runtime';
+import type { TaskModel } from '@agentx/core-runtime';
 
 export interface TaskGraphNode {
   task: TaskModel;

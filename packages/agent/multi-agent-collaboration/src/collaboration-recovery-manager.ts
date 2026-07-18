@@ -3,7 +3,7 @@
  * @description Collaboration recovery manager.
  */
 
-import { CollaborationCheckpointManager } from './collaboration-checkpoint-manager.js';
+import type { CollaborationCheckpointManager } from './collaboration-checkpoint-manager.js';
 
 export class CollaborationRecoveryManager {
   constructor(private checkpointManager: CollaborationCheckpointManager) {}

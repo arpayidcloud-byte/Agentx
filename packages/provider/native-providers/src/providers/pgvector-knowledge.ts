@@ -3,14 +3,14 @@
  * @description PgVector similarity and semantic knowledge adapter.
  */
 
-import {
+import type {
   IStorageProvider,
   ProviderMetadata,
   ProviderCapabilities,
   ProviderHealth,
   ProviderMetrics,
 } from '@agentx/runtime-adapters';
-import { IConfigurationProvider, INativeProvider } from '../interfaces.js';
+import type { IConfigurationProvider, INativeProvider } from '../interfaces.js';
 import { ConfigurationError } from '../errors.js';
 
 export class PgVectorKnowledgeProvider implements IStorageProvider, INativeProvider {

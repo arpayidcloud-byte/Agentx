@@ -1,4 +1,5 @@
-import { TaskModel, TaskStatus } from '../interfaces/task.js';
+import type { TaskModel } from '../interfaces/task.js';
+import { TaskStatus } from '../interfaces/task.js';
 import { IllegalStateTransitionError } from '../errors.js';
 
 export class TaskStateMachine {

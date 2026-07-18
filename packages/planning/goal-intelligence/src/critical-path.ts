@@ -3,7 +3,7 @@
  * @description Critical path analysis for planning graphs.
  */
 
-import { PlanningStep } from './interfaces.js';
+import type { PlanningStep } from './interfaces.js';
 
 export interface CriticalPathResult {
   criticalPath: string[];

@@ -3,7 +3,7 @@
  * @description Deterministic conflict resolution.
  */
 
-import { ConflictResolution } from './interfaces.js';
+import type { ConflictResolution } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class ConflictResolutionEngine {

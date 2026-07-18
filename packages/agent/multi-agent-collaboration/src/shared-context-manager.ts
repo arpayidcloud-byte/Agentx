@@ -3,7 +3,7 @@
  * @description Manages shared context between agents.
  */
 
-import { SharedContext } from './interfaces.js';
+import type { SharedContext } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class SharedContextManager {

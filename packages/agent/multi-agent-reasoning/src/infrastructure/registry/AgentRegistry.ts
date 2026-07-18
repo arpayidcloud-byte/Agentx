@@ -3,7 +3,7 @@
  * @description Agent registration and lifecycle management.
  */
 
-import { AgentMetadata, AgentRegistration } from '../../domain/collaboration/interfaces.js';
+import type { AgentMetadata, AgentRegistration } from '../../domain/collaboration/interfaces.js';
 import { AgentError } from '../../domain/collaboration/errors.js';
 
 export class AgentRegistry {

@@ -3,8 +3,8 @@
  * @description Adapts future execution strategies based on history and feedback.
  */
 
-import { Adaptation, Pattern } from './interfaces.js';
-import { AdaptationPolicy } from './interfaces.js';
+import type { Adaptation, Pattern } from './interfaces.js';
+import type { AdaptationPolicy } from './interfaces.js';
 
 export class AdaptationEngine {
   adapt(patterns: Pattern[], policy: AdaptationPolicy): Adaptation[] {

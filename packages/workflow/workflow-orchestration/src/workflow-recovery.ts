@@ -3,7 +3,7 @@
  * @description Workflow execution recovery manager.
  */
 
-import { WorkflowCheckpointManager } from './workflow-checkpoint.js';
+import type { WorkflowCheckpointManager } from './workflow-checkpoint.js';
 
 export class WorkflowRecoveryManager {
   constructor(private checkpointManager: WorkflowCheckpointManager) {}

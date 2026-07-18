@@ -3,14 +3,14 @@
  * @description Native NATS PubSub and streaming queue provider wrapper (Stub implementation).
  */
 
-import {
+import type {
   IQueueProvider,
   ProviderMetadata,
   ProviderCapabilities,
   ProviderHealth,
   ProviderMetrics,
 } from '@agentx/runtime-adapters';
-import { IConfigurationProvider, INativeProvider } from '../interfaces.js';
+import type { IConfigurationProvider, INativeProvider } from '../interfaces.js';
 import { ConfigurationError } from '../errors.js';
 
 export class NATSQueueProvider implements IQueueProvider, INativeProvider {

@@ -3,8 +3,8 @@
  * @description Memory策略 contract base implementation.
  */
 
-import { IMemoryStrategy } from './contracts.js';
-import { MemoryRetrievalStrategy, MemoryUpdateStrategy } from './interfaces.js';
+import type { IMemoryStrategy } from './contracts.js';
+import type { MemoryRetrievalStrategy, MemoryUpdateStrategy } from './interfaces.js';
 
 export class MemoryStrategyBase implements IMemoryStrategy {
   async retrieve(_query: string, _strategy: MemoryRetrievalStrategy): Promise<unknown[]> {

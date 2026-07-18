@@ -3,7 +3,7 @@
  * @description Bundles the provider and certification data.
  */
 
-import { ProviderManifest, ConformanceReport } from './interfaces.js';
+import type { ProviderManifest, ConformanceReport } from './interfaces.js';
 
 export interface ProviderBundle {
   manifest: ProviderManifest;

@@ -3,7 +3,7 @@
  * @description Validates resistance against mutation tests.
  */
 
-import { ValidationResult } from './interfaces.js';
+import type { ValidationResult } from './interfaces.js';
 
 export class MutationValidator {
   validate(mutantsKilled: number, totalMutants: number): ValidationResult {

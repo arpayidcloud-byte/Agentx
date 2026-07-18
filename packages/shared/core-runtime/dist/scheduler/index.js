@@ -15,7 +15,9 @@ export class Scheduler {
         this.maxParallel = config.maxParallelAgents ?? 10;
     }
     async enqueue(task) {
-        if (task.status === TaskStatus.CREATED || task.status === TaskStatus.FAILED || task.status === TaskStatus.RETRYING) {
+        if (task.status === TaskStatus.CREATED ||
+            task.status === TaskStatus.FAILED ||
+            task.status === TaskStatus.RETRYING) {
             task = TaskStateMachine.transition(task, TaskStatus.QUEUED);
             await this.taskRepo.save(task);
             await this.eventBus.publish(EventTopic.TASK_QUEUED, task, task.traceId, task.id);
@@ -24,7 +26,7 @@ export class Scheduler {
         }
     }
     async pause(taskId) {
-        const task = this.inFlightTasks.get(taskId) || await this.taskRepo.findById(taskId);
+        const task = this.inFlightTasks.get(taskId) || (await this.taskRepo.findById(taskId));
         if (!task)
             throw new TaskNotFoundError(taskId);
         this.pausedTasks.add(taskId);
@@ -38,7 +40,7 @@ export class Scheduler {
         if (!this.pausedTasks.has(taskId))
             return;
         this.pausedTasks.delete(taskId);
-        const task = this.inFlightTasks.get(taskId) || await this.taskRepo.findById(taskId);
+        const task = this.inFlightTasks.get(taskId) || (await this.taskRepo.findById(taskId));
         if (!task)
             throw new TaskNotFoundError(taskId);
         if (task.status === TaskStatus.WAITING_APPROVAL) {
@@ -49,13 +51,13 @@ export class Scheduler {
         }
     }
     async cancel(taskId, reason) {
-        const task = this.inFlightTasks.get(taskId) || await this.taskRepo.findById(taskId);
+        const task = this.inFlightTasks.get(taskId) || (await this.taskRepo.findById(taskId));
         if (!task)
             throw new TaskNotFoundError(taskId);
         task.cancellation = {
             reason,
             requestedBy: 'operator',
-            timestamp: new Date()
+            timestamp: new Date(),
         };
         task.status = TaskStatus.CANCELLED;
         task.updatedAt = new Date();

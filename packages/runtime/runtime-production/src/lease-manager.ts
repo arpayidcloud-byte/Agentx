@@ -3,7 +3,7 @@
  * @description Manages worker leases and renewals.
  */
 
-import { LeaseInfo } from './interfaces.js';
+import type { LeaseInfo } from './interfaces.js';
 import { LeaseError } from './errors.js';
 
 export class ExecutionLeaseManager {

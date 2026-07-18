@@ -4,7 +4,7 @@
  * Implements risk-based classification per Volume 7 and ADR-0005.
  */
 
-import { GitOperation, GitApprovalClassification } from './interfaces.js';
+import type { GitOperation, GitApprovalClassification } from './interfaces.js';
 
 /** Risk scores for git operations */
 const GIT_RISK_SCORES: Record<GitOperation, number> = {

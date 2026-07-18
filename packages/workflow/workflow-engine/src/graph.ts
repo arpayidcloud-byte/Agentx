@@ -3,7 +3,7 @@
  * @description Graph models and utilities for workflow execution.
  */
 
-import { WorkflowDefinition, WorkflowNode, WorkflowEdge } from './interfaces.js';
+import type { WorkflowDefinition, WorkflowNode, WorkflowEdge } from './interfaces.js';
 
 /** @description Node types in a workflow graph */
 type NodeType =
@@ -91,7 +91,7 @@ export function topologicalSort(nodes: WorkflowNode[], edges: WorkflowEdge[]): W
   const nodeMap = new Map(nodes.map((n) => [n.id, n]));
 
   while (queue.length > 0) {
-    const current = queue.shift()!;
+    const current = queue.shift();
     const node = nodeMap.get(current);
     if (node) sorted.push(node);
 

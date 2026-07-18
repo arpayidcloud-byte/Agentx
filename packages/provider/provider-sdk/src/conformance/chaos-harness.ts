@@ -3,8 +3,8 @@
  * @description Fault injection testing harness.
  */
 
-import { IProvider } from '@agentx/runtime-adapters';
-import { HarnessResult } from './interfaces.js';
+import type { IProvider } from '@agentx/runtime-adapters';
+import type { HarnessResult } from './interfaces.js';
 
 export class ChaosHarness {
   async run(_provider: IProvider): Promise<HarnessResult> {

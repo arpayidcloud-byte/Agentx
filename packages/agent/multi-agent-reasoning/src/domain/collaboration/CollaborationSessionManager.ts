@@ -3,7 +3,7 @@
  * @description Manages collaboration session lifecycle.
  */
 
-import { CollaborationSession } from './interfaces.js';
+import type { CollaborationSession } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class CollaborationSessionManager {

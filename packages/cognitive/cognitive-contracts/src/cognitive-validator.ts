@@ -3,7 +3,7 @@
  * @description Cognitive operation constraint validator.
  */
 
-import { ThinkingSession } from './interfaces.js';
+import type { ThinkingSession } from './interfaces.js';
 import { ValidationError } from './errors.js';
 
 export class CognitiveValidator {

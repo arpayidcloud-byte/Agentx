@@ -3,7 +3,7 @@
  * @description Post-execution reflection and analysis.
  */
 
-import { Experience, Reflection } from './interfaces.js';
+import type { Experience, Reflection } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class ReflectionEngine {

@@ -3,7 +3,8 @@
  * @description Master orchestrator for goal decomposition and planning.
  */
 
-import { Goal, GoalState, PlanningBudget, PlanningPlan } from './interfaces.js';
+import type { PlanningBudget, PlanningPlan } from './interfaces.js';
+import { Goal, GoalState } from './interfaces.js';
 import { GoalStateMachine } from './goal-state.js';
 import { GoalSession } from './goal-session.js';
 import { GoalParser } from './goal-parser.js';

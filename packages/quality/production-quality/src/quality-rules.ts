@@ -3,7 +3,7 @@
  * @description Evaluates combined grades and scores.
  */
 
-import { ValidationScore, QualityGrade } from './interfaces.js';
+import type { ValidationScore, QualityGrade } from './interfaces.js';
 
 export class QualityRules {
   getGrade(score: number): QualityGrade {

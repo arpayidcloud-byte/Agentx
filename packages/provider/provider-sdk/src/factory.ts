@@ -1,4 +1,4 @@
-import {
+import type {
   Provider,
   ProviderConfiguration,
   ProviderCapabilities,
@@ -6,8 +6,8 @@ import {
 } from './interfaces.js';
 import { AnthropicProvider } from './providers/anthropic/index.js';
 import { GoogleProvider } from './providers/google/index.js';
-import { CredentialResolver } from './conformance/credential-resolver.js';
-import { ProviderRegistry } from './registry.js';
+import type { CredentialResolver } from './conformance/credential-resolver.js';
+import type { ProviderRegistry } from './registry.js';
 
 export class ProviderFactory {
   constructor(private readonly credentialResolver: CredentialResolver) {}

@@ -3,12 +3,8 @@
  * @description Master orchestrator for provider certification.
  */
 
-import {
-  IProvider,
-  CertificationConfig,
-  CertificationReport,
-  CertificationCertificate,
-} from './interfaces.js';
+import type { IProvider, CertificationConfig, CertificationCertificate } from './interfaces.js';
+import { CertificationReport } from './interfaces.js';
 import { ProviderValidator } from './provider-validator.js';
 import { ProviderHealthAudit } from './provider-health-audit.js';
 import { ProviderPerformanceAudit } from './provider-performance-audit.js';

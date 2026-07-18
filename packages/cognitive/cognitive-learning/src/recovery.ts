@@ -3,7 +3,7 @@
  * @description Recovers interrupted learning sessions.
  */
 
-import { LearningCheckpointManager, LearningCheckpoint } from './checkpoint.js';
+import type { LearningCheckpointManager, LearningCheckpoint } from './checkpoint.js';
 
 export class LearningRecoveryManager {
   constructor(private checkpointManager: LearningCheckpointManager) {}

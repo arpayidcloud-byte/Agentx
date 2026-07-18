@@ -3,9 +3,11 @@
  * @description Bootstrap configuration for the production runtime.
  */
 
-import { RuntimeConfig } from './interfaces.js';
-import { IAuditStore, InMemoryAuditStore } from './audit-store.js';
-import { ICheckpointStore, MemoryCheckpointStore } from './checkpoint-store.js';
+import type { RuntimeConfig } from './interfaces.js';
+import type { IAuditStore } from './audit-store.js';
+import { InMemoryAuditStore } from './audit-store.js';
+import type { ICheckpointStore } from './checkpoint-store.js';
+import { MemoryCheckpointStore } from './checkpoint-store.js';
 import { ExecutionPipeline } from './execution-pipeline.js';
 import { RuntimeRecovery } from './runtime-recovery.js';
 import { RuntimeHealthService } from './runtime-health-v2.js';

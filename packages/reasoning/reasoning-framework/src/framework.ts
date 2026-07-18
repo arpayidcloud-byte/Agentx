@@ -3,7 +3,7 @@
  * @description High-level reasoning framework controller.
  */
 
-import { ReasoningSession, ReasoningGraph, PipelineStageName } from './interfaces.js';
+import type { ReasoningSession, ReasoningGraph, PipelineStageName } from './interfaces.js';
 import { ReasoningPipeline } from './pipeline.js';
 
 export class ReasoningFramework {

@@ -21,7 +21,7 @@ export class SecretRedactor {
     // Basic regex for potential secrets (e.g. JWTs, generic secrets)
     static JWT_PATTERN = /eyJ[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*/g;
     static AGENTX_SECRET_PATTERN = /AGENTX_SECRET_[A-Z0-9_]+/g;
-    // A generic high-entropy base64/hex pattern for keys could be added, 
+    // A generic high-entropy base64/hex pattern for keys could be added,
     // but targeting specific known prefixes or lengths is safer to avoid false positives.
     /**
      * Recursively redact an object or string

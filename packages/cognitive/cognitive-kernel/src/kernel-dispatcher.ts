@@ -3,7 +3,7 @@
  * @description Dispatches tasks to appropriate engine handlers.
  */
 
-import { EngineContract } from './interfaces.js';
+import type { EngineContract } from './interfaces.js';
 import { DispatcherError } from './errors.js';
 
 export class KernelDispatcher {

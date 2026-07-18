@@ -1,6 +1,6 @@
-import { ILogger } from '@agentx/shared';
-import { CredentialResolver } from '@agentx/secrets';
-import { TaskModel } from '../interfaces/task.js';
+import type { ILogger } from '@agentx/shared';
+import type { CredentialResolver } from '@agentx/secrets';
+import type { TaskModel } from '../interfaces/task.js';
 
 export interface ExecutionContextConfig {
   traceId: string;

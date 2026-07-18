@@ -3,7 +3,7 @@
  * @description Resource allocation and tracking.
  */
 
-import { ResourceAllocation } from './interfaces.js';
+import type { ResourceAllocation } from './interfaces.js';
 
 export class ResourceAllocator {
   private allocations = new Map<string, ResourceAllocation>();

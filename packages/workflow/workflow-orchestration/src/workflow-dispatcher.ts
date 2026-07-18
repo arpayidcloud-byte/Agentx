@@ -3,7 +3,7 @@
  * @description Dispatches tasks to execution handlers.
  */
 
-import { WorkflowTask } from './interfaces.js';
+import type { WorkflowTask } from './interfaces.js';
 import { WorkflowExecutionError } from './errors.js';
 
 export class WorkflowDispatcher {

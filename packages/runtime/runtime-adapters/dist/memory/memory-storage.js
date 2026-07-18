@@ -21,7 +21,12 @@ export class MemoryStorageProvider {
         return { healthy: true, latencyMs: 0, lastChecked: new Date(), status: 'ACTIVE' };
     }
     getMetrics() {
-        return { totalRequests: this.total, successfulRequests: this.successes, failedRequests: 0, averageLatencyMs: 0 };
+        return {
+            totalRequests: this.total,
+            successfulRequests: this.successes,
+            failedRequests: 0,
+            averageLatencyMs: 0,
+        };
     }
     async put(bucket, key, value) {
         this.total++;
@@ -39,7 +44,7 @@ export class MemoryStorageProvider {
     async list(bucket, prefix) {
         const keys = Array.from(this.store.get(bucket)?.keys() || []);
         if (prefix) {
-            return keys.filter(k => k.startsWith(prefix));
+            return keys.filter((k) => k.startsWith(prefix));
         }
         return keys;
     }

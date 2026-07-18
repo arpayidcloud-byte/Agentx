@@ -3,7 +3,7 @@
  * @description Manages lifecycle of subgoals.
  */
 
-import { SubGoal } from './interfaces.js';
+import type { SubGoal } from './interfaces.js';
 
 export class SubGoalManager {
   private subgoals = new Map<string, SubGoal>();

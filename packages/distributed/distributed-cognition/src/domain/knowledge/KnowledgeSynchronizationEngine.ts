@@ -1,4 +1,4 @@
-import { KnowledgeEntry, SyncResult } from './interfaces.js';
+import type { KnowledgeEntry, SyncResult } from './interfaces.js';
 
 export class KnowledgeSynchronizationEngine {
   private syncHistory: SyncResult[] = [];

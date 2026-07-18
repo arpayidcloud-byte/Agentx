@@ -3,7 +3,7 @@
  * @description Validates SHA-256 checksum integrity.
  */
 
-import { ValidationResult } from './interfaces.js';
+import type { ValidationResult } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class ChecksumValidator {

@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-import { CrossNodeSession, CollaborationMessage, CollaborationState } from './interfaces.js';
+import type { CrossNodeSession, CollaborationMessage, CollaborationState } from './interfaces.js';
 
 export class CrossNodeCollaborationManager {
   private sessions = new Map<string, CrossNodeSession>();

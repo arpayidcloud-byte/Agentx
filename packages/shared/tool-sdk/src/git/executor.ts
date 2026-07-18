@@ -5,7 +5,7 @@
  */
 
 import { spawn } from 'child_process';
-import { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
+import type { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
 import { GitSandbox } from './sandbox.js';
 import { createTimeoutController } from '../shell/timeout.js';
 import {

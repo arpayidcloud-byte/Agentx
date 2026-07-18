@@ -3,7 +3,7 @@
  * @description Workflow version management.
  */
 
-import { WorkflowVersion } from './interfaces.js';
+import type { WorkflowVersion } from './interfaces.js';
 import { VersionRollbackError } from './errors.js';
 import { createHash } from 'crypto';
 

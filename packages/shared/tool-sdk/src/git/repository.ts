@@ -4,7 +4,7 @@
  * Detects git repositories, worktrees, detached HEAD, and bare repositories.
  */
 
-import { GitRepositoryInfo } from './interfaces.js';
+import type { GitRepositoryInfo } from './interfaces.js';
 
 /**
  * Creates a default repository info for non-git directories

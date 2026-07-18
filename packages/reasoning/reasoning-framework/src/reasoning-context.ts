@@ -3,7 +3,7 @@
  * @description Context management for reasoning operations.
  */
 
-import { ReasoningContext } from './interfaces.js';
+import type { ReasoningContext } from './interfaces.js';
 
 export class ReasoningContextManager {
   private context: ReasoningContext;

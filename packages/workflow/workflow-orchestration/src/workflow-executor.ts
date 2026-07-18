@@ -3,7 +3,7 @@
  * @description Coordinates task execution.
  */
 
-import { WorkflowTask } from './interfaces.js';
+import type { WorkflowTask } from './interfaces.js';
 
 export class WorkflowExecutor {
   async execute(task: WorkflowTask): Promise<unknown> {

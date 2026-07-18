@@ -3,7 +3,7 @@
  * @description Orchestrates multi-agent reasoning sessions.
  */
 
-import { CollaborationSession } from '../../domain/collaboration/interfaces.js';
+import type { CollaborationSession } from '../../domain/collaboration/interfaces.js';
 import { CollaborationSessionManager } from '../../domain/collaboration/CollaborationSessionManager.js';
 import { TaskDelegationEngine } from '../../domain/collaboration/TaskDelegationEngine.js';
 import { SharedContextManager } from '../../domain/context/SharedContextManager.js';

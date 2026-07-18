@@ -28,7 +28,7 @@ export class ConsensusEngine {
     const sortedKeys = Array.from(voteCounts.keys()).sort();
 
     for (const key of sortedKeys) {
-      const count = voteCounts.get(key)!;
+      const count = voteCounts.get(key);
       if (count > maxVotes) {
         maxVotes = count;
         bestValue = key;

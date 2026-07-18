@@ -2,7 +2,7 @@
  * @module runtime-adapters/provider-registry
  * @description Centralized dependency injection registry for providers.
  */
-import { IProvider, ProviderMetadata, ProviderCapabilities } from './index.js';
+import type { IProvider, ProviderMetadata, ProviderCapabilities } from './index.js';
 export declare class ProviderRegistry {
     private providers;
     private capabilityResolver;

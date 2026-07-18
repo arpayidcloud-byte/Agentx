@@ -3,7 +3,7 @@
  * @description Discovers deterministic symbolic patterns from experiences.
  */
 
-import { Experience, Pattern } from './interfaces.js';
+import type { Experience, Pattern } from './interfaces.js';
 
 export class PatternEngine {
   analyze(experiences: Experience[]): Pattern[] {

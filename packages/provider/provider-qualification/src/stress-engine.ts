@@ -3,7 +3,7 @@
  * @description Resource saturation and retry storm verifier.
  */
 
-import { StressTestResult } from './interfaces.js';
+import type { StressTestResult } from './interfaces.js';
 
 export class StressEngine {
   async runStressTest(durationMs: number): Promise<StressTestResult> {

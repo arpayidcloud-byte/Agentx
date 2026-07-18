@@ -1,4 +1,4 @@
-import { NodeMetadata, NodeRegistration, NodeStatus } from './interfaces.js';
+import type { NodeMetadata, NodeRegistration, NodeStatus } from './interfaces.js';
 
 export class NodeRegistry {
   private nodes = new Map<string, NodeRegistration>();

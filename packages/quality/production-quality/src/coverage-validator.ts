@@ -3,7 +3,7 @@
  * @description Validates coverage thresholds against strict M4 requirements.
  */
 
-import { CoverageReport, ValidationResult } from './interfaces.js';
+import type { CoverageReport, ValidationResult } from './interfaces.js';
 import { QualityGateError } from './errors.js';
 
 export class CoverageValidator {

@@ -3,7 +3,7 @@
  * @description Main Production Execution Coordinator orchestration engine.
  */
 
-import {
+import type {
   CoordinatorConfig,
   CoordinatorSession,
   ExecutionCoordinatorState,
@@ -23,7 +23,7 @@ import { ExecutionDispatcher } from './dispatcher.js';
 import { ExecutionReservationManager } from './reservation.js';
 import { ConcurrencyController } from './concurrency.js';
 import { CoordinatorRegistry } from './coordinator-registry.js';
-import { IEventBus } from '@agentx/core-runtime';
+import type { IEventBus } from '@agentx/core-runtime';
 
 export class ProductionExecutionCoordinator {
   private stateMachine = new CoordinatorStateMachine();

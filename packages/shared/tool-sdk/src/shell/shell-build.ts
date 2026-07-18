@@ -5,7 +5,7 @@
  * Per Volume 7, shell.build commands do not require approval but are restricted.
  */
 
-import {
+import type {
   ShellExecutionRequest,
   ShellExecutionResult,
   ShellExecutionContext,

@@ -3,7 +3,7 @@
  * @description Execution Dispatcher for delegating tasks to engines via interfaces.
  */
 
-import { ExecutionPhase, ExecutionTicket } from './interfaces.js';
+import type { ExecutionPhase, ExecutionTicket } from './interfaces.js';
 import { CoordinatorExecutionError } from './errors.js';
 
 export interface IEngine {

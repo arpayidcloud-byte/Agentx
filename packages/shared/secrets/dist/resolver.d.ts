@@ -1,4 +1,4 @@
-import { CredentialResolver, SecretStore, SecretMetadata } from './interfaces.js';
+import type { CredentialResolver, SecretStore, SecretMetadata } from './interfaces.js';
 import { RedactedString } from './scrubber.js';
 export declare class CachedCredentialResolver implements CredentialResolver {
     private cache;

@@ -3,7 +3,7 @@
  * @description Session isolation for reasoning state.
  */
 
-import { ReasoningSession } from './interfaces.js';
+import type { ReasoningSession } from './interfaces.js';
 
 export class ReasoningSessionManager {
   private session: ReasoningSession;

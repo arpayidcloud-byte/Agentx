@@ -1,4 +1,4 @@
-import {
+import type {
   IKnowledgeEngine,
   IKnowledgeStore,
   KnowledgeDocument,
@@ -8,7 +8,7 @@ import {
   KnowledgeGraph,
   KnowledgeMetrics,
 } from './interfaces.js';
-import { IEventBus } from '@agentx/core-runtime';
+import type { IEventBus } from '@agentx/core-runtime';
 
 export class KnowledgeEngine implements IKnowledgeEngine {
   private metrics: KnowledgeMetrics = {
@@ -59,7 +59,7 @@ export class KnowledgeEngine implements IKnowledgeEngine {
     let results = await this.store.searchNodes(query.text, query.limit);
 
     if (query.minConfidence !== undefined) {
-      results = results.filter((n) => n.confidenceScore >= query.minConfidence!);
+      results = results.filter((n) => n.confidenceScore >= query.minConfidence);
     }
 
     return results;

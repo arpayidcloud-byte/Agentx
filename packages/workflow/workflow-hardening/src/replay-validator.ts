@@ -3,7 +3,7 @@
  * @description Validates deterministic replay execution.
  */
 
-import { ReplayResult } from './interfaces.js';
+import type { ReplayResult } from './interfaces.js';
 import { ReplayMismatchError } from './errors.js';
 import { createHash } from 'crypto';
 

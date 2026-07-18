@@ -3,9 +3,9 @@
  * @description Master validator for checking pre-PQF compliance.
  */
 
-import { IProvider } from '@agentx/runtime-adapters';
+import type { IProvider } from '@agentx/runtime-adapters';
 import { SchemaValidator } from './schema-validator.js';
-import { ProviderManifest } from './interfaces.js';
+import type { ProviderManifest } from './interfaces.js';
 
 export class ProviderValidator {
   private schema = new SchemaValidator();

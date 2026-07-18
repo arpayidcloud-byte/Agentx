@@ -4,7 +4,7 @@
  * All interfaces are immutable and follow the dependency inversion principle.
  */
 
-import { ToolCategory } from '../interfaces/index.js';
+import type { ToolCategory } from '../interfaces/index.js';
 export { ToolCategory } from '../interfaces/index.js';
 
 /** @description Represents a parsed shell command structure */

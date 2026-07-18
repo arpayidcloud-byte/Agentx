@@ -3,7 +3,7 @@
  * @description Monitors system utilization thresholds and flags backpressure limits.
  */
 
-import { BackpressureConfig } from './interfaces.js';
+import type { BackpressureConfig } from './interfaces.js';
 import { BackpressureError } from './errors.js';
 
 export class BackpressureController {

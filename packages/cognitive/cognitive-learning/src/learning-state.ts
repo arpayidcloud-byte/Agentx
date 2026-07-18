@@ -3,7 +3,7 @@
  * @description State machine for learning lifecycle.
  */
 
-import { LearningState } from './interfaces.js';
+import type { LearningState } from './interfaces.js';
 import { LearningStateError } from './errors.js';
 
 const transitions: Record<LearningState, LearningState[]> = {

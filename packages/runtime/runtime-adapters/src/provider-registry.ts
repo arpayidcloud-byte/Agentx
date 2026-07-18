@@ -3,13 +3,8 @@
  * @description Centralized dependency injection registry for providers.
  */
 
-import {
-  IProvider,
-  ProviderMetadata,
-  ProviderUnavailableError,
-  ProviderResolutionError,
-  ProviderCapabilities,
-} from './index.js';
+import type { IProvider, ProviderMetadata, ProviderCapabilities } from './index.js';
+import { ProviderUnavailableError, ProviderResolutionError } from './index.js';
 import { ProviderCapabilityResolver } from './provider-capability.js';
 
 export class ProviderRegistry {

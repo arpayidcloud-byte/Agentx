@@ -3,7 +3,8 @@
  * @description Validates generated plans before execution.
  */
 
-import { PlanningPlan, PlanningStep, DependencyEdge } from './interfaces.js';
+import type { PlanningPlan, DependencyEdge } from './interfaces.js';
+import { PlanningStep } from './interfaces.js';
 import { PlanningError, CycleDetectedError } from './errors.js';
 
 export class PlanningValidator {
@@ -15,7 +16,7 @@ export class PlanningValidator {
     const adj = new Map<string, string[]>();
     for (const e of edges) {
       if (!adj.has(e.source)) adj.set(e.source, []);
-      adj.get(e.source)!.push(e.target);
+      adj.get(e.source).push(e.target);
     }
     const visited = new Set<string>();
     const stack = new Set<string>();

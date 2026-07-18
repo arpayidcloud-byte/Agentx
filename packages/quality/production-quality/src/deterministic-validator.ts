@@ -3,7 +3,7 @@
  * @description Validates identical inputs produce identical outputs without hidden states.
  */
 
-import { ValidationResult } from './interfaces.js';
+import type { ValidationResult } from './interfaces.js';
 import { DeterministicError } from './errors.js';
 import { createHash } from 'crypto';
 

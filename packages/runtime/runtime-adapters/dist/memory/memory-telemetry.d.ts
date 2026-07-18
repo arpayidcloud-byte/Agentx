@@ -2,7 +2,7 @@
  * @module runtime-adapters/memory/memory-telemetry
  * @description Reference in-memory telemetry, metrics, and tracing provider.
  */
-import { ITelemetryProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics, ProviderContext } from '../interfaces.js';
+import type { ITelemetryProvider, ProviderMetadata, ProviderCapabilities, ProviderHealth, ProviderMetrics, ProviderContext } from '../interfaces.js';
 export interface TelemetrySpanRecord {
     id: string;
     name: string;

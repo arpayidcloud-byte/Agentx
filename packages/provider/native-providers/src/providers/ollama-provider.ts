@@ -3,7 +3,7 @@
  * @description Native Ollama local model provider integration adapter.
  */
 
-import {
+import type {
   IConfigurationProvider,
   INativeProvider,
   CompletionOptions,

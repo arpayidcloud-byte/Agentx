@@ -3,7 +3,7 @@
  * @description Strategy interface definitions.
  */
 
-import { IReasoningStrategy, ReasoningContext, ReasoningGraph } from './interfaces.js';
+import type { IReasoningStrategy, ReasoningContext, ReasoningGraph } from './interfaces.js';
 
 export class ReasoningStrategyBase implements IReasoningStrategy {
   async initialize(_context: ReasoningContext): Promise<void> {}

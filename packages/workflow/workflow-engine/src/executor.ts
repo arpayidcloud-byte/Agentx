@@ -3,7 +3,7 @@
  * @description WorkflowExecutor separates orchestration from execution.
  */
 
-import { ExtendedWorkflowMetrics, WorkflowHook } from './interfaces-v2.js';
+import type { ExtendedWorkflowMetrics, WorkflowHook } from './interfaces-v2.js';
 import { NodeExecutor } from './node-executor.js';
 import { ExecutionPlanner } from './planner.js';
 import { RetryCoordinator } from './retry.js';
@@ -77,7 +77,7 @@ export class WorkflowExecutor {
         try {
           let result: unknown;
           let retries = 0;
-          let maxRetries = node.retryPolicy?.maxAttempts || 0;
+          const maxRetries = node.retryPolicy?.maxAttempts || 0;
 
           while (retries <= maxRetries) {
             try {

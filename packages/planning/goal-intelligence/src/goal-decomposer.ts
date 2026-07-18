@@ -3,7 +3,7 @@
  * @description Decomposes goals into subgoals deterministically.
  */
 
-import { Goal, SubGoal } from './interfaces.js';
+import type { Goal, SubGoal } from './interfaces.js';
 import { DecompositionError } from './errors.js';
 import { createHash } from 'crypto';
 

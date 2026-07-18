@@ -1,5 +1,5 @@
-import { IRetryPolicy } from '../interfaces/scheduler.js';
-import { CancellationToken } from '../cancellation/index.js';
+import type { IRetryPolicy } from '../interfaces/scheduler.js';
+import type { CancellationToken } from '../cancellation/index.js';
 
 export class RetryPolicy implements IRetryPolicy {
   public readonly type: 'exponential' | 'linear' | 'constant';

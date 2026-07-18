@@ -3,24 +3,22 @@
  * @description Main Production Runtime integrating all engines.
  */
 
-import { RuntimeSession, RuntimeMetrics, AuditRecord } from './interfaces.js';
+import type { RuntimeSession, RuntimeMetrics, AuditRecord } from './interfaces.js';
 import { RuntimeLifecycle } from './runtime-lifecycle.js';
 import { RuntimeExecutor } from './runtime-executor.js';
 import { RuntimeSupervisor } from './runtime-supervisor.js';
 import { RuntimeHookManager } from './runtime-hooks.js';
-import { AuditStore } from './runtime-audit.js';
-import { MetricsCollector } from './runtime-metrics.js';
+import type { AuditStore } from './runtime-audit.js';
+import type { MetricsCollector } from './runtime-metrics.js';
 import { HealthChecker } from './runtime-health.js';
 import { createRuntimeSession, createExecutionSession } from './runtime-session.js';
-import { createBootstrapConfig, BootstrapOptions } from './runtime-bootstrap.js';
+import type { BootstrapOptions } from './runtime-bootstrap.js';
+import { createBootstrapConfig } from './runtime-bootstrap.js';
 import { RuntimeError } from './errors.js';
-import { IEventBus } from '@agentx/core-runtime';
-import { IRuntimePipeline } from './runtime-executor.js';
-import {
-  ProductionExecutionCoordinator,
-  CoordinatorSession,
-  CoordinatorConfig,
-} from './coordinator/index.js';
+import type { IEventBus } from '@agentx/core-runtime';
+import type { IRuntimePipeline } from './runtime-executor.js';
+import type { CoordinatorSession, CoordinatorConfig } from './coordinator/index.js';
+import { ProductionExecutionCoordinator } from './coordinator/index.js';
 
 export class Runtime {
   private lifecycle: RuntimeLifecycle;

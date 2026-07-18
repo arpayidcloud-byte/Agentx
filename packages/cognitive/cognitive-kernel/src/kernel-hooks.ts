@@ -3,7 +3,7 @@
  * @description Hook execution manager.
  */
 
-import { KernelHook, SessionCheckpoint } from './interfaces.js';
+import type { KernelHook, SessionCheckpoint } from './interfaces.js';
 
 export class KernelHookManager {
   private hooks: KernelHook[] = [];

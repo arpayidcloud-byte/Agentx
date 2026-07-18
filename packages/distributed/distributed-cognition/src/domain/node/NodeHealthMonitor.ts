@@ -1,4 +1,4 @@
-import { NodeHealth, NodeStatus } from './interfaces.js';
+import type { NodeHealth, NodeStatus } from './interfaces.js';
 
 export class NodeHealthMonitor {
   private healthRecords = new Map<string, NodeHealth[]>();

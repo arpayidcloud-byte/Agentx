@@ -3,7 +3,7 @@
  * @description Reasoning checkpoint operations.
  */
 
-import { ReasoningSnapshot } from './interfaces.js';
+import type { ReasoningSnapshot } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class ReasoningCheckpointManager {

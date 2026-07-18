@@ -3,7 +3,7 @@
  * @description Compares workflow snapshots for changes.
  */
 
-import { SnapshotDiffResult } from './interfaces.js';
+import type { SnapshotDiffResult } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class WorkflowSnapshotDiff {

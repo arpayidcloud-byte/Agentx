@@ -3,7 +3,7 @@
  * @description Validates strict timeout enforcement across components.
  */
 
-import { ValidationResult } from './interfaces.js';
+import type { ValidationResult } from './interfaces.js';
 
 export class TimeoutValidator {
   validate(

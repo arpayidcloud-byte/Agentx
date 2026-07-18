@@ -3,7 +3,7 @@
  * @description Calculates overall readiness score.
  */
 
-import { ReadinessScore } from './interfaces.js';
+import type { ReadinessScore } from './interfaces.js';
 
 export class ProviderReadinessScore {
   calculate(scores: {

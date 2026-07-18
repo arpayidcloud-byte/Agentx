@@ -3,7 +3,7 @@
  * @description Manages task delegation with circular dependency detection.
  */
 
-import { TaskDelegation } from './interfaces.js';
+import type { TaskDelegation } from './interfaces.js';
 import { CircularDelegationError } from './errors.js';
 
 export class TaskDelegationEngine {
@@ -39,7 +39,7 @@ export class TaskDelegationEngine {
     const adj = new Map<string, string[]>();
     for (const [u, v] of this.edges) {
       if (!adj.has(u)) adj.set(u, []);
-      adj.get(u)!.push(v);
+      adj.get(u).push(v);
     }
     const visited = new Set<string>();
     const stack = new Set<string>();

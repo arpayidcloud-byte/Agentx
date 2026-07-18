@@ -3,7 +3,8 @@
  * @description Immutable decision tree traversal and validation.
  */
 
-import { DecisionTree, DecisionNode } from './interfaces.js';
+import type { DecisionTree } from './interfaces.js';
+import { DecisionNode } from './interfaces.js';
 import { IntegrityError } from './errors.js';
 
 export class DecisionTreeEngine {

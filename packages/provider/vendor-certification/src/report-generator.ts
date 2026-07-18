@@ -3,7 +3,7 @@
  * @description Creates immutable certification reports.
  */
 
-import {
+import type {
   ProviderMetadata,
   ReadinessScore,
   ProviderGrade,

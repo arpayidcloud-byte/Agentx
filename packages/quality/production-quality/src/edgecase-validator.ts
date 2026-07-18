@@ -3,7 +3,7 @@
  * @description Automatically validates logical edge cases.
  */
 
-import { ValidationResult } from './interfaces.js';
+import type { ValidationResult } from './interfaces.js';
 
 export class EdgeCaseValidator {
   validate(testedEdgeCases: string[]): ValidationResult {

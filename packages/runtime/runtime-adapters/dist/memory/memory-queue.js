@@ -22,7 +22,12 @@ export class MemoryQueueProvider {
         return { healthy: true, latencyMs: 0, lastChecked: new Date(), status: 'ACTIVE' };
     }
     getMetrics() {
-        return { totalRequests: this.total, successfulRequests: this.successes, failedRequests: this.failures, averageLatencyMs: 0 };
+        return {
+            totalRequests: this.total,
+            successfulRequests: this.successes,
+            failedRequests: this.failures,
+            averageLatencyMs: 0,
+        };
     }
     async enqueue(topic, message, priority = 0) {
         this.total++;

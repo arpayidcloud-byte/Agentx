@@ -4,7 +4,7 @@
  * Validates requests before creation and approval actions.
  */
 
-import { IApprovalValidator, ApprovalRequest, ApprovalState } from './interfaces.js';
+import type { IApprovalValidator, ApprovalRequest, ApprovalState } from './interfaces.js';
 import { ApprovalValidationError } from './errors.js';
 
 /**

@@ -3,7 +3,8 @@
  * @description Validates workflow graphs before execution.
  */
 
-import { WorkflowGraph, WorkflowNode, DependencyEdge } from './interfaces.js';
+import type { WorkflowGraph } from './interfaces.js';
+import { WorkflowNode, DependencyEdge } from './interfaces.js';
 import { WorkflowValidationError } from './errors.js';
 
 export class WorkflowValidator {

@@ -3,7 +3,7 @@
  * @description Validates all workflow integrity checksums.
  */
 
-import { WorkflowState } from './interfaces.js';
+import type { WorkflowState } from './interfaces.js';
 import { IntegrityError } from './errors.js';
 import { createHash } from 'crypto';
 

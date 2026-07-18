@@ -3,7 +3,7 @@
  * @description Renders statistical overview of reasoning execution.
  */
 
-import { PipelineMetrics } from './pipeline-metrics.js';
+import type { PipelineMetrics } from './pipeline-metrics.js';
 
 export class ReasoningStatistics {
   constructor(private metrics: PipelineMetrics) {}

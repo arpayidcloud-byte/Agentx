@@ -3,7 +3,7 @@
  * @description Runtime configuration management.
  */
 
-import { RuntimeConfig, ResourceLimits } from './interfaces.js';
+import type { RuntimeConfig, ResourceLimits } from './interfaces.js';
 
 const DEFAULT_CONFIG: RuntimeConfig = {
   tokenBudget: 500000,

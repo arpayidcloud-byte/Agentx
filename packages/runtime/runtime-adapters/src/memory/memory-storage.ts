@@ -3,7 +3,7 @@
  * @description Reference in-memory database and storage provider.
  */
 
-import {
+import type {
   IStorageProvider,
   ProviderMetadata,
   ProviderCapabilities,

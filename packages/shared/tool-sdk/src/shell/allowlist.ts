@@ -6,7 +6,7 @@
 
 import * as fs from 'fs/promises';
 import * as yaml from 'yaml';
-import { ShellSandboxConfig } from './interfaces.js';
+import type { ShellSandboxConfig } from './interfaces.js';
 
 /** Default allowed programs per Volume 7 */
 const DEFAULT_ALLOWED_PROGRAMS = [

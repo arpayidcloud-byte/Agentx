@@ -3,7 +3,7 @@
  * @description Policy-driven adaptation rules.
  */
 
-import { AdaptationPolicy } from './interfaces.js';
+import type { AdaptationPolicy } from './interfaces.js';
 
 export class AdaptationPolicyManager {
   private policies: AdaptationPolicy[] = ['conservative', 'balanced', 'aggressive', 'strict'];

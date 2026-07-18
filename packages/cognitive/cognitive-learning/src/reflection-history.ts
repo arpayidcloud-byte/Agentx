@@ -3,7 +3,7 @@
  * @description Immutable reflection log storage.
  */
 
-import { Reflection } from './interfaces.js';
+import type { Reflection } from './interfaces.js';
 
 export class ReflectionHistory {
   private reflections: Reflection[] = [];

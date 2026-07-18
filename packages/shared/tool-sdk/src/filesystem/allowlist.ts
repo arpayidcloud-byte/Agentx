@@ -1,6 +1,6 @@
 import * as fs from 'fs/promises';
 import * as yaml from 'yaml';
-import { FilesystemConfig } from './interfaces.js';
+import type { FilesystemConfig } from './interfaces.js';
 
 export class AllowlistConfigLoader {
   private static defaultConfig: FilesystemConfig = {

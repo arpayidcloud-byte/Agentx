@@ -3,7 +3,7 @@
  * @description State machine for the Production Execution Coordinator.
  */
 
-import { ExecutionCoordinatorState } from './interfaces.js';
+import type { ExecutionCoordinatorState } from './interfaces.js';
 import { CoordinatorStateError } from './errors.js';
 
 const validTransitions: Record<ExecutionCoordinatorState, ExecutionCoordinatorState[]> = {

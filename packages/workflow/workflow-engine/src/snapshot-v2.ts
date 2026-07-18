@@ -3,7 +3,7 @@
  * @description Extended snapshot with versioning.
  */
 
-import { VersionedExecutionSnapshot } from './interfaces-v2.js';
+import type { VersionedExecutionSnapshot } from './interfaces-v2.js';
 
 export function createVersionedSnapshot(
   workflowId: string,

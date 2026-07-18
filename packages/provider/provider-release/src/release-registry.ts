@@ -3,7 +3,7 @@
  * @description Stores qualified and certified releases.
  */
 
-import { ReleaseManifest } from './interfaces.js';
+import type { ReleaseManifest } from './interfaces.js';
 import { RegistryError } from './errors.js';
 
 export class ReleaseRegistry {

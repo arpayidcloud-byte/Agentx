@@ -3,7 +3,7 @@
  * @description Analyzes structural interface compatibility.
  */
 
-import { APIChange } from './interfaces.js';
+import type { APIChange } from './interfaces.js';
 
 export class APICompatibility {
   compare(oldAPI: string[], newAPI: string[]): APIChange[] {

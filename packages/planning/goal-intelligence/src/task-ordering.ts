@@ -3,7 +3,7 @@
  * @description Deterministic execution ordering for subgoals.
  */
 
-import { SubGoal } from './interfaces.js';
+import type { SubGoal } from './interfaces.js';
 
 export class TaskOrderingEngine {
   order(subgoals: SubGoal[]): SubGoal[] {

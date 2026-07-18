@@ -3,7 +3,8 @@
  * @description Deterministic workflow replay engine.
  */
 
-import { ReplayConfig, ReplayResult } from './interfaces.js';
+import type { ReplayResult } from './interfaces.js';
+import { ReplayConfig } from './interfaces.js';
 import { ReplayMismatchError } from './errors.js';
 import { createHash } from 'crypto';
 

@@ -3,10 +3,11 @@
  * @description Runtime executor orchestrating the complete execution pipeline.
  */
 
-import { RuntimeConfig } from './interfaces.js';
+import type { RuntimeConfig } from './interfaces.js';
 import { createAuditRecord, AuditStore } from './runtime-audit.js';
 import { MetricsCollector } from './runtime-metrics.js';
-import { RuntimeEvent, createRuntimeEvent } from './runtime-events.js';
+import type { RuntimeEvent } from './runtime-events.js';
+import { createRuntimeEvent } from './runtime-events.js';
 
 export interface IRuntimePipeline {
   execute(session: any, config: RuntimeConfig): Promise<unknown>;

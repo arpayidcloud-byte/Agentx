@@ -3,7 +3,7 @@
  * @description Builds executable workflow graphs from planning plans.
  */
 
-import { WorkflowGraph, WorkflowNode, WorkflowEdge } from './interfaces.js';
+import type { WorkflowGraph, WorkflowNode, WorkflowEdge } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class WorkflowBuilder {

@@ -3,7 +3,7 @@
  * @description Generates the immutable ProductionQualityReport.
  */
 
-import { ProductionQualityReport, ValidationScore, QualityGrade } from './interfaces.js';
+import type { ProductionQualityReport, ValidationScore, QualityGrade } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class ReportGenerator {

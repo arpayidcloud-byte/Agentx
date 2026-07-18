@@ -3,7 +3,7 @@
  * @description Provider integration conformance guide.
  */
 
-import { ProviderManifest } from './interfaces.js';
+import type { ProviderManifest } from './interfaces.js';
 
 export class ProviderSDK {
   validate(manifest: ProviderManifest): boolean {

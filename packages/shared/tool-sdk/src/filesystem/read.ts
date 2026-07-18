@@ -1,6 +1,6 @@
 import * as fs from 'fs/promises';
 
-import { ISandbox, IFilesystemValidator, IFilesystemPolicy } from './interfaces.js';
+import type { ISandbox, IFilesystemValidator, IFilesystemPolicy } from './interfaces.js';
 import { InvalidEncodingError } from './errors.js';
 
 export class FilesystemReadTool {

@@ -1,4 +1,4 @@
-import { AgentRole, SubAgent } from './interfaces.js';
+import type { AgentRole, SubAgent } from './interfaces.js';
 import {
   PlannerAgent,
   ArchitectAgent,

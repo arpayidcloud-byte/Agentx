@@ -3,7 +3,7 @@
  * @description Health checking service for all coordinator components.
  */
 
-import { CoordinatorHealthStatus } from './interfaces.js';
+import type { CoordinatorHealthStatus } from './interfaces.js';
 
 export class CoordinatorHealthChecker {
   private checks = new Map<string, () => CoordinatorHealthStatus>();

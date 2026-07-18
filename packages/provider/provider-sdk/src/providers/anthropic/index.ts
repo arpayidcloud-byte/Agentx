@@ -1,12 +1,12 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { BaseProvider } from '../../base-provider.js';
-import {
+import type {
   CompletionRequest,
   CompletionResponse,
   ProviderCapabilities,
   ProviderConfiguration,
 } from '../../interfaces.js';
-import { CredentialResolver } from '../../conformance/credential-resolver.js';
+import type { CredentialResolver } from '../../conformance/credential-resolver.js';
 import {
   ProviderInvalidCredentialsError,
   ProviderRateLimitError,

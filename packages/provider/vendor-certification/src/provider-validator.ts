@@ -3,7 +3,7 @@
  * @description Validates that a provider implements the correct interfaces.
  */
 
-import { IProvider } from './interfaces.js';
+import type { IProvider } from './interfaces.js';
 import { ValidationError } from './errors.js';
 
 export class ProviderValidator {
