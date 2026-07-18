@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/eslint-plugin-internal",
+  "name": "@agentx/eslint-plugin",
   "version": "0.1.0",
   "private": true,
   "main": "index.js",

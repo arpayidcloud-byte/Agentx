@@ -3,7 +3,7 @@
  * @description Manages cluster node membership and leader election.
  */
 
-import { ClusterNode } from './interfaces.js';
+import type { ClusterNode } from './interfaces.js';
 import { ClusterError } from './errors.js';
 
 export class ClusterMembership {
@@ -34,7 +34,7 @@ export class ClusterMembership {
   }
 
   electLeader(): string {
-    const activeNodes = this.listNodes().filter(n => n.status === 'ACTIVE');
+    const activeNodes = this.listNodes().filter((n) => n.status === 'ACTIVE');
     if (activeNodes.length === 0) {
       throw new ClusterError('No active nodes for leader election', 'cluster-membership');
     }
@@ -51,7 +51,7 @@ export class ClusterMembership {
   listNodes(): ClusterNode[] {
     const now = Date.now();
     const threshold = 15000; // 15s node timeout
-    for (const [id, node] of this.nodes.entries()) {
+    for (const [_id, node] of this.nodes.entries()) {
       if (now - node.lastHeartbeat.getTime() > threshold) {
         node.status = 'DOWN';
       }

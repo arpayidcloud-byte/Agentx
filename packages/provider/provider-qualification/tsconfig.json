@@ -3,10 +3,5 @@
   "compilerOptions": { "outDir": "dist", "rootDir": "src" },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"],
-  "references": [
-    { "path": "../../shared/tool-sdk" }, { "path": "../../agent/agent-platform" }, { "path": "../../workflow/workflow-engine" },
-    { "path": "../../shared/context-engine" }, { "path": "../../shared/memory-engine" },
-    { "path": "../../shared/knowledge-engine" }, { "path": "../../planning/planning-engine" },
-    { "path": "../../runtime/runtime-adapters" }
-  ]
+  "references": [{ "path": "../../runtime/runtime-adapters" }]
 }

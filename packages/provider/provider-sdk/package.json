@@ -20,8 +20,6 @@
   "dependencies": {
     "@agentx/secrets": "workspace:*",
     "@agentx/runtime-adapters": "workspace:*",
-    "@agentx/runtime-production": "workspace:*",
-    "@agentx/provider-qualification": "workspace:*",
     "@anthropic-ai/sdk": "^0.111.0",
     "@google/generative-ai": "^0.24.1"
   }

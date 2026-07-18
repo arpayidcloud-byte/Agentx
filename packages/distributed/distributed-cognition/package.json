@@ -17,9 +17,5 @@
     "typescript": "5.4.5",
     "vitest": "1.6.0"
   },
-  "dependencies": {
-    "@agentx/shared": "workspace:*",
-    "@agentx/core-runtime": "workspace:*",
-    "@agentx/cognitive-contracts": "workspace:*"
-  }
+  "dependencies": {}
 }

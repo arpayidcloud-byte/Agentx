@@ -116,7 +116,7 @@ module.exports = {
       },
       create(context) {
         const filePath = context.getFilename();
-        const isProviderSdkDir = filePath.includes("packages/provider-sdk/providers/") || filePath.includes("packages/provider-sdk/src/providers/") || filePath.includes("packages/provider-sdk/dist/");
+        const isProviderSdkDir = filePath.includes("provider-sdk/providers/") || filePath.includes("provider-sdk/src/providers/") || filePath.includes("provider-sdk/dist/");
         
         const vendorLibraries = ["@google/generative-ai", "@anthropic-ai/sdk", "openai"];
 

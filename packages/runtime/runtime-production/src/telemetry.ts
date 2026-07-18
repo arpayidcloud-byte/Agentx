@@ -3,7 +3,7 @@
  * @description Vendor agnostic OpenTelemetry-like tracing and metrics collection.
  */
 
-import { TelemetrySpan, TelemetryMetrics } from './interfaces.js';
+import type { TelemetrySpan, TelemetryMetrics } from './interfaces.js';
 
 export class ProductionTelemetry {
   private spans: TelemetrySpan[] = [];
@@ -24,7 +24,7 @@ export class ProductionTelemetry {
   }
 
   endSpan(spanId: string, status: 'OK' | 'ERROR' = 'OK'): void {
-    const span = this.spans.find(s => s.spanId === spanId);
+    const span = this.spans.find((s) => s.spanId === spanId);
     if (span) {
       span.endTime = new Date();
       span.status = status;

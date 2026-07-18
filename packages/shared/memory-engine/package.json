@@ -7,7 +7,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc --build",
-    "typecheck": "turbo run typecheck",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "lint": "eslint src/"
@@ -16,5 +16,7 @@
     "typescript": "5.4.5",
     "vitest": "1.6.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@agentx/core-runtime": "workspace:*"
+  }
 }

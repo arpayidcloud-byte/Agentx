@@ -15,7 +15,7 @@ export class GracefulShutdownManager {
     this.hooks.push(hook);
   }
 
-  async initiateShutdown(reason: string): Promise<void> {
+  async initiateShutdown(_reason: string): Promise<void> {
     if (this.isShuttingDown) {
       return;
     }
@@ -26,7 +26,10 @@ export class GracefulShutdownManager {
       try {
         await hook();
       } catch (error) {
-        throw new ShutdownError(`Shutdown hook failed: ${(error as Error).message}`, 'shutdown-manager');
+        throw new ShutdownError(
+          `Shutdown hook failed: ${(error as Error).message}`,
+          'shutdown-manager',
+        );
       }
     }
   }

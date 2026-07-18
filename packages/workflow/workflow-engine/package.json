@@ -12,12 +12,7 @@
     "test:coverage": "vitest run --coverage",
     "lint": "eslint src/"
   },
-  "dependencies": {
-    "@agentx/shared": "workspace:*",
-    "@agentx/core-runtime": "workspace:*",
-    "@agentx/tool-sdk": "workspace:*",
-    "@agentx/agent-platform": "workspace:*"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@vitest/coverage-v8": "1.6.0",
     "typescript": "5.4.5",

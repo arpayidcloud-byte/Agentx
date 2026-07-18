@@ -6,9 +6,5 @@
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"],
-  "references": [
-    { "path": "../shared" },
-    { "path": "../secrets" },
-    { "path": "../../provider/provider-sdk" }
-  ]
+  "references": [{ "path": "../shared" }, { "path": "../secrets" }]
 }

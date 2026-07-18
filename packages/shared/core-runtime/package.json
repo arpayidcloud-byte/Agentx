@@ -17,6 +17,8 @@
     "vitest": "1.6.0"
   },
   "dependencies": {
+    "@agentx/secrets": "workspace:*",
+    "@agentx/shared": "workspace:*",
     "bullmq": "^5.80.2",
     "ioredis": "^5.11.1"
   }

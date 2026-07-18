@@ -17,10 +17,5 @@
     "typescript": "5.4.5",
     "vitest": "1.6.0"
   },
-  "dependencies": {
-    "@agentx/cognitive-contracts": "workspace:*",
-    "@agentx/cognitive-kernel": "workspace:*",
-    "@agentx/reasoning-algorithms": "workspace:*",
-    "@agentx/cognitive-learning": "workspace:*"
-  }
+  "dependencies": {}
 }

@@ -13,7 +13,6 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@agentx/shared": "workspace:*",
     "@agentx/core-runtime": "workspace:*"
   },
   "devDependencies": {

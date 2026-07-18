@@ -13,15 +13,7 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@agentx/shared": "workspace:*",
-    "@agentx/core-runtime": "workspace:*",
-    "@agentx/tool-sdk": "workspace:*",
-    "@agentx/agent-platform": "workspace:*",
-    "@agentx/workflow-engine": "workspace:*",
-    "@agentx/context-engine": "workspace:*",
-    "@agentx/memory-engine": "workspace:*",
-    "@agentx/knowledge-engine": "workspace:*",
-    "@agentx/planning-engine": "workspace:*"
+    "@agentx/core-runtime": "workspace:*"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "1.6.0",

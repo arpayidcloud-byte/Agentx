@@ -3,7 +3,7 @@
  * @description Distributed lock manager abstraction with multiple providers.
  */
 
-import { LockOptions, LockInfo } from './interfaces.js';
+import type { LockOptions, LockInfo } from './interfaces.js';
 import { DistributedLockError } from './errors.js';
 
 export interface IDistributedLockManager {
@@ -34,9 +34,9 @@ export class MemoryLockProvider implements IDistributedLockManager {
   }
 
   async release(lockId: string): Promise<void> {
-    for (const [key, lock] of this.locks.entries()) {
+    for (const [_key, lock] of this.locks.entries()) {
       if (lock.id === lockId) {
-        this.locks.delete(key);
+        this.locks.delete(_key);
         return;
       }
     }
@@ -44,7 +44,7 @@ export class MemoryLockProvider implements IDistributedLockManager {
   }
 
   async renew(lockId: string, ttlMs: number): Promise<void> {
-    for (const [key, lock] of this.locks.entries()) {
+    for (const [_key, lock] of this.locks.entries()) {
       if (lock.id === lockId) {
         lock.expiresAt = new Date(Date.now() + ttlMs);
         return;

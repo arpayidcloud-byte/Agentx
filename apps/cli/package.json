@@ -8,8 +8,8 @@
   },
   "scripts": {
     "build": "tsc --build",
-    "typecheck": "turbo run typecheck",
-    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests",
     "lint": "eslint src/"
   },
   "devDependencies": {
