@@ -3,7 +3,12 @@
  * @description WorkflowExecutor separates orchestration from execution.
  */
 
-import type { ExtendedWorkflowMetrics, WorkflowHook } from './interfaces-v2.js';
+import type { WorkflowDefinition, WorkflowNode, NodeState } from './interfaces.js';
+import type {
+  ExtendedWorkflowMetrics,
+  WorkflowHook,
+  ExecutionTimelineEntry,
+} from './interfaces-v2.js';
 import { NodeExecutor } from './node-executor.js';
 import { ExecutionPlanner } from './planner.js';
 import { RetryCoordinator } from './retry.js';
@@ -28,7 +33,7 @@ export class WorkflowExecutor {
   }
 
   public async executeWorkflow(
-    workflow: any,
+    workflow: WorkflowDefinition,
     onStateChange: (state: string) => void,
   ): Promise<ExtendedWorkflowMetrics> {
     const plan = this.planner.plan(workflow);
@@ -40,7 +45,7 @@ export class WorkflowExecutor {
     const startTime = Date.now();
     const nodeStates = new Map<string, string>();
     const results = new Map<string, unknown>();
-    const history: any[] = [];
+    const history: ExecutionTimelineEntry[] = [];
     let _completedCount = 0;
     let failedCount = 0;
     let approvalCount = 0;
@@ -53,7 +58,7 @@ export class WorkflowExecutor {
 
     for (const batch of plan.batches) {
       const batchPromises = batch.nodeIds.map(async (nodeId: string) => {
-        const node = workflow.nodes.find((n: any) => n.id === nodeId);
+        const node = workflow.nodes.find((n: WorkflowNode) => n.id === nodeId);
         if (!node) return;
 
         const nodeStart = Date.now();
@@ -63,7 +68,7 @@ export class WorkflowExecutor {
           if (hook.beforeNode) await hook.beforeNode(node);
         }
 
-        const timelineEntry: any = {
+        const timelineEntry: ExecutionTimelineEntry = {
           nodeId: node.id,
           nodeName: node.name,
           nodeType: node.config.type,
@@ -71,7 +76,7 @@ export class WorkflowExecutor {
           finishedAt: null,
           durationMs: 0,
           retries: 0,
-          status: 'RUNNING' as const,
+          status: 'RUNNING',
         };
 
         try {
@@ -137,8 +142,8 @@ export class WorkflowExecutor {
 
       const cp = await this.checkpointManager.save({
         workflowId: workflow.id,
-        nodeStates: nodeStates as any,
-        results: results as any,
+        nodeStates: nodeStates as unknown as Map<string, NodeState>,
+        results: results as unknown as Map<string, unknown>,
         timestamp: new Date(),
         version: 1,
       });
@@ -158,7 +163,10 @@ export class WorkflowExecutor {
       skippedNodes: 0,
       totalDurationMs,
       nodeDurations: new Map(),
-      retries: history.reduce((sum: number, h: any) => sum + (h.retries || 0), 0),
+      retries: history.reduce(
+        (sum: number, h: ExecutionTimelineEntry) => sum + (h.retries || 0),
+        0,
+      ),
       errors: failedCount,
       executionTimeMs: totalDurationMs,
       queueTimeMs: 0,
@@ -181,7 +189,7 @@ export class WorkflowExecutor {
     return metrics;
   }
 
-  public getTimeline(): any[] {
+  public getTimeline(): ExecutionTimelineEntry[] {
     return [];
   }
 }

@@ -24,13 +24,19 @@ export interface ChatMessage {
   content: string;
 }
 
+export interface ToolDefinition {
+  name: string;
+  description?: string;
+  parameters?: Record<string, unknown>;
+}
+
 export interface CompletionOptions {
   model: string;
   messages: ChatMessage[];
   temperature?: number;
   maxTokens?: number;
   stream?: boolean;
-  tools?: any[];
+  tools?: ToolDefinition[];
 }
 
 export interface CompletionResponse {

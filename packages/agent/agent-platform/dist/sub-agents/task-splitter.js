@@ -1,4 +1,5 @@
 import { DependencyGraphError } from './errors.js';
+import { TaskStatus, TaskPriority } from '@agentx/core-runtime';
 export class TaskSplitter {
     decomposeTask(_goal, _context, _globalBudget) {
         // Deterministic stub implementation.
@@ -17,8 +18,8 @@ export class TaskSplitter {
             task: {
                 id,
                 goal,
-                status: 'QUEUED',
-                priority: 1,
+                status: TaskStatus.QUEUED,
+                priority: TaskPriority.NORMAL,
                 rootTaskId: 'root-1',
                 assignedAgentRole: role,
                 dependsOn,

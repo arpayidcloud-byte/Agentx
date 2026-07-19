@@ -85,7 +85,7 @@ export class CognitiveKernel {
       let result = { output: 'default thinking output' };
 
       if (engine) {
-        result = (await this.dispatcher.dispatch(engine, input)) as any;
+        result = (await this.dispatcher.dispatch(engine, input)) as { output: string };
       }
 
       this.lifecycle.transition('CHECKPOINTING');
@@ -101,13 +101,17 @@ export class CognitiveKernel {
       this.events.publish('kernel.completed', { sessionId: sessionMeta.sessionId, result });
 
       return result;
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
       this.metrics.recordFailure();
       this.lifecycle.transition('FAILED');
-      await this.hooks.runOnFailure(sessionMeta.sessionId, err);
+      await this.hooks.runOnFailure(
+        sessionMeta.sessionId,
+        err instanceof Error ? err : new Error(String(err)),
+      );
       this.events.publish('kernel.failed', {
         sessionId: sessionMeta.sessionId,
-        error: err.message,
+        error: message,
       });
       throw err;
     }

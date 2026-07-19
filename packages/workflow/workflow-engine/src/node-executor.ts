@@ -25,7 +25,11 @@ export class NodeExecutor implements INodeExecutor {
       case 'conditional':
         return this.executeConditionalNode(node, _context);
       case 'task':
-        return { status: 'completed', type: 'task', goal: (node.config as any).goal };
+        return {
+          status: 'completed',
+          type: 'task',
+          goal: (node.config as { type: 'task'; goal: string }).goal,
+        };
       default:
         return { status: 'completed', type: node.config.type };
     }

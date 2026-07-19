@@ -2,7 +2,7 @@
  * @module workflow-engine/checkpoint
  * @description Checkpoint management for workflow state persistence.
  */
-import type { ExecutionSnapshot, Checkpoint, ICheckpointManager } from './interfaces.js';
+import type { ExecutionSnapshot, Checkpoint, ICheckpointManager, NodeState } from './interfaces.js';
 /**
  * In-memory checkpoint manager
  */
@@ -20,12 +20,12 @@ export declare class InMemoryCheckpointManager implements ICheckpointManager {
 /**
  * Creates an execution snapshot
  */
-export declare function createSnapshot(workflowId: string, nodeStates: Map<string, any>, results: Map<string, any>, version: number): ExecutionSnapshot;
+export declare function createSnapshot(workflowId: string, nodeStates: Map<string, NodeState>, results: Map<string, unknown>, version: number): ExecutionSnapshot;
 /**
  * Restores state from snapshot
  */
 export declare function restoreFromSnapshot(snapshot: ExecutionSnapshot): {
-    nodeStates: Map<string, any>;
-    results: Map<string, any>;
+    nodeStates: Map<string, NodeState>;
+    results: Map<string, unknown>;
 };
 //# sourceMappingURL=checkpoint.d.ts.map

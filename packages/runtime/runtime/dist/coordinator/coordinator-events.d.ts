@@ -7,7 +7,7 @@ export interface CoordinatorEvent {
     timestamp: Date;
     sessionId: string;
     traceId: string;
-    payload: Record<string, any>;
+    payload: Record<string, unknown>;
 }
-export declare function createCoordinatorEvent(type: string, sessionId: string, traceId: string, payload?: Record<string, any>): CoordinatorEvent;
+export declare function createCoordinatorEvent(type: string, sessionId: string, traceId: string, payload?: Record<string, unknown>): CoordinatorEvent;
 //# sourceMappingURL=coordinator-events.d.ts.map

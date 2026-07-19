@@ -1,6 +1,7 @@
 import type { ResourceAllocation } from './interfaces.js';
 import { DependencyGraphError } from './errors.js';
 import type { TaskModel } from '@agentx/core-runtime';
+import { TaskStatus, TaskPriority } from '@agentx/core-runtime';
 
 export interface TaskGraphNode {
   task: TaskModel;
@@ -38,8 +39,8 @@ export class TaskSplitter {
       task: {
         id,
         goal,
-        status: 'QUEUED' as any,
-        priority: 1 as any,
+        status: TaskStatus.QUEUED,
+        priority: TaskPriority.NORMAL,
         rootTaskId: 'root-1',
         assignedAgentRole: role,
         dependsOn,

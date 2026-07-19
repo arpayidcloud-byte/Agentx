@@ -2,12 +2,12 @@
  * @module runtime/runtime-executor
  * @description Runtime executor orchestrating the complete execution pipeline.
  */
-import type { RuntimeConfig } from './interfaces.js';
+import type { RuntimeConfig, ExecutionSession } from './interfaces.js';
 import { AuditStore } from './runtime-audit.js';
 import { MetricsCollector } from './runtime-metrics.js';
 import type { RuntimeEvent } from './runtime-events.js';
 export interface IRuntimePipeline {
-    execute(session: any, config: RuntimeConfig): Promise<unknown>;
+    execute(session: ExecutionSession, config: RuntimeConfig): Promise<unknown>;
 }
 export declare class RuntimeExecutor {
     private pipeline;
@@ -18,7 +18,7 @@ export declare class RuntimeExecutor {
     /**
      * Executes the full pipeline
      */
-    execute(session: any, _config: RuntimeConfig): Promise<unknown>;
+    execute(session: ExecutionSession, _config: RuntimeConfig): Promise<unknown>;
     getAuditStore(): AuditStore;
     getMetricsCollector(): MetricsCollector;
     getEvents(): RuntimeEvent[];

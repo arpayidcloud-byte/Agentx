@@ -3,6 +3,7 @@
  * @description Main Production Runtime integrating all engines.
  */
 import type { RuntimeSession, RuntimeMetrics, AuditRecord } from './interfaces.js';
+import type { RuntimeHook } from './runtime-hooks.js';
 import type { BootstrapOptions } from './runtime-bootstrap.js';
 import type { IEventBus } from '@agentx/core-runtime';
 import type { IRuntimePipeline } from './runtime-executor.js';
@@ -29,7 +30,7 @@ export declare class Runtime {
     getHealthStatus(): import("./interfaces.js").HealthStatus[];
     getAuditRecords(): AuditRecord[];
     getSession(sessionId: string): RuntimeSession | undefined;
-    addHook(hook: any): void;
+    addHook(hook: RuntimeHook): void;
     getState(): string;
     getCoordinator(): ProductionExecutionCoordinator;
 }

@@ -12,6 +12,7 @@ import { ResourceManager } from './resource-manager.js';
 import { HeartbeatMonitor } from './heartbeat.js';
 import { SubAgentFactory } from './sub-agent-factory.js';
 import type { IEventBus } from '@agentx/core-runtime';
+import type { AgentRole } from './interfaces.js';
 
 export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
   private splitter: TaskSplitter;
@@ -91,7 +92,7 @@ export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
     // Prewarm agents based on graph
     for (const node of wf.nodes) {
       if (node.task.assignedAgentRole) {
-        this.pool.prewarm(node.task.assignedAgentRole as any, 1);
+        this.pool.prewarm(node.task.assignedAgentRole as AgentRole, 1);
       }
     }
   }
@@ -121,7 +122,7 @@ export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
           const agentRole = node.task.assignedAgentRole as string;
           this.resourceManager.registerAgent(agentRole, node.estimatedBudget);
 
-          const result = await this.runner.runParallel(node.task, [agentRole as any], {});
+          const result = await this.runner.runParallel(node.task, [agentRole as AgentRole], {});
 
           this.resourceManager.unregisterAgent(agentRole);
 

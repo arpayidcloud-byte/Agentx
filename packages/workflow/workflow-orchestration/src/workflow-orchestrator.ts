@@ -108,9 +108,10 @@ export class WorkflowOrchestrator {
 
       await this.hooks.runAfterWorkflow(session.id, results);
       return { results, completed: true };
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
       this.statisticsCollector.recordFailure();
-      this.events.publish('workflow.failed', { workflowId: session.id, error: err.message });
+      this.events.publish('workflow.failed', { workflowId: session.id, error: message });
       throw err;
     }
   }

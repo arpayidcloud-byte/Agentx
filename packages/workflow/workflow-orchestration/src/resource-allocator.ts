@@ -11,7 +11,7 @@ export class ResourceAllocator {
   allocate(type: string, capacity: number): ResourceAllocation {
     const res: ResourceAllocation = {
       id: `res-${Date.now()}`,
-      type: type as any,
+      type: type as ResourceAllocation['type'],
       capacity,
       used: 0,
       expiresAt: new Date(Date.now() + 300000),

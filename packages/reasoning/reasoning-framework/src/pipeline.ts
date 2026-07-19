@@ -26,9 +26,12 @@ export class ReasoningPipeline {
       }
       this.stateMachine.transition('COMPLETED');
       await this.hooks.runAfterPipeline(session.id, 'completed');
-    } catch (err: any) {
+    } catch (err: unknown) {
       this.stateMachine.transition('FAILED');
-      await this.hooks.runOnFailure(session.id, err);
+      await this.hooks.runOnFailure(
+        session.id,
+        err instanceof Error ? err : new Error(String(err)),
+      );
       throw err;
     }
   }

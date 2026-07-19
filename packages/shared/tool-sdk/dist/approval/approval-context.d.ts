@@ -3,7 +3,7 @@
  * @description Approval context for execution.
  * Provides context information needed for approval and execution.
  */
-import type { ApprovalExecutionContext } from './interfaces.js';
+import type { ApprovalExecutionContext, ApprovalRequest } from './interfaces.js';
 /**
  * Creates an approval execution context
  * @param params - Context parameters
@@ -11,7 +11,7 @@ import type { ApprovalExecutionContext } from './interfaces.js';
  */
 export declare function createApprovalContext(params: {
     requestId: string;
-    request: any;
+    request: ApprovalRequest;
     workspaceRoot: string;
     taskId: string;
     traceId: string;

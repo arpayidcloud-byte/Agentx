@@ -18,7 +18,11 @@ export class NodeExecutor {
             case 'conditional':
                 return this.executeConditionalNode(node, _context);
             case 'task':
-                return { status: 'completed', type: 'task', goal: node.config.goal };
+                return {
+                    status: 'completed',
+                    type: 'task',
+                    goal: node.config.goal,
+                };
             default:
                 return { status: 'completed', type: node.config.type };
         }

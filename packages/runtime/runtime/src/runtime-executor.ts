@@ -3,14 +3,14 @@
  * @description Runtime executor orchestrating the complete execution pipeline.
  */
 
-import type { RuntimeConfig } from './interfaces.js';
+import type { RuntimeConfig, ExecutionSession } from './interfaces.js';
 import { createAuditRecord, AuditStore } from './runtime-audit.js';
 import { MetricsCollector } from './runtime-metrics.js';
 import type { RuntimeEvent } from './runtime-events.js';
 import { createRuntimeEvent } from './runtime-events.js';
 
 export interface IRuntimePipeline {
-  execute(session: any, config: RuntimeConfig): Promise<unknown>;
+  execute(session: ExecutionSession, config: RuntimeConfig): Promise<unknown>;
 }
 
 export class RuntimeExecutor {
@@ -26,7 +26,7 @@ export class RuntimeExecutor {
   /**
    * Executes the full pipeline
    */
-  async execute(session: any, _config: RuntimeConfig): Promise<unknown> {
+  async execute(session: ExecutionSession, _config: RuntimeConfig): Promise<unknown> {
     this.metricsCollector.startTiming();
 
     const startAudit = createAuditRecord({

@@ -3,12 +3,13 @@
  * @description Extended snapshot with versioning.
  */
 
+import type { NodeState } from './interfaces.js';
 import type { VersionedExecutionSnapshot } from './interfaces-v2.js';
 
 export function createVersionedSnapshot(
   workflowId: string,
-  nodeStates: Map<string, any>,
-  results: Map<string, any>,
+  nodeStates: Map<string, NodeState>,
+  results: Map<string, unknown>,
   version: number,
   createdBy: string,
 ): VersionedExecutionSnapshot {

@@ -10,8 +10,9 @@ export class ReasoningDispatcher {
   async dispatch(strategy: IReasoningStrategy, graph: ReasoningGraph): Promise<ReasoningGraph> {
     try {
       return await strategy.execute(graph);
-    } catch (err: any) {
-      throw new StrategyError(`Strategy dispatch failed: ${err.message}`, 'dispatcher');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      throw new StrategyError(`Strategy dispatch failed: ${message}`, 'dispatcher');
     }
   }
 }

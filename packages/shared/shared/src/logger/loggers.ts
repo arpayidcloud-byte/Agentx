@@ -98,7 +98,7 @@ export abstract class BaseLogger implements ILogger {
         ? {
             message: processedError.message,
             stack: processedError.stack,
-            code: (processedError as any).code,
+            code: (processedError as Error & { code?: string }).code,
           }
         : undefined,
     };

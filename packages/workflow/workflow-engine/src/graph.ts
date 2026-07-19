@@ -3,7 +3,13 @@
  * @description Graph models and utilities for workflow execution.
  */
 
-import type { WorkflowDefinition, WorkflowNode, WorkflowEdge } from './interfaces.js';
+import type {
+  WorkflowDefinition,
+  WorkflowNode,
+  WorkflowEdge,
+  NodeConfig,
+  RetryPolicy,
+} from './interfaces.js';
 
 /** @description Node types in a workflow graph */
 type NodeType =
@@ -43,8 +49,8 @@ export function createNode(
   id: string,
   type: NodeType,
   name: string,
-  config: any,
-  options?: { timeout?: number; retryPolicy?: any },
+  config: NodeConfig,
+  options?: { timeout?: number; retryPolicy?: RetryPolicy },
 ): WorkflowNode {
   return {
     id,

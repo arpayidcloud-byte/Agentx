@@ -5,6 +5,7 @@
 
 import type {
   WorkflowDefinition,
+  WorkflowNode,
   WorkflowState,
   NodeState,
   ExecutionHistoryEntry,
@@ -139,7 +140,7 @@ export class WorkflowEngine {
     });
   }
 
-  private async executeNode(node: any): Promise<void> {
+  private async executeNode(node: WorkflowNode): Promise<void> {
     switch (node.config.type) {
       case 'task':
         this.results.set(node.id, { status: 'completed', goal: node.config.goal });
