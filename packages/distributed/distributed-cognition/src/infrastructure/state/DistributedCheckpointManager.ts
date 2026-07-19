@@ -27,7 +27,7 @@ export class DistributedCheckpointManager {
       checkpointId,
       nodeId,
       sessionId,
-      state: JSON.parse(JSON.stringify(state)),
+      state: JSON.parse(JSON.stringify(state)) as Record<string, unknown>,
       version,
       timestamp: new Date(),
       checksum,

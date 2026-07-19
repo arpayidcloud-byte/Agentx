@@ -42,8 +42,10 @@ export class InMemoryCheckpointManager implements ICheckpointManager {
 
   /** @inheritdoc */
   async delete(checkpointId: string): Promise<void> {
-    for (const [workflowId, list] of this.checkpoints.entries()) {
-      const filtered = list.filter((cp) => cp.id !== checkpointId);
+    for (const [workflowId, list] of this.checkpoints.entries() as IterableIterator<
+      [string, Checkpoint[]]
+    >) {
+      const filtered = list.filter((cp: Checkpoint) => cp.id !== checkpointId);
       if (filtered.length < list.length) {
         this.checkpoints.set(workflowId, filtered);
         return;

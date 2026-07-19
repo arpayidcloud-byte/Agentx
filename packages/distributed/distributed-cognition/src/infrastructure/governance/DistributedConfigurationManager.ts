@@ -20,7 +20,7 @@ export class DistributedConfigurationManager {
       .digest('hex');
     const entry: ConfigEntry = Object.freeze({
       key,
-      value: typeof value === 'object' ? JSON.parse(JSON.stringify(value)) : value,
+      value: typeof value === 'object' ? (JSON.parse(JSON.stringify(value)) as unknown) : value,
       sourceNode,
       version,
       timestamp: new Date(),
@@ -34,7 +34,7 @@ export class DistributedConfigurationManager {
     return this.configs.get(key);
   }
 
-  getValue(key: string): unknown | undefined {
+  getValue(key: string): unknown {
     return this.configs.get(key)?.value;
   }
 

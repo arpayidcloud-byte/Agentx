@@ -54,7 +54,7 @@ export class LearningMemoryManager {
       .digest('hex');
     const entry: MemoryEntry = Object.freeze({
       key,
-      value: typeof value === 'object' ? JSON.parse(JSON.stringify(value)) : value,
+      value: (typeof value === 'object' ? JSON.parse(JSON.stringify(value)) : value) as unknown,
       source,
       ttlMs,
       timestamp: new Date(),

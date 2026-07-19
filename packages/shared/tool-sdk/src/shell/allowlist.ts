@@ -76,9 +76,10 @@ export async function loadShellConfig(configPath?: string): Promise<ShellSandbox
   if (configPath) {
     try {
       const content = await fs.readFile(configPath, 'utf-8');
-      const parsed = yaml.parse(content);
+      const parsed = yaml.parse(content) as
+        { tools?: { shell?: Partial<ShellSandboxConfig> } } | undefined;
       if (parsed?.tools?.shell) {
-        config = parsed.tools.shell;
+        config = parsed.tools.shell as Partial<ShellSandboxConfig>;
       }
     } catch {
       // Use defaults on error

@@ -59,8 +59,8 @@ export class GeminiProvider implements INativeProvider {
   async embed(request: EmbeddingRequest): Promise<EmbeddingResponse> {
     return {
       embeddings: Array.isArray(request.input)
-        ? request.input.map(() => Array(768).fill(0))
-        : [Array(768).fill(0)],
+        ? request.input.map(() => Array(768).fill(0) as number[])
+        : [Array(768).fill(0) as number[]],
       model: request.model,
       usage: { promptTokens: 10, totalTokens: 10 },
     };

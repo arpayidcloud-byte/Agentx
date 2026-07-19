@@ -10,7 +10,7 @@ export class DistributedMemoryCoordinator {
       .digest('hex');
     const entry: MemoryEntry = Object.freeze({
       key,
-      value: typeof value === 'object' ? JSON.parse(JSON.stringify(value)) : value,
+      value: typeof value === 'object' ? (JSON.parse(JSON.stringify(value)) as unknown) : value,
       nodeId,
       timestamp: new Date(),
       ttlMs,

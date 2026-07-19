@@ -4,14 +4,14 @@
  */
 
 export class LearningEventBus {
-  private listeners = new Map<string, Function[]>();
+  private listeners = new Map<string, Array<(...args: unknown[]) => void>>();
 
   publish(type: string, payload: unknown): void {
     const list = this.listeners.get(type) || [];
     for (const fn of list) fn(payload);
   }
 
-  subscribe(type: string, fn: Function): void {
+  subscribe(type: string, fn: (...args: unknown[]) => void): void {
     const current = this.listeners.get(type) || [];
     this.listeners.set(type, [...current, fn]);
   }

@@ -3,7 +3,7 @@
  * @description Master orchestrator for all symbolic reasoning algorithms.
  */
 
-import type { Rule, DecisionTree, ReasoningMetrics } from './interfaces.js';
+import type { Rule, DecisionTree, DecisionNode, ReasoningMetrics } from './interfaces.js';
 import { ForwardChaining } from './forward-chaining.js';
 import { BackwardChaining } from './backward-chaining.js';
 import { DecisionTreeEngine } from './decision-tree.js';
@@ -108,7 +108,7 @@ export class ReasoningEngine {
       throw new IntegrityError('Empty decision tree', 'reasoning-engine');
     }
 
-    for (const node of tree.nodes.values()) {
+    for (const node of tree.nodes.values() as Iterable<DecisionNode>) {
       if (node.type === 'decision' && node.branches.length === 0) {
         throw new IntegrityError(`Decision node ${node.id} has no branches`, 'reasoning-engine');
       }

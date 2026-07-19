@@ -49,7 +49,11 @@ export async function plugin(args: string[]): Promise<void> {
       const manifestPath = path.join(pluginPath, 'manifest.json');
       if (!fs.existsSync(manifestPath))
         throw new Error('No manifest.json found in plugin directory');
-      manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+      manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8')) as {
+        id: string;
+        version: string;
+        kind: string;
+      };
     } else {
       manifest = { id: pluginPath, version: '0.0.0', kind: 'unknown' };
     }

@@ -47,7 +47,9 @@ export class ExecutionReservationManager {
   getReservations(): ExecutionReservation[] {
     // Expire old reservations
     const now = Date.now();
-    for (const [id, res] of this.reservations.entries()) {
+    for (const [id, res] of this.reservations.entries() as IterableIterator<
+      [string, ExecutionReservation]
+    >) {
       if (res.expiresAt.getTime() < now) {
         this.reservations.delete(id);
       }

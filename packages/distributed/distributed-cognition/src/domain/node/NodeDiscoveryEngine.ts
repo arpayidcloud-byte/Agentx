@@ -45,7 +45,7 @@ export class NodeDiscoveryEngine {
   pruneStale(thresholdMs: number): string[] {
     const now = Date.now();
     const pruned: string[] = [];
-    for (const [nodeId, node] of this.knownNodes) {
+    for (const [nodeId, node] of this.knownNodes as Iterable<[string, NodeRegistration]>) {
       if (now - node.lastHeartbeat.getTime() >= thresholdMs) {
         this.knownNodes.delete(nodeId);
         pruned.push(nodeId);

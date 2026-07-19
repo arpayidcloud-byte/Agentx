@@ -69,9 +69,11 @@ export class LocalIdentityProvider implements IdentityProvider {
       user.status = 'revoked';
     }
 
-    for (const [token, session] of this.sessions.entries()) {
+    for (const [token, session] of this.sessions.entries() as IterableIterator<
+      [string, { identityId: string; expiresAt: Date }]
+    >) {
       if (session.identityId === identityId) {
-        this.sessions.delete(token);
+        this.sessions.delete(token as string);
       }
     }
   }

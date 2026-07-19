@@ -108,7 +108,7 @@ function getVolumeForImport(importPath: string): number | null {
   const pkgName = importPath.replace('@agentx/', '');
 
   const VOLUME_BY_IMPORT: Record<string, number> = {
-    'shared': 1,
+    shared: 1,
     'core-runtime': 2,
     'planning-engine': 2,
     'goal-intelligence': 2,
@@ -130,14 +130,14 @@ function getVolumeForImport(importPath: string): number | null {
     'knowledge-engine': 6,
     'tool-sdk': 7,
     'plugin-sdk': 8,
-    'secrets': 16,
+    secrets: 16,
     'enterprise-runtime': 10,
     'developer-platform': 10,
     'distributed-cognition': 11,
     'runtime-production': 13,
     'architecture-sdk': 14,
     'production-quality': 14,
-    'runtime': 2,
+    runtime: 2,
     'runtime-adapters': 2,
     'cognitive-contracts': 2,
     'cognitive-kernel': 2,
@@ -181,20 +181,30 @@ function main(): void {
   const errors: string[] = [];
 
   const dirs = [
-    ...fs.readdirSync(packagesDir).map((d) => {
-      const sub = path.join(packagesDir, d);
-      if (fs.statSync(sub).isDirectory()) {
-        return fs.readdirSync(sub)
-          .map((s) => path.join(sub, s))
-          .filter((s) => fs.statSync(s).isDirectory() && fs.existsSync(path.join(s, 'package.json')));
-      }
-      return [];
-    }).flat(),
-    ...fs.readdirSync(appsDir).map((d) => path.join(appsDir, d)).filter((d) => fs.statSync(d).isDirectory()),
+    ...fs
+      .readdirSync(packagesDir)
+      .map((d) => {
+        const sub = path.join(packagesDir, d);
+        if (fs.statSync(sub).isDirectory()) {
+          return fs
+            .readdirSync(sub)
+            .map((s) => path.join(sub, s))
+            .filter(
+              (s) => fs.statSync(s).isDirectory() && fs.existsSync(path.join(s, 'package.json')),
+            );
+        }
+        return [];
+      })
+      .flat(),
+    ...fs
+      .readdirSync(appsDir)
+      .map((d) => path.join(appsDir, d))
+      .filter((d) => fs.statSync(d).isDirectory()),
   ];
 
   // Also include top-level packages dirs
-  const topLevelPkgs = fs.readdirSync(packagesDir)
+  const topLevelPkgs = fs
+    .readdirSync(packagesDir)
     .map((d) => path.join(packagesDir, d))
     .filter((d) => fs.statSync(d).isDirectory() && fs.existsSync(path.join(d, 'package.json')));
 
@@ -216,7 +226,7 @@ function main(): void {
           const relFile = path.relative(REPO_ROOT, file);
           errors.push(
             `VIOLATION: ${relFile} (Vol ${pkgVolume}) imports '${imp}' (Vol ${importVolume}). ` +
-            `Lower-numbered volumes must never depend on higher-numbered ones.`
+              `Lower-numbered volumes must never depend on higher-numbered ones.`,
           );
         }
       }

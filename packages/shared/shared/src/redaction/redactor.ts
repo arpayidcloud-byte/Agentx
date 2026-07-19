@@ -74,8 +74,8 @@ export class SecretRedactor {
     let isSensitiveKey = false;
 
     // Check if the key itself implies a secret
-    for (const sensitive of this.SENSITIVE_KEYS) {
-      if (normalizedKey.includes(sensitive.replace(/[-_]/g, ''))) {
+    for (const sensitive of this.SENSITIVE_KEYS as Set<string>) {
+      if (normalizedKey.includes((sensitive as string).replace(/[-_]/g, ''))) {
         isSensitiveKey = true;
         break;
       }

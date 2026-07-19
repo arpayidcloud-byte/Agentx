@@ -50,7 +50,7 @@ export class RemoteConfiguration {
     const config: RemoteConfig = Object.freeze({
       configId,
       key,
-      value: typeof value === 'object' ? JSON.parse(JSON.stringify(value)) : value,
+      value: typeof value === 'object' ? (JSON.parse(JSON.stringify(value)) as unknown) : value,
       checksum,
     });
     this.configs.set(configId, config);

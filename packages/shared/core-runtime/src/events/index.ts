@@ -94,11 +94,11 @@ export class InMemoryEventBus implements IEventBus {
 
     const topicHandlers = this.handlers.get(topic);
     if (topicHandlers) {
-      for (const handler of topicHandlers) {
+      for (const handler of topicHandlers as Set<(e: EventEnvelope<unknown>) => Promise<void>>) {
         try {
-          const promise = handler(event);
-          if (promise && typeof promise.catch === 'function') {
-            promise.catch((err) => {
+          const promise = handler(event as EventEnvelope<unknown>);
+          if (promise && typeof (promise as Promise<void>).catch === 'function') {
+            (promise as Promise<void>).catch((err: unknown) => {
               console.error(`Error in event handler for topic ${topic}`, err);
             });
           }
@@ -235,10 +235,10 @@ export class BullMQEventBus implements IEventBus {
   }
 
   public async close(): Promise<void> {
-    for (const queue of this.queues.values()) {
+    for (const queue of this.queues.values() as IterableIterator<Queue>) {
       await queue.close();
     }
-    for (const worker of this.workers.values()) {
+    for (const worker of this.workers.values() as IterableIterator<Worker>) {
       await worker.close();
     }
     await this.redisConnection.quit();

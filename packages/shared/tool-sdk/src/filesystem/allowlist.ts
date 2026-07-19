@@ -16,13 +16,24 @@ export class AllowlistConfigLoader {
 
     try {
       const content = await fs.readFile(configPath, 'utf-8');
-      const config = yaml.parse(content);
+      const config = yaml.parse(content) as
+        | {
+            tools?: {
+              filesystem?: {
+                allow?: string[];
+                maxFileSizeBytes?: number;
+                allowHiddenFiles?: boolean;
+              };
+            };
+          }
+        | undefined;
 
       if (config?.tools?.filesystem?.allow) {
         return {
-          allow: config.tools.filesystem.allow,
-          maxFileSizeBytes: config.tools.filesystem.maxFileSizeBytes || 10 * 1024 * 1024,
-          allowHiddenFiles: config.tools.filesystem.allowHiddenFiles ?? false,
+          allow: config.tools.filesystem.allow as string[],
+          maxFileSizeBytes:
+            (config.tools.filesystem.maxFileSizeBytes as number) || 10 * 1024 * 1024,
+          allowHiddenFiles: (config.tools.filesystem.allowHiddenFiles as boolean) ?? false,
         };
       }
 

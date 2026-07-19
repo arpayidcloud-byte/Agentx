@@ -52,14 +52,14 @@ export class MemoryQueueProvider implements IQueueProvider {
     this.successes++;
   }
 
-  async dequeue(topic: string): Promise<unknown | undefined> {
+  async dequeue(topic: string): Promise<unknown> {
     const msgs = this.queue.get(topic) || [];
     const val = msgs.shift();
     this.queue.set(topic, msgs);
     return val?.payload;
   }
 
-  async peek(topic: string): Promise<unknown | undefined> {
+  async peek(topic: string): Promise<unknown> {
     const msgs = this.queue.get(topic) || [];
     return msgs[0]?.payload;
   }

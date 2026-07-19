@@ -13,8 +13,8 @@ export declare class MemoryQueueProvider implements IQueueProvider {
     healthCheck(): Promise<ProviderHealth>;
     getMetrics(): ProviderMetrics;
     enqueue(topic: string, message: unknown, priority?: number): Promise<void>;
-    dequeue(topic: string): Promise<unknown | undefined>;
-    peek(topic: string): Promise<unknown | undefined>;
+    dequeue(topic: string): Promise<unknown>;
+    peek(topic: string): Promise<unknown>;
     ack(_topic: string, _messageId: string): Promise<void>;
     retry(_topic: string, _messageId: string): Promise<void>;
     deadLetter(_topic: string, _messageId: string): Promise<void>;

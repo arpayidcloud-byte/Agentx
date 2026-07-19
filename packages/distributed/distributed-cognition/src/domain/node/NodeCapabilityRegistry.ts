@@ -30,7 +30,7 @@ export class NodeCapabilityRegistry {
   findNodesWithCapability(capName: string): string[] {
     const result: string[] = [];
     for (const [nodeId, entry] of this.capabilities) {
-      if (entry.capabilities.some((c) => c.name === capName)) {
+      if (entry.capabilities.some((c: NodeCapability) => c.name === capName)) {
         result.push(nodeId);
       }
     }

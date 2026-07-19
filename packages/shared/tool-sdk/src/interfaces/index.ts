@@ -1,5 +1,4 @@
-export type ToolCategory =
-  'fs.read' | 'fs.write' | 'shell.build' | 'shell.exec' | 'git.read' | 'git.write' | string;
+export type ToolCategory = string;
 
 export enum PermissionLevel {
   READ_ONLY = 'READ_ONLY',

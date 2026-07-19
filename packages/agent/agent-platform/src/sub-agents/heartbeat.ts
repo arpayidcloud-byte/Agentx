@@ -31,10 +31,12 @@ export class HeartbeatMonitor extends EventEmitter {
 
   private checkHeartbeats(): void {
     const now = Date.now();
-    for (const [agentId, heartbeat] of this.lastHeartbeats.entries()) {
+    for (const [agentId, heartbeat] of this.lastHeartbeats.entries() as Iterable<
+      [string, SubAgentHeartbeat]
+    >) {
       if (now - heartbeat.timestamp.getTime() > this.timeoutMs) {
-        this.emit('heartbeat_lost', new AgentHeartbeatLostError(agentId));
-        this.lastHeartbeats.delete(agentId); // Prevent repeated events
+        this.emit('heartbeat_lost', new AgentHeartbeatLostError(agentId as string));
+        this.lastHeartbeats.delete(agentId as string); // Prevent repeated events
       }
     }
   }

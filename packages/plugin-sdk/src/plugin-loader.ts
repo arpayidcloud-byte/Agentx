@@ -18,7 +18,10 @@ export class PluginLoader {
     }
 
     if (registration.status !== 'enabled') {
-      return { success: false, error: `Plugin '${manifest.id}' is not enabled (status: ${registration.status})` };
+      return {
+        success: false,
+        error: `Plugin '${manifest.id}' is not enabled (status: ${registration.status})`,
+      };
     }
 
     return { success: true };

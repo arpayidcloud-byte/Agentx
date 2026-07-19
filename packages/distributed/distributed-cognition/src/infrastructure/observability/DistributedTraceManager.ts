@@ -82,6 +82,6 @@ export class DistributedTraceManager {
   }
 
   getTraceIds(): string[] {
-    return [...new Set(this.spans.map((s) => s.traceId))];
+    return [...new Set(this.spans.map((s: TraceSpan) => s.traceId))] as string[];
   }
 }

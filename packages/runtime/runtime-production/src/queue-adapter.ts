@@ -120,7 +120,7 @@ export class NATSAdapter implements IExecutionQueue {
     let highestPriorityMsg: QueueMessage | undefined;
     let targetStreamKey: string | undefined;
 
-    for (const [key, stream] of this.streams) {
+    for (const [key, stream] of this.streams as Map<string, QueueMessage[]>) {
       if (stream.length === 0) continue;
       const candidate = stream[0]!;
       if (!highestPriorityMsg || candidate.priority > highestPriorityMsg.priority) {
@@ -186,7 +186,7 @@ export class TemporalAdapter implements IExecutionQueue {
   }
 
   async dequeue(): Promise<QueueMessage | undefined> {
-    for (const [_wfId, tasks] of this.workflows) {
+    for (const [_wfId, tasks] of this.workflows as Map<string, QueueMessage[]>) {
       if (tasks.length === 0) continue;
       const msg = tasks.shift();
       if (msg) {

@@ -23,7 +23,7 @@ export class HealthChecker {
    * @returns HealthStatus
    */
   check(component: string): HealthStatus {
-    const checkFn = this.checks.get(component);
+    const checkFn = this.checks.get(component) as (() => HealthStatus) | undefined;
     if (!checkFn) {
       return {
         component,

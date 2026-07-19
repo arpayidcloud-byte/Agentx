@@ -87,7 +87,7 @@ export function topologicalSort(nodes: WorkflowNode[], edges: WorkflowEdge[]): W
   }
 
   const queue: string[] = [];
-  for (const [nodeId, degree] of inDegree.entries()) {
+  for (const [nodeId, degree] of inDegree.entries() as IterableIterator<[string, number]>) {
     if (degree === 0) {
       queue.push(nodeId);
     }

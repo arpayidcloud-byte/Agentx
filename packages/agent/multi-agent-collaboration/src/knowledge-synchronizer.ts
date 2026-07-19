@@ -12,7 +12,7 @@ export class KnowledgeSynchronizer {
     this.knowledge.set(`${agentId}:${key}`, value);
   }
 
-  get(agentId: string, key: string): unknown | undefined {
+  get(agentId: string, key: string): unknown {
     return this.knowledge.get(`${agentId}:${key}`);
   }
 

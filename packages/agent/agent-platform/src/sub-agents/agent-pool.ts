@@ -60,7 +60,7 @@ export class AgentPool {
 
   public getTotalAgentsCount(): number {
     let idleCount = 0;
-    for (const list of this.idleAgents.values()) {
+    for (const list of this.idleAgents.values() as Iterable<SubAgent[]>) {
       idleCount += list.length;
     }
     return this.busyAgents.size + idleCount;

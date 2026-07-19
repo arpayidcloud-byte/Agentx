@@ -89,15 +89,22 @@ export class Scheduler implements IScheduler {
   }
 
   private async dispatch(): Promise<void> {
-    for (const [taskId, task] of this.inFlightTasks.entries()) {
+    for (const [taskId, task] of this.inFlightTasks.entries() as IterableIterator<
+      [string, TaskModel]
+    >) {
       if (this.activeCount >= this.maxParallel) break;
-      if (this.pausedTasks.has(taskId)) continue;
+      if (this.pausedTasks.has(taskId as string)) continue;
 
-      if (task.status === TaskStatus.QUEUED) {
-        task.status = TaskStatus.RUNNING;
+      if ((task as TaskModel).status === TaskStatus.QUEUED) {
+        (task as TaskModel).status = TaskStatus.RUNNING;
         this.activeCount++;
-        await this.taskRepo.save(task);
-        await this.eventBus.publish(EventTopic.TASK_STARTED, task, task.traceId, task.id);
+        await this.taskRepo.save(task as TaskModel);
+        await this.eventBus.publish(
+          EventTopic.TASK_STARTED,
+          task as TaskModel,
+          (task as TaskModel).traceId,
+          (task as TaskModel).id,
+        );
       }
     }
   }

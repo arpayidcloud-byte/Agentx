@@ -5,7 +5,8 @@
 
 export type PluginKind = 'agent' | 'tool' | 'provider';
 
-export type PluginStatus = 'installed' | 'pending-review' | 'enabled' | 'disabled' | 'rejected' | 'uninstalled';
+export type PluginStatus =
+  'installed' | 'pending-review' | 'enabled' | 'disabled' | 'rejected' | 'uninstalled';
 
 export interface PluginManifest {
   readonly id: string;

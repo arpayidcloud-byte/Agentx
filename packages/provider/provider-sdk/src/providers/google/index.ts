@@ -3,6 +3,7 @@ import { BaseProvider } from '../../base-provider.js';
 import type {
   CompletionRequest,
   CompletionResponse,
+  NormalizedToolCall,
   ProviderCapabilities,
   ProviderConfiguration,
 } from '../../interfaces.js';
@@ -57,7 +58,11 @@ export class GoogleProvider extends BaseProvider {
     contents.push({ role: 'user', parts: [{ text: req.userPrompt }] });
 
     // Simplified tool mapping
-    let tools;
+    let tools:
+      | Array<{
+          functionDeclarations: Array<{ name: string; description: string; parameters: unknown }>;
+        }>
+      | undefined;
     if (req.tools && req.tools.length > 0) {
       tools = [
         {
@@ -86,7 +91,7 @@ export class GoogleProvider extends BaseProvider {
     const result = response.response;
     const text = result.text() || '';
 
-    const toolCalls = [];
+    const toolCalls: NormalizedToolCall[] = [];
     const resultAny = result as unknown as {
       functionCalls?: () => Array<{ name: string; args: unknown }>;
       usageMetadata?: { promptTokenCount?: number; candidatesTokenCount?: number };

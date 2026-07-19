@@ -13,7 +13,7 @@ export class SharedContextManager {
     const payload = JSON.stringify(data);
     const ctx: SharedContext = {
       sessionId,
-      data: JSON.parse(payload),
+      data: JSON.parse(payload) as Record<string, unknown>,
       version: 1,
       checksum: createHash('sha256').update(payload).digest('hex'),
     };
@@ -25,7 +25,10 @@ export class SharedContextManager {
     const ctx = this.contexts.get(sessionId);
     if (!ctx) throw new Error('Context not found');
     const payload = JSON.stringify(data);
-    ctx.data = { ...JSON.parse(JSON.stringify(ctx.data)), ...JSON.parse(payload) };
+    ctx.data = {
+      ...(JSON.parse(JSON.stringify(ctx.data)) as Record<string, unknown>),
+      ...(JSON.parse(payload) as Record<string, unknown>),
+    };
     ctx.version++;
     ctx.checksum = createHash('sha256').update(payload).digest('hex');
     return ctx;
