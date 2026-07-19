@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { globSync } from 'glob';
-const HANDBOOK_DIR = process.env.AGENTX_HANDBOOK_DIR || path.resolve(process.cwd(), '..', 'agentx-handbook');
+const HANDBOOK_DIR = process.env.HANDBOOK_DIR || path.resolve(process.cwd(), '..', 'agentx-handbook');
 function logSuccess(message) {
     console.log(`\x1b[32m✔ ${message}\x1b[0m`);
 }

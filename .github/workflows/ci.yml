@@ -46,7 +46,7 @@ jobs:
         if: steps.handbook-setup.conclusion == 'success'
         run: pnpm lint:handbook
         env:
-          AGENTX_HANDBOOK_DIR: /tmp/agentx-handbook
+          HANDBOOK_DIR: /tmp/agentx-handbook
       - name: Contract tests (handbook validation)
         if: steps.handbook-setup.conclusion == 'success'
         continue-on-error: true
