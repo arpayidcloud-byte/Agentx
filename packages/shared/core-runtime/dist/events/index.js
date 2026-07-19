@@ -31,7 +31,7 @@ export class InMemoryEventBus {
         return new Promise((resolve, reject) => {
             const replyTopic = `${topic}.reply.${Math.random().toString(36).substring(2)}`;
             const timeout = setTimeout(() => reject(new EventBusError(`Request timed out for topic ${topic}`)), timeoutMs);
-            this.subscribe(replyTopic, async (event) => {
+            void this.subscribe(replyTopic, async (event) => {
                 clearTimeout(timeout);
                 await this.unsubscribe(replyTopic);
                 resolve(event);
@@ -128,17 +128,26 @@ export class BullMQEventBus {
     }
     async request(topic, payload, traceId, timeoutMs = 5000) {
         const replyTopic = `${topic}.reply.${Math.random().toString(36).substring(2)}`;
-        return new Promise(async (resolve, reject) => {
-            const timeout = setTimeout(async () => {
-                await this.unsubscribe(replyTopic);
-                reject(new EventBusError(`Request timed out for topic ${topic}`));
-            }, timeoutMs);
-            await this.subscribe(replyTopic, async (event) => {
-                clearTimeout(timeout);
-                await this.unsubscribe(replyTopic);
-                resolve(event);
-            });
-            await this.publish(topic, payload, traceId, undefined, { replyTo: replyTopic });
+        return new Promise((resolve, reject) => {
+            void (async () => {
+                const timeout = setTimeout(() => {
+                    void (async () => {
+                        await this.unsubscribe(replyTopic);
+                        reject(new EventBusError(`Request timed out for topic ${topic}`));
+                    })();
+                }, timeoutMs);
+                try {
+                    await this.subscribe(replyTopic, async (event) => {
+                        clearTimeout(timeout);
+                        await this.unsubscribe(replyTopic);
+                        resolve(event);
+                    });
+                    await this.publish(topic, payload, traceId, undefined, { replyTo: replyTopic });
+                }
+                catch (err) {
+                    reject(err);
+                }
+            })();
         });
     }
     async reply(topic, handler) {

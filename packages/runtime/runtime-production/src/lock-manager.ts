@@ -86,7 +86,10 @@ export class RedisLockProvider implements IDistributedLockManager {
       }
     }
 
-    throw new DistributedLockError(`Failed to acquire lock after ${maxRetries} retries: ${key}`, 'lock-manager');
+    throw new DistributedLockError(
+      `Failed to acquire lock after ${maxRetries} retries: ${key}`,
+      'lock-manager',
+    );
   }
 
   async release(lockId: string): Promise<void> {
@@ -155,7 +158,10 @@ export class PostgresAdvisoryLockProvider implements IDistributedLockManager {
       }
     }
 
-    throw new DistributedLockError(`Failed to acquire advisory lock after ${maxRetries} retries: ${key}`, 'lock-manager');
+    throw new DistributedLockError(
+      `Failed to acquire advisory lock after ${maxRetries} retries: ${key}`,
+      'lock-manager',
+    );
   }
 
   async release(lockId: string): Promise<void> {

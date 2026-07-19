@@ -10,8 +10,8 @@ export class ProviderVersionValidator {
   async run(provider: IProvider, runtimeVersion: string): Promise<AuditResult> {
     const meta = provider.getMetadata();
     // Stubbed check: ensure major version alignment
-    const providerMajor = parseInt(meta.version.split('.')[0]!, 10);
-    const runtimeMajor = parseInt(runtimeVersion.split('.')[0]!, 10);
+    const providerMajor = parseInt(meta.version.split('.')[0] as string, 10);
+    const runtimeMajor = parseInt(runtimeVersion.split('.')[0] as string, 10);
 
     if (providerMajor !== runtimeMajor) {
       throw new VersionMismatchError(

@@ -216,7 +216,11 @@ export class DefaultWorkflowPolicy implements WorkflowPolicy {
   private approvalTimeoutMs: number;
   private maxReroutes: number;
 
-  constructor(opts?: { approvalNodeIds?: string[]; approvalTimeoutMs?: number; maxReroutes?: number }) {
+  constructor(opts?: {
+    approvalNodeIds?: string[];
+    approvalTimeoutMs?: number;
+    maxReroutes?: number;
+  }) {
     this.approvalNodeIds = new Set(opts?.approvalNodeIds ?? []);
     this.approvalTimeoutMs = opts?.approvalTimeoutMs ?? 3600_000;
     this.maxReroutes = opts?.maxReroutes ?? 2;

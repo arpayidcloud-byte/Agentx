@@ -20,10 +20,10 @@ export class StrategySelector {
 
     if (failurePatterns.length > 0) {
       const candidate = strategies.find((s) => s.confidence > 70);
-      return candidate || strategies[0]!;
+      return candidate || (strategies[0] as StrategyRecord);
     }
 
     const best = [...strategies].sort((a, b) => b.confidence - a.confidence);
-    return best[0]!;
+    return best[0] as StrategyRecord;
   }
 }

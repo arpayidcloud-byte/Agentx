@@ -91,7 +91,7 @@ export function topologicalSort(nodes: WorkflowNode[], edges: WorkflowEdge[]): W
   const nodeMap = new Map(nodes.map((n) => [n.id, n]));
 
   while (queue.length > 0) {
-    const current = queue.shift()!;
+    const current: string = queue.shift() as string;
     const node = nodeMap.get(current);
     if (node) sorted.push(node);
 

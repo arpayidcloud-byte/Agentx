@@ -1,16 +1,6 @@
 import type { AgentRole, SubAgent } from './interfaces.js';
-import {
-  CoderAgent,
-  ReviewerAgent,
-  TesterAgent,
-  SecurityAgent,
-} from './sub-agent.js';
-import {
-  PlannerAgent,
-  ArchitectAgent,
-  DocumentationAgent,
-  QAAgent,
-} from './extended-agents.js';
+import { CoderAgent, ReviewerAgent, TesterAgent, SecurityAgent } from './sub-agent.js';
+import { PlannerAgent, ArchitectAgent, DocumentationAgent, QAAgent } from './extended-agents.js';
 
 export class SubAgentFactory {
   public createAgent(role: AgentRole): SubAgent {
@@ -33,7 +23,7 @@ export class SubAgentFactory {
       case 'qa':
         return new QAAgent(id);
       default:
-        throw new Error(`Unknown agent role: ${role}`);
+        throw new Error(`Unknown agent role: ${String(role)}`);
     }
   }
 }

@@ -41,7 +41,7 @@ export class WorkflowExecutor {
     const nodeStates = new Map<string, string>();
     const results = new Map<string, unknown>();
     const history: any[] = [];
-    let completedCount = 0;
+    let _completedCount = 0;
     let failedCount = 0;
     let approvalCount = 0;
     let toolCalls = 0;
@@ -105,7 +105,7 @@ export class WorkflowExecutor {
 
           results.set(node.id, result);
           nodeStates.set(node.id, 'COMPLETED');
-          completedCount++;
+          _completedCount++;
 
           if (node.config.type === 'tool') toolCalls++;
           if (node.config.type === 'agent') agentCalls++;

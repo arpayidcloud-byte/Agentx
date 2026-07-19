@@ -1,5 +1,5 @@
-import { CoderAgent, ReviewerAgent, TesterAgent, SecurityAgent, } from './sub-agent.js';
-import { PlannerAgent, ArchitectAgent, DocumentationAgent, QAAgent, } from './extended-agents.js';
+import { CoderAgent, ReviewerAgent, TesterAgent, SecurityAgent } from './sub-agent.js';
+import { PlannerAgent, ArchitectAgent, DocumentationAgent, QAAgent } from './extended-agents.js';
 export class SubAgentFactory {
     createAgent(role) {
         const id = `${role}-${Math.random().toString(36).substring(2, 9)}`;
@@ -21,7 +21,7 @@ export class SubAgentFactory {
             case 'qa':
                 return new QAAgent(id);
             default:
-                throw new Error(`Unknown agent role: ${role}`);
+                throw new Error(`Unknown agent role: ${String(role)}`);
         }
     }
 }

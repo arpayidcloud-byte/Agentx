@@ -26,7 +26,7 @@ export class MemoryEngine {
             memory.expiresAt = new Date(now.getTime() + memory.ttl * 1000);
         }
         await this.memoryStore.save(memory);
-        this.updateMetrics();
+        void this.updateMetrics();
         await this.eventBus.publish('memory.created', memory, `trace_${memory.id}`);
         return memory;
     }
@@ -39,7 +39,7 @@ export class MemoryEngine {
         if (!mem)
             return;
         await this.memoryStore.delete(memoryId);
-        this.updateMetrics();
+        void this.updateMetrics();
         await this.eventBus.publish('memory.deleted', { id: memoryId }, `trace_${memoryId}`);
     }
     async compact() {
@@ -53,7 +53,7 @@ export class MemoryEngine {
                 await this.memoryStore.delete(mem.id);
             }
         }
-        this.updateMetrics();
+        void this.updateMetrics();
     }
     getMetrics() {
         return { ...this.metrics };
@@ -68,7 +68,7 @@ export class MemoryEngine {
                 await this.eventBus.publish('memory.expired', { id: mem.id }, `trace_${mem.id}`);
             }
         }
-        this.updateMetrics();
+        void this.updateMetrics();
     }
     async updateMetrics() {
         const all = await this.memoryStore.list();

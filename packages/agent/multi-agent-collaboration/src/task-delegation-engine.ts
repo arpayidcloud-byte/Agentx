@@ -39,7 +39,7 @@ export class TaskDelegationEngine {
     const adj = new Map<string, string[]>();
     for (const [u, v] of this.edges) {
       if (!adj.has(u)) adj.set(u, []);
-      adj.get(u)!.push(v);
+      (adj.get(u) as string[]).push(v);
     }
     const visited = new Set<string>();
     const stack = new Set<string>();

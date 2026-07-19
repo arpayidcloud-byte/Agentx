@@ -17,7 +17,7 @@ export class ToolExecutionPipelineImpl implements ToolExecutionPipeline {
     // PreExecute hooks
     for (const hook of this.hooks) {
       if (hook.preExecute) {
-        await hook.preExecute(req, tool);
+        await Promise.resolve(hook.preExecute(req, tool));
       }
     }
 
@@ -28,7 +28,9 @@ export class ToolExecutionPipelineImpl implements ToolExecutionPipeline {
       // Error hooks
       for (const hook of this.hooks) {
         if (hook.onError) {
-          await hook.onError(error instanceof Error ? error : new Error(String(error)), req, tool);
+          await Promise.resolve(
+            hook.onError(error instanceof Error ? error : new Error(String(error)), req, tool),
+          );
         }
       }
       throw error;

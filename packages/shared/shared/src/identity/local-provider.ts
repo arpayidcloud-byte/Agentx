@@ -97,7 +97,12 @@ export class LocalIdentityProvider implements IdentityProvider {
     };
   }
 
-  registerUser(email: string, password: string, displayName: string, roles: string[] = ['developer']): Identity {
+  registerUser(
+    email: string,
+    password: string,
+    displayName: string,
+    roles: string[] = ['developer'],
+  ): Identity {
     const id = randomUUID();
     const passwordHash = createHash('sha256').update(password).digest('hex');
     const now = new Date();

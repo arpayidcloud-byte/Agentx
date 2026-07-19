@@ -55,7 +55,7 @@ export class InMemoryEventBus implements IEventBus {
         timeoutMs,
       );
 
-      this.subscribe<TRes>(replyTopic, async (event) => {
+      void this.subscribe<TRes>(replyTopic, async (event) => {
         clearTimeout(timeout);
         await this.unsubscribe(replyTopic);
         resolve(event);
@@ -182,19 +182,27 @@ export class BullMQEventBus implements IEventBus {
     timeoutMs: number = 5000,
   ): Promise<EventEnvelope<TRes>> {
     const replyTopic = `${topic}.reply.${Math.random().toString(36).substring(2)}`;
-    return new Promise(async (resolve, reject) => {
-      const timeout = setTimeout(async () => {
-        await this.unsubscribe(replyTopic);
-        reject(new EventBusError(`Request timed out for topic ${topic}`));
-      }, timeoutMs);
+    return new Promise((resolve, reject) => {
+      void (async () => {
+        const timeout = setTimeout(() => {
+          void (async () => {
+            await this.unsubscribe(replyTopic);
+            reject(new EventBusError(`Request timed out for topic ${topic}`));
+          })();
+        }, timeoutMs);
 
-      await this.subscribe<TRes>(replyTopic, async (event) => {
-        clearTimeout(timeout);
-        await this.unsubscribe(replyTopic);
-        resolve(event);
-      });
+        try {
+          await this.subscribe<TRes>(replyTopic, async (event) => {
+            clearTimeout(timeout);
+            await this.unsubscribe(replyTopic);
+            resolve(event);
+          });
 
-      await this.publish(topic, payload, traceId, undefined, { replyTo: replyTopic });
+          await this.publish(topic, payload, traceId, undefined, { replyTo: replyTopic });
+        } catch (err) {
+          reject(err);
+        }
+      })();
     });
   }
 
