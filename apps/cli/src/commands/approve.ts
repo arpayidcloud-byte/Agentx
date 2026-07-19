@@ -3,7 +3,17 @@ import * as path from 'path';
 
 const DATA_DIR = path.resolve(process.cwd(), '.agentx');
 
-function loadTasks(): Record<string, { id: string; goal: string; status: string; graphId?: string; createdAt: string; updatedAt: string }> {
+function loadTasks(): Record<
+  string,
+  {
+    id: string;
+    goal: string;
+    status: string;
+    graphId?: string;
+    createdAt: string;
+    updatedAt: string;
+  }
+> {
   const tasksFile = path.join(DATA_DIR, 'tasks.json');
   if (!fs.existsSync(tasksFile)) return {};
   return JSON.parse(fs.readFileSync(tasksFile, 'utf-8'));

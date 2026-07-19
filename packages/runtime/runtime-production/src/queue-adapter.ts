@@ -130,7 +130,7 @@ export class NATSAdapter implements IExecutionQueue {
     }
 
     if (highestPriorityMsg && targetStreamKey) {
-      const stream = this.streams.get(targetStreamKey)!;
+      const stream = this.streams.get(targetStreamKey) as QueueMessage[];
       stream.shift();
       highestPriorityMsg.status = 'PROCESSING';
       this.processing.set(highestPriorityMsg.id, highestPriorityMsg);

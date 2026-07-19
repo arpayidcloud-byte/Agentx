@@ -21,7 +21,7 @@ export class EventValidator {
     const failures: string[] = [];
 
     for (let i = 0; i < events.length; i++) {
-      const e = events[i]!;
+      const e = events[i] as EventEnvelope;
       if (!e.traceId) failures.push(`Event ${i} missing traceId`);
       if (!e.timestamp) failures.push(`Event ${i} missing timestamp`);
       if (!e.sessionId) failures.push(`Event ${i} missing sessionId`);

@@ -5,7 +5,10 @@ export interface TaskContextBuilderConfig {
 }
 
 export interface MemoryReference {
-  search(query: string, options?: { limit?: number }): Promise<Array<{ content: string; type: string }>>;
+  search(
+    query: string,
+    options?: { limit?: number },
+  ): Promise<Array<{ content: string; type: string }>>;
 }
 
 export class TaskContextBuilder {

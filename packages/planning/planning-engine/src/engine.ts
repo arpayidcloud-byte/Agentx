@@ -40,7 +40,7 @@ export class PlanningEngine implements IPlanningEngine {
       id: `plan_${Math.random().toString(36).substring(2, 9)}`,
       goal,
       tasks,
-      dependencies: [{ source: tasks[0]!.id, target: tasks[1]!.id }],
+      dependencies: [{ source: (tasks[0] as PlannedTask).id, target: (tasks[1] as PlannedTask).id }],
       estimatedCostUsd: 0.05,
       estimatedTokens: 1000,
       riskScore: 40, // Base risk due to fs.write

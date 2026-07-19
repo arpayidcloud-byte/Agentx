@@ -13,8 +13,17 @@ export async function audit(args: string[]): Promise<void> {
   }
 
   const content = fs.readFileSync(auditFile, 'utf-8');
-  const records: Array<{ graphId?: string; event: string; actor: string; detail: string; timestamp: string }> =
-    content.trim().split('\n').filter(Boolean).map((line) => JSON.parse(line));
+  const records: Array<{
+    graphId?: string;
+    event: string;
+    actor: string;
+    detail: string;
+    timestamp: string;
+  }> = content
+    .trim()
+    .split('\n')
+    .filter(Boolean)
+    .map((line) => JSON.parse(line));
 
   const filtered = graphId ? records.filter((r) => r.graphId === graphId) : records;
 

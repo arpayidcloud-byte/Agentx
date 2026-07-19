@@ -15,7 +15,7 @@ export class PlanningValidator {
     const adj = new Map<string, string[]>();
     for (const e of edges) {
       if (!adj.has(e.source)) adj.set(e.source, []);
-      adj.get(e.source)!.push(e.target);
+      (adj.get(e.source) as string[]).push(e.target);
     }
     const visited = new Set<string>();
     const stack = new Set<string>();

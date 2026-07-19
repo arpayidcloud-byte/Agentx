@@ -47,7 +47,14 @@ export async function config(args: string[]): Promise<void> {
     if (!key || !value) throw new Error('Usage: agentx config set <key> <value>');
 
     const cfg = loadConfig();
-    const parsed = value === 'true' ? true : value === 'false' ? false : isNaN(Number(value)) ? value : Number(value);
+    const parsed =
+      value === 'true'
+        ? true
+        : value === 'false'
+          ? false
+          : isNaN(Number(value))
+            ? value
+            : Number(value);
     cfg[key] = parsed;
     saveConfig(cfg);
     console.log(`Set ${key} = ${JSON.stringify(parsed)}`);

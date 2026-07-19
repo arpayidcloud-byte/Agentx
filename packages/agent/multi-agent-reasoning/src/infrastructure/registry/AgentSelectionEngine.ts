@@ -15,9 +15,9 @@ export class AgentSelectionEngine {
     );
     if (candidates.length === 0) return null;
 
-    let best = candidates[0]!;
+    let best: AgentDirectoryEntry = candidates[0] as AgentDirectoryEntry;
     for (let i = 1; i < candidates.length; i++) {
-      const c = candidates[i]!;
+      const c: AgentDirectoryEntry = candidates[i] as AgentDirectoryEntry;
       const bestFree = best.availableSlots - best.currentLoad;
       const cFree = c.availableSlots - c.currentLoad;
       if (cFree > bestFree || (cFree === bestFree && c.priority > best.priority)) {

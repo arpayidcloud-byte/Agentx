@@ -14,9 +14,9 @@ export class DecisionEngine {
     const safe = choices.filter((c) => c.safety === 'SAFE');
     if (safe.length === 0) {
       const bestUnsafe = [...choices].sort((a, b) => b.confidence - a.confidence);
-      return bestUnsafe[0]!;
+      return bestUnsafe[0] as DecisionChoice;
     }
 
-    return [...safe].sort((a, b) => b.confidence - a.confidence)[0]!;
+    return [...safe].sort((a, b) => b.confidence - a.confidence)[0] as DecisionChoice;
   }
 }

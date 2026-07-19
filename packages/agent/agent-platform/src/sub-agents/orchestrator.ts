@@ -121,11 +121,7 @@ export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
           const agentRole = node.task.assignedAgentRole as string;
           this.resourceManager.registerAgent(agentRole, node.estimatedBudget);
 
-          const result = await this.runner.runParallel(
-            node.task,
-            [agentRole as any],
-            {},
-          );
+          const result = await this.runner.runParallel(node.task, [agentRole as any], {});
 
           this.resourceManager.unregisterAgent(agentRole);
 

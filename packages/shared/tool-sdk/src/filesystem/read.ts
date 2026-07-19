@@ -15,7 +15,7 @@ export class FilesystemReadTool {
     metadata: { size: number; isBinary: boolean };
   }> {
     const realPath = await this.sandbox.validateRead(requestPath);
-    await this.sandbox.validateSymlinkEscape(realPath);
+    this.sandbox.validateSymlinkEscape(realPath);
 
     const stats = await fs.stat(realPath);
     if (!stats.isFile()) {

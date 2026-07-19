@@ -14,11 +14,13 @@ export class AgentSelectionEngine {
       requiredCapabilities.every((cap) => e.capabilities.includes(cap)),
     );
     if (candidates.length === 0) return null;
-    return candidates.sort((a, b) => {
-      if (b.availableSlots - b.currentLoad !== a.availableSlots - a.currentLoad) {
-        return b.availableSlots - b.currentLoad - (a.availableSlots - a.currentLoad);
-      }
-      return b.priority - a.priority;
-    })[0] ?? null;
+    return (
+      candidates.sort((a, b) => {
+        if (b.availableSlots - b.currentLoad !== a.availableSlots - a.currentLoad) {
+          return b.availableSlots - b.currentLoad - (a.availableSlots - a.currentLoad);
+        }
+        return b.priority - a.priority;
+      })[0] ?? null
+    );
   }
 }

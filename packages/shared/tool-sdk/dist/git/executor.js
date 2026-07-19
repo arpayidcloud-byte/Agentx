@@ -124,7 +124,7 @@ export class GitExecutor {
                 args.push(...request.args);
                 break;
             default:
-                throw new Error(`Unknown git operation: ${request.operation}`);
+                throw new Error(`Unknown git operation: ${String(request.operation)}`);
         }
         return args;
     }

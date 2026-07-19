@@ -22,6 +22,6 @@ export class StrategySelector {
       return a.cost - b.cost;
     });
 
-    return sorted[0]!;
+    return sorted[0] as StrategyOption;
   }
 }

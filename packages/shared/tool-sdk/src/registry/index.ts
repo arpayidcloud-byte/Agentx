@@ -1,4 +1,10 @@
-import type { IToolRegistry, ITool, ToolCategory, ToolCapability, ToolMetadata } from '../interfaces/index.js';
+import type {
+  IToolRegistry,
+  ITool,
+  ToolCategory,
+  ToolCapability,
+  ToolMetadata,
+} from '../interfaces/index.js';
 import { DuplicateToolError, ToolNotFoundError } from '../errors/index.js';
 import { ToolClassifier } from '../classification/index.js';
 

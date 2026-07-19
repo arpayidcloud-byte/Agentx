@@ -3,7 +3,17 @@ import * as path from 'path';
 
 const DATA_DIR = path.resolve(process.cwd(), '.agentx');
 
-function loadTasks(): Record<string, { id: string; goal: string; status: string; graphId?: string; createdAt: string; updatedAt: string }> {
+function loadTasks(): Record<
+  string,
+  {
+    id: string;
+    goal: string;
+    status: string;
+    graphId?: string;
+    createdAt: string;
+    updatedAt: string;
+  }
+> {
   const tasksFile = path.join(DATA_DIR, 'tasks.json');
   if (!fs.existsSync(tasksFile)) return {};
   return JSON.parse(fs.readFileSync(tasksFile, 'utf-8'));
@@ -21,8 +31,17 @@ export async function status(args: string[]): Promise<void> {
     }
     console.log('Tasks:');
     for (const t of allTasks) {
-      const icon = t.status === 'COMPLETED' ? '✅' : t.status === 'FAILED' ? '❌' : t.status === 'RUNNING' ? '🔄' : '📋';
-      console.log(`  ${icon} ${t.id.slice(0, 8)}... | ${t.status.padEnd(18)} | ${t.goal.slice(0, 50)}`);
+      const icon =
+        t.status === 'COMPLETED'
+          ? '✅'
+          : t.status === 'FAILED'
+            ? '❌'
+            : t.status === 'RUNNING'
+              ? '🔄'
+              : '📋';
+      console.log(
+        `  ${icon} ${t.id.slice(0, 8)}... | ${t.status.padEnd(18)} | ${t.goal.slice(0, 50)}`,
+      );
     }
     return;
   }

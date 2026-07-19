@@ -10,11 +10,11 @@ export class CompatibilityMatrix {
     if (!this.matrix[provider]) {
       this.matrix[provider] = {};
     }
-    this.matrix[provider]![runtime] = compatible;
+    (this.matrix[provider] as Record<string, boolean>)[runtime] = compatible;
   }
 
   isCompatible(provider: string, runtime: string): boolean {
-    return !!this.matrix[provider] && this.matrix[provider]![runtime] === true;
+    return !!this.matrix[provider] && (this.matrix[provider] as Record<string, boolean>)[runtime] === true;
   }
 
   getMatrix(): Record<string, Record<string, boolean>> {

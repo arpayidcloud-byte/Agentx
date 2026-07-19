@@ -17,7 +17,7 @@ export class FilesystemWriteTool {
 
   public async write(requestPath: string, content: string): Promise<{ success: boolean }> {
     const realPath = await this.sandbox.validateWrite(requestPath);
-    await this.sandbox.validateSymlinkEscape(realPath);
+    this.sandbox.validateSymlinkEscape(realPath);
 
     const contentBuffer = Buffer.from(content, 'utf-8');
 

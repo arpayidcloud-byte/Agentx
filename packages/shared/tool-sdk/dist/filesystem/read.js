@@ -11,7 +11,7 @@ export class FilesystemReadTool {
     }
     async read(requestPath) {
         const realPath = await this.sandbox.validateRead(requestPath);
-        await this.sandbox.validateSymlinkEscape(realPath);
+        this.sandbox.validateSymlinkEscape(realPath);
         const stats = await fs.stat(realPath);
         if (!stats.isFile()) {
             throw new Error(`Path "${realPath}" is not a file`);

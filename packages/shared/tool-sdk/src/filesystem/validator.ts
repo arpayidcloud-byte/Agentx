@@ -31,6 +31,7 @@ export class FilesystemValidator implements IFilesystemValidator {
     if (filename.includes('\0')) return false;
     if (filename.includes('..')) return false;
 
+    // eslint-disable-next-line no-control-regex -- Control chars \x00-\x1f intentionally matched for filename validation
     const invalidChars = /[<>:"|?*\x00-\x1f]/;
     return !invalidChars.test(filename);
   }

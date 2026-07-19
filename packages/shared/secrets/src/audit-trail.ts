@@ -1,4 +1,4 @@
-import type { CredentialResolver } from './interfaces.js';
+import type { CredentialResolver, SecretMetadata } from './interfaces.js';
 
 export interface SecretAccessEvent {
   readonly timestamp: Date;
@@ -32,7 +32,7 @@ export class AuditedCredentialResolver implements CredentialResolver {
     }
   }
 
-  async resolveMetadata(logicalKey: string): Promise<import('./interfaces.js').SecretMetadata> {
+  async resolveMetadata(logicalKey: string): Promise<SecretMetadata> {
     const start = Date.now();
     try {
       const metadata = await this.inner.resolveMetadata(logicalKey);
@@ -66,7 +66,13 @@ export class AuditedCredentialResolver implements CredentialResolver {
     }
   }
 
-  private emit(operation: SecretAccessEvent['operation'], key: string, success: boolean, durationMs: number, error?: string): void {
+  private emit(
+    operation: SecretAccessEvent['operation'],
+    key: string,
+    success: boolean,
+    durationMs: number,
+    error?: string,
+  ): void {
     this.auditSink({
       timestamp: new Date(),
       operation,

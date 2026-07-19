@@ -7,7 +7,7 @@ export class ToolExecutionPipelineImpl {
         // PreExecute hooks
         for (const hook of this.hooks) {
             if (hook.preExecute) {
-                await hook.preExecute(req, tool);
+                await Promise.resolve(hook.preExecute(req, tool));
             }
         }
         let response;
@@ -18,7 +18,7 @@ export class ToolExecutionPipelineImpl {
             // Error hooks
             for (const hook of this.hooks) {
                 if (hook.onError) {
-                    await hook.onError(error instanceof Error ? error : new Error(String(error)), req, tool);
+                    await Promise.resolve(hook.onError(error instanceof Error ? error : new Error(String(error)), req, tool));
                 }
             }
             throw error;

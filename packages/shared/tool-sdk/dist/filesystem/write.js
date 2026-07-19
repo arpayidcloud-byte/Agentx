@@ -13,7 +13,7 @@ export class FilesystemWriteTool {
     }
     async write(requestPath, content) {
         const realPath = await this.sandbox.validateWrite(requestPath);
-        await this.sandbox.validateSymlinkEscape(realPath);
+        this.sandbox.validateSymlinkEscape(realPath);
         const contentBuffer = Buffer.from(content, 'utf-8');
         if (this.validator.detectBinary(contentBuffer)) {
             throw new Error('Content contains binary data which cannot be written as text');

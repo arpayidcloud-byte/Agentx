@@ -37,7 +37,7 @@ export class MemoryEngine implements IMemoryEngine {
     }
 
     await this.memoryStore.save(memory);
-    this.updateMetrics();
+    void this.updateMetrics();
 
     await this.eventBus.publish('memory.created', memory, `trace_${memory.id}`);
     return memory;
@@ -53,7 +53,7 @@ export class MemoryEngine implements IMemoryEngine {
     if (!mem) return;
 
     await this.memoryStore.delete(memoryId);
-    this.updateMetrics();
+    void this.updateMetrics();
     await this.eventBus.publish('memory.deleted', { id: memoryId }, `trace_${memoryId}`);
   }
 
@@ -68,7 +68,7 @@ export class MemoryEngine implements IMemoryEngine {
         await this.memoryStore.delete(mem.id);
       }
     }
-    this.updateMetrics();
+    void this.updateMetrics();
   }
 
   public getMetrics(): MemoryMetrics {
@@ -85,7 +85,7 @@ export class MemoryEngine implements IMemoryEngine {
         await this.eventBus.publish('memory.expired', { id: mem.id }, `trace_${mem.id}`);
       }
     }
-    this.updateMetrics();
+    void this.updateMetrics();
   }
 
   private async updateMetrics(): Promise<void> {

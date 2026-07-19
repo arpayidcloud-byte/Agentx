@@ -18,12 +18,20 @@ class OtelSpan implements ISpan {
   private readonly name: string;
   private readonly kind: SpanKind;
   private readonly attributes = new Map<string, string | number | boolean>();
-  private readonly events: Array<{ name: string; attributes?: Record<string, string | number | boolean>; timestamp: Date }> = [];
+  private readonly events: Array<{
+    name: string;
+    attributes?: Record<string, string | number | boolean>;
+    timestamp: Date;
+  }> = [];
   private ended = false;
   private startTime: Date;
   private endTime?: Date;
 
-  constructor(name: string, kind: SpanKind, attributes?: Record<string, string | number | boolean>) {
+  constructor(
+    name: string,
+    kind: SpanKind,
+    attributes?: Record<string, string | number | boolean>,
+  ) {
     this.name = name;
     this.kind = kind;
     this.traceId = `trace-${++spanCounter}-${Date.now().toString(36)}`;
