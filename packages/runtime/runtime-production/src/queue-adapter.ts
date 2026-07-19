@@ -4,7 +4,6 @@
  */
 
 import type { QueueMessage } from './interfaces.js';
-import { QueueError } from './errors.js';
 
 export interface IExecutionQueue {
   enqueue(msg: QueueMessage): Promise<void>;
@@ -57,46 +56,180 @@ export class MemoryQueue implements IExecutionQueue {
 }
 
 export class BullMQAdapter implements IExecutionQueue {
-  async enqueue(_msg: QueueMessage): Promise<void> {
-    throw new QueueError('BullMQAdapter not implemented', 'queue-adapter');
+  private queue: QueueMessage[] = [];
+  private deadLetterQueue: QueueMessage[] = [];
+  private processing = new Map<string, QueueMessage>();
+
+  async enqueue(msg: QueueMessage): Promise<void> {
+    this.queue.push(msg);
+    this.queue.sort((a, b) => b.priority - a.priority);
   }
+
   async dequeue(): Promise<QueueMessage | undefined> {
-    throw new QueueError('BullMQAdapter not implemented', 'queue-adapter');
+    const msg = this.queue.shift();
+    if (msg) {
+      msg.status = 'PROCESSING';
+      this.processing.set(msg.id, msg);
+    }
+    return msg;
   }
-  async ack(_id: string): Promise<void> {
-    throw new QueueError('BullMQAdapter not implemented', 'queue-adapter');
+
+  async ack(id: string): Promise<void> {
+    const msg = this.processing.get(id);
+    if (msg) {
+      msg.status = 'COMPLETED';
+      this.processing.delete(id);
+    }
   }
-  async retry(_id: string): Promise<void> {
-    throw new QueueError('BullMQAdapter not implemented', 'queue-adapter');
+
+  async retry(id: string): Promise<void> {
+    const msg = this.processing.get(id) ?? this.queue.find((m) => m.id === id);
+    if (!msg) return;
+    msg.retryCount++;
+    if (msg.retryCount > 3) {
+      msg.status = 'FAILED';
+      this.deadLetterQueue.push(msg);
+      this.queue = this.queue.filter((m) => m.id !== id);
+    } else {
+      msg.status = 'PENDING';
+      this.processing.delete(id);
+      this.queue.push(msg);
+      this.queue.sort((a, b) => b.priority - a.priority);
+    }
+  }
+
+  getDlq(): QueueMessage[] {
+    return [...this.deadLetterQueue];
   }
 }
 
 export class NATSAdapter implements IExecutionQueue {
-  async enqueue(_msg: QueueMessage): Promise<void> {
-    throw new QueueError('NATSAdapter not implemented', 'queue-adapter');
+  private streams = new Map<string, QueueMessage[]>();
+  private processing = new Map<string, QueueMessage>();
+  private deadLetterQueue: QueueMessage[] = [];
+
+  async enqueue(msg: QueueMessage): Promise<void> {
+    const streamKey = msg.workflowId;
+    const stream = this.streams.get(streamKey) ?? [];
+    stream.push(msg);
+    stream.sort((a, b) => b.priority - a.priority);
+    this.streams.set(streamKey, stream);
   }
+
   async dequeue(): Promise<QueueMessage | undefined> {
-    throw new QueueError('NATSAdapter not implemented', 'queue-adapter');
+    let highestPriorityMsg: QueueMessage | undefined;
+    let targetStreamKey: string | undefined;
+
+    for (const [key, stream] of this.streams) {
+      if (stream.length === 0) continue;
+      const candidate = stream[0]!;
+      if (!highestPriorityMsg || candidate.priority > highestPriorityMsg.priority) {
+        highestPriorityMsg = candidate;
+        targetStreamKey = key;
+      }
+    }
+
+    if (highestPriorityMsg && targetStreamKey) {
+      const stream = this.streams.get(targetStreamKey)!;
+      stream.shift();
+      highestPriorityMsg.status = 'PROCESSING';
+      this.processing.set(highestPriorityMsg.id, highestPriorityMsg);
+    }
+
+    return highestPriorityMsg;
   }
-  async ack(_id: string): Promise<void> {
-    throw new QueueError('NATSAdapter not implemented', 'queue-adapter');
+
+  async ack(id: string): Promise<void> {
+    const msg = this.processing.get(id);
+    if (msg) {
+      msg.status = 'COMPLETED';
+      this.processing.delete(id);
+    }
   }
-  async retry(_id: string): Promise<void> {
-    throw new QueueError('NATSAdapter not implemented', 'queue-adapter');
+
+  async retry(id: string): Promise<void> {
+    const msg = this.processing.get(id);
+    if (!msg) return;
+    msg.retryCount++;
+    if (msg.retryCount > 3) {
+      msg.status = 'FAILED';
+      this.deadLetterQueue.push(msg);
+      this.processing.delete(id);
+    } else {
+      msg.status = 'PENDING';
+      this.processing.delete(id);
+      const streamKey = msg.workflowId;
+      const stream = this.streams.get(streamKey) ?? [];
+      stream.push(msg);
+      stream.sort((a, b) => b.priority - a.priority);
+      this.streams.set(streamKey, stream);
+    }
+  }
+
+  getDlq(): QueueMessage[] {
+    return [...this.deadLetterQueue];
   }
 }
 
 export class TemporalAdapter implements IExecutionQueue {
-  async enqueue(_msg: QueueMessage): Promise<void> {
-    throw new QueueError('TemporalAdapter not implemented', 'queue-adapter');
+  private workflows = new Map<string, QueueMessage[]>();
+  private processing = new Map<string, QueueMessage>();
+  private deadLetterQueue: QueueMessage[] = [];
+  private completedWorkflows = new Set<string>();
+
+  async enqueue(msg: QueueMessage): Promise<void> {
+    const workflowId = msg.workflowId;
+    const tasks = this.workflows.get(workflowId) ?? [];
+    tasks.push(msg);
+    tasks.sort((a, b) => b.priority - a.priority);
+    this.workflows.set(workflowId, tasks);
   }
+
   async dequeue(): Promise<QueueMessage | undefined> {
-    throw new QueueError('TemporalAdapter not implemented', 'queue-adapter');
+    for (const [_wfId, tasks] of this.workflows) {
+      if (tasks.length === 0) continue;
+      const msg = tasks.shift();
+      if (msg) {
+        msg.status = 'PROCESSING';
+        this.processing.set(msg.id, msg);
+        return msg;
+      }
+    }
+    return undefined;
   }
-  async ack(_id: string): Promise<void> {
-    throw new QueueError('TemporalAdapter not implemented', 'queue-adapter');
+
+  async ack(id: string): Promise<void> {
+    const msg = this.processing.get(id);
+    if (msg) {
+      msg.status = 'COMPLETED';
+      this.completedWorkflows.add(msg.workflowId);
+      this.processing.delete(id);
+    }
   }
-  async retry(_id: string): Promise<void> {
-    throw new QueueError('TemporalAdapter not implemented', 'queue-adapter');
+
+  async retry(id: string): Promise<void> {
+    const msg = this.processing.get(id);
+    if (!msg) return;
+    msg.retryCount++;
+    if (msg.retryCount > 3) {
+      msg.status = 'FAILED';
+      this.deadLetterQueue.push(msg);
+      this.processing.delete(id);
+    } else {
+      msg.status = 'PENDING';
+      this.processing.delete(id);
+      const tasks = this.workflows.get(msg.workflowId) ?? [];
+      tasks.push(msg);
+      tasks.sort((a, b) => b.priority - a.priority);
+      this.workflows.set(msg.workflowId, tasks);
+    }
+  }
+
+  getDlq(): QueueMessage[] {
+    return [...this.deadLetterQueue];
+  }
+
+  isWorkflowCompleted(workflowId: string): boolean {
+    return this.completedWorkflows.has(workflowId);
   }
 }

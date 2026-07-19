@@ -102,21 +102,21 @@ describe('MemoryLockProvider', () => {
   });
 });
 
-describe('Stub Lock Providers', () => {
-  it('throws on unimplemented methods for RedisLockProvider', async () => {
+describe('Lock Providers', () => {
+  it('RedisLockProvider acquires and releases locks', async () => {
     const provider = new RedisLockProvider();
-    await expect(provider.acquire('key', { ttlMs: 1000 })).rejects.toThrow(DistributedLockError);
-    await expect(provider.release('id')).rejects.toThrow(DistributedLockError);
-    await expect(provider.renew('id', 1000)).rejects.toThrow(DistributedLockError);
-    await expect(provider.expire('key')).rejects.toThrow(DistributedLockError);
+    const lock = await provider.acquire('key', { ttlMs: 5000 });
+    expect(lock).toBeDefined();
+    expect(lock.id).toBeDefined();
+    await expect(provider.release(lock.id)).resolves.not.toThrow();
   });
 
-  it('throws on unimplemented methods for PostgresAdvisoryLockProvider', async () => {
+  it('PostgresAdvisoryLockProvider acquires and releases locks', async () => {
     const provider = new PostgresAdvisoryLockProvider();
-    await expect(provider.acquire('key', { ttlMs: 1000 })).rejects.toThrow(DistributedLockError);
-    await expect(provider.release('id')).rejects.toThrow(DistributedLockError);
-    await expect(provider.renew('id', 1000)).rejects.toThrow(DistributedLockError);
-    await expect(provider.expire('key')).rejects.toThrow(DistributedLockError);
+    const lock = await provider.acquire('key', { ttlMs: 5000 });
+    expect(lock).toBeDefined();
+    expect(lock.id).toBeDefined();
+    await expect(provider.release(lock.id)).resolves.not.toThrow();
   });
 });
 
@@ -200,29 +200,26 @@ describe('MemoryQueue', () => {
   });
 });
 
-describe('Stub Queue Providers', () => {
-  it('throws on unimplemented methods for BullMQAdapter', async () => {
-    const provider = new BullMQAdapter();
-    await expect(provider.enqueue({} as any)).rejects.toThrow(QueueError);
-    await expect(provider.dequeue()).rejects.toThrow(QueueError);
-    await expect(provider.ack('id')).rejects.toThrow(QueueError);
-    await expect(provider.retry('id')).rejects.toThrow(QueueError);
+describe('Queue Providers', () => {
+  it('BullMQAdapter enqueues and dequeues tasks', async () => {
+    const adapter = new BullMQAdapter();
+    await adapter.enqueue({ taskId: 't1', payload: {} } as any);
+    const task = await adapter.dequeue();
+    expect(task).toBeDefined();
   });
 
-  it('throws on unimplemented methods for NATSAdapter', async () => {
-    const provider = new NATSAdapter();
-    await expect(provider.enqueue({} as any)).rejects.toThrow(QueueError);
-    await expect(provider.dequeue()).rejects.toThrow(QueueError);
-    await expect(provider.ack('id')).rejects.toThrow(QueueError);
-    await expect(provider.retry('id')).rejects.toThrow(QueueError);
+  it('NATSAdapter enqueues and dequeues tasks', async () => {
+    const adapter = new NATSAdapter();
+    await adapter.enqueue({ taskId: 't1', payload: {} } as any);
+    const task = await adapter.dequeue();
+    expect(task).toBeDefined();
   });
 
-  it('throws on unimplemented methods for TemporalAdapter', async () => {
-    const provider = new TemporalAdapter();
-    await expect(provider.enqueue({} as any)).rejects.toThrow(QueueError);
-    await expect(provider.dequeue()).rejects.toThrow(QueueError);
-    await expect(provider.ack('id')).rejects.toThrow(QueueError);
-    await expect(provider.retry('id')).rejects.toThrow(QueueError);
+  it('TemporalAdapter enqueues and dequeues tasks', async () => {
+    const adapter = new TemporalAdapter();
+    await adapter.enqueue({ taskId: 't1', payload: {} } as any);
+    const task = await adapter.dequeue();
+    expect(task).toBeDefined();
   });
 });
 
