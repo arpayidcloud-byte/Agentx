@@ -60,8 +60,8 @@ export abstract class BaseProvider implements Provider {
         response.metrics = metrics;
 
         return response;
-      } catch (e: any) {
-        if (e.name === 'AbortError' || e instanceof ProviderTimeoutError) {
+      } catch (e: unknown) {
+        if (e instanceof Error && (e.name === 'AbortError' || e instanceof ProviderTimeoutError)) {
           throw new ProviderTimeoutError(this.id, undefined, e);
         }
         throw this.mapError(e);

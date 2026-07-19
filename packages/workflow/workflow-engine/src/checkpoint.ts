@@ -3,7 +3,7 @@
  * @description Checkpoint management for workflow state persistence.
  */
 
-import type { ExecutionSnapshot, Checkpoint, ICheckpointManager } from './interfaces.js';
+import type { ExecutionSnapshot, Checkpoint, ICheckpointManager, NodeState } from './interfaces.js';
 import { SnapshotError } from './errors.js';
 
 /**
@@ -58,8 +58,8 @@ export class InMemoryCheckpointManager implements ICheckpointManager {
  */
 export function createSnapshot(
   workflowId: string,
-  nodeStates: Map<string, any>,
-  results: Map<string, any>,
+  nodeStates: Map<string, NodeState>,
+  results: Map<string, unknown>,
   version: number,
 ): ExecutionSnapshot {
   return {
@@ -75,8 +75,8 @@ export function createSnapshot(
  * Restores state from snapshot
  */
 export function restoreFromSnapshot(snapshot: ExecutionSnapshot): {
-  nodeStates: Map<string, any>;
-  results: Map<string, any>;
+  nodeStates: Map<string, NodeState>;
+  results: Map<string, unknown>;
 } {
   return {
     nodeStates: new Map(snapshot.nodeStates),

@@ -5,15 +5,22 @@
 
 import type { ValidationResult } from './interfaces.js';
 
+export interface SnapshotData {
+  id: string;
+  checksum: string;
+  [key: string]: unknown;
+}
+
 export class SnapshotValidator {
-  validate(snapshot: any): ValidationResult {
+  validate(snapshot: unknown): ValidationResult {
     const failures: string[] = [];
 
     if (!Object.isFrozen(snapshot)) {
       failures.push('Snapshot is not immutable (not frozen)');
     }
 
-    if (!snapshot.id || !snapshot.checksum) {
+    const data = snapshot as SnapshotData;
+    if (!data.id || !data.checksum) {
       failures.push('Snapshot missing mandatory identification or checksum');
     }
 

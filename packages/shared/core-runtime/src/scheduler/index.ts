@@ -102,10 +102,10 @@ export class Scheduler implements IScheduler {
     }
   }
 
-  public async completeTask(taskId: string, result: any): Promise<void> {
+  public async completeTask(taskId: string, result: unknown): Promise<void> {
     const task = this.inFlightTasks.get(taskId);
     if (!task) return;
-    task.result = result;
+    task.result = result as TaskModel['result'];
     task.status = TaskStatus.COMPLETED;
     task.updatedAt = new Date();
     await this.taskRepo.save(task);
@@ -116,10 +116,10 @@ export class Scheduler implements IScheduler {
     await this.dispatch();
   }
 
-  public async failTask(taskId: string, error: any): Promise<void> {
+  public async failTask(taskId: string, error: unknown): Promise<void> {
     const task = this.inFlightTasks.get(taskId);
     if (!task) return;
-    task.error = error;
+    task.error = error as TaskModel['error'];
     task.status = TaskStatus.FAILED;
     task.updatedAt = new Date();
     await this.taskRepo.save(task);

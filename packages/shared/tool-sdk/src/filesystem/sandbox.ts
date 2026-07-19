@@ -52,7 +52,7 @@ export class FilesystemSandbox implements ISandbox {
         this.validateWorkspaceJail(target);
       }
     } catch (err) {
-      if (err instanceof Error && (err as any).code === 'ENOENT') {
+      if (err instanceof Error && (err as NodeJS.ErrnoException).code === 'ENOENT') {
         return;
       }
       throw err;

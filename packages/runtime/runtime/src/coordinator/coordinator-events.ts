@@ -8,14 +8,14 @@ export interface CoordinatorEvent {
   timestamp: Date;
   sessionId: string;
   traceId: string;
-  payload: Record<string, any>;
+  payload: Record<string, unknown>;
 }
 
 export function createCoordinatorEvent(
   type: string,
   sessionId: string,
   traceId: string,
-  payload: Record<string, any> = {},
+  payload: Record<string, unknown> = {},
 ): CoordinatorEvent {
   return {
     type,

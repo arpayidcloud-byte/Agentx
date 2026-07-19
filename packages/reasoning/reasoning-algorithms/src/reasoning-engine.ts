@@ -67,8 +67,9 @@ export class ReasoningEngine {
       this.checkpointManager.save(sessionId, { facts: Array.from(result), goal });
 
       return result;
-    } catch (err: any) {
-      this.events.publish('reasoning.failed', { sessionId, error: err.message });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      this.events.publish('reasoning.failed', { sessionId, error: message });
       throw err;
     }
   }
@@ -95,8 +96,9 @@ export class ReasoningEngine {
 
       await this.hooks.runAfterReasoning(sessionId, result);
       return result;
-    } catch (err: any) {
-      this.events.publish('reasoning.failed', { sessionId, error: err.message });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      this.events.publish('reasoning.failed', { sessionId, error: message });
       throw err;
     }
   }

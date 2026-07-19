@@ -4,7 +4,7 @@ import { Queue, Worker } from 'bullmq';
 import { Redis } from 'ioredis';
 
 export class InMemoryEventBus implements IEventBus {
-  private handlers = new Map<string, Set<(e: EventEnvelope<any>) => Promise<void>>>();
+  private handlers = new Map<string, Set<(e: EventEnvelope<unknown>) => Promise<void>>>();
   private processedEventIds = new Set<string>();
 
   public async publish<T>(
@@ -35,7 +35,7 @@ export class InMemoryEventBus implements IEventBus {
     if (!this.handlers.has(topic)) {
       this.handlers.set(topic, new Set());
     }
-    this.handlers.get(topic)!.add(handler);
+    this.handlers.get(topic)!.add(handler as (e: EventEnvelope<unknown>) => Promise<void>);
   }
 
   public async unsubscribe(topic: string): Promise<void> {
@@ -117,7 +117,9 @@ export class BullMQEventBus implements IEventBus {
   private processedEventIds = new Set<string>();
 
   constructor(redisUrl: string = 'redis://localhost:6379') {
-    this.redisConnection = new Redis(redisUrl, { maxRetriesPerRequest: null } as any) as any;
+    this.redisConnection = new Redis(redisUrl, {
+      maxRetriesPerRequest: null,
+    } as unknown as Redis['options']) as Redis;
   }
 
   public async publish<T>(
@@ -128,7 +130,12 @@ export class BullMQEventBus implements IEventBus {
     metadata?: Record<string, unknown>,
   ): Promise<void> {
     if (!this.queues.has(topic)) {
-      this.queues.set(topic, new Queue(topic, { connection: this.redisConnection as any }));
+      this.queues.set(
+        topic,
+        new Queue(topic, {
+          connection: this.redisConnection as unknown as Record<string, unknown>,
+        }),
+      );
     }
     const queue = this.queues.get(topic)!;
     const event: EventEnvelope<T> = {
@@ -162,7 +169,7 @@ export class BullMQEventBus implements IEventBus {
         this.processedEventIds.add(event.id);
         await handler(event);
       },
-      { connection: this.redisConnection as any },
+      { connection: this.redisConnection as unknown as Record<string, unknown> },
     );
     this.workers.set(topic, worker);
   }

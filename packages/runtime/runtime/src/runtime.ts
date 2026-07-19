@@ -3,11 +3,12 @@
  * @description Main Production Runtime integrating all engines.
  */
 
-import type { RuntimeSession, RuntimeMetrics, AuditRecord } from './interfaces.js';
+import type { RuntimeSession, RuntimeMetrics, AuditRecord, RuntimeConfig } from './interfaces.js';
 import { RuntimeLifecycle } from './runtime-lifecycle.js';
 import { RuntimeExecutor } from './runtime-executor.js';
 import { RuntimeSupervisor } from './runtime-supervisor.js';
 import { RuntimeHookManager } from './runtime-hooks.js';
+import type { RuntimeHook } from './runtime-hooks.js';
 import type { AuditStore } from './runtime-audit.js';
 import type { MetricsCollector } from './runtime-metrics.js';
 import { HealthChecker } from './runtime-health.js';
@@ -28,7 +29,7 @@ export class Runtime {
   private auditStore: AuditStore;
   private metricsCollector: MetricsCollector;
   private healthChecker: HealthChecker;
-  private runtimeConfig: any;
+  private runtimeConfig: RuntimeConfig;
   private sessions = new Map<string, RuntimeSession>();
   private coordinator: ProductionExecutionCoordinator;
 
@@ -153,7 +154,7 @@ export class Runtime {
     return this.sessions.get(sessionId);
   }
 
-  addHook(hook: any): void {
+  addHook(hook: RuntimeHook): void {
     this.hookManager.register(hook);
   }
 

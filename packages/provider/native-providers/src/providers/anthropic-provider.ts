@@ -41,7 +41,7 @@ export class AnthropicProvider implements INativeProvider {
   }
 
   getMetadata() {
-    return { id: this.id, name: this.name, type: 'llm' as any, version: '1.0.0' };
+    return { id: this.id, name: this.name, type: 'llm' as const, version: '1.0.0' };
   }
 
   async complete(options: CompletionOptions): Promise<CompletionResponse> {

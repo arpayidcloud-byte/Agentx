@@ -10,8 +10,9 @@ export class KernelDispatcher {
   async dispatch(engine: EngineContract, input: unknown): Promise<unknown> {
     try {
       return await engine.execute(input);
-    } catch (err: any) {
-      throw new DispatcherError(`Failed to dispatch task: ${err.message}`, 'dispatcher');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      throw new DispatcherError(`Failed to dispatch task: ${message}`, 'dispatcher');
     }
   }
 }

@@ -135,9 +135,10 @@ export class LearningEngine {
       session.markComplete();
       this.events.publish('learning.completed', { sessionId: session.id });
       await this.hooks.runAfterLearning(session.id, { patterns: allPatterns.length });
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
       this.metrics.recordRun(false);
-      this.events.publish('learning.failed', { sessionId: session.id, error: err.message });
+      this.events.publish('learning.failed', { sessionId: session.id, error: message });
       throw err;
     }
   }

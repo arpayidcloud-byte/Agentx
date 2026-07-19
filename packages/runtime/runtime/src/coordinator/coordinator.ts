@@ -126,17 +126,18 @@ export class ProductionExecutionCoordinator {
         result,
       });
       return result;
-    } catch (err: any) {
+    } catch (err: unknown) {
       this.metricsCollector.incrementFailed(Date.now() - startTime);
       this.stateMachine.transition('FAILED');
+      const errorMessage = err instanceof Error ? err.message : String(err);
       await this.eventBus.publish(
         'coordinator.failed',
-        { sessionId: session.id, error: err.message },
+        { sessionId: session.id, error: errorMessage },
         session.traceId,
       );
 
       this.auditLogger.log(session.id, session.traceId, 'execute', 'COMPLETION', 'failure', {
-        error: err.message,
+        error: errorMessage,
       });
       throw err;
     }

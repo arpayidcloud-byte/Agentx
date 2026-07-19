@@ -35,7 +35,7 @@ export class FilesystemWriteTool {
     try {
       await fs.mkdir(dir, { recursive: true });
     } catch (err) {
-      if (err instanceof Error && (err as any).code !== 'EEXIST') {
+      if (err instanceof Error && (err as NodeJS.ErrnoException).code !== 'EEXIST') {
         throw err;
       }
     }

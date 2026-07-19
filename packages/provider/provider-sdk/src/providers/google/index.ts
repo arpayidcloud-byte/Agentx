@@ -81,13 +81,17 @@ export class GoogleProvider extends BaseProvider {
         temperature: req.temperature,
       },
     };
-    const response = await model.generateContent(request as any);
+    const response = await model.generateContent(request as never);
 
     const result = response.response;
     const text = result.text() || '';
 
     const toolCalls = [];
-    const calls = (result as any).functionCalls ? (result as any).functionCalls() : [];
+    const resultAny = result as unknown as {
+      functionCalls?: () => Array<{ name: string; args: unknown }>;
+      usageMetadata?: { promptTokenCount?: number; candidatesTokenCount?: number };
+    };
+    const calls = resultAny.functionCalls ? resultAny.functionCalls() : [];
     if (calls) {
       for (const call of calls) {
         toolCalls.push({
@@ -98,8 +102,8 @@ export class GoogleProvider extends BaseProvider {
       }
     }
 
-    const inputTokens = (result as any).usageMetadata?.promptTokenCount || 0;
-    const outputTokens = (result as any).usageMetadata?.candidatesTokenCount || 0;
+    const inputTokens = resultAny.usageMetadata?.promptTokenCount || 0;
+    const outputTokens = resultAny.usageMetadata?.candidatesTokenCount || 0;
 
     return {
       text,

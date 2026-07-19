@@ -6,6 +6,7 @@
 
 import { spawn } from 'child_process';
 import type { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
+import type { ToolCategory } from '../interfaces/index.js';
 import { GitSandbox } from './sandbox.js';
 import { createTimeoutController } from '../shell/timeout.js';
 import {
@@ -46,7 +47,7 @@ export class GitExecutor {
       this.auditEmitter.emit(
         createToolInvokedEvent(
           `${request.operation} ${request.args.join(' ')}`,
-          'git.read' as any,
+          'git.read' as ToolCategory,
           request.taskId,
           request.traceId,
           request.agentRole,
@@ -72,7 +73,7 @@ export class GitExecutor {
       this.auditEmitter.emit(
         createToolFinishedEvent(
           `${request.operation} ${request.args.join(' ')}`,
-          'git.read' as any,
+          'git.read' as ToolCategory,
           output.exitCode,
           output.durationMs,
           output.stdout.length,
@@ -100,7 +101,7 @@ export class GitExecutor {
       this.auditEmitter.emit(
         createToolFailedEvent(
           `${request.operation} ${request.args.join(' ')}`,
-          'git.read' as any,
+          'git.read' as ToolCategory,
           request.taskId,
           request.traceId,
           request.agentRole,

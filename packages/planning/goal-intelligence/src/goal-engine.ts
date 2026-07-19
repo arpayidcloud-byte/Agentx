@@ -108,9 +108,10 @@ export class GoalEngine {
       this.events.publish('planning.completed', { goalId: session.goal.id, planId: plan.id });
 
       return { plan, subgoals: subgoals.length };
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
       this.metrics.recordFailure();
-      this.events.publish('planning.failed', { goalId: session.goal.id, error: err.message });
+      this.events.publish('planning.failed', { goalId: session.goal.id, error: message });
       throw err;
     }
   }

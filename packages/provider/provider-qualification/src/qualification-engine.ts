@@ -122,11 +122,12 @@ export class QualificationEngine {
       this.events.emit('qualification.completed', { traceId, status: report.status });
 
       return report;
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
       this.metrics.rejectedProviders++;
       this.metrics.failureCount++;
-      this.events.emit('qualification.failed', { traceId, error: err.message });
-      throw new QualificationError(err.message, 'QUALIFICATION_FAILED', 'engine');
+      this.events.emit('qualification.failed', { traceId, error: message });
+      throw new QualificationError(message, 'QUALIFICATION_FAILED', 'engine');
     }
   }
 }
