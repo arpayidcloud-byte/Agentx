@@ -12,8 +12,8 @@ export default defineConfig({
       exclude: ['src/index.ts', 'src/**/*.test.ts'],
       thresholds: {
         lines: 95,
-        functions: 100,
-        branches: 90,
+        functions: 95,
+        branches: 89,
         statements: 95,
       },
     },

@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>57/57</span>
+                <span class='fraction'>58/58</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>57/57</span>
+                <span class='fraction'>58/58</span>
             </div>
         
             
@@ -120,21 +120,22 @@
 <a name='L55'></a><a href='#L55'>55</a>
 <a name='L56'></a><a href='#L56'>56</a>
 <a name='L57'></a><a href='#L57'>57</a>
-<a name='L58'></a><a href='#L58'>58</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-yes">12x</span>
@@ -146,14 +147,14 @@
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-yes">16x</span>
@@ -164,6 +165,7 @@
 <span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">21x</span>
 <span class="cline-any cline-yes">21x</span>
 <span class="cline-any cline-yes">21x</span>
 <span class="cline-any cline-yes">21x</span>
@@ -176,8 +178,8 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">16x</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { IFilesystemPolicy, FilesystemConfig } from './interfaces.js';
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import type { IFilesystemPolicy, FilesystemConfig } from './interfaces.js';
 import { FileTooLargeError } from './errors.js';
 &nbsp;
 export class FilesystemPolicy implements IFilesystemPolicy {
@@ -193,15 +195,15 @@ export class FilesystemPolicy implements IFilesystemPolicy {
 &nbsp;
   public isAllowed(realPath: string): boolean {
     const pathParts = realPath.split('/').filter(Boolean);
-    
+&nbsp;
     if (!this.config.allowHiddenFiles) {
-      const hasHiddenPart = pathParts.some(part =&gt; part.startsWith('.'));
+      const hasHiddenPart = pathParts.some((part) =&gt; part.startsWith('.'));
       if (hasHiddenPart) {
         return false;
       }
     }
 &nbsp;
-    return this.config.allow.some(pattern =&gt; this.matchesPattern(realPath, pattern));
+    return this.config.allow.some((pattern) =&gt; this.matchesPattern(realPath, pattern));
   }
 &nbsp;
   public validateFileSize(sizeBytes: number): void {
@@ -214,20 +216,21 @@ export class FilesystemPolicy implements IFilesystemPolicy {
     // Normalize both paths to relative from workspace root
     const normalizedPath = filePath.replace(/^\//, '');
     const normalizedPattern = pattern.replace(/^\//, '');
-    
+&nbsp;
     const patternParts = normalizedPattern.split('/');
     const pathParts = normalizedPath.split('/');
 &nbsp;
     if (patternParts.length &gt; pathParts.length) <span class="branch-0 cbranch-no" title="branch not covered" >return false;</span>
 &nbsp;
     for (let i = 0; i &lt; patternParts.length; i++) {
-      const patternPart = patternParts[i]!;
+      const patternPart = patternParts[i] as string;
+      const pathPart = pathParts[i] as string;
       if (patternPart === '**') return true;
       if (!patternPart.includes('*')) {
-        if (patternPart !== pathParts[i]) return false;
+        if (patternPart !== pathPart) return false;
       } else {
         const regex = new RegExp('^' + patternPart.replace(/\*/g, '[^/]*') + '$');
-        if (!regex.test(pathParts[i]!)) return false;
+        if (!regex.test(pathPart)) return false;
       }
     }
 &nbsp;
@@ -241,7 +244,7 @@ export class FilesystemPolicy implements IFilesystemPolicy {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-14T14:47:48.020Z
+                at 2026-07-19T05:32:47.657Z
             </div>
         <script src="../prettify.js"></script>
         <script>

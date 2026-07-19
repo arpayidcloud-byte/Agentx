@@ -18,7 +18,11 @@ import {
   EventBusError,
 } from '../src/index.js';
 import { NullLogger } from '@agentx/shared';
-import { CachedCredentialResolver, EnvVarSecretStore } from '@agentx/secrets';
+import type { ICredentialResolver } from '../src/context/index.js';
+
+const mockCredentialResolver: ICredentialResolver = {
+  resolve: vi.fn().mockResolvedValue('mock-secret'),
+};
 
 import { Queue, Worker } from 'bullmq';
 
@@ -42,7 +46,7 @@ vi.mock('ioredis', () => {
 });
 
 const mockLogger = new NullLogger();
-const mockResolver = new CachedCredentialResolver(new EnvVarSecretStore({}));
+const mockResolver = mockCredentialResolver;
 
 const createMockTask = (id: string, status = TaskStatus.CREATED): TaskModel => ({
   id,

@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.48% </span>
+                <span class="strong">92.53% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>123/133</span>
+                <span class='fraction'>124/134</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.48% </span>
+                <span class="strong">92.53% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>123/133</span>
+                <span class='fraction'>124/134</span>
             </div>
         
             
@@ -196,7 +196,8 @@
 <a name='L131'></a><a href='#L131'>131</a>
 <a name='L132'></a><a href='#L132'>132</a>
 <a name='L133'></a><a href='#L133'>133</a>
-<a name='L134'></a><a href='#L134'>134</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L134'></a><a href='#L134'>134</a>
+<a name='L135'></a><a href='#L135'>135</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -250,9 +251,11 @@
 <span class="cline-any cline-yes">17x</span>
 <span class="cline-any cline-yes">17x</span>
 <span class="cline-any cline-yes">17x</span>
-<span class="cline-any cline-yes">17x</span>
-<span class="cline-any cline-yes">17x</span>
-<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -305,36 +308,34 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">17x</span>
-<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">17x</span>
-<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">17x</span>
-<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">17x</span>
-<span class="cline-any cline-yes">17x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * @module workflow-orchestration/workflow-orchestrator
  * @description Master orchestrator for autonomous workflow execution.
  */
 &nbsp;
-import { WorkflowGraph, WorkflowTask } from './interfaces.js';
 import { WorkflowStateMachine } from './workflow-state.js';
 import { WorkflowSession } from './workflow-session.js';
 import { WorkflowBuilder } from './workflow-builder.js';
@@ -385,7 +386,10 @@ export class WorkflowOrchestrator {
   public hooks = new WorkflowHookManager();
   public statisticsCollector = new WorkflowStatisticsCollector();
 &nbsp;
-  async executeWorkflow(goalId: string, subgoalCount: number): Promise&lt;{ results: unknown[]; completed: boolean }&gt; {
+  async executeWorkflow(
+    goalId: string,
+    subgoalCount: number,
+  ): Promise&lt;{ results: unknown[]; completed: boolean }&gt; {
     const session = new WorkflowSession(`trace-${Date.now()}`);
     await this.hooks.runBeforeWorkflow(session.id);
     this.events.publish('workflow.created', { workflowId: session.id, goalId });
@@ -437,7 +441,6 @@ export class WorkflowOrchestrator {
 &nbsp;
       await this.hooks.runAfterWorkflow(session.id, results);
       return { results, completed: true };
-&nbsp;
 <span class="branch-0 cbranch-no" title="branch not covered" >    } catch (err: any) {</span>
 <span class="cstat-no" title="statement not covered" >      this.statisticsCollector.recordFailure();</span>
 <span class="cstat-no" title="statement not covered" >      this.events.publish('workflow.failed', { workflowId: session.id, error: err.message });</span>
@@ -469,7 +472,7 @@ export class WorkflowOrchestrator {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-16T13:42:47.480Z
+                at 2026-07-19T05:32:49.767Z
             </div>
         <script src="prettify.js"></script>
         <script>

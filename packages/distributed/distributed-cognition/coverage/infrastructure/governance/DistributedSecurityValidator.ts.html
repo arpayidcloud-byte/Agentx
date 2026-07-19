@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>62/62</span>
+                <span class='fraction'>68/68</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>62/62</span>
+                <span class='fraction'>68/68</span>
             </div>
         
             
@@ -125,7 +125,13 @@
 <a name='L60'></a><a href='#L60'>60</a>
 <a name='L61'></a><a href='#L61'>61</a>
 <a name='L62'></a><a href='#L62'>62</a>
-<a name='L63'></a><a href='#L63'>63</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -137,6 +143,9 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
@@ -154,9 +163,8 @@
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
@@ -167,26 +175,30 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { createHash } from 'crypto';
 &nbsp;
 export interface SecurityToken {
@@ -205,7 +217,9 @@ export class DistributedSecurityValidator {
     const tokenId = `st-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
     const now = new Date();
     const expiresAt = new Date(now.getTime() + ttlMs);
-    const checksum = createHash('sha256').update(JSON.stringify({ tokenId, nodeId, permissions, expiresAt })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ tokenId, nodeId, permissions, expiresAt }))
+      .digest('hex');
     const token: SecurityToken = Object.freeze({
       tokenId,
       nodeId,
@@ -222,12 +236,16 @@ export class DistributedSecurityValidator {
     const token = this.tokens.get(tokenId);
     if (!token) return false;
     if (new Date() &gt; token.expiresAt) return false;
-    const computed = createHash('sha256').update(JSON.stringify({
-      tokenId: token.tokenId,
-      nodeId: token.nodeId,
-      permissions: token.permissions,
-      expiresAt: token.expiresAt,
-    })).digest('hex');
+    const computed = createHash('sha256')
+      .update(
+        JSON.stringify({
+          tokenId: token.tokenId,
+          nodeId: token.nodeId,
+          permissions: token.permissions,
+          expiresAt: token.expiresAt,
+        }),
+      )
+      .digest('hex');
     return computed === token.checksum;
   }
 &nbsp;
@@ -246,7 +264,7 @@ export class DistributedSecurityValidator {
   }
 &nbsp;
   getTokensByNode(nodeId: string): SecurityToken[] {
-    return Array.from(this.tokens.values()).filter(t =&gt; t.nodeId === nodeId);
+    return Array.from(this.tokens.values()).filter((t) =&gt; t.nodeId === nodeId);
   }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -256,7 +274,7 @@ export class DistributedSecurityValidator {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-17T02:38:42.602Z
+                at 2026-07-19T05:32:57.286Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

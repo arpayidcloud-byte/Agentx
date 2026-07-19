@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>137/137</span>
+                <span class='fraction'>161/161</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>137/137</span>
+                <span class='fraction'>161/161</span>
             </div>
         
             
@@ -200,7 +200,40 @@
 <a name='L135'></a><a href='#L135'>135</a>
 <a name='L136'></a><a href='#L136'>136</a>
 <a name='L137'></a><a href='#L137'>137</a>
-<a name='L138'></a><a href='#L138'>138</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L138'></a><a href='#L138'>138</a>
+<a name='L139'></a><a href='#L139'>139</a>
+<a name='L140'></a><a href='#L140'>140</a>
+<a name='L141'></a><a href='#L141'>141</a>
+<a name='L142'></a><a href='#L142'>142</a>
+<a name='L143'></a><a href='#L143'>143</a>
+<a name='L144'></a><a href='#L144'>144</a>
+<a name='L145'></a><a href='#L145'>145</a>
+<a name='L146'></a><a href='#L146'>146</a>
+<a name='L147'></a><a href='#L147'>147</a>
+<a name='L148'></a><a href='#L148'>148</a>
+<a name='L149'></a><a href='#L149'>149</a>
+<a name='L150'></a><a href='#L150'>150</a>
+<a name='L151'></a><a href='#L151'>151</a>
+<a name='L152'></a><a href='#L152'>152</a>
+<a name='L153'></a><a href='#L153'>153</a>
+<a name='L154'></a><a href='#L154'>154</a>
+<a name='L155'></a><a href='#L155'>155</a>
+<a name='L156'></a><a href='#L156'>156</a>
+<a name='L157'></a><a href='#L157'>157</a>
+<a name='L158'></a><a href='#L158'>158</a>
+<a name='L159'></a><a href='#L159'>159</a>
+<a name='L160'></a><a href='#L160'>160</a>
+<a name='L161'></a><a href='#L161'>161</a>
+<a name='L162'></a><a href='#L162'>162</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -337,11 +370,31 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { RuntimeLifecycleManager, RuntimeStateManager, RuntimeSupervisor, RuntimeHealthManager } from '../../domain/runtime/RuntimeManager.js';
-import { ServiceRegistry, PluginManager } from '../../domain/service/ServiceManager.js';
-import { ConfigurationManager } from '../../domain/config/ConfigManager.js';
-import { MultiTenantManager } from '../../domain/multitenant/TenantManager.js';
-import { RuntimePolicyEngine } from '../../domain/security/SecurityEngine.js';
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import type {
+  RuntimeLifecycleManager,
+  RuntimeStateManager,
+  RuntimeSupervisor,
+  RuntimeHealthManager,
+} from '../../domain/runtime/RuntimeManager.js';
+import type { ServiceRegistry, PluginManager } from '../../domain/service/ServiceManager.js';
+import type { ConfigurationManager } from '../../domain/config/ConfigManager.js';
+import type { MultiTenantManager } from '../../domain/multitenant/TenantManager.js';
+import type { RuntimePolicyEngine } from '../../domain/security/SecurityEngine.js';
 import { createHash } from 'crypto';
 &nbsp;
 export class RuntimeOrchestrator {
@@ -369,7 +422,9 @@ export class RuntimeOrchestrator {
 export class RuntimeBootstrapper {
   bootstrap(config: Record&lt;string, unknown&gt;): { runtimeId: string; checksum: string } {
     const runtimeId = `rt-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ runtimeId, config })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ runtimeId, config }))
+      .digest('hex');
     return { runtimeId, checksum };
   }
 }
@@ -377,8 +432,10 @@ export class RuntimeBootstrapper {
 export class ServiceCoordinator {
   constructor(private registry: ServiceRegistry) {}
 &nbsp;
-  registerAll(services: Array&lt;{ name: string; version: string }&gt;): Array&lt;{ serviceId: string; name: string }&gt; {
-    return services.map(s =&gt; {
+  registerAll(
+    services: Array&lt;{ name: string; version: string }&gt;,
+  ): Array&lt;{ serviceId: string; name: string }&gt; {
+    return services.map((s) =&gt; {
       const entry = this.registry.register(s.name, s.version);
       return { serviceId: entry.serviceId, name: entry.name };
     });
@@ -394,8 +451,10 @@ export class ServiceCoordinator {
 export class PluginCoordinator {
   constructor(private pluginManager: PluginManager) {}
 &nbsp;
-  loadAll(plugins: Array&lt;{ name: string; version: string }&gt;): Array&lt;{ pluginId: string; name: string }&gt; {
-    return plugins.map(p =&gt; {
+  loadAll(
+    plugins: Array&lt;{ name: string; version: string }&gt;,
+  ): Array&lt;{ pluginId: string; name: string }&gt; {
+    return plugins.map((p) =&gt; {
       const entry = this.pluginManager.load(p.name, p.version);
       return { pluginId: entry.pluginId, name: entry.name };
     });
@@ -424,7 +483,7 @@ export class ConfigurationCoordinator {
   }
 &nbsp;
   exportAll(): Array&lt;{ key: string; value: unknown }&gt; {
-    return this.configManager.getAll().map(e =&gt; ({ key: e.key, value: e.value }));
+    return this.configManager.getAll().map((e) =&gt; ({ key: e.key, value: e.value }));
   }
 }
 &nbsp;
@@ -433,7 +492,10 @@ export class TenantCoordinator {
 &nbsp;
   provision(name: string, plan: string, maxServices: number): string {
     const tenant = this.tenantManager.create(name, plan, {
-      maxServices, maxPlugins: 10, maxRequestsPerSecond: 1000, storageMb: 1024,
+      maxServices,
+      maxPlugins: 10,
+      maxRequestsPerSecond: 1000,
+      storageMb: 1024,
     });
     return tenant.tenantId;
   }
@@ -454,7 +516,9 @@ export interface MigrationPlan {
 export class RuntimeMigrationCoordinator {
   plan(fromVersion: string, toVersion: string, steps: string[]): MigrationPlan {
     const planId = `mig-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ planId, fromVersion, toVersion, steps })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ planId, fromVersion, toVersion, steps }))
+      .digest('hex');
     return Object.freeze({ planId, fromVersion, toVersion, steps: [...steps], checksum });
   }
 }
@@ -470,8 +534,16 @@ export interface UpgradePlan {
 export class RuntimeUpgradeCoordinator {
   plan(currentVersion: string, targetVersion: string): UpgradePlan {
     const planId = `upg-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ planId, currentVersion, targetVersion })).digest('hex');
-    return Object.freeze({ planId, currentVersion, targetVersion, rollbackAvailable: true, checksum });
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ planId, currentVersion, targetVersion }))
+      .digest('hex');
+    return Object.freeze({
+      planId,
+      currentVersion,
+      targetVersion,
+      rollbackAvailable: true,
+      checksum,
+    });
   }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -481,7 +553,7 @@ export class RuntimeUpgradeCoordinator {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-17T03:52:18.611Z
+                at 2026-07-19T05:32:57.476Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

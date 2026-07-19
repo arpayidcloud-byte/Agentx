@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>29/29</span>
+                <span class='fraction'>36/36</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>29/29</span>
+                <span class='fraction'>36/36</span>
             </div>
         
             
@@ -92,13 +92,37 @@
 <a name='L27'></a><a href='#L27'>27</a>
 <a name='L28'></a><a href='#L28'>28</a>
 <a name='L29'></a><a href='#L29'>29</a>
-<a name='L30'></a><a href='#L30'>30</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -106,31 +130,22 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * @module provider-sdk/sdk
  * @description Master SDK class entrypoint for the Conformance Kit (PSCK).
  */
 &nbsp;
-import { IProvider } from '@agentx/runtime-adapters';
-import { ConformanceReport, ProviderManifest } from './interfaces.js';
+import type { IProvider } from '@agentx/runtime-adapters';
+import type { ConformanceReport, ProviderManifest } from './interfaces.js';
 import { ProviderRunner } from './provider-runner.js';
 import { ProviderValidator } from './provider-validator.js';
-import { ProviderPackager, ProviderBundle } from './provider-packager.js';
+import type { ProviderBundle } from './provider-packager.js';
+import { ProviderPackager } from './provider-packager.js';
 import { ValidationFailedError } from './errors.js';
 &nbsp;
 export class PSCK {
@@ -138,10 +153,16 @@ export class PSCK {
   private validator = new ProviderValidator();
   private packager = new ProviderPackager();
 &nbsp;
-  async validateAndRun(provider: IProvider, manifest: ProviderManifest): Promise&lt;ConformanceReport&gt; {
+  async validateAndRun(
+    provider: IProvider,
+    manifest: ProviderManifest,
+  ): Promise&lt;ConformanceReport&gt; {
     const valid = this.validator.validate(provider, manifest);
     if (!valid) {
-      throw new ValidationFailedError(`Provider validation failed against manifest ID: ${manifest.id}`, 'sdk');
+      throw new ValidationFailedError(
+        `Provider validation failed against manifest ID: ${manifest.id}`,
+        'sdk',
+      );
     }
     return this.runner.runSuite(provider);
   }
@@ -157,7 +178,7 @@ export class PSCK {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-15T13:57:23.939Z
+                at 2026-07-19T05:33:04.514Z
             </div>
         <script src="prettify.js"></script>
         <script>

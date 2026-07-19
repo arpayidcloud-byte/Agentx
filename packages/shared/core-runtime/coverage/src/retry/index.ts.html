@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>86/86</span>
+                <span class='fraction'>96/96</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>86/86</span>
+                <span class='fraction'>96/96</span>
             </div>
         
             
@@ -149,10 +149,29 @@
 <a name='L84'></a><a href='#L84'>84</a>
 <a name='L85'></a><a href='#L85'>85</a>
 <a name='L86'></a><a href='#L86'>86</a>
-<a name='L87'></a><a href='#L87'>87</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
@@ -177,7 +196,8 @@
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
@@ -201,13 +221,13 @@
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
@@ -234,9 +254,9 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { IRetryPolicy } from '../interfaces/scheduler.js';
-import { CancellationToken } from '../cancellation/index.js';
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import type { IRetryPolicy } from '../interfaces/scheduler.js';
+import type { CancellationToken } from '../cancellation/index.js';
 &nbsp;
 export class RetryPolicy implements IRetryPolicy {
   public readonly type: 'exponential' | 'linear' | 'constant';
@@ -247,20 +267,30 @@ export class RetryPolicy implements IRetryPolicy {
 &nbsp;
   private retryableErrors: string[];
 &nbsp;
-  constructor(config: {
-    type?: 'exponential' | 'linear' | 'constant';
-    maxAttempts?: number;
-    initialDelayMs?: number;
-    backoffMultiplier?: number;
-    maxDelayMs?: number;
-    retryableErrors?: string[];
-  } = {}) {
+  constructor(
+    config: {
+      type?: 'exponential' | 'linear' | 'constant';
+      maxAttempts?: number;
+      initialDelayMs?: number;
+      backoffMultiplier?: number;
+      maxDelayMs?: number;
+      retryableErrors?: string[];
+    } = {},
+  ) {
     this.type = config.type || 'exponential';
     this.maxAttempts = config.maxAttempts ?? 3;
     this.initialDelayMs = config.initialDelayMs ?? 1000;
     this.backoffMultiplier = config.backoffMultiplier ?? 2.0;
     this.maxDelayMs = config.maxDelayMs;
-    this.retryableErrors = config.retryableErrors || ['ECONNRESET', 'ETIMEDOUT', 'EAI_AGAIN', '429', '500', '502', '503'];
+    this.retryableErrors = config.retryableErrors || [
+      'ECONNRESET',
+      'ETIMEDOUT',
+      'EAI_AGAIN',
+      '429',
+      '500',
+      '502',
+      '503',
+    ];
   }
 &nbsp;
   public calculateDelay(attempt: number): number {
@@ -268,7 +298,7 @@ export class RetryPolicy implements IRetryPolicy {
 &nbsp;
     switch (this.type) {
       case 'linear':
-        delay = this.initialDelayMs + (this.initialDelayMs * attempt);
+        delay = this.initialDelayMs + this.initialDelayMs * attempt;
         break;
       case 'constant':
         delay = this.initialDelayMs;
@@ -290,15 +320,15 @@ export class RetryPolicy implements IRetryPolicy {
 &nbsp;
   public isRetryable(error: Error): boolean {
     const msg = error.message.toUpperCase();
-    return this.retryableErrors.some(code =&gt; msg.includes(code));
+    return this.retryableErrors.some((code) =&gt; msg.includes(code));
   }
 &nbsp;
   public async execute&lt;T&gt;(
     operation: () =&gt; Promise&lt;T&gt;,
-    cancellationToken?: CancellationToken
+    cancellationToken?: CancellationToken,
   ): Promise&lt;T&gt; {
     let lastError: Error | undefined;
-    
+&nbsp;
     for (let attempt = 0; attempt &lt;= this.maxAttempts; attempt++) {
       if (cancellationToken?.isCancelled) {
         throw new Error(`Operation cancelled: ${cancellationToken.reason}`);
@@ -308,13 +338,13 @@ export class RetryPolicy implements IRetryPolicy {
         return await operation();
       } catch (e: unknown) {
         lastError = e instanceof Error ? e : new Error(String(e));
-        
+&nbsp;
         if (attempt &gt;= this.maxAttempts || !this.isRetryable(lastError)) {
           throw lastError;
         }
 &nbsp;
         const delay = this.calculateDelay(attempt);
-        await new Promise(resolve =&gt; setTimeout(resolve, delay));
+        await new Promise((resolve) =&gt; setTimeout(resolve, delay));
       }
     }
 &nbsp;
@@ -328,7 +358,7 @@ export class RetryPolicy implements IRetryPolicy {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-14T12:27:39.028Z
+                at 2026-07-19T05:33:00.985Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

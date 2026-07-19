@@ -21,6 +21,18 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm typecheck
       - run: pnpm lint
+      - run: pnpm lint:deps
       - run: pnpm build
       - run: pnpm test
+      - run: pnpm test:coverage
+      - name: Setup handbook for lint & contract tests
+        run: git clone --depth 1 https://github.com/arpayidcloud-byte/agentx-handbook.git /tmp/agentx-handbook
       - run: pnpm lint:handbook
+        env:
+          AGENTX_HANDBOOK_DIR: /tmp/agentx-handbook
+      - name: Contract tests (handbook validation)
+        continue-on-error: true
+        run: |
+          cd /tmp/agentx-handbook
+          npm install --save-dev vitest 2>/dev/null
+          npx vitest run --reporter=verbose 08-Examples/

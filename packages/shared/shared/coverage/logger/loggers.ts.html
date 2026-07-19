@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>190/190</span>
+                <span class='fraction'>202/202</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>190/190</span>
+                <span class='fraction'>202/202</span>
             </div>
         
             
@@ -253,7 +253,19 @@
 <a name='L188'></a><a href='#L188'>188</a>
 <a name='L189'></a><a href='#L189'>189</a>
 <a name='L190'></a><a href='#L190'>190</a>
-<a name='L191'></a><a href='#L191'>191</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L191'></a><a href='#L191'>191</a>
+<a name='L192'></a><a href='#L192'>192</a>
+<a name='L193'></a><a href='#L193'>193</a>
+<a name='L194'></a><a href='#L194'>194</a>
+<a name='L195'></a><a href='#L195'>195</a>
+<a name='L196'></a><a href='#L196'>196</a>
+<a name='L197'></a><a href='#L197'>197</a>
+<a name='L198'></a><a href='#L198'>198</a>
+<a name='L199'></a><a href='#L199'>199</a>
+<a name='L200'></a><a href='#L200'>200</a>
+<a name='L201'></a><a href='#L201'>201</a>
+<a name='L202'></a><a href='#L202'>202</a>
+<a name='L203'></a><a href='#L203'>203</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -285,6 +297,16 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -423,6 +445,8 @@
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
@@ -443,7 +467,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { ILogger, LogLevel, LogContext, LogEntry, LoggerConfiguration } from './interfaces.js';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import type { ILogger, LogLevel, LogContext, LogEntry, LoggerConfiguration } from './interfaces.js';
 import { SecretRedactor } from '../redaction/redactor.js';
 import { TraceContext } from '../trace/context.js';
 &nbsp;
@@ -472,11 +496,21 @@ export abstract class BaseLogger implements ILogger {
     this.log('WARN', message, undefined, metadata, context);
   }
 &nbsp;
-  public error(message: string, error?: Error, metadata?: Record&lt;string, unknown&gt;, context?: LogContext): void {
+  public error(
+    message: string,
+    error?: Error,
+    metadata?: Record&lt;string, unknown&gt;,
+    context?: LogContext,
+  ): void {
     this.log('ERROR', message, error, metadata, context);
   }
 &nbsp;
-  public fatal(message: string, error?: Error, metadata?: Record&lt;string, unknown&gt;, context?: LogContext): void {
+  public fatal(
+    message: string,
+    error?: Error,
+    metadata?: Record&lt;string, unknown&gt;,
+    context?: LogContext,
+  ): void {
     this.log('FATAL', message, error, metadata, context);
   }
 &nbsp;
@@ -602,8 +636,8 @@ export class ConsoleLogger extends BaseLogger {
     const colorMap: Record&lt;LogLevel, string&gt; = {
       TRACE: '\x1b[90m', // grey
       DEBUG: '\x1b[36m', // cyan
-      INFO: '\x1b[32m',  // green
-      WARN: '\x1b[33m',  // yellow
+      INFO: '\x1b[32m', // green
+      WARN: '\x1b[33m', // yellow
       ERROR: '\x1b[31m', // red
       FATAL: '\x1b[41m\x1b[37m', // red background
     };
@@ -612,7 +646,9 @@ export class ConsoleLogger extends BaseLogger {
     const color = colorMap[entry.level<span class="branch-0 cbranch-no" title="branch not covered" >] || '';</span>
     const ctxString = entry.context ? ` [ctx:${JSON.stringify(entry.context)}]` : '';
     const metaString = entry.metadata ? ` [meta:${JSON.stringify(entry.metadata)}]` : '';
-    const errString = entry.error ? `\nError: ${entry.error.message}\n${entry.error.<span class="branch-0 cbranch-no" title="branch not covered" >stack || ''}</span>` : '';
+    const errString = entry.error
+      ? `\nError: ${entry.error.message}\n${entry.error.<span class="branch-0 cbranch-no" title="branch not covered" >stack || ''}</span>`
+      : '';
 &nbsp;
     const logLine = `${entry.timestamp} ${color}[${entry.level}]${reset} [${entry.module}] ${entry.message}${ctxString}${metaString}${errString}`;
 &nbsp;
@@ -640,7 +676,7 @@ export class ConsoleLogger extends BaseLogger {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-14T11:36:33.376Z
+                at 2026-07-19T05:32:48.014Z
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">98.77% </span>
+                <span class="strong">98.86% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>161/163</span>
+                <span class='fraction'>174/176</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">98.77% </span>
+                <span class="strong">98.86% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>161/163</span>
+                <span class='fraction'>174/176</span>
             </div>
         
             
@@ -226,7 +226,31 @@
 <a name='L161'></a><a href='#L161'>161</a>
 <a name='L162'></a><a href='#L162'>162</a>
 <a name='L163'></a><a href='#L163'>163</a>
-<a name='L164'></a><a href='#L164'>164</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a>
+<a name='L172'></a><a href='#L172'>172</a>
+<a name='L173'></a><a href='#L173'>173</a>
+<a name='L174'></a><a href='#L174'>174</a>
+<a name='L175'></a><a href='#L175'>175</a>
+<a name='L176'></a><a href='#L176'>176</a>
+<a name='L177'></a><a href='#L177'>177</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -321,6 +345,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
@@ -360,6 +385,7 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -389,15 +415,20 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { IMultiAgentOrchestrator, ResourceAllocation, ExecutionHistoryEntry } from './interfaces.js';
-import { TaskSplitter, DependencyAnalyzer, TaskGraphNode } from './task-splitter.js';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import type {
+  IMultiAgentOrchestrator,
+  ResourceAllocation,
+  ExecutionHistoryEntry,
+} from './interfaces.js';
+import type { TaskGraphNode } from './task-splitter.js';
+import { TaskSplitter, DependencyAnalyzer } from './task-splitter.js';
 import { AgentPool } from './agent-pool.js';
 import { ParallelRunner } from './parallel-runner.js';
 import { MessageBus } from './message-bus.js';
 import { ResourceManager } from './resource-manager.js';
 import { HeartbeatMonitor } from './heartbeat.js';
 import { SubAgentFactory } from './sub-agent-factory.js';
-import { IEventBus } from '@agentx/core-runtime';
+import type { IEventBus } from '@agentx/core-runtime';
 &nbsp;
 export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
   private splitter: TaskSplitter;
@@ -409,29 +440,35 @@ export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
   private heartbeatMonitor: HeartbeatMonitor;
   // private mergeEngine: MergeEngine;
 &nbsp;
-  private workflows = new Map&lt;string, {
-    nodes: TaskGraphNode[];
-    completedNodes: Set&lt;string&gt;;
-    history: ExecutionHistoryEntry[];
-    budget: ResourceAllocation;
-  }&gt;();
+  private workflows = new Map&lt;
+    string,
+    {
+      nodes: TaskGraphNode[];
+      completedNodes: Set&lt;string&gt;;
+      history: ExecutionHistoryEntry[];
+      budget: ResourceAllocation;
+    }
+  &gt;();
 &nbsp;
   constructor(globalEventBus: IEventBus) {
     this.splitter = new TaskSplitter();
     this.dependencyAnalyzer = new DependencyAnalyzer();
-    
+&nbsp;
     const factory = new SubAgentFactory();
-    this.pool = new AgentPool({
-      minAgents: 1,
-      maxAgents: 10,
-      idleTimeoutMs: 60000,
-      reuseIdleAgents: true,
-      spawnStrategy: 'lazy'
-    }, factory);
+    this.pool = new AgentPool(
+      {
+        minAgents: 1,
+        maxAgents: 10,
+        idleTimeoutMs: 60000,
+        reuseIdleAgents: true,
+        spawnStrategy: 'lazy',
+      },
+      factory,
+    );
 &nbsp;
     this.bus = new MessageBus(globalEventBus);
     this.runner = new ParallelRunner(this.pool, this.bus);
-    
+&nbsp;
     this.resourceManager = new ResourceManager({
       estimatedCpuTimeMs: 100000,
       estimatedMemoryBytes: 1024 * 1024 * 1024, // 1GB
@@ -448,9 +485,9 @@ export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
   public async createWorkflow(goal: string, budget: ResourceAllocation): Promise&lt;string&gt; {
     const workflowId = `wf-${Date.now()}`;
     const nodes = this.splitter.decomposeTask(goal, {}, budget);
-    
+&nbsp;
     this.dependencyAnalyzer.validateGraph(nodes);
-    
+&nbsp;
     this.workflows.set(workflowId, {
       nodes,
       completedNodes: new Set(),
@@ -485,34 +522,36 @@ export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
     let progress = true;
     while (progress &amp;&amp; wf.completedNodes.size &lt; wf.nodes.length) {
       progress = false;
-      
+&nbsp;
       // Find all ready nodes
-      const readyNodes = wf.nodes.filter(n =&gt; 
-        !wf.completedNodes.has(n.task.id) &amp;&amp;
-        n.task.dependsOn.every(dep =&gt; wf.completedNodes.has(dep))
+      const readyNodes = wf.nodes.filter(
+        (n) =&gt;
+          !wf.completedNodes.has(n.task.id) &amp;&amp;
+          n.task.dependsOn.every((dep) =&gt; wf.completedNodes.has(dep)),
       );
 &nbsp;
       if (readyNodes.length &gt; 0) {
         progress = true;
-        
+&nbsp;
         // Execute ready nodes in parallel
         const promises = readyNodes.map(async (node) =&gt; {
-          this.resourceManager.registerAgent(node.task.assignedAgentRole!, node.estimatedBudget);
-          
+          const agentRole = node.task.assignedAgentRole as string;
+          this.resourceManager.registerAgent(agentRole, node.estimatedBudget);
+&nbsp;
           const result = await this.runner.runParallel(
             node.task,
-            [node.task.assignedAgentRole as any],
-            {}
+            [agentRole as any],
+            {},
           );
 &nbsp;
-          this.resourceManager.unregisterAgent(node.task.assignedAgentRole!);
-          
+          this.resourceManager.unregisterAgent(agentRole);
+&nbsp;
           wf.completedNodes.add(node.task.id);
           executionResults[node.task.id] = result;
-          
+&nbsp;
           wf.history.push({
             timestamp: new Date(),
-            agentId: node.task.assignedAgentRole!,
+            agentId: agentRole,
             taskId: node.task.id,
             approvalRequired: false,
             retries: 0,
@@ -559,7 +598,7 @@ export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-14T17:27:15.235Z
+                at 2026-07-19T05:33:05.257Z
             </div>
         <script src="prettify.js"></script>
         <script>

@@ -1,6 +1,9 @@
 import type { ILogger } from '@agentx/shared';
-import type { CredentialResolver } from '@agentx/secrets';
 import type { TaskModel } from '../interfaces/task.js';
+
+export interface ICredentialResolver {
+  resolve(logicalKey: string): Promise<string>;
+}
 
 export interface ExecutionContextConfig {
   traceId: string;
@@ -9,7 +12,7 @@ export interface ExecutionContextConfig {
   agentId?: string;
   providerId?: string;
   logger: ILogger;
-  credentialResolver: CredentialResolver;
+  credentialResolver: ICredentialResolver;
   task: TaskModel;
 }
 
@@ -20,7 +23,7 @@ export class ExecutionContext {
   public readonly agentId?: string;
   public readonly providerId?: string;
   public readonly logger: ILogger;
-  public readonly credentialResolver: CredentialResolver;
+  public readonly credentialResolver: ICredentialResolver;
   public readonly task: TaskModel;
 
   private scopedVars = new Map<string, unknown>();

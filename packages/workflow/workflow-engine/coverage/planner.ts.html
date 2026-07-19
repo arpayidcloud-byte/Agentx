@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">98.96% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>92/92</span>
+                <span class='fraction'>96/97</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">98.96% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>92/92</span>
+                <span class='fraction'>96/97</span>
             </div>
         
             
@@ -155,7 +155,12 @@
 <a name='L90'></a><a href='#L90'>90</a>
 <a name='L91'></a><a href='#L91'>91</a>
 <a name='L92'></a><a href='#L92'>92</a>
-<a name='L93'></a><a href='#L93'>93</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -194,7 +199,6 @@
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">25x</span>
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-yes">15x</span>
@@ -239,11 +243,17 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">17x</span>
 <span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-yes">17x</span>
 <span class="cline-any cline-yes">17x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -252,9 +262,9 @@
  * @description ExecutionPlanner for dependency ordering, priority calculation, and parallel batching.
  */
 &nbsp;
-import { WorkflowDefinition, WorkflowNode, WorkflowEdge } from './interfaces.js';
-import { ExecutionPlan, ExecutionBatch, ResourceAllocationPlan } from './interfaces-v2.js';
-import { topologicalSort, getPredecessors, isNodeReady, detectCycle } from './graph.js';
+import type { WorkflowDefinition, WorkflowNode, WorkflowEdge } from './interfaces.js';
+import type { ExecutionPlan, ExecutionBatch } from './interfaces-v2.js';
+import { topologicalSort, isNodeReady } from './graph.js';
 &nbsp;
 export class ExecutionPlanner {
   public plan(workflow: WorkflowDefinition): ExecutionPlan {
@@ -285,20 +295,19 @@ export class ExecutionPlanner {
 &nbsp;
     while (completedNodes.size &lt; sortedNodes.length) {
       const ready = sortedNodes.filter(
-        n =&gt; !completedNodes.has(n.id) &amp;&amp;
-        isNodeReady(n.id, edges, completedNodes)
+        (n) =&gt; !completedNodes.has(n.id) &amp;&amp; isNodeReady(n.id, edges, completedNodes),
       );
 &nbsp;
       if (ready.length === 0) <span class="branch-0 cbranch-no" title="branch not covered" >break;</span>
 &nbsp;
       batches.push({
         batchIndex: batchIndex++,
-        nodeIds: ready.map(n =&gt; n.id),
-        estimatedDurationMs: Math.max(...ready.map(n =&gt; this.estimateNodeDuration(n))),
+        nodeIds: ready.map((n) =&gt; n.id),
+        estimatedDurationMs: Math.max(...ready.map((n) =&gt; this.estimateNodeDuration(n))),
         canRunInParallel: ready.length &gt; 1,
       });
 &nbsp;
-      ready.forEach(n =&gt; completedNodes.add(n.id));
+      ready.forEach((n) =&gt; completedNodes.add(n.id));
     }
 &nbsp;
     return batches;
@@ -306,7 +315,7 @@ export class ExecutionPlanner {
 &nbsp;
   public calculateCriticalPath(workflow: WorkflowDefinition): string[] {
     const sorted = topologicalSort(workflow.nodes, workflow.edges);
-    return sorted.map(n =&gt; n.id);
+    return sorted.map((n) =&gt; n.id);
   }
 &nbsp;
   public estimateParallelism(workflow: WorkflowDefinition): number {
@@ -322,7 +331,7 @@ export class ExecutionPlanner {
       inDegree.set(edge.target, (inDegree.get(edge.target) || 0) + 1);
     }
 &nbsp;
-    const zeroCount = Array.from(inDegree.values()).filter(d =&gt; d === 0).length;
+    const zeroCount = Array.from(inDegree.values()).filter((d) =&gt; d === 0).length;
     maxParallel = Math.max(maxParallel, zeroCount);
 &nbsp;
     return maxParallel;
@@ -330,12 +339,18 @@ export class ExecutionPlanner {
 &nbsp;
   private estimateNodeDuration(node: WorkflowNode): number {
     switch (node.config.type) {
-      case 'tool': return 2000;
-      case 'agent': return 5000;
-      case 'approval': return 30000;
-<span class="branch-0 cbranch-no" title="branch not covered" >      case 'parallel': return 3000;</span>
-      case 'loop': return 10000;
-      default: return 1000;
+      case 'tool':
+        return 2000;
+      case 'agent':
+        return 5000;
+      case 'approval':
+        return 30000;
+<span class="branch-0 cbranch-no" title="branch not covered" >      case 'parallel':</span>
+<span class="cstat-no" title="statement not covered" >        return 3000;</span>
+      case 'loop':
+        return 10000;
+      default:
+        return 1000;
     }
   }
 }
@@ -346,7 +361,7 @@ export class ExecutionPlanner {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-14T18:13:05.125Z
+                at 2026-07-19T05:32:47.268Z
             </div>
         <script src="prettify.js"></script>
         <script>

@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">91.66% </span>
+                <span class="strong">92.42% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>165/180</span>
+                <span class='fraction'>183/198</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">91.66% </span>
+                <span class="strong">92.42% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>165/180</span>
+                <span class='fraction'>183/198</span>
             </div>
         
             
@@ -243,7 +243,25 @@
 <a name='L178'></a><a href='#L178'>178</a>
 <a name='L179'></a><a href='#L179'>179</a>
 <a name='L180'></a><a href='#L180'>180</a>
-<a name='L181'></a><a href='#L181'>181</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L181'></a><a href='#L181'>181</a>
+<a name='L182'></a><a href='#L182'>182</a>
+<a name='L183'></a><a href='#L183'>183</a>
+<a name='L184'></a><a href='#L184'>184</a>
+<a name='L185'></a><a href='#L185'>185</a>
+<a name='L186'></a><a href='#L186'>186</a>
+<a name='L187'></a><a href='#L187'>187</a>
+<a name='L188'></a><a href='#L188'>188</a>
+<a name='L189'></a><a href='#L189'>189</a>
+<a name='L190'></a><a href='#L190'>190</a>
+<a name='L191'></a><a href='#L191'>191</a>
+<a name='L192'></a><a href='#L192'>192</a>
+<a name='L193'></a><a href='#L193'>193</a>
+<a name='L194'></a><a href='#L194'>194</a>
+<a name='L195'></a><a href='#L195'>195</a>
+<a name='L196'></a><a href='#L196'>196</a>
+<a name='L197'></a><a href='#L197'>197</a>
+<a name='L198'></a><a href='#L198'>198</a>
+<a name='L199'></a><a href='#L199'>199</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -340,6 +358,11 @@
 <span class="cline-any cline-yes">35x</span>
 <span class="cline-any cline-yes">35x</span>
 <span class="cline-any cline-yes">35x</span>
+<span class="cline-any cline-yes">32x</span>
+<span class="cline-any cline-yes">32x</span>
+<span class="cline-any cline-yes">35x</span>
+<span class="cline-any cline-yes">35x</span>
+<span class="cline-any cline-yes">32x</span>
 <span class="cline-any cline-yes">35x</span>
 <span class="cline-any cline-yes">35x</span>
 <span class="cline-any cline-yes">35x</span>
@@ -421,6 +444,19 @@
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
@@ -429,7 +465,7 @@
  * working directory, and detects dangerous patterns.
  */
 &nbsp;
-import { ParsedCommand } from './interfaces.js';
+import type { ParsedCommand } from './interfaces.js';
 import { CommandParseError } from './errors.js';
 &nbsp;
 /** Dangerous shell patterns per Volume 7 and Threat Model T-002 */
@@ -482,9 +518,9 @@ export function parseCommand(command: string): ParsedCommand {
 &nbsp;
   // Extract working directory if present (-C or --directory)
   let workingDirectory: string | undefined;
-  let args: string[] = [];
-  let flags: string[] = [];
-  let envOverrides: Record&lt;string, string&gt; = {};
+  const args: string[] = [];
+  const flags: string[] = [];
+  const envOverrides: Record&lt;string, string&gt; = {};
 &nbsp;
   for (let i = 0; i &lt; rest.length; i++) {
     const token = rest[i<span class="branch-0 cbranch-no" title="branch not covered" >] || '';</span>
@@ -518,8 +554,13 @@ export function parseCommand(command: string): ParsedCommand {
     workingDirectory: workingDirectory || undefined,
     envOverrides,
     hasPipe: detectedPatterns.includes('pipe'),
-    hasRedirection: detectedPatterns.includes('redirection') || detectedPatterns.includes('append redirection') || detectedPatterns.includes('input redirection'),
-    hasSubshell: detectedPatterns.includes('command substitution') || detectedPatterns.includes('backtick substitution'),
+    hasRedirection:
+      detectedPatterns.includes('redirection') ||
+      detectedPatterns.includes('append redirection') ||
+      detectedPatterns.includes('input redirection'),
+    hasSubshell:
+      detectedPatterns.includes('command substitution') ||
+      detectedPatterns.includes('backtick substitution'),
     rawCommand,
   };
 }
@@ -597,10 +638,23 @@ export function detectDangerousPatterns(command: string): string[] {
  * @returns Array of injection pattern names
  */
 export function detectInjectionPatterns(command: string): string[] {
-  return detectDangerousPatterns(command).filter(name =&gt;
-    ['semicolon', 'logical AND', 'logical OR', 'command substitution', 'backtick substitution',
-     'bash -c', 'sh -c', 'eval', 'exec', 'source', 'curl | bash', 'wget | bash',
-     'curl | sh', 'wget | sh'].includes(name)
+  return detectDangerousPatterns(command).filter((name) =&gt;
+    [
+      'semicolon',
+      'logical AND',
+      'logical OR',
+      'command substitution',
+      'backtick substitution',
+      'bash -c',
+      'sh -c',
+      'eval',
+      'exec',
+      'source',
+      'curl | bash',
+      'wget | bash',
+      'curl | sh',
+      'wget | sh',
+    ].includes(name),
   );
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -610,7 +664,7 @@ export function detectInjectionPatterns(command: string): string[] {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-14T14:47:48.020Z
+                at 2026-07-19T05:32:47.657Z
             </div>
         <script src="../prettify.js"></script>
         <script>

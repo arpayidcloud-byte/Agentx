@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>52/52</span>
+                <span class='fraction'>64/64</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>52/52</span>
+                <span class='fraction'>64/64</span>
             </div>
         
             
@@ -115,7 +115,19 @@
 <a name='L50'></a><a href='#L50'>50</a>
 <a name='L51'></a><a href='#L51'>51</a>
 <a name='L52'></a><a href='#L52'>52</a>
-<a name='L53'></a><a href='#L53'>53</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -129,6 +141,9 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
@@ -149,6 +164,11 @@
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -159,14 +179,18 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { createHash } from 'crypto';
 &nbsp;
 export interface AuditEntry {
@@ -183,9 +207,17 @@ export interface AuditEntry {
 export class DistributedAuditManager {
   private entries: AuditEntry[] = [];
 &nbsp;
-  log(traceId: string, nodeId: string, sessionId: string, action: string, metadata: Record&lt;string, unknown&gt;): AuditEntry {
+  log(
+    traceId: string,
+    nodeId: string,
+    sessionId: string,
+    action: string,
+    metadata: Record&lt;string, unknown&gt;,
+  ): AuditEntry {
     const entryId = `da-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-    const checksum = createHash('sha256').update(JSON.stringify({ traceId, nodeId, sessionId, action, metadata })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ traceId, nodeId, sessionId, action, metadata }))
+      .digest('hex');
     const entry: AuditEntry = Object.freeze({
       entryId,
       traceId,
@@ -201,21 +233,25 @@ export class DistributedAuditManager {
   }
 &nbsp;
   verifyIntegrity(sessionId: string): boolean {
-    const filtered = this.entries.filter(e =&gt; e.sessionId === sessionId);
-    return filtered.every(e =&gt; {
-      const computed = createHash('sha256').update(JSON.stringify({
-        traceId: e.traceId,
-        nodeId: e.nodeId,
-        sessionId: e.sessionId,
-        action: e.action,
-        metadata: e.metadata,
-      })).digest('hex');
+    const filtered = this.entries.filter((e) =&gt; e.sessionId === sessionId);
+    return filtered.every((e) =&gt; {
+      const computed = createHash('sha256')
+        .update(
+          JSON.stringify({
+            traceId: e.traceId,
+            nodeId: e.nodeId,
+            sessionId: e.sessionId,
+            action: e.action,
+            metadata: e.metadata,
+          }),
+        )
+        .digest('hex');
       return computed === e.checksum;
     });
   }
 &nbsp;
   getEntries(sessionId?: string): AuditEntry[] {
-    if (sessionId) return this.entries.filter(e =&gt; e.sessionId === sessionId);
+    if (sessionId) return this.entries.filter((e) =&gt; e.sessionId === sessionId);
     return [...this.entries];
   }
 }
@@ -226,7 +262,7 @@ export class DistributedAuditManager {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-17T02:38:42.602Z
+                at 2026-07-19T05:32:57.286Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

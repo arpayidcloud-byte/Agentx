@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.54% </span>
+                <span class="strong">83.95% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>66/79</span>
+                <span class='fraction'>68/81</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.54% </span>
+                <span class="strong">83.95% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>66/79</span>
+                <span class='fraction'>68/81</span>
             </div>
         
             
@@ -142,7 +142,9 @@
 <a name='L77'></a><a href='#L77'>77</a>
 <a name='L78'></a><a href='#L78'>78</a>
 <a name='L79'></a><a href='#L79'>79</a>
-<a name='L80'></a><a href='#L80'>80</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -187,7 +189,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -203,6 +204,9 @@
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">30x</span>
@@ -223,7 +227,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import * as path from 'path';
 import * as fs from 'fs/promises';
-import { IPathResolver } from './interfaces.js';
+import type { IPathResolver } from './interfaces.js';
 import { PathTraversalError, WorkspaceEscapeError } from './errors.js';
 &nbsp;
 export class PathResolver implements IPathResolver {
@@ -234,10 +238,10 @@ export class PathResolver implements IPathResolver {
 <span class="cstat-no" title="statement not covered" >    const normalized = this.canonicalize(requestPath);</span>
 <span class="cstat-no" title="statement not covered" >    const absolute = path.resolve(workspaceRoot, normalized);</span>
 <span class="cstat-no" title="statement not covered" >    const realPath = await this.resolveRealPath(absolute);</span>
-<span class="cstat-no" title="statement not covered" >    </span>
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    this.validateWorkspaceJail(realPath, workspaceRoot);</span>
 <span class="cstat-no" title="statement not covered" >    this.validateSymlinkEscape(realPath);</span>
-<span class="cstat-no" title="statement not covered" >    </span>
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    return realPath;</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
@@ -247,7 +251,7 @@ export class PathResolver implements IPathResolver {
 &nbsp;
   public detectTraversal(rawPath: string): void {
     const parts = rawPath.split(path.sep).filter(Boolean);
-    
+&nbsp;
     for (const part of parts) {
       if (part === '..') {
         throw new PathTraversalError(rawPath, 'Relative parent directory traversal detected');
@@ -262,7 +266,6 @@ export class PathResolver implements IPathResolver {
       throw new PathTraversalError(rawPath, 'Windows UNC path attempt detected');
     }
   }
-&nbsp;
 &nbsp;
   public async resolveRealPath(absolutePath: string): Promise&lt;string&gt; {
     try {
@@ -282,7 +285,10 @@ export class PathResolver implements IPathResolver {
     const lowerPath = rawPath.toLowerCase();
     for (const blocked of PathResolver.BLOCKED_DIRS) {
       if (lowerPath.startsWith(blocked + '/') || lowerPath === blocked) {
-        throw new PathTraversalError(rawPath, `Attempt to access restricted system directory ${blocked}`);
+        throw new PathTraversalError(
+          rawPath,
+          `Attempt to access restricted system directory ${blocked}`,
+        );
       }
     }
   }
@@ -307,7 +313,7 @@ export class PathResolver implements IPathResolver {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-14T14:47:48.020Z
+                at 2026-07-19T05:32:47.657Z
             </div>
         <script src="../prettify.js"></script>
         <script>

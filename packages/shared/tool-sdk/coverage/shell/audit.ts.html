@@ -212,52 +212,52 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-yes">13x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">40x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -342,7 +342,7 @@
  * Follows Volume 2 Event Bus patterns and Volume 13 Observability requirements.
  */
 &nbsp;
-import { ShellAuditEvent, ToolCategory } from './interfaces.js';
+import type { ShellAuditEvent, ToolCategory } from './interfaces.js';
 &nbsp;
 /**
  * In-memory audit emitter for shell execution events
@@ -375,7 +375,7 @@ export class ShellAuditEmitter {
    * @returns Filtered audit events
    */
   getEventsByType(eventType: ShellAuditEvent['eventType']): ShellAuditEvent[] {
-    return this.events.filter(e =&gt; e.eventType === eventType);
+    return this.events.filter((e) =&gt; e.eventType === eventType);
   }
 &nbsp;
   /**
@@ -384,7 +384,7 @@ export class ShellAuditEmitter {
    * @returns Filtered audit events
    */
   getEventsByTask(taskId: string): ShellAuditEvent[] {
-    return this.events.filter(e =&gt; e.taskId === taskId);
+    return this.events.filter((e) =&gt; e.taskId === taskId);
   }
 &nbsp;
   /**
@@ -403,7 +403,7 @@ export function createToolInvokedEvent(
   category: ToolCategory,
   taskId: string,
   traceId: string,
-  agentRole: string
+  agentRole: string,
 ): ShellAuditEvent {
   return {
     eventType: 'tool.invoked',
@@ -430,7 +430,7 @@ export function createToolFinishedEvent(
   taskId: string,
   traceId: string,
   agentRole: string,
-  timedOut: boolean = false
+  timedOut: boolean = false,
 ): ShellAuditEvent {
   return {
     eventType: 'tool.finished',
@@ -458,7 +458,7 @@ export function createToolFailedEvent(
   taskId: string,
   traceId: string,
   agentRole: string,
-  _reason: string
+  _reason: string,
 ): ShellAuditEvent {
   return {
     eventType: 'tool.failed',
@@ -478,7 +478,7 @@ export function createToolFailedEvent(
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-14T14:47:48.020Z
+                at 2026-07-19T05:32:47.657Z
             </div>
         <script src="../prettify.js"></script>
         <script>

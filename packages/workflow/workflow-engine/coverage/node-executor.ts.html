@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">98.21% </span>
+                <span class="strong">98.47% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>110/112</span>
+                <span class='fraction'>129/131</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">98.21% </span>
+                <span class="strong">98.47% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>110/112</span>
+                <span class='fraction'>129/131</span>
             </div>
         
             
@@ -175,8 +175,26 @@
 <a name='L110'></a><a href='#L110'>110</a>
 <a name='L111'></a><a href='#L111'>111</a>
 <a name='L112'></a><a href='#L112'>112</a>
-<a name='L113'></a><a href='#L113'>113</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a>
+<a name='L116'></a><a href='#L116'>116</a>
+<a name='L117'></a><a href='#L117'>117</a>
+<a name='L118'></a><a href='#L118'>118</a>
+<a name='L119'></a><a href='#L119'>119</a>
+<a name='L120'></a><a href='#L120'>120</a>
+<a name='L121'></a><a href='#L121'>121</a>
+<a name='L122'></a><a href='#L122'>122</a>
+<a name='L123'></a><a href='#L123'>123</a>
+<a name='L124'></a><a href='#L124'>124</a>
+<a name='L125'></a><a href='#L125'>125</a>
+<a name='L126'></a><a href='#L126'>126</a>
+<a name='L127'></a><a href='#L127'>127</a>
+<a name='L128'></a><a href='#L128'>128</a>
+<a name='L129'></a><a href='#L129'>129</a>
+<a name='L130'></a><a href='#L130'>130</a>
+<a name='L131'></a><a href='#L131'>131</a>
+<a name='L132'></a><a href='#L132'>132</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -222,6 +240,11 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -236,6 +259,11 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -263,6 +291,11 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -275,6 +308,11 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -290,30 +328,29 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * @module workflow-engine/node-executor
  * @description NodeExecutor provides isolated execution logic for each node type.
- * Each node type has its own execution method. Future types are extensible.
  */
 &nbsp;
-import { WorkflowNode, NodeConfig } from './interfaces.js';
-import { INodeExecutor } from './interfaces-v2.js';
+import type { WorkflowNode } from './interfaces.js';
+import type { INodeExecutor } from './interfaces-v2.js';
 &nbsp;
 export class NodeExecutor implements INodeExecutor {
   public async executeNode(
     node: WorkflowNode,
-    context: Record&lt;string, unknown&gt;
+    _context: Record&lt;string, unknown&gt;,
   ): Promise&lt;unknown&gt; {
     switch (node.config.type) {
       case 'tool':
-        return this.executeToolNode(node, context);
+        return this.executeToolNode(node, _context);
       case 'agent':
-        return this.executeAgentNode(node, context);
+        return this.executeAgentNode(node, _context);
       case 'approval':
-        return this.executeApprovalNode(node, context);
+        return this.executeApprovalNode(node, _context);
 <span class="branch-0 cbranch-no" title="branch not covered" >      case 'parallel':</span>
-<span class="cstat-no" title="statement not covered" >        return this.executeParallelNode(node, context);</span>
+<span class="cstat-no" title="statement not covered" >        return this.executeParallelNode(node, _context);</span>
       case 'loop':
-        return this.executeLoopNode(node, context);
+        return this.executeLoopNode(node, _context);
       case 'conditional':
-        return this.executeConditionalNode(node, context);
+        return this.executeConditionalNode(node, _context);
       case 'task':
         return { status: 'completed', type: 'task', goal: (node.config as any).goal };
 <span class="branch-0 cbranch-no" title="branch not covered" >      default:</span>
@@ -323,9 +360,14 @@ export class NodeExecutor implements INodeExecutor {
 &nbsp;
   public async executeToolNode(
     node: WorkflowNode,
-    context: Record&lt;string, unknown&gt;
+    _context: Record&lt;string, unknown&gt;,
   ): Promise&lt;unknown&gt; {
-    const config = node.config as { type: 'tool'; toolName: string; category: string; arguments: Record&lt;string, unknown&gt; };
+    const config = node.config as {
+      type: 'tool';
+      toolName: string;
+      category: string;
+      arguments: Record&lt;string, unknown&gt;;
+    };
     return {
       status: 'completed',
       type: 'tool',
@@ -337,9 +379,14 @@ export class NodeExecutor implements INodeExecutor {
 &nbsp;
   public async executeAgentNode(
     node: WorkflowNode,
-    context: Record&lt;string, unknown&gt;
+    _context: Record&lt;string, unknown&gt;,
   ): Promise&lt;unknown&gt; {
-    const config = node.config as { type: 'agent'; role: string; goal: string; context?: Record&lt;string, unknown&gt; };
+    const config = node.config as {
+      type: 'agent';
+      role: string;
+      goal: string;
+      context?: Record&lt;string, unknown&gt;;
+    };
     return {
       status: 'completed',
       type: 'agent',
@@ -351,7 +398,7 @@ export class NodeExecutor implements INodeExecutor {
 &nbsp;
   public async executeApprovalNode(
     node: WorkflowNode,
-    context: Record&lt;string, unknown&gt;
+    _context: Record&lt;string, unknown&gt;,
   ): Promise&lt;unknown&gt; {
     const config = node.config as { type: 'approval'; riskScore: number; approvers?: string[] };
     return {
@@ -364,7 +411,7 @@ export class NodeExecutor implements INodeExecutor {
 &nbsp;
   public async executeParallelNode(
     node: WorkflowNode,
-    context: Record&lt;string, unknown&gt;
+    _context: Record&lt;string, unknown&gt;,
   ): Promise&lt;unknown&gt; {
     const config = node.config as { type: 'parallel'; branches: string[] };
     const results: unknown[] = [];
@@ -376,9 +423,14 @@ export class NodeExecutor implements INodeExecutor {
 &nbsp;
   public async executeLoopNode(
     node: WorkflowNode,
-    context: Record&lt;string, unknown&gt;
+    _context: Record&lt;string, unknown&gt;,
   ): Promise&lt;unknown&gt; {
-    const config = node.config as { type: 'loop'; iterator: string; maxIterations: number; body: string[] };
+    const config = node.config as {
+      type: 'loop';
+      iterator: string;
+      maxIterations: number;
+      body: string[];
+    };
     const iterations: unknown[] = [];
     for (let i = 0; i &lt; Math.min(config.maxIterations, 10); i++) {
       iterations.push({ iteration: i, status: 'completed' });
@@ -388,9 +440,14 @@ export class NodeExecutor implements INodeExecutor {
 &nbsp;
   public async executeConditionalNode(
     node: WorkflowNode,
-    context: Record&lt;string, unknown&gt;
+    _context: Record&lt;string, unknown&gt;,
   ): Promise&lt;unknown&gt; {
-    const config = node.config as { type: 'conditional'; condition: string; trueBranch: string; falseBranch: string };
+    const config = node.config as {
+      type: 'conditional';
+      condition: string;
+      trueBranch: string;
+      falseBranch: string;
+    };
     return {
       status: 'completed',
       type: 'conditional',
@@ -406,7 +463,7 @@ export class NodeExecutor implements INodeExecutor {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-14T18:13:05.125Z
+                at 2026-07-19T05:32:47.268Z
             </div>
         <script src="prettify.js"></script>
         <script>

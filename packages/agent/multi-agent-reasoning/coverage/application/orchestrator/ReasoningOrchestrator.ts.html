@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>84/84</span>
+                <span class='fraction'>89/89</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>84/84</span>
+                <span class='fraction'>89/89</span>
             </div>
         
             
@@ -147,7 +147,13 @@
 <a name='L82'></a><a href='#L82'>82</a>
 <a name='L83'></a><a href='#L83'>83</a>
 <a name='L84'></a><a href='#L84'>84</a>
-<a name='L85'></a><a href='#L85'>85</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -180,9 +186,8 @@
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
@@ -202,8 +207,8 @@
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -221,8 +226,13 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -230,13 +240,13 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * @module multi-agent-reasoning/application/orchestrator/ReasoningOrchestrator
  * @description Orchestrates multi-agent reasoning sessions.
  */
 &nbsp;
-import { CollaborationSession } from '../../domain/collaboration/interfaces.js';
+import type { CollaborationSession } from '../../domain/collaboration/interfaces.js';
 import { CollaborationSessionManager } from '../../domain/collaboration/CollaborationSessionManager.js';
 import { TaskDelegationEngine } from '../../domain/collaboration/TaskDelegationEngine.js';
 import { SharedContextManager } from '../../domain/context/SharedContextManager.js';
@@ -272,7 +282,7 @@ export class ReasoningOrchestrator {
     this.eventBus.publish('collaboration.session.created', { sessionId: session.id });
 &nbsp;
     const plan = this.planner.plan(goalId, agentIds);
-    
+&nbsp;
     for (const agentId of agentIds) {
       const delegation = this.delegationEngine.delegate(`task-${agentId}`, agentId, goalId, 5);
       this.scheduler.schedule(delegation);
@@ -291,7 +301,7 @@ export class ReasoningOrchestrator {
     await this.hooks.runBeforeCollaboration(session.id);
     this.auditManager.log(session.traceId, session.id, 'reasoning.started', {});
 &nbsp;
-    const decisions = session.participants.map(p =&gt; ({
+    const decisions = session.participants.map((p) =&gt; ({
       agentId: p,
       decision: `decision-${p}`,
       confidence: 0.9,
@@ -301,7 +311,12 @@ export class ReasoningOrchestrator {
 &nbsp;
     this.sessionManager.completeSession(session.id);
     await this.hooks.runAfterCollaboration(session.id, output);
-    this.auditManager.log(session.traceId, session.id, 'reasoning.completed', output as unknown as Record&lt;string, unknown&gt;);
+    this.auditManager.log(
+      session.traceId,
+      session.id,
+      'reasoning.completed',
+      output as unknown as Record&lt;string, unknown&gt;,
+    );
 &nbsp;
     return { sessionId: session.id, success: true, output };
   }
@@ -322,7 +337,7 @@ export class ReasoningOrchestrator {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-17T02:38:42.860Z
+                at 2026-07-19T05:32:50.827Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

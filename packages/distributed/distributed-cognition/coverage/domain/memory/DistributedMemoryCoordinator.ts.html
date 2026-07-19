@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>57/57</span>
+                <span class='fraction'>61/61</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>57/57</span>
+                <span class='fraction'>61/61</span>
             </div>
         
             
@@ -120,7 +120,14 @@
 <a name='L55'></a><a href='#L55'>55</a>
 <a name='L56'></a><a href='#L56'>56</a>
 <a name='L57'></a><a href='#L57'>57</a>
-<a name='L58'></a><a href='#L58'>58</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -138,9 +145,8 @@
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
@@ -149,12 +155,12 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -166,25 +172,29 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { createHash } from 'crypto';
-import { MemoryEntry, MemorySnapshot } from './interfaces.js';
+import type { MemoryEntry, MemorySnapshot } from './interfaces.js';
 &nbsp;
 export class DistributedMemoryCoordinator {
   private entries = new Map&lt;string, MemoryEntry&gt;();
 &nbsp;
   set(key: string, value: unknown, nodeId: string, ttlMs: number = 600000): MemoryEntry {
-    const checksum = createHash('sha256').update(JSON.stringify({ key, value, nodeId })).digest('hex');
+    const checksum = createHash('sha256')
+      .update(JSON.stringify({ key, value, nodeId }))
+      .digest('hex');
     const entry: MemoryEntry = Object.freeze({
       key,
       value: typeof value === 'object' ? JSON.parse(JSON.stringify(value)) : value,
@@ -212,8 +222,10 @@ export class DistributedMemoryCoordinator {
   }
 &nbsp;
   snapshot(nodeId: string): MemorySnapshot {
-    const entries = Array.from(this.entries.values()).filter(e =&gt; e.nodeId === nodeId);
-    const checksum = createHash('sha256').update(JSON.stringify(entries.map(e =&gt; ({ key: e.key, version: e.checksum })))).digest('hex');
+    const entries = Array.from(this.entries.values()).filter((e) =&gt; e.nodeId === nodeId);
+    const checksum = createHash('sha256')
+      .update(JSON.stringify(entries.map((e) =&gt; ({ key: e.key, version: e.checksum }))))
+      .digest('hex');
     return Object.freeze({
       snapshotId: `snap-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,
       nodeId,
@@ -241,7 +253,7 @@ export class DistributedMemoryCoordinator {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-17T02:38:42.602Z
+                at 2026-07-19T05:32:57.286Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
