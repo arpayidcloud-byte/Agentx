@@ -1,5 +1,5 @@
 /// <reference types="node" resolution-mode="require"/>
-import { Provider, ProviderCapabilities, ProviderConfiguration, ProviderStatus, CompletionRequest, CompletionResponse } from './interfaces.js';
+import type { Provider, ProviderCapabilities, ProviderConfiguration, ProviderStatus, CompletionRequest, CompletionResponse } from './interfaces.js';
 import { CircuitBreaker } from './resilience.js';
 import { CostCalculator } from './metrics.js';
 export declare abstract class BaseProvider implements Provider {

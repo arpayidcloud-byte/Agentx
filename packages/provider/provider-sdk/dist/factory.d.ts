@@ -1,6 +1,6 @@
-import { Provider, ProviderConfiguration, ProviderCapabilities, ProviderStatus } from './interfaces.js';
-import { CredentialResolver } from '@agentx/secrets';
-import { ProviderRegistry } from './registry.js';
+import type { Provider, ProviderConfiguration, ProviderCapabilities, ProviderStatus } from './interfaces.js';
+import type { CredentialResolver } from './conformance/credential-resolver.js';
+import type { ProviderRegistry } from './registry.js';
 export declare class ProviderFactory {
     private readonly credentialResolver;
     constructor(credentialResolver: CredentialResolver);

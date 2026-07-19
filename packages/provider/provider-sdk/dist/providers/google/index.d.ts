@@ -1,6 +1,6 @@
 import { BaseProvider } from '../../base-provider.js';
-import { CompletionRequest, CompletionResponse, ProviderCapabilities, ProviderConfiguration } from '../../interfaces.js';
-import { CredentialResolver } from '@agentx/secrets';
+import type { CompletionRequest, CompletionResponse, ProviderCapabilities, ProviderConfiguration } from '../../interfaces.js';
+import type { CredentialResolver } from '../../conformance/credential-resolver.js';
 export interface GoogleProviderConfig extends ProviderConfiguration {
     credentialResolver: CredentialResolver;
 }

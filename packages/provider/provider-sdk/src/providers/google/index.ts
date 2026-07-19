@@ -70,17 +70,18 @@ export class GoogleProvider extends BaseProvider {
       ];
     }
 
-    const response = await model.generateContent({
+    const request = {
       contents,
       systemInstruction: req.systemPrompt
         ? { role: 'system', parts: [{ text: req.systemPrompt }] }
         : undefined,
-      tools: tools,
+      tools,
       generationConfig: {
         maxOutputTokens: req.maxTokens,
         temperature: req.temperature,
       },
-    });
+    };
+    const response = await model.generateContent(request as any);
 
     const result = response.response;
     const text = result.text() || '';

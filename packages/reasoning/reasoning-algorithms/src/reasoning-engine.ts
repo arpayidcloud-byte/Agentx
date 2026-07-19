@@ -4,7 +4,6 @@
  */
 
 import type { Rule, DecisionTree, ReasoningMetrics } from './interfaces.js';
-import { Hypothesis } from './interfaces.js';
 import { ForwardChaining } from './forward-chaining.js';
 import { BackwardChaining } from './backward-chaining.js';
 import { DecisionTreeEngine } from './decision-tree.js';
@@ -18,7 +17,6 @@ import { CheckpointManager } from './checkpoint.js';
 import { RecoveryManager } from './recovery.js';
 import { ReasoningHookManager } from './hooks.js';
 import { ReasoningEventBus } from './events.js';
-import { createHash } from 'crypto';
 import { IntegrityError } from './errors.js';
 
 export class ReasoningEngine {
@@ -58,7 +56,6 @@ export class ReasoningEngine {
     this.validator.validateRules(rules);
 
     try {
-      const start = Date.now();
       const result = this.forwardChaining.execute(facts, rules);
       const depth = result.size;
 

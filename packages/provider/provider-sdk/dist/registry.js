@@ -1,4 +1,4 @@
-import { CircuitBreakerOpenError, ProviderError, ProviderTimeoutError, ProviderRateLimitError } from './errors.js';
+import { CircuitBreakerOpenError, ProviderError, ProviderTimeoutError, ProviderRateLimitError, } from './errors.js';
 export class ProviderRegistry {
     providers = new Map();
     failoverPolicies = [];

@@ -1,4 +1,4 @@
-import { Provider, ProviderFailoverPolicy, CompletionRequest, CompletionResponse } from './interfaces.js';
+import type { Provider, ProviderFailoverPolicy, CompletionRequest, CompletionResponse } from './interfaces.js';
 export declare class ProviderRegistry {
     private providers;
     private failoverPolicies;

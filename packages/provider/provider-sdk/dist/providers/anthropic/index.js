@@ -32,7 +32,7 @@ export class AnthropicProvider extends BaseProvider {
             }
         }
         messages.push({ role: 'user', content: req.userPrompt });
-        const tools = req.tools?.map(t => ({
+        const tools = req.tools?.map((t) => ({
             name: t.name,
             description: t.description,
             input_schema: t.parameters,
@@ -45,10 +45,10 @@ export class AnthropicProvider extends BaseProvider {
             tools,
             temperature: req.temperature,
         }, { signal });
-        const textBlocks = response.content.filter(b => b.type === 'text');
-        const text = textBlocks.map(b => b.text).join('\n');
-        const toolUseBlocks = response.content.filter(b => b.type === 'tool_use');
-        const toolCalls = toolUseBlocks.map(b => ({
+        const textBlocks = response.content.filter((b) => b.type === 'text');
+        const text = textBlocks.map((b) => b.text).join('\n');
+        const toolUseBlocks = response.content.filter((b) => b.type === 'tool_use');
+        const toolCalls = toolUseBlocks.map((b) => ({
             toolName: b.name,
             arguments: b.input,
             callId: b.id,

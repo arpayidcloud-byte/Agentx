@@ -1,4 +1,4 @@
-import { CircuitBreakerConfig, RetryPolicy } from './interfaces.js';
+import type { CircuitBreakerConfig, RetryPolicy } from './interfaces.js';
 export declare class CircuitBreaker {
     private failures;
     private nextAttemptAt;

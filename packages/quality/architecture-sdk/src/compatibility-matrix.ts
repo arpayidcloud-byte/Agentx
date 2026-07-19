@@ -12,7 +12,7 @@ export class CompatibilityMatrixManager {
     if (!this.matrix[source]) {
       this.matrix[source] = {};
     }
-    this.matrix[source][target] = compatible;
+    this.matrix[source]![target] = compatible;
   }
 
   getMatrix(): CompatibilityMatrix {

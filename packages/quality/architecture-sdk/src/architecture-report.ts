@@ -4,7 +4,6 @@
  */
 
 import type { ArchitectureReport } from './interfaces.js';
-import { ArchitectureMetadata } from './interfaces.js';
 import { createHash } from 'crypto';
 
 export class ArchitectureReportBuilder {

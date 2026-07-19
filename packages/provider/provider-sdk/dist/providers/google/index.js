@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { BaseProvider } from '../../base-provider.js';
-import { ProviderInvalidCredentialsError, ProviderError, } from '../../errors.js';
+import { ProviderInvalidCredentialsError, ProviderError } from '../../errors.js';
 export class GoogleProvider extends BaseProvider {
     capabilities = {
         completion: true,
@@ -25,10 +25,16 @@ export class GoogleProvider extends BaseProvider {
         if (req.context) {
             for (const msg of req.context) {
                 if (typeof msg.content === 'string') {
-                    contents.push({ role: msg.role === 'assistant' ? 'model' : 'user', parts: [{ text: msg.content }] });
+                    contents.push({
+                        role: msg.role === 'assistant' ? 'model' : 'user',
+                        parts: [{ text: msg.content }],
+                    });
                 }
                 else {
-                    contents.push({ role: msg.role === 'assistant' ? 'model' : 'user', parts: [{ text: JSON.stringify(msg.content) }] });
+                    contents.push({
+                        role: msg.role === 'assistant' ? 'model' : 'user',
+                        parts: [{ text: JSON.stringify(msg.content) }],
+                    });
                 }
             }
         }
@@ -36,23 +42,28 @@ export class GoogleProvider extends BaseProvider {
         // Simplified tool mapping
         let tools;
         if (req.tools && req.tools.length > 0) {
-            tools = [{
-                    functionDeclarations: req.tools.map(t => ({
+            tools = [
+                {
+                    functionDeclarations: req.tools.map((t) => ({
                         name: t.name,
                         description: t.description,
                         parameters: t.parameters,
-                    }))
-                }];
+                    })),
+                },
+            ];
         }
-        const response = await model.generateContent({
+        const request = {
             contents,
-            systemInstruction: req.systemPrompt ? { role: 'system', parts: [{ text: req.systemPrompt }] } : undefined,
-            tools: tools,
+            systemInstruction: req.systemPrompt
+                ? { role: 'system', parts: [{ text: req.systemPrompt }] }
+                : undefined,
+            tools,
             generationConfig: {
                 maxOutputTokens: req.maxTokens,
                 temperature: req.temperature,
             },
-        });
+        };
+        const response = await model.generateContent(request);
         const result = response.response;
         const text = result.text() || '';
         const toolCalls = [];

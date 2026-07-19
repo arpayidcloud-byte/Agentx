@@ -30,7 +30,7 @@ export class ReasoningGraphEngine {
     const sorted: string[] = [];
 
     while (queue.length > 0) {
-      const u = queue.shift();
+      const u = queue.shift()!;
       sorted.push(u);
 
       for (const v of adj.get(u) || []) {
