@@ -29,7 +29,7 @@ export class RuntimeHealthService {
   }
 
   async checkComponent(component: string): Promise<HealthCheckResult> {
-    const checkFn = this.checks.get(component);
+    const checkFn = this.checks.get(component) as (() => Promise<HealthCheckResult>) | undefined;
     if (!checkFn) {
       return {
         component,

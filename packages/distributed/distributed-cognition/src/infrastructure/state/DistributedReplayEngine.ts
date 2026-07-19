@@ -28,7 +28,7 @@ export class DistributedReplayEngine {
       sessionId,
       nodeId,
       action,
-      state: JSON.parse(JSON.stringify(state)),
+      state: JSON.parse(JSON.stringify(state)) as Record<string, unknown>,
       timestamp: new Date(),
       checksum,
     });

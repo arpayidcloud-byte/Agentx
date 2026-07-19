@@ -44,7 +44,12 @@ export async function watch(args: string[]): Promise<void> {
       for (const line of lines) {
         if (!line) continue;
         try {
-          const event = JSON.parse(line);
+          const event = JSON.parse(line) as {
+            graphId?: string;
+            timestamp: string;
+            topic: string;
+            payload: unknown;
+          };
           if (graphId && event.graphId !== graphId) continue;
           const ts = new Date(event.timestamp).toLocaleTimeString();
           console.log(`[${ts}] ${event.topic} → ${JSON.stringify(event.payload).slice(0, 80)}`);

@@ -22,7 +22,9 @@ export class PatternEngine {
       pathCounts.set(pathKey, existing);
     }
 
-    for (const [pathKey, info] of pathCounts) {
+    for (const [pathKey, info] of Array.from(pathCounts) as Array<
+      [string, { count: number; first: Date; last: Date }]
+    >) {
       if (info.count >= 2) {
         patterns.push({
           id: `pat-path-${Date.now()}`,

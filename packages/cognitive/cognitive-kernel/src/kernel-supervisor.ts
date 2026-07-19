@@ -12,7 +12,9 @@ export class KernelSupervisor {
 
   checkHealth(): Record<string, boolean> {
     const status: Record<string, boolean> = {};
-    for (const [name, fn] of this.components.entries()) {
+    for (const [name, fn] of Array.from(this.components.entries()) as Array<
+      [string, () => boolean]
+    >) {
       status[name] = fn();
     }
     return status;

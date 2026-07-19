@@ -64,10 +64,10 @@ export class NATSQueueProvider implements IQueueProvider, INativeProvider {
   }
 
   async enqueue(_topic: string, _message: unknown, _priority?: number): Promise<void> {}
-  async dequeue(_topic: string): Promise<unknown | undefined> {
+  async dequeue(_topic: string): Promise<unknown> {
     return undefined;
   }
-  async peek(_topic: string): Promise<unknown | undefined> {
+  async peek(_topic: string): Promise<unknown> {
     return undefined;
   }
   async ack(_topic: string, _messageId: string): Promise<void> {}

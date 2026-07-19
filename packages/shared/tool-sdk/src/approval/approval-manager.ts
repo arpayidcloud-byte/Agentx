@@ -100,11 +100,11 @@ export class ApprovalManager {
     const expired: string[] = [];
 
     // Check all waiting requests for expiration
-    for (const session of this.sessions.values()) {
-      if (!isSessionValid(session)) {
+    for (const session of this.sessions.values() as IterableIterator<ApprovalSession>) {
+      if (!isSessionValid(session as ApprovalSession)) {
         // Deactivate expired sessions
-        const deactivated = deactivateSession(session);
-        this.sessions.set(session.id, deactivated);
+        const deactivated = deactivateSession(session as ApprovalSession);
+        this.sessions.set((session as ApprovalSession).id, deactivated);
       }
     }
 
@@ -117,9 +117,12 @@ export class ApprovalManager {
    * @returns Active session or undefined
    */
   private getActiveSession(operatorId: string): ApprovalSession | undefined {
-    for (const session of this.sessions.values()) {
-      if (session.operatorId === operatorId && isSessionValid(session)) {
-        return session;
+    for (const session of this.sessions.values() as IterableIterator<ApprovalSession>) {
+      if (
+        (session as ApprovalSession).operatorId === operatorId &&
+        isSessionValid(session as ApprovalSession)
+      ) {
+        return session as ApprovalSession;
       }
     }
     return undefined;

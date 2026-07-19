@@ -16,7 +16,17 @@ function loadTasks(): Record<
 > {
   const tasksFile = path.join(DATA_DIR, 'tasks.json');
   if (!fs.existsSync(tasksFile)) return {};
-  return JSON.parse(fs.readFileSync(tasksFile, 'utf-8'));
+  return JSON.parse(fs.readFileSync(tasksFile, 'utf-8')) as Record<
+    string,
+    {
+      id: string;
+      goal: string;
+      status: string;
+      graphId?: string;
+      createdAt: string;
+      updatedAt: string;
+    }
+  >;
 }
 
 export async function status(args: string[]): Promise<void> {

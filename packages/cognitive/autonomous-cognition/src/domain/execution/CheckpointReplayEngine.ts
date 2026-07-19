@@ -20,7 +20,7 @@ export class ExecutionCheckpointManager {
     const cp: Checkpoint = Object.freeze({
       checkpointId,
       goalId,
-      state: JSON.parse(JSON.stringify(state)),
+      state: JSON.parse(JSON.stringify(state)) as Record<string, unknown>,
       version,
       timestamp: new Date(),
       checksum,
@@ -72,7 +72,7 @@ export class ExecutionReplayEngine {
       entryId,
       goalId,
       action,
-      state: JSON.parse(JSON.stringify(state)),
+      state: JSON.parse(JSON.stringify(state)) as Record<string, unknown>,
       timestamp: new Date(),
       checksum,
     });

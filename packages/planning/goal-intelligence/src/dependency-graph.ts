@@ -22,8 +22,8 @@ export class DependencyGraph {
     const stack = new Set<string>();
 
     for (const edge of this.edges) {
-      if (!adj.has(edge.source)) adj.set(edge.source, []);
-      (adj.get(edge.source) as string[]).push(edge.target);
+      if (!adj.has(edge.source as string)) adj.set(edge.source as string, []);
+      (adj.get(edge.source as string) as string[]).push(edge.target as string);
     }
 
     const dfs = (node: string): boolean => {

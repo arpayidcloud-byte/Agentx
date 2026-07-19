@@ -20,7 +20,7 @@ export class DistributedRecoveryManager {
       sessionId,
       targetNodeId,
       checkpointId: checkpoint.checkpointId,
-      state: JSON.parse(JSON.stringify(checkpoint.state)),
+      state: JSON.parse(JSON.stringify(checkpoint.state)) as Record<string, unknown>,
       version: checkpoint.version,
     });
     this.recoveryPlans.set(sessionId, plan);
@@ -30,7 +30,7 @@ export class DistributedRecoveryManager {
   executeRecovery(sessionId: string): Record<string, unknown> | undefined {
     const plan = this.recoveryPlans.get(sessionId);
     if (!plan) return undefined;
-    return JSON.parse(JSON.stringify(plan.state));
+    return JSON.parse(JSON.stringify(plan.state)) as Record<string, unknown>;
   }
 
   getPlan(sessionId: string): RecoveryPlan | undefined {

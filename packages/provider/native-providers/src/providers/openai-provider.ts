@@ -59,8 +59,8 @@ export class OpenAIProvider implements INativeProvider {
   async embed(request: EmbeddingRequest): Promise<EmbeddingResponse> {
     return {
       embeddings: Array.isArray(request.input)
-        ? request.input.map(() => Array(1536).fill(0))
-        : [Array(1536).fill(0)],
+        ? request.input.map(() => Array(1536).fill(0) as number[])
+        : [Array(1536).fill(0) as number[]],
       model: request.model,
       usage: { promptTokens: 10, totalTokens: 10 },
     };

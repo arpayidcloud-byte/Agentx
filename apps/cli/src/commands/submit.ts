@@ -30,7 +30,7 @@ function saveTask(task: TaskRecord): void {
 function loadTasks(): Record<string, TaskRecord> {
   const tasksFile = path.join(DATA_DIR, 'tasks.json');
   if (!fs.existsSync(tasksFile)) return {};
-  return JSON.parse(fs.readFileSync(tasksFile, 'utf-8'));
+  return JSON.parse(fs.readFileSync(tasksFile, 'utf-8')) as Record<string, TaskRecord>;
 }
 
 export async function submit(args: string[]): Promise<void> {

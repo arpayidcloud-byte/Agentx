@@ -37,7 +37,9 @@ export class WorkerRegistry {
     const now = Date.now();
 
     // Purge expired workers
-    for (const [id, worker] of this.workers.entries()) {
+    for (const [id, worker] of this.workers.entries() as IterableIterator<
+      [string, WorkerMetadata]
+    >) {
       if (now - worker.lastHeartbeat.getTime() > threshold) {
         this.workers.delete(id);
       }

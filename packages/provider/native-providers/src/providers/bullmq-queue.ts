@@ -67,12 +67,12 @@ export class BullMQQueueProvider implements IQueueProvider, INativeProvider {
     if (!this.connected) throw new Error('Not connected');
   }
 
-  async dequeue(_topic: string): Promise<unknown | undefined> {
+  async dequeue(_topic: string): Promise<unknown> {
     if (!this.connected) throw new Error('Not connected');
     return undefined;
   }
 
-  async peek(_topic: string): Promise<unknown | undefined> {
+  async peek(_topic: string): Promise<unknown> {
     if (!this.connected) throw new Error('Not connected');
     return undefined;
   }

@@ -56,7 +56,7 @@ export class CriticalPathAnalyzer {
     }
 
     const maxOut = Math.max(...Array.from(outDegree.values()));
-    for (const [nodeId, degree] of outDegree.entries()) {
+    for (const [nodeId, degree] of outDegree.entries() as IterableIterator<[string, number]>) {
       if (degree === maxOut && maxOut > 1) {
         bottlenecks.push(nodeId);
       }

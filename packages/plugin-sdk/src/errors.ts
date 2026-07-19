@@ -33,6 +33,10 @@ export class PluginRoleCollisionError extends PluginError {
 
 export class PluginPermissionDeniedError extends PluginError {
   constructor(pluginId: string) {
-    super(`Plugin '${pluginId}' has not been approved by the operator`, 'PERMISSION_DENIED', pluginId);
+    super(
+      `Plugin '${pluginId}' has not been approved by the operator`,
+      'PERMISSION_DENIED',
+      pluginId,
+    );
   }
 }

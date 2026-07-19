@@ -12,7 +12,7 @@ export async function cost(args: string[]): Promise<void> {
     return;
   }
 
-  const records: Array<{
+  const records = JSON.parse(fs.readFileSync(costFile, 'utf-8')) as Array<{
     graphId?: string;
     providerId: string;
     model: string;
@@ -20,7 +20,7 @@ export async function cost(args: string[]): Promise<void> {
     outputTokens: number;
     costUsd: number;
     timestamp: string;
-  }> = JSON.parse(fs.readFileSync(costFile, 'utf-8'));
+  }>;
 
   const filtered = graphId ? records.filter((r) => r.graphId === graphId) : records;
 

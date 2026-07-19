@@ -26,7 +26,7 @@ export class ClusterMembership {
   }
 
   heartbeat(nodeId: string): void {
-    const node = this.nodes.get(nodeId);
+    const node = this.nodes.get(nodeId) as ClusterNode | undefined;
     if (!node) {
       throw new ClusterError(`Node not found: ${nodeId}`, 'cluster-membership');
     }

@@ -5,7 +5,7 @@ const CONFIG_FILE = path.resolve(process.cwd(), '.agentx', 'config.json');
 
 function loadConfig(): Record<string, unknown> {
   if (!fs.existsSync(CONFIG_FILE)) return {};
-  return JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf-8'));
+  return JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf-8')) as Record<string, unknown>;
 }
 
 function saveConfig(config: Record<string, unknown>): void {

@@ -116,8 +116,8 @@ export class ContextEngine implements IContextEngine {
   private updateMetrics(): void {
     this.metrics.totalContexts = this.contexts.size;
     let totalTokens = 0;
-    for (const ctx of this.contexts.values()) {
-      totalTokens += ctx.tokenEstimate;
+    for (const ctx of this.contexts.values() as IterableIterator<ContextSnapshot>) {
+      totalTokens += (ctx as ContextSnapshot).tokenEstimate;
     }
     this.metrics.averageTokens = this.contexts.size > 0 ? totalTokens / this.contexts.size : 0;
   }

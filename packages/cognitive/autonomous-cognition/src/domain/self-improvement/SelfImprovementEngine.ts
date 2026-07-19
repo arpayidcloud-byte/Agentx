@@ -49,7 +49,7 @@ export class StrategyOptimizer {
     }
     let best: string | undefined;
     let bestScore = -1;
-    for (const [id, total] of averages) {
+    for (const [id, total] of Array.from(averages) as Array<[string, number]>) {
       if (total > bestScore) {
         bestScore = total;
         best = id;

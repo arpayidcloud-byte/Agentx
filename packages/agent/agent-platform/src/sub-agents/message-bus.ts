@@ -23,6 +23,6 @@ export class MessageBus {
   }
 
   public async broadcastToGlobalBus(message: AgentMessage): Promise<void> {
-    await this.globalEventBus.publish(`agent.${message.topic}`, message, 'trace-bus');
+    await this.globalEventBus.publish<AgentMessage>(`agent.${message.topic}`, message, 'trace-bus');
   }
 }

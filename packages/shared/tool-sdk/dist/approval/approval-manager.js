@@ -86,7 +86,8 @@ export class ApprovalManager {
      */
     getActiveSession(operatorId) {
         for (const session of this.sessions.values()) {
-            if (session.operatorId === operatorId && isSessionValid(session)) {
+            if (session.operatorId === operatorId &&
+                isSessionValid(session)) {
                 return session;
             }
         }

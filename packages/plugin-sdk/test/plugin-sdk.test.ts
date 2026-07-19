@@ -1,5 +1,11 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { PluginRegistry, validateManifest, ManifestValidationError, PluginNotFoundError, PluginRoleCollisionError } from '../src/index.js';
+import {
+  PluginRegistry,
+  validateManifest,
+  ManifestValidationError,
+  PluginNotFoundError,
+  PluginRoleCollisionError,
+} from '../src/index.js';
 import type { PluginManifest } from '../src/index.js';
 
 const validAgentManifest: PluginManifest = {
@@ -39,15 +45,21 @@ describe('validateManifest', () => {
   });
 
   it('rejects missing id', () => {
-    expect(() => validateManifest({ ...validAgentManifest, id: '' })).toThrow(ManifestValidationError);
+    expect(() => validateManifest({ ...validAgentManifest, id: '' })).toThrow(
+      ManifestValidationError,
+    );
   });
 
   it('rejects missing version', () => {
-    expect(() => validateManifest({ ...validAgentManifest, version: '' })).toThrow(ManifestValidationError);
+    expect(() => validateManifest({ ...validAgentManifest, version: '' })).toThrow(
+      ManifestValidationError,
+    );
   });
 
   it('rejects invalid kind', () => {
-    expect(() => validateManifest({ ...validAgentManifest, kind: 'invalid' as any })).toThrow(ManifestValidationError);
+    expect(() => validateManifest({ ...validAgentManifest, kind: 'invalid' as any })).toThrow(
+      ManifestValidationError,
+    );
   });
 
   it('rejects agent without declaredAgentRole', () => {
@@ -56,9 +68,9 @@ describe('validateManifest', () => {
   });
 
   it('rejects agent with reserved role', () => {
-    expect(() =>
-      validateManifest({ ...validAgentManifest, declaredAgentRole: 'coding' }),
-    ).toThrow(ManifestValidationError);
+    expect(() => validateManifest({ ...validAgentManifest, declaredAgentRole: 'coding' })).toThrow(
+      ManifestValidationError,
+    );
   });
 
   it('rejects tool without declaredToolCategories', () => {
@@ -67,13 +79,17 @@ describe('validateManifest', () => {
   });
 
   it('rejects missing entryPoint', () => {
-    expect(() => validateManifest({ ...validAgentManifest, entryPoint: '' })).toThrow(ManifestValidationError);
+    expect(() => validateManifest({ ...validAgentManifest, entryPoint: '' })).toThrow(
+      ManifestValidationError,
+    );
   });
 });
 
 describe('PluginRegistry', () => {
   let registry: PluginRegistry;
-  beforeEach(() => { registry = new PluginRegistry(); });
+  beforeEach(() => {
+    registry = new PluginRegistry();
+  });
 
   it('installs a plugin with pending-review status', () => {
     const reg = registry.install(validAgentManifest);

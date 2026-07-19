@@ -31,7 +31,9 @@ export class ToolValidator implements IToolValidator {
       throw new ManifestValidationError('Manifest is missing required string field: version');
     }
     if (manifest.kind !== 'tool') {
-      throw new ManifestValidationError(`Manifest kind must be 'tool', got '${manifest.kind}'`);
+      throw new ManifestValidationError(
+        `Manifest kind must be 'tool', got '${String(manifest.kind)}'`,
+      );
     }
     if (!manifest.entryPoint || typeof manifest.entryPoint !== 'string') {
       throw new ManifestValidationError('Manifest is missing required string field: entryPoint');

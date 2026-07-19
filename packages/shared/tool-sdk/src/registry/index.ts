@@ -23,10 +23,10 @@ function enforceClassification(tool: ITool): ITool {
       classification: 'Destructive',
       riskScore: ToolClassifier.getRiskScore(category),
     };
-    return Object.create(Object.getPrototypeOf(tool), {
+    return Object.create(Object.getPrototypeOf(tool) as object, {
       ...Object.getOwnPropertyDescriptors(tool),
       metadata: { value: Object.freeze(enforcedMetadata), writable: false, configurable: false },
-    });
+    }) as ITool;
   }
   return tool;
 }
@@ -87,8 +87,8 @@ export class ToolRegistry implements IToolRegistry {
     if (!names) return [];
 
     const result: ITool[] = [];
-    for (const name of names) {
-      const tool = this.tools.get(name);
+    for (const name of names as Set<string>) {
+      const tool = this.tools.get(name as string);
       if (tool) result.push(tool);
     }
     return result;

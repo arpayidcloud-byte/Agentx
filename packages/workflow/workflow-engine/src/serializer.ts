@@ -17,11 +17,11 @@ export class JsonWorkflowSerializer implements IWorkflowSerializer {
   /** @inheritdoc */
   deserialize(data: string): WorkflowDefinition {
     try {
-      const parsed = JSON.parse(data);
+      const parsed = JSON.parse(data) as Record<string, unknown>;
       if (!parsed.id || !parsed.name || !parsed.nodes || !parsed.edges) {
         throw new Error('Invalid workflow definition');
       }
-      return parsed as WorkflowDefinition;
+      return parsed as unknown as WorkflowDefinition;
     } catch (e) {
       throw new Error(
         `Failed to deserialize workflow: ${e instanceof Error ? e.message : String(e)}`,

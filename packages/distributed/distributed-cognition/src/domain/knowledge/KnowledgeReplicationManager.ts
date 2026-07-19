@@ -22,7 +22,7 @@ export class KnowledgeReplicationManager {
   }
 
   getByKey(key: string): KnowledgeEntry | undefined {
-    for (const entry of this.entries.values()) {
+    for (const entry of this.entries.values() as Iterable<KnowledgeEntry>) {
       if (entry.key === key) return entry;
     }
     return undefined;

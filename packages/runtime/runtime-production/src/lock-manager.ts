@@ -34,7 +34,7 @@ export class MemoryLockProvider implements IDistributedLockManager {
   }
 
   async release(lockId: string): Promise<void> {
-    for (const [_key, lock] of this.locks.entries()) {
+    for (const [_key, lock] of this.locks.entries() as IterableIterator<[string, LockInfo]>) {
       if (lock.id === lockId) {
         this.locks.delete(_key);
         return;
@@ -44,7 +44,7 @@ export class MemoryLockProvider implements IDistributedLockManager {
   }
 
   async renew(lockId: string, ttlMs: number): Promise<void> {
-    for (const [_key, lock] of this.locks.entries()) {
+    for (const [_key, lock] of this.locks.entries() as IterableIterator<[string, LockInfo]>) {
       if (lock.id === lockId) {
         lock.expiresAt = new Date(Date.now() + ttlMs);
         return;
@@ -93,7 +93,7 @@ export class RedisLockProvider implements IDistributedLockManager {
   }
 
   async release(lockId: string): Promise<void> {
-    for (const [key, lock] of this.locks.entries()) {
+    for (const [key, lock] of this.locks.entries() as IterableIterator<[string, LockInfo]>) {
       if (lock.id === lockId) {
         this.locks.delete(key);
         return;
@@ -103,7 +103,7 @@ export class RedisLockProvider implements IDistributedLockManager {
   }
 
   async renew(lockId: string, ttlMs: number): Promise<void> {
-    for (const lock of this.locks.values()) {
+    for (const lock of this.locks.values() as IterableIterator<LockInfo>) {
       if (lock.id === lockId) {
         if (lock.expiresAt.getTime() <= Date.now()) {
           throw new DistributedLockError(`Lock expired: ${lockId}`, 'lock-manager');
@@ -165,7 +165,7 @@ export class PostgresAdvisoryLockProvider implements IDistributedLockManager {
   }
 
   async release(lockId: string): Promise<void> {
-    for (const [key, lock] of this.locks.entries()) {
+    for (const [key, lock] of this.locks.entries() as IterableIterator<[string, LockInfo]>) {
       if (lock.id === lockId) {
         this.locks.delete(key);
         this.lockHashes.delete(key);
@@ -176,7 +176,7 @@ export class PostgresAdvisoryLockProvider implements IDistributedLockManager {
   }
 
   async renew(lockId: string, ttlMs: number): Promise<void> {
-    for (const lock of this.locks.values()) {
+    for (const lock of this.locks.values() as IterableIterator<LockInfo>) {
       if (lock.id === lockId) {
         if (lock.expiresAt.getTime() <= Date.now()) {
           throw new DistributedLockError(`Lock expired: ${lockId}`, 'lock-manager');

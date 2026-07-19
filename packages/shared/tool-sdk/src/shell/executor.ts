@@ -76,7 +76,10 @@ export class ShellExecutor {
       const { controller, cleanup } = createTimeoutController({ timeoutMs });
 
       // 5. Get scrubbed environment
-      const env: Record<string, string> = this.sandbox.getScrubbedEnvironment() as Record<string, string>;
+      const env: Record<string, string> = this.sandbox.getScrubbedEnvironment() as Record<
+        string,
+        string
+      >;
 
       // 6. Determine working directory
       const cwd = request.workingDirectory || this.context.sandboxConfig.defaultWorkingDirectory;
