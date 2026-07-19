@@ -64,7 +64,7 @@ export class RedisLockProvider implements ILockProvider, INativeProvider {
     return { totalRequests: 0, successfulRequests: 0, failedRequests: 0, averageLatencyMs: 0 };
   }
 
-  async acquire(key: string, ttlMs: number): Promise<string> {
+  async acquire(key: string, _ttlMs: number): Promise<string> {
     if (!this.connected) throw new Error('Not connected');
     if (this.locks.has(key)) throw new Error('Lock already held');
     const lockId = `redis-lock-${Date.now()}`;
