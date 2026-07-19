@@ -36,8 +36,8 @@ export class AnthropicProvider implements INativeProvider {
     return this.connected;
   }
 
-  async getHealth() {
-    return { status: this.connected ? 'UP' : ('DOWN' as const), latencyMs: 18 };
+  async getHealth(): Promise<{ status: 'UP' | 'DOWN' | 'DEGRADED'; latencyMs: number }> {
+    return { status: this.connected ? 'UP' : 'DOWN', latencyMs: 18 };
   }
 
   getMetadata() {

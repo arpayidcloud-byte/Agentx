@@ -39,8 +39,8 @@ export class RedisLockProvider implements ILockProvider, INativeProvider {
     return this.connected;
   }
 
-  async getHealth() {
-    return { status: this.connected ? 'UP' : ('DOWN' as const), latencyMs: 2 };
+  async getHealth(): Promise<{ status: 'UP' | 'DOWN' | 'DEGRADED'; latencyMs: number }> {
+    return { status: this.connected ? 'UP' : 'DOWN', latencyMs: 2 };
   }
 
   getMetadata(): ProviderMetadata {
@@ -78,7 +78,7 @@ export class RedisLockProvider implements ILockProvider, INativeProvider {
     }
   }
 
-  async renew(key: string, lockId: string, ttlMs: number): Promise<void> {}
+  async renew(_key: string, _lockId: string, _ttlMs: number): Promise<void> {}
 
   async expire(key: string): Promise<void> {
     this.locks.delete(key);

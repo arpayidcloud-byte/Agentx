@@ -13,7 +13,6 @@ export class WorkflowCertificationEngine {
     version: string,
   ): Promise<WorkflowCertificate> {
     const issues: string[] = [];
-    const start = Date.now();
 
     if (!state.taskStates || Object.keys(state.taskStates).length === 0) {
       issues.push('Empty task states');

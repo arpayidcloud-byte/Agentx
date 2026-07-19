@@ -4,7 +4,7 @@
  */
 
 import type { CollaborationSession, ConsensusRequest } from './interfaces.js';
-import { AgentMetadata, SharedContext, TaskDelegation } from './interfaces.js';
+// types imported via type-only imports above
 import { AgentRegistry } from './agent-registry.js';
 import { AgentDirectory } from './agent-directory.js';
 import { AgentSelectionEngine } from './agent-selection-engine.js';
@@ -101,7 +101,7 @@ export class MultiAgentCollaborationEngine {
   }
 
   saveCheckpoint(sessionId: string): void {
-    this.checkpointManager.save(sessionId, { active: true }, {});
+    this.checkpointManager.save(sessionId, { active: 'true' }, {});
     this.events.publish('collaboration.checkpoint.saved', { sessionId });
   }
 

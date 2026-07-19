@@ -15,9 +15,9 @@ export class AgentSelectionEngine {
     );
     if (candidates.length === 0) return null;
 
-    let best = candidates[0];
+    let best = candidates[0]!;
     for (let i = 1; i < candidates.length; i++) {
-      const c = candidates[i];
+      const c = candidates[i]!;
       const bestFree = best.availableSlots - best.currentLoad;
       const cFree = c.availableSlots - c.currentLoad;
       if (cFree > bestFree || (cFree === bestFree && c.priority > best.priority)) {

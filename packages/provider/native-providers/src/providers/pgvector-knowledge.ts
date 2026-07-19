@@ -38,8 +38,8 @@ export class PgVectorKnowledgeProvider implements IStorageProvider, INativeProvi
     return this.connected;
   }
 
-  async getHealth() {
-    return { status: this.connected ? 'UP' : ('DOWN' as const), latencyMs: 12 };
+  async getHealth(): Promise<{ status: 'UP' | 'DOWN' | 'DEGRADED'; latencyMs: number }> {
+    return { status: this.connected ? 'UP' : 'DOWN', latencyMs: 12 };
   }
 
   getMetadata(): ProviderMetadata {
@@ -63,15 +63,15 @@ export class PgVectorKnowledgeProvider implements IStorageProvider, INativeProvi
     return { totalRequests: 0, successfulRequests: 0, failedRequests: 0, averageLatencyMs: 0 };
   }
 
-  async put(bucket: string, key: string, value: string): Promise<void> {}
-  async get(bucket: string, key: string): Promise<string | undefined> {
+  async put(_bucket: string, _key: string, _value: string): Promise<void> {}
+  async get(_bucket: string, _key: string): Promise<string | undefined> {
     return undefined;
   }
-  async delete(bucket: string, key: string): Promise<void> {}
-  async list(bucket: string, prefix?: string): Promise<string[]> {
+  async delete(_bucket: string, _key: string): Promise<void> {}
+  async list(_bucket: string, _prefix?: string): Promise<string[]> {
     return [];
   }
-  async exists(bucket: string, key: string): Promise<boolean> {
+  async exists(_bucket: string, _key: string): Promise<boolean> {
     return false;
   }
 

@@ -8,7 +8,6 @@ import { PipelineStateMachine } from './pipeline-state.js';
 import { PipelineValidator } from './pipeline-validator.js';
 import { PipelineHookManager } from './pipeline-hooks.js';
 import { PipelineMetrics } from './pipeline-metrics.js';
-import { PipelineError } from './errors.js';
 
 export class ReasoningPipeline {
   private stateMachine = new PipelineStateMachine();

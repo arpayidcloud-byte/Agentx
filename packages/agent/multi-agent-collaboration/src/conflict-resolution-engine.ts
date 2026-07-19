@@ -13,7 +13,7 @@ export class ConflictResolutionEngine {
     const payload = JSON.stringify({ agentIds, conflictType, resolution });
     const res: ConflictResolution = {
       id: `conflict-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,
-      agentIds,
+      agents: agentIds,
       conflictType,
       resolution,
       timestamp: new Date(),

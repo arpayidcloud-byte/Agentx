@@ -4,7 +4,6 @@
  */
 
 import type { DependencyEdge } from './interfaces.js';
-import { CycleDetectedError } from './errors.js';
 
 export class DependencyGraph {
   private edges: DependencyEdge[] = [];
@@ -24,7 +23,7 @@ export class DependencyGraph {
 
     for (const edge of this.edges) {
       if (!adj.has(edge.source)) adj.set(edge.source, []);
-      adj.get(edge.source).push(edge.target);
+      adj.get(edge.source)!.push(edge.target);
     }
 
     const dfs = (node: string): boolean => {

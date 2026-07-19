@@ -20,8 +20,6 @@ export class PlanningScorer {
   score(plan: PlanningPlan): PlanningScoreData {
     const stepCount = plan.steps.length;
     const parallelCount = plan.steps.filter((s) => s.parallel).length;
-    const avgOrder = plan.steps.reduce((sum, s) => sum + s.order, 0) / Math.max(stepCount, 1);
-
     const complexityScore = Math.min(100, stepCount * 10);
     const riskScore = Math.max(0, 100 - stepCount * 5);
     const resourceScore = Math.max(0, 100 - plan.budget.tokens / 100);

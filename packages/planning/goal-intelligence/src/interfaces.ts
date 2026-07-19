@@ -13,7 +13,8 @@ export type GoalState =
   | 'VALIDATION'
   | 'CHECKPOINTING'
   | 'READY'
-  | 'COMPLETED';
+  | 'COMPLETED'
+  | 'FAILED';
 
 export interface Goal {
   id: string;
@@ -66,6 +67,7 @@ export interface PlanningStep {
   strategy: string;
   order: number;
   parallel: boolean;
+  dependencies: string[];
   fallback?: string;
 }
 

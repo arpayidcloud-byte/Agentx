@@ -38,8 +38,8 @@ export class GeminiProvider implements INativeProvider {
     return this.connected;
   }
 
-  async getHealth() {
-    return { status: this.connected ? 'UP' : ('DOWN' as const), latencyMs: 15 };
+  async getHealth(): Promise<{ status: 'UP' | 'DOWN' | 'DEGRADED'; latencyMs: number }> {
+    return { status: this.connected ? 'UP' : 'DOWN', latencyMs: 15 };
   }
 
   getMetadata() {

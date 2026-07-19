@@ -15,7 +15,7 @@ export class CognitiveBudgetManager {
   }
 
   consume(type: string, amount: number): void {
-    const limit = (this.budget as Record<string, number>)[type] || Infinity;
+    const limit = (this.budget as unknown as Record<string, number>)[type] || Infinity;
     const current = this.consumption[type] || 0;
 
     if (current + amount > limit) {

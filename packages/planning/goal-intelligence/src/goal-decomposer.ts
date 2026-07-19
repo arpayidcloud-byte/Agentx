@@ -5,7 +5,6 @@
 
 import type { Goal, SubGoal } from './interfaces.js';
 import { DecompositionError } from './errors.js';
-import { createHash } from 'crypto';
 
 export class GoalDecomposer {
   decompose(goal: Goal, objectiveCount: number = 2): SubGoal[] {

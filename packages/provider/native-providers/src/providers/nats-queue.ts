@@ -38,8 +38,8 @@ export class NATSQueueProvider implements IQueueProvider, INativeProvider {
     return this.connected;
   }
 
-  async getHealth() {
-    return { status: this.connected ? 'UP' : ('DOWN' as const), latencyMs: 4 };
+  async getHealth(): Promise<{ status: 'UP' | 'DOWN' | 'DEGRADED'; latencyMs: number }> {
+    return { status: this.connected ? 'UP' : 'DOWN', latencyMs: 4 };
   }
 
   getMetadata(): ProviderMetadata {
@@ -63,18 +63,18 @@ export class NATSQueueProvider implements IQueueProvider, INativeProvider {
     return { totalRequests: 0, successfulRequests: 0, failedRequests: 0, averageLatencyMs: 0 };
   }
 
-  async enqueue(topic: string, message: unknown, priority?: number): Promise<void> {}
-  async dequeue(topic: string): Promise<unknown | undefined> {
+  async enqueue(_topic: string, _message: unknown, _priority?: number): Promise<void> {}
+  async dequeue(_topic: string): Promise<unknown | undefined> {
     return undefined;
   }
-  async peek(topic: string): Promise<unknown | undefined> {
+  async peek(_topic: string): Promise<unknown | undefined> {
     return undefined;
   }
-  async ack(topic: string, messageId: string): Promise<void> {}
-  async retry(topic: string, messageId: string): Promise<void> {}
-  async deadLetter(topic: string, messageId: string): Promise<void> {}
-  async getDepth(topic: string): Promise<number> {
+  async ack(_topic: string, _messageId: string): Promise<void> {}
+  async retry(_topic: string, _messageId: string): Promise<void> {}
+  async deadLetter(_topic: string, _messageId: string): Promise<void> {}
+  async getDepth(_topic: string): Promise<number> {
     return 0;
   }
-  async purge(topic: string): Promise<void> {}
+  async purge(_topic: string): Promise<void> {}
 }

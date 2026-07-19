@@ -3,8 +3,6 @@
  * @description Monitors workflow execution state.
  */
 
-import { WorkflowTask } from './interfaces.js';
-
 export class WorkflowMonitor {
   private states = new Map<string, string>();
 

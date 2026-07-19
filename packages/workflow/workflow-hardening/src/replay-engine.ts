@@ -4,9 +4,6 @@
  */
 
 import type { ReplayResult } from './interfaces.js';
-import { ReplayConfig } from './interfaces.js';
-import { ReplayMismatchError } from './errors.js';
-import { createHash } from 'crypto';
 
 export class WorkflowReplayEngine {
   private history: ReplayResult[] = [];
@@ -14,7 +11,6 @@ export class WorkflowReplayEngine {
   async fullReplay(sessionId: string, steps: string[]): Promise<ReplayResult> {
     const start = Date.now();
     const executed: string[] = [];
-    const checksum = createHash('sha256').update(JSON.stringify(steps)).digest('hex');
 
     for (const step of steps) {
       executed.push(step);

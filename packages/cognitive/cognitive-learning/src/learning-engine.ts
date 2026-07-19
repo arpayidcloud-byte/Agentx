@@ -3,7 +3,6 @@
  * @description Master orchestrator for cognitive learning.
  */
 
-import { LearningState } from './interfaces.js';
 import { LearningStateMachine } from './learning-state.js';
 import { LearningSession } from './learning-session.js';
 import { ExperienceStore } from './experience-store.js';
@@ -31,7 +30,6 @@ import { LearningEventBus } from './events.js';
 import { LearningHookManager } from './hooks.js';
 import { LearningMetricsCollector } from './metrics.js';
 import type { Experience, AdaptationPolicy } from './interfaces.js';
-import { Pattern, Feedback, StrategyRecord } from './interfaces.js';
 
 export class LearningEngine {
   public stateMachine = new LearningStateMachine();

@@ -38,7 +38,7 @@ export * from './execution-validator.js';
 export * from './replanning-engine.js';
 export * from './replanning-policy.js';
 export * from './progress-tracker.js';
-export * from './execution-history.ts';
+export * from './execution-history.js';
 export * from './decision-log.js';
 export * from './events.js';
 export * from './hooks.js';

@@ -10,6 +10,10 @@ export class CognitiveEngineBase {
     private version: string,
   ) {}
 
+  async executeSession(_session: unknown): Promise<unknown> {
+    return {};
+  }
+
   getEngineMetadata() {
     return { id: this.id, name: this.name, version: this.version };
   }

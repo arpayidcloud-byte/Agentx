@@ -4,7 +4,6 @@
  */
 
 import type { WorkflowGraph } from './interfaces.js';
-import { WorkflowNode, DependencyEdge } from './interfaces.js';
 import { WorkflowValidationError } from './errors.js';
 
 export class WorkflowValidator {

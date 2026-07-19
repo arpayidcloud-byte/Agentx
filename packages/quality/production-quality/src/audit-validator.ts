@@ -17,7 +17,7 @@ export class AuditValidator {
     const failures: string[] = [];
 
     for (let i = 0; i < logs.length; i++) {
-      const log = logs[i];
+      const log = logs[i]!;
       if (!log.traceId) {
         failures.push(`Log entry ${i} missing traceId`);
       }

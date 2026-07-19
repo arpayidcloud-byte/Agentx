@@ -4,7 +4,6 @@
  */
 
 import type { ReasoningTree, TreeNode } from './interfaces.js';
-import { TreeMetadata } from './interfaces.js';
 
 export class ReasoningTreeManager {
   private tree: ReasoningTree = {

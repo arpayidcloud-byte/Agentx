@@ -6,9 +6,9 @@
 export class SemanticVersion {
   parse(v: string) {
     const parts = v.split('.');
-    const major = parseInt(parts[0], 10);
-    const minor = parseInt(parts[1], 10);
-    const patch = parseInt(parts[2], 10);
+    const major = parseInt(parts[0]!, 10);
+    const minor = parseInt(parts[1]!, 10);
+    const patch = parseInt(parts[2]!, 10);
     return { major, minor, patch };
   }
 

@@ -3,8 +3,8 @@
  * @description Thinking engine contract implementation base.
  */
 
-import type { IThinkingEngine, ReasoningResult } from './contracts.js';
-import type { ThinkingSession } from './interfaces.js';
+import type { IThinkingEngine } from './contracts.js';
+import type { ReasoningResult, ThinkingSession } from './interfaces.js';
 
 export class ThinkingEngineBase implements IThinkingEngine {
   async think(_session: ThinkingSession): Promise<ReasoningResult> {

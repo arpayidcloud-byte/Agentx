@@ -4,7 +4,6 @@
  */
 
 import type { IProvider, CertificationConfig, CertificationCertificate } from './interfaces.js';
-import { CertificationReport } from './interfaces.js';
 import { ProviderValidator } from './provider-validator.js';
 import { ProviderHealthAudit } from './provider-health-audit.js';
 import { ProviderPerformanceAudit } from './provider-performance-audit.js';
@@ -19,8 +18,7 @@ import { ProviderCertificate } from './provider-certificate.js';
 import { ProviderRegistry } from './provider-registry.js';
 import { CertificationHistory } from './certification-history.js';
 import { ReportGenerator } from './report-generator.js';
-import { ValidationError, SecurityError, PerformanceError } from './errors.js';
-import { createHash } from 'crypto';
+import { CertificationError } from './errors.js';
 
 export class CertificationEngine {
   public registry = new ProviderRegistry();
@@ -71,6 +69,7 @@ export class CertificationEngine {
     if (grade === 'Rejected' || grade === 'Experimental') {
       throw new CertificationError(
         `Provider grade '${grade}' does not meet minimum production standards`,
+        'GRADE_REJECTED',
         'certification-engine',
       );
     }

@@ -39,8 +39,8 @@ export class OTELTelemetryProvider implements ITelemetryProvider, INativeProvide
     return this.connected;
   }
 
-  async getHealth() {
-    return { status: this.connected ? 'UP' : ('DOWN' as const), latencyMs: 3 };
+  async getHealth(): Promise<{ status: 'UP' | 'DOWN' | 'DEGRADED'; latencyMs: number }> {
+    return { status: this.connected ? 'UP' : 'DOWN', latencyMs: 3 };
   }
 
   getMetadata(): ProviderMetadata {
@@ -64,13 +64,13 @@ export class OTELTelemetryProvider implements ITelemetryProvider, INativeProvide
     return { totalRequests: 0, successfulRequests: 0, failedRequests: 0, averageLatencyMs: 0 };
   }
 
-  startSpan(name: string, context?: ProviderContext): string {
+  startSpan(_name: string, _context?: ProviderContext): string {
     return `span-${Date.now()}`;
   }
 
-  endSpan(spanId: string, status?: 'OK' | 'ERROR'): void {}
-  recordCounter(name: string, value?: number): void {}
-  recordHistogram(name: string, value: number): void {}
-  recordGauge(name: string, value: number): void {}
+  endSpan(_spanId: string, _status?: 'OK' | 'ERROR'): void {}
+  recordCounter(_name: string, _value?: number): void {}
+  recordHistogram(_name: string, _value: number): void {}
+  recordGauge(_name: string, _value: number): void {}
   async flush(): Promise<void> {}
 }

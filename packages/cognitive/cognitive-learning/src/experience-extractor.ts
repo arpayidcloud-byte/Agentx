@@ -18,8 +18,8 @@ export class ExperienceExtractor {
         type: 'repeated_failure',
         signature: 'failure-count:' + failures.length,
         occurrenceCount: failures.length,
-        firstSeen: failures[0].timestamp,
-        lastSeen: failures[failures.length - 1].timestamp,
+        firstSeen: failures[0]!.timestamp,
+        lastSeen: failures[failures.length - 1]!.timestamp,
         checksum: '',
       });
     }
@@ -32,8 +32,8 @@ export class ExperienceExtractor {
         type: 'repeated_success',
         signature: 'success-count:' + successes.length,
         occurrenceCount: successes.length,
-        firstSeen: successes[0].timestamp,
-        lastSeen: successes[successes.length - 1].timestamp,
+        firstSeen: successes[0]!.timestamp,
+        lastSeen: successes[successes.length - 1]!.timestamp,
         checksum: '',
       });
     }

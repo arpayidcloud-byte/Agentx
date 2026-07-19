@@ -12,11 +12,11 @@ export class ReplayValidator {
     if (results.length < 2) return;
 
     const baseChecksum = createHash('sha256')
-      .update(JSON.stringify(results[0].stepsExecuted))
+      .update(JSON.stringify(results[0]!.stepsExecuted))
       .digest('hex');
     for (let i = 1; i < results.length; i++) {
       const currentChecksum = createHash('sha256')
-        .update(JSON.stringify(results[i].stepsExecuted))
+        .update(JSON.stringify(results[i]!.stepsExecuted))
         .digest('hex');
       if (baseChecksum !== currentChecksum) {
         throw new ReplayMismatchError(

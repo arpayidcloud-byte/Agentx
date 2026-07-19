@@ -19,6 +19,7 @@ export class PlanningEngine {
       strategy: 'sequential',
       order: idx,
       parallel: sg.dependencies.length === 0 && idx > 0,
+      dependencies: sg.dependencies,
     }));
 
     const totalEstimatedTime = steps.length * 1000;

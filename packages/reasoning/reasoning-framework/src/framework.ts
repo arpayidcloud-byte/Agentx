@@ -9,7 +9,7 @@ import { ReasoningPipeline } from './pipeline.js';
 export class ReasoningFramework {
   private pipeline = new ReasoningPipeline();
 
-  async executeReasoning(session: ReasoningSession, graph: ReasoningGraph): Promise<void> {
+  async executeReasoning(session: ReasoningSession, _graph: ReasoningGraph): Promise<void> {
     const stages: PipelineStageName[] = [
       'NORMALIZATION',
       'CONTEXT_BUILD',

@@ -3,8 +3,7 @@
  * @description Master orchestrator for goal decomposition and planning.
  */
 
-import type { PlanningBudget, PlanningPlan } from './interfaces.js';
-import { Goal, GoalState } from './interfaces.js';
+import type { PlanningPlan, PlanningBudget } from './interfaces.js';
 import { GoalStateMachine } from './goal-state.js';
 import { GoalSession } from './goal-session.js';
 import { GoalParser } from './goal-parser.js';
@@ -45,7 +44,7 @@ export class GoalEngine {
     title: string,
     description: string,
     objectiveCount: number = 2,
-    policy: 'safe' | 'balanced' | 'aggressive' = 'balanced',
+    _policy: 'safe' | 'balanced' | 'aggressive' = 'balanced',
   ): Promise<{ plan: PlanningPlan; subgoals: number }> {
     const goal = this.parser.parse(title, description);
     this.validator.validate(goal);

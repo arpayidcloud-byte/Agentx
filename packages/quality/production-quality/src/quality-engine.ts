@@ -69,19 +69,19 @@ export class QualityEngine {
   ): Promise<ProductionQualityReport> {
     this.gates.validate(coverage);
 
-    const mutRes = this.mutation.validate(extra.mutantsKilled, extra.totalMutants);
-    const branchRes = this.branch.validate(extra.uncoveredBranches);
-    const edgeRes = this.edgecase.validate(extra.edgeCases);
-    const failRes = this.failure.validate(extra.failures);
+    this.mutation.validate(extra.mutantsKilled, extra.totalMutants);
+    this.branch.validate(extra.uncoveredBranches);
+    this.edgecase.validate(extra.edgeCases);
+    this.failure.validate(extra.failures);
     const detRes = this.deterministic.validate(extra.deterministicOutputs);
     const raceRes = this.race.validate(extra.raceResults);
     const resRes = this.resource.validate(extra.resourceUsage, extra.resourceCeilings);
     const timeRes = this.timeout.validate(extra.timeoutRuns);
     const retryRes = this.retry.validate(extra.retries);
     const auditRes = this.audit.validate(extra.auditLogs);
-    const eventRes = this.event.validate(extra.events);
-    const snapRes = this.snapshot.validate(extra.snapshot);
-    const checkRes = this.checksum.validate(extra.checksumData, extra.expectedChecksum);
+    this.event.validate(extra.events);
+    this.snapshot.validate(extra.snapshot);
+    this.checksum.validate(extra.checksumData, extra.expectedChecksum);
     this.dependency.validate(extra.dependencies);
 
     const scores = this.rules.calculateScore({

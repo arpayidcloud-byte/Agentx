@@ -9,7 +9,6 @@ export class KnowledgeSynchronizer {
   private knowledge = new Map<string, unknown>();
 
   sync(agentId: string, key: string, value: unknown): void {
-    const payload = JSON.stringify({ agentId, key, value });
     this.knowledge.set(`${agentId}:${key}`, value);
   }
 

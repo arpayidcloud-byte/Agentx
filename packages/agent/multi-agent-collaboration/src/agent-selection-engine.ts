@@ -19,6 +19,6 @@ export class AgentSelectionEngine {
         return b.availableSlots - b.currentLoad - (a.availableSlots - a.currentLoad);
       }
       return b.priority - a.priority;
-    })[0];
+    })[0] ?? null;
   }
 }

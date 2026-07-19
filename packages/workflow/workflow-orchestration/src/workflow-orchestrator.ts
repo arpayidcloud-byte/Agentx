@@ -3,7 +3,6 @@
  * @description Master orchestrator for autonomous workflow execution.
  */
 
-import { WorkflowGraph, WorkflowTask } from './interfaces.js';
 import { WorkflowStateMachine } from './workflow-state.js';
 import { WorkflowSession } from './workflow-session.js';
 import { WorkflowBuilder } from './workflow-builder.js';

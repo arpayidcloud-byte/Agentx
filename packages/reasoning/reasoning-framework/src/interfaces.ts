@@ -14,7 +14,8 @@ export type PipelineStageName =
   | 'CHECKPOINT'
   | 'RECOVERY'
   | 'COMPLETED'
-  | 'FAILED';
+  | 'FAILED'
+  | 'CANCELLED';
 
 export interface ReasoningSession {
   id: string;

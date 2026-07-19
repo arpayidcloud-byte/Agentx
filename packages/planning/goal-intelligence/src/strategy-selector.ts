@@ -12,7 +12,7 @@ export interface StrategyOption {
 }
 
 export class StrategySelector {
-  select(subgoal: SubGoal, strategies: StrategyOption[]): StrategyOption {
+  select(_subgoal: SubGoal, strategies: StrategyOption[]): StrategyOption {
     if (strategies.length === 0) {
       throw new Error('No strategies available');
     }
@@ -22,6 +22,6 @@ export class StrategySelector {
       return a.cost - b.cost;
     });
 
-    return sorted[0];
+    return sorted[0]!;
   }
 }

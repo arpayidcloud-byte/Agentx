@@ -48,3 +48,10 @@ export class CheckpointError extends ReasoningError {
     this.name = 'CheckpointError';
   }
 }
+
+export class SchedulerError extends ReasoningError {
+  constructor(message: string, source: string) {
+    super(message, 'SCHEDULER_ERROR', source);
+    this.name = 'SchedulerError';
+  }
+}

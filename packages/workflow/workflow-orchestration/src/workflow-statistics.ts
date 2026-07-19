@@ -45,6 +45,10 @@ export class WorkflowStatisticsCollector {
     if (recovered) this.tasksRecovered++;
   }
 
+  recordFailure(): void {
+    this.tasksFailed++;
+  }
+
   getMetrics(): WorkflowMetrics {
     const total = this.tasksExecuted;
     return {

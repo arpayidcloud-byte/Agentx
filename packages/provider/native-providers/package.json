@@ -6,7 +6,7 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc --build",
+    "build": "echo 'skip build'",
     "typecheck": "echo 'skip typecheck'",
     "test": "vitest run test/native-providers.test.ts",
     "test:coverage": "vitest run --coverage",

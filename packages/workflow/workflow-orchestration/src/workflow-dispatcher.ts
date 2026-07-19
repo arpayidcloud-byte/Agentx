@@ -4,7 +4,6 @@
  */
 
 import type { WorkflowTask } from './interfaces.js';
-import { WorkflowExecutionError } from './errors.js';
 
 export class WorkflowDispatcher {
   async dispatch(task: WorkflowTask): Promise<unknown> {

@@ -3,8 +3,6 @@
  * @description Goal intelligence event bus.
  */
 
-import { CognitiveEvent } from './interfaces.js';
-
 export class GoalEventBus {
   private listeners = new Map<string, Function[]>();
 
