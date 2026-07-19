@@ -68,11 +68,11 @@ r5/step-<N>-<short-description>
 
 | Phase | Steps | Done | PR Merged | CI Green | Remaining |
 |-------|-------|------|-----------|----------|-----------|
-| R2 — ESLint Upgrade | 5 | 0 | 0 | 0 | 5 |
+| R2 — ESLint Upgrade | 5 | 1 | 0 | 0 | 4 |
 | R3 — Test Coverage | 6 | 0 | 0 | 0 | 6 |
 | R4 — Stub Implementation | 6 | 0 | 0 | 0 | 6 |
 | R5 — Vol 11/12 | 2 | 0 | 0 | 0 | 2 |
-| **TOTAL** | **19** | **0** | **0** | **0** | **19** |
+| **TOTAL** | **19** | **1** | **0** | **0** | **18** |
 
 ### Status Icons
 - `[ ]` Not started
