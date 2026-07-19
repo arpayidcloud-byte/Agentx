@@ -133,7 +133,7 @@ r5/step-<N>-<short-description>
 
 **Exit Criteria:** 7+ rules upgraded ke error, `pnpm lint` pass.
 
-### Step R2.3: Fix `no-explicit-any` violations
+### Step R2.3: Fix `no-explicit-any` violations `[x]`
 
 - [ ] Jalankan `pnpm lint 2>&1 | grep "no-explicit-any"` untuk list semua files
 - [ ] Replace `any` dengan proper types:
@@ -152,7 +152,7 @@ r5/step-<N>-<short-description>
 
 **Exit Criteria:** Zero `no-explicit-any` violations, `pnpm lint` pass.
 
-### Step R2.4: Fix `no-unsafe-*` family violations
+### Step R2.4: Fix `no-unsafe-*` family violations `[x]`
 
 - [ ] Rules: `no-unsafe-member-access`, `no-unsafe-assignment`, `no-unsafe-argument`, `no-unsafe-call`, `no-unsafe-return`
 - [ ] Fix pattern:
