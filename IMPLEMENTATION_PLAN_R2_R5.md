@@ -6,15 +6,78 @@
 
 ---
 
+## Workflow Per Step
+
+Setiap step mengikuti workflow ini:
+
+```
+1. Kerjakan step → commit ke branch baru
+2. Push → auto-trigger CI
+3. CI hijau? → gh pr create → auto-merge
+4. CI merah? → fix → re-push → tunggu hijau
+5. Merge → update tracker di file ini → commit → push
+```
+
+### Checklist per step
+
+Setiap step harus melewati:
+- [ ] Source code berubah
+- [ ] `pnpm typecheck` pass
+- [ ] `pnpm build` pass
+- [ ] `pnpm test` pass
+- [ ] `pnpm lint` pass (jika ESLint step)
+- [ ] `pnpm test:coverage` pass
+- [ ] `pnpm lint:deps` pass
+- [ ] `pnpm lint:handbook` pass (jika handbook step)
+- [ ] CI GitHub Actions hijau
+- [ ] PR created & merged
+- [ ] Tracker di file ini di-update
+
+### Branch naming convention
+
+```
+r2/step-<N>-<short-description>
+r3/step-<N>-<short-description>
+r4/step-<N>-<short-description>
+r5/step-<N>-<short-description>
+```
+
+### PR template
+
+```
+## What
+<1 line description of what this step does>
+
+## Why
+<Link to plan step and explain why>
+
+## Verification
+- [ ] pnpm typecheck ✅
+- [ ] pnpm build ✅
+- [ ] pnpm test ✅
+- [ ] pnpm lint ✅
+- [ ] pnpm test:coverage ✅
+- [ ] pnpm lint:deps ✅
+- [ ] CI green ✅
+```
+
+---
+
 ## Progress Tracker
 
-| Phase                    | Total Steps | Completed | Remaining |
-| ------------------------ | ----------- | --------- | --------- |
-| R2 — ESLint Upgrade      | 5           | 0         | 5         |
-| R3 — Test Coverage       | 6           | 0         | 6         |
-| R4 — Stub Implementation | 6           | 0         | 6         |
-| R5 — Vol 11/12           | 2           | 0         | 2         |
-| **TOTAL**                | **19**      | **0**     | **19**    |
+| Phase | Steps | Done | PR Merged | CI Green | Remaining |
+|-------|-------|------|-----------|----------|-----------|
+| R2 — ESLint Upgrade | 5 | 0 | 0 | 0 | 5 |
+| R3 — Test Coverage | 6 | 0 | 0 | 0 | 6 |
+| R4 — Stub Implementation | 6 | 0 | 0 | 0 | 6 |
+| R5 — Vol 11/12 | 2 | 0 | 0 | 0 | 2 |
+| **TOTAL** | **19** | **0** | **0** | **0** | **19** |
+
+### Status Icons
+- `[ ]` Not started
+- `[~]` In progress  
+- `[x]` Done & merged
+- `[-]` Deferred
 
 ### Legend
 
@@ -37,6 +100,14 @@
 - [ ] Identifikasi top 5 rules dengan violations terbanyak
 - [ ] Urutkan rules dari violations paling sedikit ke paling banyak
 
+
+**CI & Merge:**
+- [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
+- [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
+- [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
+- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
+
 **Exit Criteria:** Daftar urutan 19 rules berdasarkan jumlah violations.
 
 ### Step R2.2: Fix rules dengan violations < 10
@@ -49,6 +120,14 @@
 
 **Expected rules:** `prefer-const`, `no-control-regex`, `no-async-promise-executor`, `@typescript-eslint/await-thenable`, `@typescript-eslint/no-unnecessary-type-assertion`, `@typescript-eslint/no-redundant-type-constituents`, `@typescript-eslint/ban-types`
 
+
+**CI & Merge:**
+- [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
+- [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
+- [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
+- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
+
 **Exit Criteria:** 7+ rules upgraded ke error, `pnpm lint` pass.
 
 ### Step R2.3: Fix `no-explicit-any` violations
@@ -59,6 +138,14 @@
   - `unknown` + type guard untuk unknown data
   - Specific interfaces untuk known shapes
 - [ ] Upgrade rule ke `error`
+
+
+**CI & Merge:**
+- [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
+- [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
+- [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
+- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** Zero `no-explicit-any` violations, `pnpm lint` pass.
 
@@ -72,6 +159,14 @@
   - Fix Map.get() / array[index] returns dengan `!` atau guard
 - [ ] Upgrade rules ke `error` satu per satu
 
+
+**CI & Merge:**
+- [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
+- [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
+- [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
+- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
+
 **Exit Criteria:** Zero `no-unsafe-*` violations, `pnpm lint` pass.
 
 ### Step R2.5: Fix remaining rules + final verification
@@ -80,6 +175,14 @@
 - [ ] Fix `@typescript-eslint/restrict-template-expressions` violations
 - [ ] Final verification: semua 19 rules di `error`, `pnpm lint` zero warnings
 - [ ] Commit dan verify CI green
+
+
+**CI & Merge:**
+- [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
+- [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
+- [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
+- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** `.eslintrc.cjs` punya zero `warn` rules. CI green.
 
@@ -101,6 +204,14 @@
 - [ ] `packages/shared/context-engine/` — test context building
 - [ ] `packages/shared/knowledge-engine/` — test knowledge queries
 
+
+**CI & Merge:**
+- [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
+- [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
+- [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
+- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
+
 **Exit Criteria:** 7 shared packages punya tests, `pnpm test` pass.
 
 ### Step R3.2: Test untuk agent & workflow packages
@@ -111,6 +222,14 @@
 - [ ] `packages/workflow/workflow-engine/` — sudah ada tests, verify
 - [ ] `packages/workflow/workflow-orchestration/` — test orchestration
 - [ ] `packages/workflow/workflow-hardening/` — test hardening rules
+
+
+**CI & Merge:**
+- [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
+- [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
+- [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
+- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** 6 packages punya tests, `pnpm test` pass.
 
@@ -123,6 +242,14 @@
 - [ ] `packages/provider/vendor-certification/` — test certification
 - [ ] `packages/plugin-sdk/` — test manifest validation, registry, loader
 
+
+**CI & Merge:**
+- [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
+- [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
+- [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
+- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
+
 **Exit Criteria:** 6 packages punya tests, `pnpm test` pass.
 
 ### Step R3.4: Test untuk cognitive & reasoning packages
@@ -133,6 +260,14 @@
 - [ ] `packages/cognitive/autonomous-cognition/` — test autonomous execution
 - [ ] `packages/reasoning/reasoning-algorithms/` — sudah ada tests, verify
 - [ ] `packages/reasoning/reasoning-framework/` — test framework
+
+
+**CI & Merge:**
+- [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
+- [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
+- [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
+- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** 6 packages punya tests, `pnpm test` pass.
 
@@ -149,6 +284,14 @@
 - [ ] `packages/quality/production-quality/` — test quality gates
 - [ ] `packages/platform/developer-platform/` — sudah ada tests, verify
 
+
+**CI & Merge:**
+- [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
+- [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
+- [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
+- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
+
 **Exit Criteria:** 10 packages punya tests, `pnpm test` pass.
 
 ### Step R3.6: Coverage threshold enforcement
@@ -157,6 +300,14 @@
 - [ ] Set minimum 60% function coverage untuk semua packages
 - [ ] Verify `pnpm test:coverage` pass dengan thresholds
 - [ ] Commit dan verify CI green
+
+
+**CI & Merge:**
+- [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
+- [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
+- [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
+- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** All packages meet minimum coverage thresholds. CI green.
 
@@ -176,6 +327,14 @@
   - **Real stubs:** files dengan class yang punya empty methods, `throw 'not implemented'`, atau `return undefined`
 - [ ] List files yang perlu diisi implementasi
 
+
+**CI & Merge:**
+- [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
+- [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
+- [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
+- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
+
 **Exit Criteria:** Daftar files yang benar-benar perlu diimplementasi.
 
 ### Step R4.2: Implement stubs di core packages
@@ -184,6 +343,14 @@
 - [ ] `packages/shared/shared/` — logger implementations, metrics collector
 - [ ] `packages/shared/secrets/` — vault backend, file backend
 - [ ] `packages/shared/tool-sdk/` — filesystem operations, git operations
+
+
+**CI & Merge:**
+- [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
+- [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
+- [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
+- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** Core packages punya real implementations, `pnpm build` pass.
 
@@ -194,6 +361,14 @@
 - [ ] `packages/workflow/workflow-orchestration/` — multi-workflow coordination
 - [ ] `packages/workflow/workflow-hardening/` — retry policies, circuit breakers
 
+
+**CI & Merge:**
+- [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
+- [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
+- [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
+- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
+
 **Exit Criteria:** Agent & workflow packages punya real implementations.
 
 ### Step R4.4: Implement stubs di provider & cognitive
@@ -202,6 +377,14 @@
 - [ ] `packages/cognitive/cognitive-kernel/` — session management, checkpoint
 - [ ] `packages/cognitive/cognitive-learning/` — strategy adjustment
 - [ ] `packages/reasoning/reasoning-framework/` — pipeline stages
+
+
+**CI & Merge:**
+- [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
+- [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
+- [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
+- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** Provider & cognitive packages punya real implementations.
 
@@ -213,6 +396,14 @@
 - [ ] `packages/planning/goal-intelligence/` — goal lifecycle
 - [ ] `packages/quality/production-quality/` — quality gates
 
+
+**CI & Merge:**
+- [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
+- [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
+- [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
+- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
+
 **Exit Criteria:** Semua packages punya real implementations.
 
 ### Step R4.6: Verification & CI
@@ -221,6 +412,14 @@
 - [ ] Verify zero `throw 'not implemented'` remaining
 - [ ] Verify coverage thresholds masih pass
 - [ ] Commit dan verify CI green
+
+
+**CI & Merge:**
+- [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
+- [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
+- [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
+- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** Zero stubs remaining. All CI checks green.
 
@@ -241,6 +440,14 @@
 - [ ] Tambah environment strategy (dev/staging/prod)
 - [ ] Tambah tests
 
+
+**CI & Merge:**
+- [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
+- [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
+- [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
+- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
+
 **Exit Criteria:** Vol 11 specification terimplementasi. CI green.
 
 ### Step R5.2: Vol 12 — AI Company OS
@@ -250,6 +457,14 @@
 - [ ] Implementasi org-level budget allocation
 - [ ] Implementasi portfolio reporting
 - [ ] Tambah tests
+
+
+**CI & Merge:**
+- [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
+- [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
+- [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
+- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** Vol 12 specification terimplementasi. CI green.
 
