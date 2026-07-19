@@ -23,7 +23,11 @@ jobs:
       - run: pnpm lint
       - run: pnpm lint:deps
       - name: Clean build artifacts
-        run: find . -name ".tsbuildinfo" -not -path "*/node_modules/*" -delete 2>/dev/null; find . -name "tsconfig.tsbuildinfo" -not -path "*/node_modules/*" -delete 2>/dev/null; echo "cleaned"
+        run: |
+          find . -name "dist" -type d -not -path "*/node_modules/*" -exec rm -rf {} + 2>/dev/null
+          find . -name ".turbo" -type d -not -path "*/node_modules/*" -exec rm -rf {} + 2>/dev/null
+          find . -name "*.tsbuildinfo" -not -path "*/node_modules/*" -delete 2>/dev/null
+          echo "cleaned"
       - run: pnpm build
       - run: pnpm test
       - run: pnpm test:coverage
