@@ -22,6 +22,7 @@ Setiap step mengikuti workflow ini:
 ### Checklist per step
 
 Setiap step harus melewati:
+
 - [ ] Source code berubah
 - [ ] `pnpm typecheck` pass
 - [ ] `pnpm build` pass
@@ -66,17 +67,18 @@ r5/step-<N>-<short-description>
 
 ## Progress Tracker
 
-| Phase | Steps | Done | PR Merged | CI Green | Remaining |
-|-------|-------|------|-----------|----------|-----------|
-| R2 — ESLint Upgrade | 5 | 1 | 0 | 0 | 4 |
-| R3 — Test Coverage | 6 | 0 | 0 | 0 | 6 |
-| R4 — Stub Implementation | 6 | 0 | 0 | 0 | 6 |
-| R5 — Vol 11/12 | 2 | 0 | 0 | 0 | 2 |
-| **TOTAL** | **19** | **1** | **0** | **0** | **18** |
+| Phase                    | Steps  | Done  | PR Merged | CI Green | Remaining |
+| ------------------------ | ------ | ----- | --------- | -------- | --------- |
+| R2 — ESLint Upgrade      | 5      | 2     | 2         | 2        | 3         |
+| R3 — Test Coverage       | 6      | 0     | 0         | 0        | 6         |
+| R4 — Stub Implementation | 6      | 0     | 0         | 0        | 6         |
+| R5 — Vol 11/12           | 2      | 0     | 0         | 0        | 2         |
+| **TOTAL**                | **19** | **2** | **2**     | **2**    | **17**    |
 
 ### Status Icons
+
 - `[ ]` Not started
-- `[~]` In progress  
+- `[~]` In progress
 - `[x]` Done & merged
 - `[-]` Deferred
 
@@ -101,8 +103,8 @@ r5/step-<N>-<short-description>
 - [ ] Identifikasi top 5 rules dengan violations terbanyak
 - [ ] Urutkan rules dari violations paling sedikit ke paling banyak
 
-
 **CI & Merge:**
+
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
@@ -111,7 +113,7 @@ r5/step-<N>-<short-description>
 
 **Exit Criteria:** Daftar urutan 19 rules berdasarkan jumlah violations.
 
-### Step R2.2: Fix rules dengan violations < 10
+### Step R2.2: Fix rules dengan violations < 10 `[x]`
 
 - [ ] Untuk setiap rule dengan < 10 violations:
   - Baca file yang violation
@@ -121,8 +123,8 @@ r5/step-<N>-<short-description>
 
 **Expected rules:** `prefer-const`, `no-control-regex`, `no-async-promise-executor`, `@typescript-eslint/await-thenable`, `@typescript-eslint/no-unnecessary-type-assertion`, `@typescript-eslint/no-redundant-type-constituents`, `@typescript-eslint/ban-types`
 
-
 **CI & Merge:**
+
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
@@ -140,8 +142,8 @@ r5/step-<N>-<short-description>
   - Specific interfaces untuk known shapes
 - [ ] Upgrade rule ke `error`
 
-
 **CI & Merge:**
+
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
@@ -160,8 +162,8 @@ r5/step-<N>-<short-description>
   - Fix Map.get() / array[index] returns dengan `!` atau guard
 - [ ] Upgrade rules ke `error` satu per satu
 
-
 **CI & Merge:**
+
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
@@ -177,8 +179,8 @@ r5/step-<N>-<short-description>
 - [ ] Final verification: semua 19 rules di `error`, `pnpm lint` zero warnings
 - [ ] Commit dan verify CI green
 
-
 **CI & Merge:**
+
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
@@ -205,8 +207,8 @@ r5/step-<N>-<short-description>
 - [ ] `packages/shared/context-engine/` — test context building
 - [ ] `packages/shared/knowledge-engine/` — test knowledge queries
 
-
 **CI & Merge:**
+
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
@@ -224,8 +226,8 @@ r5/step-<N>-<short-description>
 - [ ] `packages/workflow/workflow-orchestration/` — test orchestration
 - [ ] `packages/workflow/workflow-hardening/` — test hardening rules
 
-
 **CI & Merge:**
+
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
@@ -243,8 +245,8 @@ r5/step-<N>-<short-description>
 - [ ] `packages/provider/vendor-certification/` — test certification
 - [ ] `packages/plugin-sdk/` — test manifest validation, registry, loader
 
-
 **CI & Merge:**
+
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
@@ -262,8 +264,8 @@ r5/step-<N>-<short-description>
 - [ ] `packages/reasoning/reasoning-algorithms/` — sudah ada tests, verify
 - [ ] `packages/reasoning/reasoning-framework/` — test framework
 
-
 **CI & Merge:**
+
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
@@ -285,8 +287,8 @@ r5/step-<N>-<short-description>
 - [ ] `packages/quality/production-quality/` — test quality gates
 - [ ] `packages/platform/developer-platform/` — sudah ada tests, verify
 
-
 **CI & Merge:**
+
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
@@ -302,8 +304,8 @@ r5/step-<N>-<short-description>
 - [ ] Verify `pnpm test:coverage` pass dengan thresholds
 - [ ] Commit dan verify CI green
 
-
 **CI & Merge:**
+
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
@@ -328,8 +330,8 @@ r5/step-<N>-<short-description>
   - **Real stubs:** files dengan class yang punya empty methods, `throw 'not implemented'`, atau `return undefined`
 - [ ] List files yang perlu diisi implementasi
 
-
 **CI & Merge:**
+
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
@@ -345,8 +347,8 @@ r5/step-<N>-<short-description>
 - [ ] `packages/shared/secrets/` — vault backend, file backend
 - [ ] `packages/shared/tool-sdk/` — filesystem operations, git operations
 
-
 **CI & Merge:**
+
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
@@ -362,8 +364,8 @@ r5/step-<N>-<short-description>
 - [ ] `packages/workflow/workflow-orchestration/` — multi-workflow coordination
 - [ ] `packages/workflow/workflow-hardening/` — retry policies, circuit breakers
 
-
 **CI & Merge:**
+
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
@@ -379,8 +381,8 @@ r5/step-<N>-<short-description>
 - [ ] `packages/cognitive/cognitive-learning/` — strategy adjustment
 - [ ] `packages/reasoning/reasoning-framework/` — pipeline stages
 
-
 **CI & Merge:**
+
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
@@ -397,8 +399,8 @@ r5/step-<N>-<short-description>
 - [ ] `packages/planning/goal-intelligence/` — goal lifecycle
 - [ ] `packages/quality/production-quality/` — quality gates
 
-
 **CI & Merge:**
+
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
@@ -414,8 +416,8 @@ r5/step-<N>-<short-description>
 - [ ] Verify coverage thresholds masih pass
 - [ ] Commit dan verify CI green
 
-
 **CI & Merge:**
+
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
@@ -441,8 +443,8 @@ r5/step-<N>-<short-description>
 - [ ] Tambah environment strategy (dev/staging/prod)
 - [ ] Tambah tests
 
-
 **CI & Merge:**
+
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
@@ -459,8 +461,8 @@ r5/step-<N>-<short-description>
 - [ ] Implementasi portfolio reporting
 - [ ] Tambah tests
 
-
 **CI & Merge:**
+
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
