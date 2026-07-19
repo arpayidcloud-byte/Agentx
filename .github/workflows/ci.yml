@@ -34,16 +34,21 @@ jobs:
       - name: Setup handbook for lint & contract tests
         id: handbook-setup
         continue-on-error: true
+        env:
+          HANDBOOK_TOKEN: ${{ secrets.HANDBOOK_TOKEN }}
         run: |
-          gh auth setup-git
-          git clone --depth 1 https://github.com/arpayidcloud-byte/agentx-handbook.git /tmp/agentx-handbook
+          if [ -n "$HANDBOOK_TOKEN" ]; then
+            git clone --depth 1 https://x-access-token:${HANDBOOK_TOKEN}@github.com/arpayidcloud-byte/agentx-handbook.git /tmp/agentx-handbook
+          else
+            git clone --depth 1 https://github.com/arpayidcloud-byte/agentx-handbook.git /tmp/agentx-handbook
+          fi
       - name: Handbook lint
-        if: steps.handbook-setup.outcome == 'success'
+        if: steps.handbook-setup.conclusion == 'success'
         run: pnpm lint:handbook
         env:
           AGENTX_HANDBOOK_DIR: /tmp/agentx-handbook
       - name: Contract tests (handbook validation)
-        if: steps.handbook-setup.outcome == 'success'
+        if: steps.handbook-setup.conclusion == 'success'
         continue-on-error: true
         run: |
           cd /tmp/agentx-handbook
