@@ -13,9 +13,10 @@ Setiap step mengikuti workflow ini:
 ```
 1. Kerjakan step → commit ke branch baru
 2. Push → auto-trigger CI
-3. CI hijau? → gh pr create → auto-merge
-4. CI merah? → fix → re-push → tunggu hijau
-5. Merge → update tracker di file ini → commit → push
+3. Cek CI: gh run list --limit 1
+4. CI hijau? → gh pr create → review → gh pr merge --squash
+5. CI merah? → fix → re-push → tunggu hijau
+6. Merge → update tracker di file ini → commit → push main
 ```
 
 ### Checklist per step
@@ -105,7 +106,7 @@ r5/step-<N>-<short-description>
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
-- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] CI green → `gh pr merge --squash`
 - [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** Daftar urutan 19 rules berdasarkan jumlah violations.
@@ -125,7 +126,7 @@ r5/step-<N>-<short-description>
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
-- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] CI green → `gh pr merge --squash`
 - [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** 7+ rules upgraded ke error, `pnpm lint` pass.
@@ -144,7 +145,7 @@ r5/step-<N>-<short-description>
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
-- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] CI green → `gh pr merge --squash`
 - [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** Zero `no-explicit-any` violations, `pnpm lint` pass.
@@ -164,7 +165,7 @@ r5/step-<N>-<short-description>
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
-- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] CI green → `gh pr merge --squash`
 - [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** Zero `no-unsafe-*` violations, `pnpm lint` pass.
@@ -181,7 +182,7 @@ r5/step-<N>-<short-description>
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
-- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] CI green → `gh pr merge --squash`
 - [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** `.eslintrc.cjs` punya zero `warn` rules. CI green.
@@ -209,7 +210,7 @@ r5/step-<N>-<short-description>
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
-- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] CI green → `gh pr merge --squash`
 - [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** 7 shared packages punya tests, `pnpm test` pass.
@@ -228,7 +229,7 @@ r5/step-<N>-<short-description>
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
-- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] CI green → `gh pr merge --squash`
 - [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** 6 packages punya tests, `pnpm test` pass.
@@ -247,7 +248,7 @@ r5/step-<N>-<short-description>
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
-- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] CI green → `gh pr merge --squash`
 - [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** 6 packages punya tests, `pnpm test` pass.
@@ -266,7 +267,7 @@ r5/step-<N>-<short-description>
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
-- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] CI green → `gh pr merge --squash`
 - [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** 6 packages punya tests, `pnpm test` pass.
@@ -289,7 +290,7 @@ r5/step-<N>-<short-description>
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
-- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] CI green → `gh pr merge --squash`
 - [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** 10 packages punya tests, `pnpm test` pass.
@@ -306,7 +307,7 @@ r5/step-<N>-<short-description>
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
-- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] CI green → `gh pr merge --squash`
 - [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** All packages meet minimum coverage thresholds. CI green.
@@ -332,7 +333,7 @@ r5/step-<N>-<short-description>
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
-- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] CI green → `gh pr merge --squash`
 - [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** Daftar files yang benar-benar perlu diimplementasi.
@@ -349,7 +350,7 @@ r5/step-<N>-<short-description>
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
-- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] CI green → `gh pr merge --squash`
 - [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** Core packages punya real implementations, `pnpm build` pass.
@@ -366,7 +367,7 @@ r5/step-<N>-<short-description>
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
-- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] CI green → `gh pr merge --squash`
 - [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** Agent & workflow packages punya real implementations.
@@ -383,7 +384,7 @@ r5/step-<N>-<short-description>
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
-- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] CI green → `gh pr merge --squash`
 - [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** Provider & cognitive packages punya real implementations.
@@ -401,7 +402,7 @@ r5/step-<N>-<short-description>
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
-- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] CI green → `gh pr merge --squash`
 - [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** Semua packages punya real implementations.
@@ -418,7 +419,7 @@ r5/step-<N>-<short-description>
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
-- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] CI green → `gh pr merge --squash`
 - [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** Zero stubs remaining. All CI checks green.
@@ -445,7 +446,7 @@ r5/step-<N>-<short-description>
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
-- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] CI green → `gh pr merge --squash`
 - [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** Vol 11 specification terimplementasi. CI green.
@@ -463,7 +464,7 @@ r5/step-<N>-<short-description>
 - [ ] `pnpm typecheck && pnpm build && pnpm test && pnpm test:coverage && pnpm lint:deps` pass
 - [ ] `git checkout -b r<N>/step-<M>-<desc>` → commit → push
 - [ ] `gh pr create --title 'fix(plan): R<N>.<M> <description>' --body '...'`
-- [ ] CI green → `gh pr merge --auto --squash`
+- [ ] CI green → `gh pr merge --squash`
 - [ ] Update tracker: `[ ]` → `[x]` in this file → commit → push to main
 
 **Exit Criteria:** Vol 12 specification terimplementasi. CI green.
