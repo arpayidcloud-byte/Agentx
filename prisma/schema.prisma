@@ -43,7 +43,8 @@ model AuditEvent {
   traceId       String
   payload       Json
   occurredAt    DateTime @default(now())
-  
+  tenantId      String?  // Added for Volume 10 RLS
+
   // Immutability hashes (RFC-0024)
   record_hash   String
   previous_hash String
@@ -57,6 +58,7 @@ model CostRecord {
   outputTokens Int
   costUsd      Float
   createdAt    DateTime @default(now())
+  tenantId     String?  // Added for Volume 10 RLS
 }
 
 // Enterprise Models (Volume 10 / RFC-0026, RFC-0032, RFC-0037)

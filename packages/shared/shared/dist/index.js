@@ -5,6 +5,7 @@ export * from './redaction/redactor.js';
 export * from './trace/context.js';
 export * from './metrics/interfaces.js';
 export * from './telemetry/interfaces.js';
+export * from './telemetry/otel-adapter.js';
 export * from './identity/interfaces.js';
 export * from './identity/local-provider.js';
 //# sourceMappingURL=index.js.map

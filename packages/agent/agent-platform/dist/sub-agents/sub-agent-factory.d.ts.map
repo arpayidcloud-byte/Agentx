@@ -1,1 +1,1 @@
-{"version":3,"file":"sub-agent-factory.d.ts","sourceRoot":"","sources":["../../src/sub-agents/sub-agent-factory.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,SAAS,EAAE,QAAQ,EAAE,MAAM,iBAAiB,CAAC;AAY3D,qBAAa,eAAe;IACnB,WAAW,CAAC,IAAI,EAAE,SAAS,GAAG,QAAQ;CAuB9C"}
+{"version":3,"file":"sub-agent-factory.d.ts","sourceRoot":"","sources":["../../src/sub-agents/sub-agent-factory.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,SAAS,EAAE,QAAQ,EAAE,MAAM,iBAAiB,CAAC;AAc3D,qBAAa,eAAe;IACnB,WAAW,CAAC,IAAI,EAAE,SAAS,GAAG,QAAQ;CAuB9C"}

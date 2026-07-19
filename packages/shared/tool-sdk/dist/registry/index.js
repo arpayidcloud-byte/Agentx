@@ -1,4 +1,26 @@
 import { DuplicateToolError, ToolNotFoundError } from '../errors/index.js';
+import { ToolClassifier } from '../classification/index.js';
+/** Categories that are unconditionally classified as Destructive (ADR-0005). */
+const DESTRUCTIVE_CATEGORIES = new Set(['fs.write']);
+/**
+ * Enforce ADR-0005: any tool registered with a destructive category
+ * automatically gets its classification overridden to 'Destructive'.
+ */
+function enforceClassification(tool) {
+    const category = tool.definition.category;
+    if (DESTRUCTIVE_CATEGORIES.has(category)) {
+        const enforcedMetadata = {
+            ...tool.metadata,
+            classification: 'Destructive',
+            riskScore: ToolClassifier.getRiskScore(category),
+        };
+        return Object.create(Object.getPrototypeOf(tool), {
+            ...Object.getOwnPropertyDescriptors(tool),
+            metadata: { value: Object.freeze(enforcedMetadata), writable: false, configurable: false },
+        });
+    }
+    return tool;
+}
 export class ToolRegistry {
     tools = new Map();
     categories = new Map();
@@ -7,8 +29,10 @@ export class ToolRegistry {
         if (this.tools.has(name)) {
             throw new DuplicateToolError(name);
         }
-        this.tools.set(name, tool);
-        const category = tool.definition.category;
+        // ADR-0005: auto-classify destructive categories at registration time
+        const enforced = enforceClassification(tool);
+        this.tools.set(name, enforced);
+        const category = enforced.definition.category;
         if (!this.categories.has(category)) {
             this.categories.set(category, new Set());
         }

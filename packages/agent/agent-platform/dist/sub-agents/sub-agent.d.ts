@@ -27,10 +27,4 @@ export declare class TesterAgent extends BaseSubAgent {
 export declare class SecurityAgent extends BaseSubAgent {
     constructor(id: string, config?: AgentConfig);
 }
-export declare class DocumentationAgent extends BaseSubAgent {
-    constructor(id: string, config?: AgentConfig);
-}
-export declare class QAAgent extends BaseSubAgent {
-    constructor(id: string, config?: AgentConfig);
-}
 //# sourceMappingURL=sub-agent.d.ts.map

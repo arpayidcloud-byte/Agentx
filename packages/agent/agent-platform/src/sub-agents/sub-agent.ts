@@ -74,14 +74,5 @@ export class SecurityAgent extends BaseSubAgent {
   }
 }
 
-export class DocumentationAgent extends BaseSubAgent {
-  constructor(id: string, config?: AgentConfig) {
-    super(id, 'documentation', config);
-  }
-}
-
-export class QAAgent extends BaseSubAgent {
-  constructor(id: string, config?: AgentConfig) {
-    super(id, 'qa', config);
-  }
-}
+// DocumentationAgent, PlannerAgent, ArchitectAgent, QAAgent have been moved
+// to ./extended-agents.ts (beyond v0.1 core roster per RFC-0043).

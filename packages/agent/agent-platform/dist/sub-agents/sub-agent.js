@@ -61,14 +61,6 @@ export class SecurityAgent extends BaseSubAgent {
         super(id, 'security', config);
     }
 }
-export class DocumentationAgent extends BaseSubAgent {
-    constructor(id, config) {
-        super(id, 'documentation', config);
-    }
-}
-export class QAAgent extends BaseSubAgent {
-    constructor(id, config) {
-        super(id, 'qa', config);
-    }
-}
+// DocumentationAgent, PlannerAgent, ArchitectAgent, QAAgent have been moved
+// to ./extended-agents.ts (beyond v0.1 core roster per RFC-0043).
 //# sourceMappingURL=sub-agent.js.map
