@@ -26,11 +26,16 @@ jobs:
       - run: pnpm test
       - run: pnpm test:coverage
       - name: Setup handbook for lint & contract tests
+        id: handbook-setup
+        continue-on-error: true
         run: git clone --depth 1 https://github.com/arpayidcloud-byte/agentx-handbook.git /tmp/agentx-handbook
-      - run: pnpm lint:handbook
+      - name: Handbook lint
+        if: steps.handbook-setup.outcome == 'success'
+        run: pnpm lint:handbook
         env:
           AGENTX_HANDBOOK_DIR: /tmp/agentx-handbook
       - name: Contract tests (handbook validation)
+        if: steps.handbook-setup.outcome == 'success'
         continue-on-error: true
         run: |
           cd /tmp/agentx-handbook
