@@ -20,7 +20,7 @@ export class CriticalPathAnalyzer {
     }
     findLongestChain(workflow) {
         const sorted = topologicalSort(workflow.nodes, workflow.edges);
-        return sorted.map(n => n.id);
+        return sorted.map((n) => n.id);
     }
     calculateParallelEfficiency(workflow) {
         const sorted = topologicalSort(workflow.nodes, workflow.edges);
@@ -33,7 +33,7 @@ export class CriticalPathAnalyzer {
         for (const edge of workflow.edges) {
             inDegree.set(edge.target, (inDegree.get(edge.target) || 0) + 1);
         }
-        const zeroDegreeCount = Array.from(inDegree.values()).filter(d => d === 0).length;
+        const zeroDegreeCount = Array.from(inDegree.values()).filter((d) => d === 0).length;
         return Math.min(1, zeroDegreeCount / sorted.length);
     }
     findBottlenecks(workflow) {

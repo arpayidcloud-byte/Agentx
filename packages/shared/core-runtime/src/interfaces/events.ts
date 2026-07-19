@@ -19,6 +19,8 @@ export enum EventTopic {
   TASK_STATE_CHANGED = 'task.state_changed',
   TASK_RETRYING = 'task.retrying',
   TASK_WAITING_APPROVAL = 'task.waiting_approval',
+  TASK_APPROVAL_REQUIRED = 'task.approval_required',
+  TASK_APPROVAL_RESOLVED = 'task.approval_resolved',
   TASK_WAITING_PROVIDER = 'task.waiting_provider',
   TASK_WAITING_TOOL = 'task.waiting_tool',
   TASK_COMPLETED = 'task.completed',

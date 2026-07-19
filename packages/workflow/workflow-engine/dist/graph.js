@@ -62,7 +62,7 @@ export function topologicalSort(nodes, edges) {
         }
     }
     const sorted = [];
-    const nodeMap = new Map(nodes.map(n => [n.id, n]));
+    const nodeMap = new Map(nodes.map((n) => [n.id, n]));
     while (queue.length > 0) {
         const current = queue.shift();
         const node = nodeMap.get(current);
@@ -121,30 +121,26 @@ export function detectCycle(nodes, edges) {
  * Gets all predecessors of a node
  */
 export function getPredecessors(nodeId, edges) {
-    return edges
-        .filter(e => e.target === nodeId)
-        .map(e => e.source);
+    return edges.filter((e) => e.target === nodeId).map((e) => e.source);
 }
 /**
  * Gets all successors of a node
  */
 export function getSuccessors(nodeId, edges) {
-    return edges
-        .filter(e => e.source === nodeId)
-        .map(e => e.target);
+    return edges.filter((e) => e.source === nodeId).map((e) => e.target);
 }
 /**
  * Checks if a node is ready (all predecessors completed)
  */
 export function isNodeReady(nodeId, edges, completedNodes) {
     const predecessors = getPredecessors(nodeId, edges);
-    return predecessors.every(p => completedNodes.has(p));
+    return predecessors.every((p) => completedNodes.has(p));
 }
 /**
  * Finds all ready nodes
  */
 export function findReadyNodes(nodes, edges, completedNodes, activeNodes) {
-    return nodes.filter(n => !completedNodes.has(n.id) &&
+    return nodes.filter((n) => !completedNodes.has(n.id) &&
         !activeNodes.has(n.id) &&
         isNodeReady(n.id, edges, completedNodes));
 }

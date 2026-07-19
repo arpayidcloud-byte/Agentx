@@ -28,23 +28,22 @@ export class ExecutionPlanner {
         const completedNodes = new Set();
         let batchIndex = 0;
         while (completedNodes.size < sortedNodes.length) {
-            const ready = sortedNodes.filter(n => !completedNodes.has(n.id) &&
-                isNodeReady(n.id, edges, completedNodes));
+            const ready = sortedNodes.filter((n) => !completedNodes.has(n.id) && isNodeReady(n.id, edges, completedNodes));
             if (ready.length === 0)
                 break;
             batches.push({
                 batchIndex: batchIndex++,
-                nodeIds: ready.map(n => n.id),
-                estimatedDurationMs: Math.max(...ready.map(n => this.estimateNodeDuration(n))),
+                nodeIds: ready.map((n) => n.id),
+                estimatedDurationMs: Math.max(...ready.map((n) => this.estimateNodeDuration(n))),
                 canRunInParallel: ready.length > 1,
             });
-            ready.forEach(n => completedNodes.add(n.id));
+            ready.forEach((n) => completedNodes.add(n.id));
         }
         return batches;
     }
     calculateCriticalPath(workflow) {
         const sorted = topologicalSort(workflow.nodes, workflow.edges);
-        return sorted.map(n => n.id);
+        return sorted.map((n) => n.id);
     }
     estimateParallelism(workflow) {
         const edges = workflow.edges;
@@ -57,18 +56,24 @@ export class ExecutionPlanner {
         for (const edge of edges) {
             inDegree.set(edge.target, (inDegree.get(edge.target) || 0) + 1);
         }
-        const zeroCount = Array.from(inDegree.values()).filter(d => d === 0).length;
+        const zeroCount = Array.from(inDegree.values()).filter((d) => d === 0).length;
         maxParallel = Math.max(maxParallel, zeroCount);
         return maxParallel;
     }
     estimateNodeDuration(node) {
         switch (node.config.type) {
-            case 'tool': return 2000;
-            case 'agent': return 5000;
-            case 'approval': return 30000;
-            case 'parallel': return 3000;
-            case 'loop': return 10000;
-            default: return 1000;
+            case 'tool':
+                return 2000;
+            case 'agent':
+                return 5000;
+            case 'approval':
+                return 30000;
+            case 'parallel':
+                return 3000;
+            case 'loop':
+                return 10000;
+            default:
+                return 1000;
         }
     }
 }

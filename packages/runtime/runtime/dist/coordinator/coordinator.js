@@ -62,12 +62,20 @@ export class ProductionExecutionCoordinator {
             status: 'PENDING',
         };
         const schedule = this.scheduler.schedule(ticket);
-        this.auditLogger.log(session.id, session.traceId, 'schedule', 'PLANNING', 'success', { schedule });
+        this.auditLogger.log(session.id, session.traceId, 'schedule', 'PLANNING', 'success', {
+            schedule,
+        });
         // Use schedule, ticket, executionPhase to cover unused variables
         const _schedule = schedule;
         const _ticket = ticket;
         const _phase = 'PLANNING';
-        const _reservation = { id: 'r1', type: 'worker', capacity: 1, used: 0, expiresAt: new Date() };
+        const _reservation = {
+            id: 'r1',
+            type: 'worker',
+            capacity: 1,
+            used: 0,
+            expiresAt: new Date(),
+        };
         const _sched = _schedule;
         console.log(_schedule, _ticket, _phase, _reservation, _sched);
         this.stateMachine.transition('DISPATCHING');
@@ -83,14 +91,18 @@ export class ProductionExecutionCoordinator {
             this.stateMachine.transition('COMPLETED');
             await this.hookManager.executeAfterExecution(session, result);
             await this.eventBus.publish('coordinator.finished', { sessionId: session.id, result }, session.traceId);
-            this.auditLogger.log(session.id, session.traceId, 'execute', 'COMPLETION', 'success', { result });
+            this.auditLogger.log(session.id, session.traceId, 'execute', 'COMPLETION', 'success', {
+                result,
+            });
             return result;
         }
         catch (err) {
             this.metricsCollector.incrementFailed(Date.now() - startTime);
             this.stateMachine.transition('FAILED');
             await this.eventBus.publish('coordinator.failed', { sessionId: session.id, error: err.message }, session.traceId);
-            this.auditLogger.log(session.id, session.traceId, 'execute', 'COMPLETION', 'failure', { error: err.message });
+            this.auditLogger.log(session.id, session.traceId, 'execute', 'COMPLETION', 'failure', {
+                error: err.message,
+            });
             throw err;
         }
     }
@@ -125,7 +137,8 @@ export class ProductionExecutionCoordinator {
         return {
             uptimeMs: Date.now() - this.uptimeStart,
             totalSessions: this.sessions.size,
-            averageExecutionTimeMs: this.metricsCollector.getMetrics().executionTimeMs / Math.max(1, this.metricsCollector.getMetrics().completedExecutions),
+            averageExecutionTimeMs: this.metricsCollector.getMetrics().executionTimeMs /
+                Math.max(1, this.metricsCollector.getMetrics().completedExecutions),
             currentQueueSize: this.scheduler.getQueueSize(),
         };
     }

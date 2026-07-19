@@ -24,7 +24,7 @@ export class MultiAgentOrchestrator {
             maxAgents: 10,
             idleTimeoutMs: 60000,
             reuseIdleAgents: true,
-            spawnStrategy: 'lazy'
+            spawnStrategy: 'lazy',
         }, factory);
         this.bus = new MessageBus(globalEventBus);
         this.runner = new ParallelRunner(this.pool, this.bus);
@@ -74,20 +74,21 @@ export class MultiAgentOrchestrator {
         while (progress && wf.completedNodes.size < wf.nodes.length) {
             progress = false;
             // Find all ready nodes
-            const readyNodes = wf.nodes.filter(n => !wf.completedNodes.has(n.task.id) &&
-                n.task.dependsOn.every(dep => wf.completedNodes.has(dep)));
+            const readyNodes = wf.nodes.filter((n) => !wf.completedNodes.has(n.task.id) &&
+                n.task.dependsOn.every((dep) => wf.completedNodes.has(dep)));
             if (readyNodes.length > 0) {
                 progress = true;
                 // Execute ready nodes in parallel
                 const promises = readyNodes.map(async (node) => {
-                    this.resourceManager.registerAgent(node.task.assignedAgentRole, node.estimatedBudget);
-                    const result = await this.runner.runParallel(node.task, [node.task.assignedAgentRole], {});
-                    this.resourceManager.unregisterAgent(node.task.assignedAgentRole);
+                    const agentRole = node.task.assignedAgentRole;
+                    this.resourceManager.registerAgent(agentRole, node.estimatedBudget);
+                    const result = await this.runner.runParallel(node.task, [agentRole], {});
+                    this.resourceManager.unregisterAgent(agentRole);
                     wf.completedNodes.add(node.task.id);
                     executionResults[node.task.id] = result;
                     wf.history.push({
                         timestamp: new Date(),
-                        agentId: node.task.assignedAgentRole,
+                        agentId: agentRole,
                         taskId: node.task.id,
                         approvalRequired: false,
                         retries: 0,

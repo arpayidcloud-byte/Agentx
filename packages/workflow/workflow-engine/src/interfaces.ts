@@ -54,11 +54,16 @@ export interface WorkflowNode {
   retryPolicy?: RetryPolicy;
 }
 
+/** @description Edge type (Vol 5 Ch. 3: retry-with-feedback routes failure back) */
+export type EdgeType = 'normal' | 'retry_with_feedback' | 'on_success' | 'on_failure';
+
 /** @description Workflow edge (dependency) */
 export interface WorkflowEdge {
   source: string;
   target: string;
   condition?: string;
+  edgeType?: EdgeType;
+  maxReroutes?: number;
 }
 
 /** @description Node configuration (discriminated union) */
@@ -197,4 +202,37 @@ export interface WorkflowMetrics {
   nodeDurations: Map<string, number>;
   retries: number;
   errors: number;
+}
+
+/** @description Graph-level approval policy (Vol 5 Ch. 2) */
+export interface WorkflowPolicy {
+  requiresApprovalFor(nodeId: string, graph: WorkflowDefinition): boolean;
+  getApprovalTimeout(nodeId: string): number;
+  getMaxReroutes(nodeId: string): number;
+}
+
+export class DefaultWorkflowPolicy implements WorkflowPolicy {
+  private approvalNodeIds: Set<string>;
+  private approvalTimeoutMs: number;
+  private maxReroutes: number;
+
+  constructor(opts?: { approvalNodeIds?: string[]; approvalTimeoutMs?: number; maxReroutes?: number }) {
+    this.approvalNodeIds = new Set(opts?.approvalNodeIds ?? []);
+    this.approvalTimeoutMs = opts?.approvalTimeoutMs ?? 3600_000;
+    this.maxReroutes = opts?.maxReroutes ?? 2;
+  }
+
+  requiresApprovalFor(nodeId: string, graph: WorkflowDefinition): boolean {
+    if (this.approvalNodeIds.has(nodeId)) return true;
+    const node = graph.nodes.find((n) => n.id === nodeId);
+    return node?.type === 'approval';
+  }
+
+  getApprovalTimeout(_nodeId: string): number {
+    return this.approvalTimeoutMs;
+  }
+
+  getMaxReroutes(_nodeId: string): number {
+    return this.maxReroutes;
+  }
 }

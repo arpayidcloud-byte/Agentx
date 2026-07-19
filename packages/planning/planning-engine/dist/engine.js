@@ -4,7 +4,7 @@ export class PlanningEngine {
         totalPlansCreated: 0,
         totalPlansOptimized: 0,
         averageTasksPerPlan: 0,
-        averageRiskScore: 0
+        averageRiskScore: 0,
     };
     constructor(eventBus) {
         this.eventBus = eventBus;
@@ -17,15 +17,15 @@ export class PlanningEngine {
                 description: `Analyze: ${goal}`,
                 assignedAgent: 'planner',
                 requiredTools: ['fs.read'],
-                estimatedDurationMs: 1000
+                estimatedDurationMs: 1000,
             },
             {
                 id: `t_${Math.random().toString(36).substring(2, 9)}`,
                 description: `Execute: ${goal}`,
                 assignedAgent: 'coder',
                 requiredTools: ['fs.read', 'fs.write'],
-                estimatedDurationMs: 5000
-            }
+                estimatedDurationMs: 5000,
+            },
         ];
         const plan = {
             id: `plan_${Math.random().toString(36).substring(2, 9)}`,
@@ -36,7 +36,7 @@ export class PlanningEngine {
             estimatedTokens: 1000,
             riskScore: 40, // Base risk due to fs.write
             createdAt: new Date(),
-            metadata: context
+            metadata: context,
         };
         this.updateMetrics(plan, true);
         await this.eventBus.publish('plan.created', plan, `trace_${plan.id}`);
@@ -48,7 +48,7 @@ export class PlanningEngine {
             ...plan,
             estimatedCostUsd: plan.estimatedCostUsd * 0.9,
             estimatedTokens: Math.floor(plan.estimatedTokens * 0.9),
-            metadata: { ...plan.metadata, optimized: true }
+            metadata: { ...plan.metadata, optimized: true },
         };
         this.metrics.totalPlansOptimized++;
         await this.eventBus.publish('plan.optimized', optimized, `trace_${optimized.id}`);
@@ -67,7 +67,7 @@ export class PlanningEngine {
         return {
             isValid: errors.length === 0,
             errors,
-            warnings
+            warnings,
         };
     }
     explainPlan(plan) {
@@ -87,9 +87,11 @@ export class PlanningEngine {
             const prevTotal = this.metrics.totalPlansCreated;
             this.metrics.totalPlansCreated++;
             this.metrics.averageTasksPerPlan =
-                ((this.metrics.averageTasksPerPlan * prevTotal) + plan.tasks.length) / this.metrics.totalPlansCreated;
+                (this.metrics.averageTasksPerPlan * prevTotal + plan.tasks.length) /
+                    this.metrics.totalPlansCreated;
             this.metrics.averageRiskScore =
-                ((this.metrics.averageRiskScore * prevTotal) + plan.riskScore) / this.metrics.totalPlansCreated;
+                (this.metrics.averageRiskScore * prevTotal + plan.riskScore) /
+                    this.metrics.totalPlansCreated;
         }
     }
 }

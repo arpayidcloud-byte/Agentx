@@ -18,27 +18,43 @@ export class BaseSubAgent {
     }
 }
 export class PlannerAgent extends BaseSubAgent {
-    constructor(id) { super(id, 'planner'); }
+    constructor(id) {
+        super(id, 'planner');
+    }
 }
 export class ArchitectAgent extends BaseSubAgent {
-    constructor(id) { super(id, 'architect'); }
+    constructor(id) {
+        super(id, 'architect');
+    }
 }
 export class CoderAgent extends BaseSubAgent {
-    constructor(id) { super(id, 'coder'); }
+    constructor(id) {
+        super(id, 'coder');
+    }
 }
 export class ReviewerAgent extends BaseSubAgent {
-    constructor(id) { super(id, 'reviewer'); }
+    constructor(id) {
+        super(id, 'reviewer');
+    }
 }
 export class TesterAgent extends BaseSubAgent {
-    constructor(id) { super(id, 'tester'); }
+    constructor(id) {
+        super(id, 'tester');
+    }
 }
 export class SecurityAgent extends BaseSubAgent {
-    constructor(id) { super(id, 'security'); }
+    constructor(id) {
+        super(id, 'security');
+    }
 }
 export class DocumentationAgent extends BaseSubAgent {
-    constructor(id) { super(id, 'documentation'); }
+    constructor(id) {
+        super(id, 'documentation');
+    }
 }
 export class QAAgent extends BaseSubAgent {
-    constructor(id) { super(id, 'qa'); }
+    constructor(id) {
+        super(id, 'qa');
+    }
 }
 //# sourceMappingURL=sub-agent.js.map

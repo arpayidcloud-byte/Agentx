@@ -81,7 +81,9 @@ export class Runtime {
         }
         catch (error) {
             const currentState = this.lifecycle.getState();
-            if (currentState !== 'FAILED' && currentState !== 'COMPLETED' && currentState !== 'CANCELLED') {
+            if (currentState !== 'FAILED' &&
+                currentState !== 'COMPLETED' &&
+                currentState !== 'CANCELLED') {
                 this.lifecycle.transition('FAILED');
             }
             await this.hookManager.executeOnError(session, error instanceof Error ? error : new Error(String(error)));

@@ -15,7 +15,7 @@ export function compileWorkflow(workflow) {
         validateNodeConfig(node);
     }
     // Validate edge references
-    const nodeIds = new Set(workflow.nodes.map(n => n.id));
+    const nodeIds = new Set(workflow.nodes.map((n) => n.id));
     validateEdges(workflow.edges, nodeIds);
     // Compute topological order for dependency scheduling
     const sortedNodes = topologicalSort(workflow.nodes, workflow.edges);

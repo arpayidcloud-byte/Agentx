@@ -35,7 +35,7 @@ export class InMemoryCheckpointManager {
     /** @inheritdoc */
     async delete(checkpointId) {
         for (const [workflowId, list] of this.checkpoints.entries()) {
-            const filtered = list.filter(cp => cp.id !== checkpointId);
+            const filtered = list.filter((cp) => cp.id !== checkpointId);
             if (filtered.length < list.length) {
                 this.checkpoints.set(workflowId, filtered);
                 return;

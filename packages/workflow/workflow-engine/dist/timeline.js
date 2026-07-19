@@ -17,7 +17,7 @@ export class ExecutionTimeline {
         });
     }
     finishNode(nodeId, status, retries = 0) {
-        const entry = this.entries.find(e => e.nodeId === nodeId && !e.finishedAt);
+        const entry = this.entries.find((e) => e.nodeId === nodeId && !e.finishedAt);
         if (entry) {
             entry.finishedAt = new Date();
             entry.durationMs = entry.finishedAt.getTime() - entry.startedAt.getTime();
@@ -34,7 +34,7 @@ export class ExecutionTimeline {
         const sorted = this.getTimeline();
         if (sorted.length === 0)
             return 0;
-        const lastFinished = sorted.find(e => e.finishedAt);
+        const lastFinished = sorted.find((e) => e.finishedAt);
         return lastFinished?.finishedAt?.getTime() ?? 0;
     }
     clear() {

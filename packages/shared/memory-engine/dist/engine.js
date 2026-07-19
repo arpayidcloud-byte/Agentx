@@ -5,7 +5,7 @@ export class MemoryEngine {
         totalMemories: 0,
         averageImportance: 0,
         compactCount: 0,
-        expiredCount: 0
+        expiredCount: 0,
     };
     constructor(memoryStore, eventBus) {
         this.memoryStore = memoryStore;
@@ -20,7 +20,7 @@ export class MemoryEngine {
             importance: data.importance || 1,
             ttl: data.ttl,
             createdAt: now,
-            metadata: data.metadata || {}
+            metadata: data.metadata || {},
         };
         if (memory.ttl) {
             memory.expiresAt = new Date(now.getTime() + memory.ttl * 1000);
@@ -92,13 +92,14 @@ export class InMemoryStore {
         let results = Array.from(this.memories.values());
         // Simple mock search
         if (query) {
-            results = results.filter(m => m.content.includes(query));
+            results = results.filter((m) => m.content.includes(query));
         }
         if (options?.type) {
-            results = results.filter(m => m.type === options.type);
+            results = results.filter((m) => m.type === options.type);
         }
-        if (options?.minImportance) {
-            results = results.filter(m => m.importance >= options.minImportance);
+        const minImportance = options?.minImportance;
+        if (minImportance) {
+            results = results.filter((m) => m.importance >= minImportance);
         }
         if (options?.limit) {
             results = results.slice(0, options.limit);

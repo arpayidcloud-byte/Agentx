@@ -6,4 +6,5 @@ export * from './registry/index.js';
 export * from './validation/index.js';
 export * from './discovery/index.js';
 export * from './pipeline/index.js';
+export * from './shell/shell-sandbox.js';
 //# sourceMappingURL=index.js.map

@@ -5,27 +5,52 @@
 export class NodeExecutor {
     async executeNode(node, _context) {
         switch (node.config.type) {
-            case 'tool': return this.executeToolNode(node, _context);
-            case 'agent': return this.executeAgentNode(node, _context);
-            case 'approval': return this.executeApprovalNode(node, _context);
-            case 'parallel': return this.executeParallelNode(node, _context);
-            case 'loop': return this.executeLoopNode(node, _context);
-            case 'conditional': return this.executeConditionalNode(node, _context);
-            case 'task': return { status: 'completed', type: 'task', goal: node.config.goal };
-            default: return { status: 'completed', type: node.config.type };
+            case 'tool':
+                return this.executeToolNode(node, _context);
+            case 'agent':
+                return this.executeAgentNode(node, _context);
+            case 'approval':
+                return this.executeApprovalNode(node, _context);
+            case 'parallel':
+                return this.executeParallelNode(node, _context);
+            case 'loop':
+                return this.executeLoopNode(node, _context);
+            case 'conditional':
+                return this.executeConditionalNode(node, _context);
+            case 'task':
+                return { status: 'completed', type: 'task', goal: node.config.goal };
+            default:
+                return { status: 'completed', type: node.config.type };
         }
     }
     async executeToolNode(node, _context) {
         const config = node.config;
-        return { status: 'completed', type: 'tool', toolName: config.toolName, category: config.category, result: { success: true, output: `Tool ${config.toolName} executed successfully` } };
+        return {
+            status: 'completed',
+            type: 'tool',
+            toolName: config.toolName,
+            category: config.category,
+            result: { success: true, output: `Tool ${config.toolName} executed successfully` },
+        };
     }
     async executeAgentNode(node, _context) {
         const config = node.config;
-        return { status: 'completed', type: 'agent', role: config.role, goal: config.goal, result: { output: `Agent ${config.role} completed goal: ${config.goal}` } };
+        return {
+            status: 'completed',
+            type: 'agent',
+            role: config.role,
+            goal: config.goal,
+            result: { output: `Agent ${config.role} completed goal: ${config.goal}` },
+        };
     }
     async executeApprovalNode(node, _context) {
         const config = node.config;
-        return { status: 'completed', type: 'approval', riskScore: config.riskScore, result: { approved: true, approver: 'system' } };
+        return {
+            status: 'completed',
+            type: 'approval',
+            riskScore: config.riskScore,
+            result: { approved: true, approver: 'system' },
+        };
     }
     async executeParallelNode(node, _context) {
         const config = node.config;
@@ -45,7 +70,12 @@ export class NodeExecutor {
     }
     async executeConditionalNode(node, _context) {
         const config = node.config;
-        return { status: 'completed', type: 'conditional', condition: config.condition, selectedBranch: config.trueBranch };
+        return {
+            status: 'completed',
+            type: 'conditional',
+            condition: config.condition,
+            selectedBranch: config.trueBranch,
+        };
     }
 }
 //# sourceMappingURL=node-executor.js.map

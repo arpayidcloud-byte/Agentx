@@ -1,6 +1,7 @@
 export * from './interfaces/task.js';
 export * from './interfaces/events.js';
 export * from './interfaces/scheduler.js';
+export * from './interfaces/decomposer.js';
 export * from './errors.js';
 export * from './state-machine/index.js';
 export * from './cancellation/index.js';

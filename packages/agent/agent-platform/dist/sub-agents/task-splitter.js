@@ -41,7 +41,7 @@ export class TaskSplitter {
 }
 export class DependencyAnalyzer {
     validateGraph(nodes) {
-        const nodeIds = new Set(nodes.map(n => n.task.id));
+        const nodeIds = new Set(nodes.map((n) => n.task.id));
         // Check duplicates
         if (nodeIds.size !== nodes.length) {
             throw new DependencyGraphError('Duplicate tasks found in graph');
@@ -64,7 +64,7 @@ export class DependencyAnalyzer {
                 return false;
             visited.add(nodeId);
             recStack.add(nodeId);
-            const node = nodes.find(n => n.task.id === nodeId);
+            const node = nodes.find((n) => n.task.id === nodeId);
             if (node) {
                 for (const dep of node.task.dependsOn) {
                     if (checkCycle(dep))

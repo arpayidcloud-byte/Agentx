@@ -57,18 +57,26 @@ export class WorkflowEngine {
                             completedNodes.add(node.id);
                             activeNodes.delete(node.id);
                             this.history.push({
-                                workflowId: workflow.id, nodeId: node.id, state: 'COMPLETED',
-                                result: this.results.get(node.id), durationMs: Date.now() - nodeStart,
-                                startedAt: new Date(nodeStart), completedAt: new Date(),
+                                workflowId: workflow.id,
+                                nodeId: node.id,
+                                state: 'COMPLETED',
+                                result: this.results.get(node.id),
+                                durationMs: Date.now() - nodeStart,
+                                startedAt: new Date(nodeStart),
+                                completedAt: new Date(),
                             });
                         }
                         catch (error) {
                             this.nodeStates.set(node.id, 'FAILED');
                             activeNodes.delete(node.id);
                             this.history.push({
-                                workflowId: workflow.id, nodeId: node.id, state: 'FAILED',
+                                workflowId: workflow.id,
+                                nodeId: node.id,
+                                state: 'FAILED',
                                 error: error instanceof Error ? error.message : String(error),
-                                durationMs: Date.now() - nodeStart, startedAt: new Date(nodeStart), completedAt: new Date(),
+                                durationMs: Date.now() - nodeStart,
+                                startedAt: new Date(nodeStart),
+                                completedAt: new Date(),
                             });
                         }
                     });
@@ -84,19 +92,34 @@ export class WorkflowEngine {
         }
         return this.buildMetrics(workflow.id, Date.now() - startTime);
     }
-    pause() { if (this.state === 'RUNNING')
-        this.state = 'PAUSED'; }
-    resume() { if (this.state === 'PAUSED')
-        this.state = 'RUNNING'; }
-    cancel() { if (this.state === 'RUNNING' || this.state === 'PAUSED')
-        this.state = 'CANCELLED'; }
-    getState() { return this.state; }
-    getNodeState(nodeId) { return this.nodeStates.get(nodeId); }
-    getHistory() { return [...this.history]; }
+    pause() {
+        if (this.state === 'RUNNING')
+            this.state = 'PAUSED';
+    }
+    resume() {
+        if (this.state === 'PAUSED')
+            this.state = 'RUNNING';
+    }
+    cancel() {
+        if (this.state === 'RUNNING' || this.state === 'PAUSED')
+            this.state = 'CANCELLED';
+    }
+    getState() {
+        return this.state;
+    }
+    getNodeState(nodeId) {
+        return this.nodeStates.get(nodeId);
+    }
+    getHistory() {
+        return [...this.history];
+    }
     async saveCheckpoint(workflowId) {
         await this.checkpointManager.save({
-            workflowId, nodeStates: new Map(this.nodeStates),
-            results: new Map(this.results), timestamp: new Date(), version: 1,
+            workflowId,
+            nodeStates: new Map(this.nodeStates),
+            results: new Map(this.results),
+            timestamp: new Date(),
+            version: 1,
         });
     }
     async executeNode(node) {
@@ -130,9 +153,15 @@ export class WorkflowEngine {
                 skipped++;
         }
         return {
-            workflowId, totalNodes: this.nodeStates.size, completedNodes: completed,
-            failedNodes: failed, skippedNodes: skipped, totalDurationMs,
-            nodeDurations: new Map(), retries: 0, errors: failed,
+            workflowId,
+            totalNodes: this.nodeStates.size,
+            completedNodes: completed,
+            failedNodes: failed,
+            skippedNodes: skipped,
+            totalDurationMs,
+            nodeDurations: new Map(),
+            retries: 0,
+            errors: failed,
         };
     }
 }

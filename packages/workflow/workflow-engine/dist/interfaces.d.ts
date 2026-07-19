@@ -37,11 +37,15 @@ export interface WorkflowNode {
     timeout?: number;
     retryPolicy?: RetryPolicy;
 }
+/** @description Edge type (Vol 5 Ch. 3: retry-with-feedback routes failure back) */
+export type EdgeType = 'normal' | 'retry_with_feedback' | 'on_success' | 'on_failure';
 /** @description Workflow edge (dependency) */
 export interface WorkflowEdge {
     source: string;
     target: string;
     condition?: string;
+    edgeType?: EdgeType;
+    maxReroutes?: number;
 }
 /** @description Node configuration (discriminated union) */
 export type NodeConfig = TaskNodeConfig | ApprovalNodeConfig | ConditionalNodeConfig | LoopNodeConfig | ParallelNodeConfig | ToolNodeConfig | AgentNodeConfig | RetryNodeConfig;
@@ -156,5 +160,24 @@ export interface WorkflowMetrics {
     nodeDurations: Map<string, number>;
     retries: number;
     errors: number;
+}
+/** @description Graph-level approval policy (Vol 5 Ch. 2) */
+export interface WorkflowPolicy {
+    requiresApprovalFor(nodeId: string, graph: WorkflowDefinition): boolean;
+    getApprovalTimeout(nodeId: string): number;
+    getMaxReroutes(nodeId: string): number;
+}
+export declare class DefaultWorkflowPolicy implements WorkflowPolicy {
+    private approvalNodeIds;
+    private approvalTimeoutMs;
+    private maxReroutes;
+    constructor(opts?: {
+        approvalNodeIds?: string[];
+        approvalTimeoutMs?: number;
+        maxReroutes?: number;
+    });
+    requiresApprovalFor(nodeId: string, graph: WorkflowDefinition): boolean;
+    getApprovalTimeout(_nodeId: string): number;
+    getMaxReroutes(_nodeId: string): number;
 }
 //# sourceMappingURL=interfaces.d.ts.map

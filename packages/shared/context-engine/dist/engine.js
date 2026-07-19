@@ -8,7 +8,7 @@ export class ContextEngine {
         totalContexts: 0,
         averageTokens: 0,
         compressionRatio: 1.0,
-        mergeCount: 0
+        mergeCount: 0,
     };
     constructor(eventBus, estimator, compressor) {
         this.eventBus = eventBus;
@@ -28,7 +28,7 @@ export class ContextEngine {
             checksum: this.computeChecksum(initialData),
             tokenEstimate: this.estimator.estimate(initialData),
             createdAt: new Date(),
-            updatedAt: new Date()
+            updatedAt: new Date(),
         };
         this.contexts.set(id, snapshot);
         this.updateMetrics();
@@ -46,7 +46,7 @@ export class ContextEngine {
             data: newData,
             checksum: this.computeChecksum(newData),
             tokenEstimate: this.estimator.estimate(newData),
-            updatedAt: new Date()
+            updatedAt: new Date(),
         };
         this.contexts.set(contextId, snapshot);
         this.updateMetrics();

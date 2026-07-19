@@ -5,7 +5,7 @@ export class KnowledgeEngine {
         totalDocuments: 0,
         totalNodes: 0,
         totalRelations: 0,
-        averageConfidence: 0
+        averageConfidence: 0,
     };
     constructor(store, eventBus) {
         this.store = store;
@@ -21,7 +21,7 @@ export class KnowledgeEngine {
             version: 1,
             sourceUri: data.sourceUri,
             createdAt: now,
-            updatedAt: now
+            updatedAt: now,
         };
         await this.store.saveDocument(doc);
         // Auto-create a node for the document (simple chunking logic: 1 doc = 1 node for foundation)
@@ -31,7 +31,7 @@ export class KnowledgeEngine {
             content: doc.content,
             metadata: doc.metadata,
             confidenceScore: 1.0,
-            createdAt: now
+            createdAt: now,
         };
         await this.store.saveNode(node);
         await this.updateMetrics();
@@ -40,8 +40,9 @@ export class KnowledgeEngine {
     }
     async retrieve(query) {
         let results = await this.store.searchNodes(query.text, query.limit);
-        if (query.minConfidence !== undefined) {
-            results = results.filter(n => n.confidenceScore >= query.minConfidence);
+        const minConf = query.minConfidence;
+        if (minConf !== undefined) {
+            results = results.filter((n) => n.confidenceScore >= minConf);
         }
         return results;
     }
@@ -53,7 +54,7 @@ export class KnowledgeEngine {
             ...existing,
             ...updates,
             version: existing.version + 1,
-            updatedAt: new Date()
+            updatedAt: new Date(),
         };
         await this.store.saveDocument(doc);
         // Update corresponding node
@@ -62,7 +63,7 @@ export class KnowledgeEngine {
             await this.store.saveNode({
                 ...node,
                 content: doc.content,
-                metadata: doc.metadata
+                metadata: doc.metadata,
             });
         }
         await this.eventBus.publish('knowledge.updated', doc, `trace_${doc.id}`);
@@ -81,7 +82,7 @@ export class KnowledgeEngine {
             type,
             weight: 1.0,
             metadata: metadata || {},
-            createdAt: new Date()
+            createdAt: new Date(),
         };
         await this.store.saveRelation(relation);
         await this.updateMetrics();
@@ -107,7 +108,7 @@ export class KnowledgeEngine {
         }
         return {
             nodes: Array.from(nodes.values()),
-            relations
+            relations,
         };
     }
     getMetrics() {
@@ -148,7 +149,7 @@ export class InMemoryKnowledgeStore {
     async searchNodes(query, limit) {
         let results = Array.from(this.nodes.values());
         if (query) {
-            results = results.filter(n => n.content.includes(query));
+            results = results.filter((n) => n.content.includes(query));
         }
         if (limit) {
             results = results.slice(0, limit);
