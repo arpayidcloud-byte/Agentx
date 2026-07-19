@@ -3,7 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "main": "index.js",
+  "scripts": {
+    "test": "vitest run --passWithNoTests"
+  },
   "dependencies": {
     "eslint": "^8.57.0"
+  },
+  "devDependencies": {
+    "vitest": "1.6.0"
   }
 }
