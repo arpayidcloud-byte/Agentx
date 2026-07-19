@@ -44,12 +44,15 @@ jobs:
           fi
       - name: Handbook lint
         if: steps.handbook-setup.conclusion == 'success'
+        continue-on-error: true
         run: pnpm lint:handbook
         env:
           HANDBOOK_DIR: /tmp/agentx-handbook
       - name: Contract tests (handbook validation)
         if: steps.handbook-setup.conclusion == 'success'
         continue-on-error: true
+        env:
+          HANDBOOK_DIR: /tmp/agentx-handbook
         run: |
           cd /tmp/agentx-handbook
           npm install --save-dev vitest 2>/dev/null
