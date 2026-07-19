@@ -1,7 +1,7 @@
-import { AgentRole } from './interfaces.js';
-import { TaskModel } from '@agentx/core-runtime';
-import { AgentPool } from './agent-pool.js';
-import { MessageBus } from './message-bus.js';
+import type { AgentRole } from './interfaces.js';
+import type { TaskModel } from '@agentx/core-runtime';
+import type { AgentPool } from './agent-pool.js';
+import type { MessageBus } from './message-bus.js';
 export interface ParallelExecutionResult {
     taskId: string;
     results: Record<string, unknown>;

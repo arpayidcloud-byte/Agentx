@@ -2,7 +2,7 @@
  * @module runtime/runtime-audit
  * @description Audit trail for all runtime actions.
  */
-import { AuditRecord } from './interfaces.js';
+import type { AuditRecord } from './interfaces.js';
 /**
  * In-memory audit store
  */

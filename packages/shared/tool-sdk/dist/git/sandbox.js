@@ -35,7 +35,8 @@ export class GitSandbox {
             throw new Error(`Operation '${request.operation}' is not allowed`);
         }
         // 4. Validate working directory
-        if (request.workingDirectory && !isWithinWorkspace(request.workingDirectory, this.config.workspaceRoot)) {
+        if (request.workingDirectory &&
+            !isWithinWorkspace(request.workingDirectory, this.config.workspaceRoot)) {
             throw new GitWorkspaceEscapeError(request.workingDirectory, this.config.workspaceRoot);
         }
         // 5. Check for dangerous operations

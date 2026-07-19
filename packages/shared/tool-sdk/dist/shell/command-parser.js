@@ -48,9 +48,9 @@ export function parseCommand(command) {
     const rest = tokens.slice(1);
     // Extract working directory if present (-C or --directory)
     let workingDirectory;
-    let args = [];
-    let flags = [];
-    let envOverrides = {};
+    const args = [];
+    const flags = [];
+    const envOverrides = {};
     for (let i = 0; i < rest.length; i++) {
         const token = rest[i] || '';
         if (token === '-C' || token === '--directory') {
@@ -85,8 +85,11 @@ export function parseCommand(command) {
         workingDirectory: workingDirectory || undefined,
         envOverrides,
         hasPipe: detectedPatterns.includes('pipe'),
-        hasRedirection: detectedPatterns.includes('redirection') || detectedPatterns.includes('append redirection') || detectedPatterns.includes('input redirection'),
-        hasSubshell: detectedPatterns.includes('command substitution') || detectedPatterns.includes('backtick substitution'),
+        hasRedirection: detectedPatterns.includes('redirection') ||
+            detectedPatterns.includes('append redirection') ||
+            detectedPatterns.includes('input redirection'),
+        hasSubshell: detectedPatterns.includes('command substitution') ||
+            detectedPatterns.includes('backtick substitution'),
         rawCommand,
     };
 }
@@ -153,8 +156,21 @@ export function detectDangerousPatterns(command) {
  * @returns Array of injection pattern names
  */
 export function detectInjectionPatterns(command) {
-    return detectDangerousPatterns(command).filter(name => ['semicolon', 'logical AND', 'logical OR', 'command substitution', 'backtick substitution',
-        'bash -c', 'sh -c', 'eval', 'exec', 'source', 'curl | bash', 'wget | bash',
-        'curl | sh', 'wget | sh'].includes(name));
+    return detectDangerousPatterns(command).filter((name) => [
+        'semicolon',
+        'logical AND',
+        'logical OR',
+        'command substitution',
+        'backtick substitution',
+        'bash -c',
+        'sh -c',
+        'eval',
+        'exec',
+        'source',
+        'curl | bash',
+        'wget | bash',
+        'curl | sh',
+        'wget | sh',
+    ].includes(name));
 }
 //# sourceMappingURL=command-parser.js.map

@@ -1,5 +1,5 @@
-import { AgentPoolConfig, AgentRole, SubAgent } from './interfaces.js';
-import { SubAgentFactory } from './sub-agent-factory.js';
+import type { AgentPoolConfig, AgentRole, SubAgent } from './interfaces.js';
+import type { SubAgentFactory } from './sub-agent-factory.js';
 export declare class AgentPool {
     private config;
     private factory;

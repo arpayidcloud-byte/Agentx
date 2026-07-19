@@ -8,7 +8,8 @@ export class ProviderScoreCalculator {
             components.compatibility +
             components.performance +
             components.reliability +
-            components.security) / 5;
+            components.security) /
+            5;
         return {
             contractScore: components.contract,
             compatibilityScore: components.compatibility,

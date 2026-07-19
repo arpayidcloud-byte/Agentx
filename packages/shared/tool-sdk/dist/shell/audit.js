@@ -32,7 +32,7 @@ export class ShellAuditEmitter {
      * @returns Filtered audit events
      */
     getEventsByType(eventType) {
-        return this.events.filter(e => e.eventType === eventType);
+        return this.events.filter((e) => e.eventType === eventType);
     }
     /**
      * Get events for a specific task
@@ -40,7 +40,7 @@ export class ShellAuditEmitter {
      * @returns Filtered audit events
      */
     getEventsByTask(taskId) {
-        return this.events.filter(e => e.taskId === taskId);
+        return this.events.filter((e) => e.taskId === taskId);
     }
     /**
      * Clear all events

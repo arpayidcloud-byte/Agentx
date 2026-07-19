@@ -2,7 +2,7 @@
  * @module runtime/runtime-metrics
  * @description Runtime metrics collection and aggregation.
  */
-import { RuntimeMetrics } from './interfaces.js';
+import type { RuntimeMetrics } from './interfaces.js';
 export declare class MetricsCollector {
     private metrics;
     private startTime;

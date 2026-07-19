@@ -20,7 +20,12 @@ export class HealthChecker {
     check(component) {
         const checkFn = this.checks.get(component);
         if (!checkFn) {
-            return { component, healthy: false, latencyMs: 0, details: { error: 'Component not registered' } };
+            return {
+                component,
+                healthy: false,
+                latencyMs: 0,
+                details: { error: 'Component not registered' },
+            };
         }
         return checkFn();
     }
@@ -40,7 +45,7 @@ export class HealthChecker {
      * @returns true if all healthy
      */
     isHealthy() {
-        return this.checkAll().every(status => status.healthy);
+        return this.checkAll().every((status) => status.healthy);
     }
 }
 /**

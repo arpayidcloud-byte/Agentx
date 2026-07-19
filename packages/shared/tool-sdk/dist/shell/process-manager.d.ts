@@ -6,8 +6,8 @@
  */
 /// <reference types="node" resolution-mode="require"/>
 /// <reference types="node" resolution-mode="require"/>
-import { CollectedOutput } from './output.js';
-import { ResourceLimitsConfig } from './interfaces.js';
+import type { CollectedOutput } from './output.js';
+import type { ResourceLimitsConfig } from './interfaces.js';
 /**
  * Manages a spawned shell process
  */

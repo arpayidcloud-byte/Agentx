@@ -2,7 +2,7 @@
  * @module provider-qualification/provider-score
  * @description Scoring matrix calculation.
  */
-import { QualificationScore } from './interfaces.js';
+import type { QualificationScore } from './interfaces.js';
 export declare class ProviderScoreCalculator {
     calculate(components: {
         contract: number;

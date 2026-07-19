@@ -1,4 +1,4 @@
-import { FilesystemConfig } from './interfaces.js';
+import type { FilesystemConfig } from './interfaces.js';
 export declare class AllowlistConfigLoader {
     private static defaultConfig;
     static loadFromConfig(configPath?: string): Promise<FilesystemConfig>;

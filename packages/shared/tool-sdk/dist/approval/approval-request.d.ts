@@ -3,7 +3,7 @@
  * @description Approval request creation and management.
  * Creates and manages approval requests with proper state transitions.
  */
-import { ApprovalRequest, ApprovalState, CreateApprovalRequestParams } from './interfaces.js';
+import type { ApprovalRequest, ApprovalState, CreateApprovalRequestParams } from './interfaces.js';
 /**
  * Generates a unique approval request ID
  * @returns Unique ID string

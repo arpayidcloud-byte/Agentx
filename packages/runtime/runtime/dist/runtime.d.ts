@@ -2,10 +2,10 @@
  * @module runtime/runtime
  * @description Main Production Runtime integrating all engines.
  */
-import { RuntimeSession, RuntimeMetrics, AuditRecord } from './interfaces.js';
-import { BootstrapOptions } from './runtime-bootstrap.js';
-import { IEventBus } from '@agentx/core-runtime';
-import { IRuntimePipeline } from './runtime-executor.js';
+import type { RuntimeSession, RuntimeMetrics, AuditRecord } from './interfaces.js';
+import type { BootstrapOptions } from './runtime-bootstrap.js';
+import type { IEventBus } from '@agentx/core-runtime';
+import type { IRuntimePipeline } from './runtime-executor.js';
 import { ProductionExecutionCoordinator } from './coordinator/index.js';
 export declare class Runtime {
     private eventBus;

@@ -3,7 +3,7 @@
  * @description Audit event emitter for git operations.
  * Follows Volume 2 Event Bus patterns and Volume 13 Observability requirements.
  */
-import { GitAuditEvent, GitOperation } from './interfaces.js';
+import type { GitAuditEvent, GitOperation } from './interfaces.js';
 import { ShellAuditEmitter } from '../shell/audit.js';
 /**
  * Git-specific audit emitter

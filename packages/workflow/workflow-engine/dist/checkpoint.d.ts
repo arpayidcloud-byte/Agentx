@@ -2,7 +2,7 @@
  * @module workflow-engine/checkpoint
  * @description Checkpoint management for workflow state persistence.
  */
-import { ExecutionSnapshot, Checkpoint, ICheckpointManager } from './interfaces.js';
+import type { ExecutionSnapshot, Checkpoint, ICheckpointManager } from './interfaces.js';
 /**
  * In-memory checkpoint manager
  */

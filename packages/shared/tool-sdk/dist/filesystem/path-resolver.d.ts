@@ -1,4 +1,4 @@
-import { IPathResolver } from './interfaces.js';
+import type { IPathResolver } from './interfaces.js';
 export declare class PathResolver implements IPathResolver {
     private static readonly BLOCKED_DIRS;
     resolve(workspaceRoot: string, requestPath: string): Promise<string>;

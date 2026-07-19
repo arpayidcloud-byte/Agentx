@@ -3,7 +3,7 @@
  * @description Command allowlist management for shell execution.
  * Reads configuration from agentx.config.yaml per Volume 9 Chapter 5.
  */
-import { ShellSandboxConfig } from './interfaces.js';
+import type { ShellSandboxConfig } from './interfaces.js';
 /**
  * Loads shell sandbox configuration from agentx.config.yaml
  * @returns ShellSandboxConfig with merged defaults

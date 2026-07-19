@@ -1,5 +1,5 @@
 /// <reference types="node" resolution-mode="require"/>
-import { SubAgentHeartbeat } from './interfaces.js';
+import type { SubAgentHeartbeat } from './interfaces.js';
 import { EventEmitter } from 'events';
 export declare class HeartbeatMonitor extends EventEmitter {
     private lastHeartbeats;

@@ -2,8 +2,8 @@
  * @module workflow-engine/timeline
  * @description Execution timeline generation for deterministic tracking.
  */
-import { ExecutionTimelineEntry } from './interfaces-v2.js';
-import { WorkflowNode } from './interfaces.js';
+import type { ExecutionTimelineEntry } from './interfaces-v2.js';
+import type { WorkflowNode } from './interfaces.js';
 export declare class ExecutionTimeline {
     private entries;
     startNode(node: WorkflowNode): void;

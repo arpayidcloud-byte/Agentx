@@ -3,7 +3,7 @@
  * @description Git reset tool implementation.
  * Resets history within sandbox (destructive operation).
  */
-import { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
+import type { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
 /**
  * Git reset tool for resetting history
  */

@@ -139,3 +139,5 @@ export class InMemoryStore implements IMemoryStore {
     return Array.from(this.memories.values());
   }
 }
+
+export * from './prisma-store.js';

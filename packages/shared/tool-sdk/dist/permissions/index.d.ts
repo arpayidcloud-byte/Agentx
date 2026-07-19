@@ -1,4 +1,4 @@
-import { IPermissionResolver, IPermissionEvaluator, PermissionPolicy, ToolCategory, ToolExecutionRequest, ITool, RiskScore } from '../interfaces/index.js';
+import type { IPermissionResolver, IPermissionEvaluator, PermissionPolicy, ToolCategory, ToolExecutionRequest, ITool, RiskScore } from '../interfaces/index.js';
 export declare class PermissionResolver implements IPermissionResolver {
     private policies;
     constructor();

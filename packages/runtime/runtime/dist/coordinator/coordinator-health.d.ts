@@ -2,7 +2,7 @@
  * @module coordinator/coordinator-health
  * @description Health checking service for all coordinator components.
  */
-import { CoordinatorHealthStatus } from './interfaces.js';
+import type { CoordinatorHealthStatus } from './interfaces.js';
 export declare class CoordinatorHealthChecker {
     private checks;
     register(component: string, checkFn: () => CoordinatorHealthStatus): void;

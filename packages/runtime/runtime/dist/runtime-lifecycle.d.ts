@@ -2,7 +2,7 @@
  * @module runtime/runtime-lifecycle
  * @description Runtime lifecycle management.
  */
-import { RuntimeState } from './interfaces.js';
+import type { RuntimeState } from './interfaces.js';
 export declare class RuntimeLifecycle {
     private state;
     private history;

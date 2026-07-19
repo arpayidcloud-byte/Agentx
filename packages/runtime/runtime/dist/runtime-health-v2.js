@@ -30,7 +30,7 @@ export class RuntimeHealthService {
             components.push(await this.checkComponent(component));
         }
         return {
-            overall: components.every(c => c.healthy),
+            overall: components.every((c) => c.healthy),
             components,
             timestamp: new Date(),
             uptimeMs: Date.now() - this.startTime,

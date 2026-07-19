@@ -15,11 +15,13 @@ export class ResourceManager {
         };
     }
     registerAgent(agentId, requestedAllocation) {
-        if (this.currentUsage.costUsd + requestedAllocation.costCeilingUsd > this.globalLimits.costCeilingUsd ||
+        if (this.currentUsage.costUsd + requestedAllocation.costCeilingUsd >
+            this.globalLimits.costCeilingUsd ||
             this.currentUsage.tokensUsed + requestedAllocation.tokenBudget > this.globalLimits.tokenBudget) {
             throw new ResourceLimitExceededError('Global budget exceeded');
         }
-        if (this.currentUsage.activeProviders + requestedAllocation.maxConcurrentProviders > this.globalLimits.maxConcurrentProviders) {
+        if (this.currentUsage.activeProviders + requestedAllocation.maxConcurrentProviders >
+            this.globalLimits.maxConcurrentProviders) {
             throw new ResourceLimitExceededError('Max concurrent providers exceeded');
         }
         this.activeAgents.add(agentId);

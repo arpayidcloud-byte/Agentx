@@ -8,7 +8,7 @@ export class RuntimeHookManager {
         this.hooks.push(hook);
     }
     unregister(hookName) {
-        this.hooks = this.hooks.filter(h => h.name !== hookName);
+        this.hooks = this.hooks.filter((h) => h.name !== hookName);
     }
     async executeBeforeStart(session) {
         for (const hook of this.hooks) {

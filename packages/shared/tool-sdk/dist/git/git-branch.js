@@ -38,7 +38,7 @@ export class GitBranchTool {
      */
     parseBranches(output) {
         const branches = [];
-        const lines = output.split('\n').filter(line => line.trim().length > 0);
+        const lines = output.split('\n').filter((line) => line.trim().length > 0);
         for (const line of lines) {
             const trimmed = line.trim();
             const current = trimmed.startsWith('* ');

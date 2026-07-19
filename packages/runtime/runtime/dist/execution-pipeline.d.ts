@@ -2,8 +2,8 @@
  * @module runtime/execution-pipeline
  * @description Production execution pipeline integrating all engines.
  */
-import { RuntimeConfig } from './interfaces.js';
-import { IAuditStore, AuditRecord } from './audit-store.js';
+import type { RuntimeConfig } from './interfaces.js';
+import type { IAuditStore, AuditRecord } from './audit-store.js';
 export interface PipelineResult {
     success: boolean;
     output: unknown;

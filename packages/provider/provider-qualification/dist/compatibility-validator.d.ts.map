@@ -1,1 +1,1 @@
-{"version":3,"file":"compatibility-validator.d.ts","sourceRoot":"","sources":["../src/compatibility-validator.ts"],"names":[],"mappings":"AAAA;;;GAGG;AAIH,qBAAa,sBAAsB;IACjC,OAAO,CAAC,UAAU,CAIhB;IAEF,QAAQ,CAAC,aAAa,EAAE,MAAM,EAAE,GAAG,OAAO;CAQ3C"}
+{"version":3,"file":"compatibility-validator.d.ts","sourceRoot":"","sources":["../src/compatibility-validator.ts"],"names":[],"mappings":"AAAA;;;GAGG;AAIH,qBAAa,sBAAsB;IACjC,OAAO,CAAC,UAAU,CAgBhB;IAEF,QAAQ,CAAC,aAAa,EAAE,MAAM,EAAE,GAAG,OAAO;CAW3C"}

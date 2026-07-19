@@ -2,7 +2,7 @@
  * @module coordinator/coordinator
  * @description Main Production Execution Coordinator orchestration engine.
  */
-import { CoordinatorConfig, CoordinatorSession, ExecutionCoordinatorState, ExecutionCoordinatorMetrics, CoordinatorStatistics } from './interfaces.js';
+import type { CoordinatorConfig, CoordinatorSession, ExecutionCoordinatorState, ExecutionCoordinatorMetrics, CoordinatorStatistics } from './interfaces.js';
 import { CoordinatorAuditLogger } from './coordinator-audit.js';
 import { CoordinatorHookManager } from './coordinator-hooks.js';
 import { ExecutionScheduler } from './scheduler.js';
@@ -10,7 +10,7 @@ import { ExecutionDispatcher } from './dispatcher.js';
 import { ExecutionReservationManager } from './reservation.js';
 import { ConcurrencyController } from './concurrency.js';
 import { CoordinatorRegistry } from './coordinator-registry.js';
-import { IEventBus } from '@agentx/core-runtime';
+import type { IEventBus } from '@agentx/core-runtime';
 export declare class ProductionExecutionCoordinator {
     private eventBus;
     private config;

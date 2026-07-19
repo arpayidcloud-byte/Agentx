@@ -1,4 +1,4 @@
-import { ISandbox, IAtomicWriter, IFilesystemValidator, IFilesystemPolicy } from './interfaces.js';
+import type { ISandbox, IAtomicWriter, IFilesystemValidator, IFilesystemPolicy } from './interfaces.js';
 export declare class FilesystemWriteTool {
     private readonly sandbox;
     private readonly atomicWriter;

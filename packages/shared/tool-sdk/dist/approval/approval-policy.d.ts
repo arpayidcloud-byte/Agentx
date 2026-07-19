@@ -3,7 +3,7 @@
  * @description Approval policy configuration and risk classification.
  * Implements risk-based approval policies per Volume 7 and ADR-0005.
  */
-import { ApprovalPolicyConfig, RiskLevel } from './interfaces.js';
+import type { ApprovalPolicyConfig, RiskLevel } from './interfaces.js';
 /**
  * Creates an approval policy with defaults
  * @param config - Partial configuration to override defaults

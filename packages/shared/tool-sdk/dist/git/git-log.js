@@ -38,7 +38,7 @@ export class GitLogTool {
      */
     parseLog(output) {
         const entries = [];
-        const lines = output.split('\n').filter(line => line.trim().length > 0);
+        const lines = output.split('\n').filter((line) => line.trim().length > 0);
         for (const line of lines) {
             const parts = line.split('|');
             if (parts.length >= 5) {

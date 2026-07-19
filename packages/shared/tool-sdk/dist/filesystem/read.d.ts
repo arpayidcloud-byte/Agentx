@@ -1,4 +1,4 @@
-import { ISandbox, IFilesystemValidator, IFilesystemPolicy } from './interfaces.js';
+import type { ISandbox, IFilesystemValidator, IFilesystemPolicy } from './interfaces.js';
 export declare class FilesystemReadTool {
     private readonly sandbox;
     private readonly validator;

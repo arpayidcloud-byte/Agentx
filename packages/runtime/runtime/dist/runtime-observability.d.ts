@@ -2,7 +2,7 @@
  * @module runtime/runtime-observability
  * @description Observability integration for all engines.
  */
-import { IAuditStore } from './audit-store.js';
+import type { IAuditStore } from './audit-store.js';
 export interface ObservabilityMetrics {
     runtime: {
         executionTimeMs: number;

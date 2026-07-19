@@ -2,7 +2,7 @@
  * @module runtime/audit-postgres
  * @description Postgres-backed audit store implementation.
  */
-import { IAuditStore, AuditRecord } from './audit-store.js';
+import type { IAuditStore, AuditRecord } from './audit-store.js';
 export declare class PostgresAuditStore implements IAuditStore {
     private _connectionString;
     constructor(connectionString: string);

@@ -4,7 +4,7 @@
  * Implements ADR-0005: shell.build = Risk 50 (Potentially Destructive),
  * shell.exec = Risk 90 (Destructive).
  */
-import { ApprovalClassification, ParsedCommand } from './interfaces.js';
+import type { ApprovalClassification, ParsedCommand } from './interfaces.js';
 /**
  * Classifies a shell command for approval requirements
  * @param parsed - The parsed command

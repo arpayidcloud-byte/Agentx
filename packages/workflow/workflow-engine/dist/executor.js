@@ -64,10 +64,14 @@ export class WorkflowExecutor {
                 try {
                     let result;
                     let retries = 0;
-                    let maxRetries = node.retryPolicy?.maxAttempts || 0;
+                    const maxRetries = node.retryPolicy?.maxAttempts || 0;
                     while (retries <= maxRetries) {
                         try {
-                            result = await this.nodeExecutor.executeNode(node, { workflowId: workflow.id, nodeStates, results });
+                            result = await this.nodeExecutor.executeNode(node, {
+                                workflowId: workflow.id,
+                                nodeStates,
+                                results,
+                            });
                             break;
                         }
                         catch (error) {
@@ -80,7 +84,7 @@ export class WorkflowExecutor {
                                 if (hook.onRetry)
                                     await hook.onRetry(node, retries);
                             }
-                            await new Promise(r => setTimeout(r, Math.min(decision.delayMs, 1000)));
+                            await new Promise((r) => setTimeout(r, Math.min(decision.delayMs, 1000)));
                         }
                     }
                     results.set(node.id, result);
@@ -127,7 +131,7 @@ export class WorkflowExecutor {
             }
         }
         const totalDurationMs = Date.now() - startTime;
-        const completedNodes = Array.from(nodeStates.values()).filter(s => s === 'COMPLETED').length;
+        const completedNodes = Array.from(nodeStates.values()).filter((s) => s === 'COMPLETED').length;
         const metrics = {
             workflowId: workflow.id,
             totalNodes: workflow.nodes.length,

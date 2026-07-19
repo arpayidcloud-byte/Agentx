@@ -2,8 +2,8 @@
  * @module workflow-engine/node-executor
  * @description NodeExecutor provides isolated execution logic for each node type.
  */
-import { WorkflowNode } from './interfaces.js';
-import { INodeExecutor } from './interfaces-v2.js';
+import type { WorkflowNode } from './interfaces.js';
+import type { INodeExecutor } from './interfaces-v2.js';
 export declare class NodeExecutor implements INodeExecutor {
     executeNode(node: WorkflowNode, _context: Record<string, unknown>): Promise<unknown>;
     executeToolNode(node: WorkflowNode, _context: Record<string, unknown>): Promise<unknown>;

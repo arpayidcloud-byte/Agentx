@@ -51,8 +51,14 @@ export class RuntimeExecutor {
             throw error;
         }
     }
-    getAuditStore() { return this.auditStore; }
-    getMetricsCollector() { return this.metricsCollector; }
-    getEvents() { return [...this.events]; }
+    getAuditStore() {
+        return this.auditStore;
+    }
+    getMetricsCollector() {
+        return this.metricsCollector;
+    }
+    getEvents() {
+        return [...this.events];
+    }
 }
 //# sourceMappingURL=runtime-executor.js.map

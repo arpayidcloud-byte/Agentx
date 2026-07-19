@@ -3,7 +3,7 @@
  * @description Git Tool Foundation interfaces for the AgentX Tool SDK.
  * All interfaces follow dependency inversion and provider-agnostic patterns.
  */
-import { ToolCategory } from '../interfaces/index.js';
+import type { ToolCategory } from '../interfaces/index.js';
 /** @description Git repository detection result */
 export interface GitRepositoryInfo {
     /** Whether this is a valid git repository */

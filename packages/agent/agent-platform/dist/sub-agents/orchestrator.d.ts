@@ -1,5 +1,5 @@
-import { IMultiAgentOrchestrator, ResourceAllocation } from './interfaces.js';
-import { IEventBus } from '@agentx/core-runtime';
+import type { IMultiAgentOrchestrator, ResourceAllocation } from './interfaces.js';
+import type { IEventBus } from '@agentx/core-runtime';
 export declare class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
     private splitter;
     private dependencyAnalyzer;

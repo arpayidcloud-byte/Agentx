@@ -34,7 +34,7 @@ export class GitAuditEmitter extends ShellAuditEmitter {
      * @returns Filtered events
      */
     getEventsByOperation(_operation) {
-        return this.getEvents().map(e => ({
+        return this.getEvents().map((e) => ({
             eventType: e.eventType,
             category: e.category,
             operation: e.command,

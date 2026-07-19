@@ -2,8 +2,8 @@
  * @module runtime/runtime-supervisor-v2
  * @description Enhanced runtime supervisor with monitoring and recovery.
  */
-import { RecoveryAction } from './runtime-recovery.js';
-import { RuntimeHealthReport } from './runtime-health-v2.js';
+import type { RecoveryAction } from './runtime-recovery.js';
+import type { RuntimeHealthReport } from './runtime-health-v2.js';
 export declare class RuntimeSupervisorV2 {
     private recovery;
     private healthService;

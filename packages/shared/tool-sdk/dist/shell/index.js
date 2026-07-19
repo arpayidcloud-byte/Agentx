@@ -26,12 +26,12 @@ export { ShellExecutor } from './executor.js';
 export { ShellBuildTool } from './shell-build.js';
 export { ShellExecTool } from './shell-exec.js';
 // Utilities
-export { parseCommand, detectDangerousPatterns, detectInjectionPatterns } from './command-parser.js';
+export { parseCommand, detectDangerousPatterns, detectInjectionPatterns, } from './command-parser.js';
 export { validateCommand } from './validator.js';
-export { loadShellConfig, isProgramAllowed, isProgramBlocked, isFlagDangerous } from './allowlist.js';
+export { loadShellConfig, isProgramAllowed, isProgramBlocked, isFlagDangerous, } from './allowlist.js';
 export { scrubEnvironment, createDefaultScrubberConfig } from './environment.js';
 export { createTimeoutController, getDefaultTimeoutConfig } from './timeout.js';
-export { createResourceLimits, validateOutputSize, validateExecutionTime } from './resource-limits.js';
+export { createResourceLimits, validateOutputSize, validateExecutionTime, } from './resource-limits.js';
 export { classifyCommand } from './approval.js';
 export { ProcessManager } from './process-manager.js';
 export { truncateOutput } from './output.js';

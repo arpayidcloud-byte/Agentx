@@ -1,1 +1,1 @@
-{"version":3,"file":"provider-ranking.d.ts","sourceRoot":"","sources":["../src/provider-ranking.ts"],"names":[],"mappings":"AAAA;;;GAGG;AAEH,OAAO,EAAE,YAAY,EAAE,MAAM,iBAAiB,CAAC;AAE/C,qBAAa,eAAe;IAC1B,OAAO,CAAC,KAAK,EAAE,MAAM,GAAG,YAAY;CAOrC"}
+{"version":3,"file":"provider-ranking.d.ts","sourceRoot":"","sources":["../src/provider-ranking.ts"],"names":[],"mappings":"AAAA;;;GAGG;AAEH,OAAO,KAAK,EAAE,YAAY,EAAE,MAAM,iBAAiB,CAAC;AAEpD,qBAAa,eAAe;IAC1B,OAAO,CAAC,KAAK,EAAE,MAAM,GAAG,YAAY;CAOrC"}

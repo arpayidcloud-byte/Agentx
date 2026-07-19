@@ -29,4 +29,5 @@ export declare class ExecutionContext {
     cloneWithAgent(agentId: string): ExecutionContext;
     cloneWithProvider(providerId: string): ExecutionContext;
 }
+export * from './task-context-builder.js';
 //# sourceMappingURL=index.d.ts.map

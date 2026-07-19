@@ -4,7 +4,7 @@
  * Never uses exec() or execSync() per Volume 7 requirements.
  * Implements complete execution pipeline with sandbox, timeout, resource limits, and audit.
  */
-import { ShellExecutionRequest, ShellExecutionResult, ShellExecutionContext } from './interfaces.js';
+import type { ShellExecutionRequest, ShellExecutionResult, ShellExecutionContext } from './interfaces.js';
 import { ShellAuditEmitter } from './audit.js';
 /**
  * Shell executor with full security pipeline

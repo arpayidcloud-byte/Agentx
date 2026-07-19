@@ -4,7 +4,7 @@
  * Removes secrets and sensitive data from process environment.
  * Implements Threat Model T-002 mitigation.
  */
-import { EnvironmentScrubberConfig } from './interfaces.js';
+import type { EnvironmentScrubberConfig } from './interfaces.js';
 /**
  * Creates a scrubbed copy of the environment
  * @param original - Original process environment

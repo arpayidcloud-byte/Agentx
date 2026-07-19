@@ -3,8 +3,8 @@
  * @description Approval registry for managing approval configurations.
  * Maps tool categories to approval requirements.
  */
-import { ToolCategory } from '../interfaces/index.js';
-import { ApprovalRegistryEntry } from './interfaces.js';
+import type { ToolCategory } from '../interfaces/index.js';
+import type { ApprovalRegistryEntry } from './interfaces.js';
 /**
  * Approval registry
  */

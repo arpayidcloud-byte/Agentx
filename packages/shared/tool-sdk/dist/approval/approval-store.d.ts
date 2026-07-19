@@ -3,7 +3,7 @@
  * @description In-memory approval store implementation.
  * Stores approval requests with state management.
  */
-import { IApprovalStore, ApprovalRequest, ApprovalState } from './interfaces.js';
+import type { IApprovalStore, ApprovalRequest, ApprovalState } from './interfaces.js';
 /**
  * In-memory approval store
  */

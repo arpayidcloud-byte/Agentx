@@ -64,8 +64,10 @@ export class QualificationEngine {
                 .setRank(rank)
                 .build();
             this.metrics.totalQualificationTimeMs += Date.now() - startMs;
-            this.metrics.averagePerformanceScore = (this.metrics.averagePerformanceScore + score.performanceScore) / 2;
-            this.metrics.averageReliabilityScore = (this.metrics.averageReliabilityScore + score.reliabilityScore) / 2;
+            this.metrics.averagePerformanceScore =
+                (this.metrics.averagePerformanceScore + score.performanceScore) / 2;
+            this.metrics.averageReliabilityScore =
+                (this.metrics.averageReliabilityScore + score.reliabilityScore) / 2;
             this.audit.log({
                 id: `aud-${traceId}`,
                 timestamp: new Date(),
@@ -86,12 +88,20 @@ export class QualificationEngine {
             }
             else if (report.status === 'WARNING') {
                 this.metrics.warningCount++;
-                this.events.emit('provider.rejected', { traceId, providerId: provider.getMetadata().id, reason: 'warning' });
+                this.events.emit('provider.rejected', {
+                    traceId,
+                    providerId: provider.getMetadata().id,
+                    reason: 'warning',
+                });
             }
             else {
                 this.metrics.rejectedProviders++;
                 this.metrics.failureCount++;
-                this.events.emit('provider.rejected', { traceId, providerId: provider.getMetadata().id, reason: 'failed' });
+                this.events.emit('provider.rejected', {
+                    traceId,
+                    providerId: provider.getMetadata().id,
+                    reason: 'failed',
+                });
             }
             this.snapshotManager.create(report);
             this.events.emit('qualification.completed', { traceId, status: report.status });

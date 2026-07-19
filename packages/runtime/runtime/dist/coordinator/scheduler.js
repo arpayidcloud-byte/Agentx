@@ -23,7 +23,7 @@ export class ExecutionScheduler {
     }
     cancel(ticketId) {
         const initialLength = this.queue.length;
-        this.queue = this.queue.filter(t => t.id !== ticketId);
+        this.queue = this.queue.filter((t) => t.id !== ticketId);
         return this.queue.length < initialLength;
     }
     createBatch(tickets) {

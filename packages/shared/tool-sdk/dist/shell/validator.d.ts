@@ -4,7 +4,7 @@
  * Implements allowlist checking, blocked command detection,
  * dangerous flag detection, and injection pattern detection.
  */
-import { ParsedCommand, ValidationResult, ShellSandboxConfig } from './interfaces.js';
+import type { ParsedCommand, ValidationResult, ShellSandboxConfig } from './interfaces.js';
 /**
  * Validates a parsed command against sandbox rules
  * @param parsed - The parsed command to validate

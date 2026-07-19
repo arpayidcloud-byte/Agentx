@@ -2,7 +2,7 @@
  * @module provider-qualification/snapshot
  * @description Snapshot manager for immutable historical storage.
  */
-import { QualificationSnapshot, CertificationReport } from './interfaces.js';
+import type { QualificationSnapshot, CertificationReport } from './interfaces.js';
 export declare class SnapshotManager {
     private snapshots;
     create(report: CertificationReport): QualificationSnapshot;

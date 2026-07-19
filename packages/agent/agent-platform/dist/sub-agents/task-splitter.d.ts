@@ -1,5 +1,5 @@
-import { ResourceAllocation } from './interfaces.js';
-import { TaskModel } from '@agentx/core-runtime';
+import type { ResourceAllocation } from './interfaces.js';
+import type { TaskModel } from '@agentx/core-runtime';
 export interface TaskGraphNode {
     task: TaskModel;
     estimatedBudget: ResourceAllocation;

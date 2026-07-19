@@ -30,7 +30,7 @@ export class AuditStore {
      * @returns Filtered records
      */
     getByTraceId(traceId) {
-        return this.records.filter(r => r.traceId === traceId);
+        return this.records.filter((r) => r.traceId === traceId);
     }
     /**
      * Gets records by session ID
@@ -38,7 +38,7 @@ export class AuditStore {
      * @returns Filtered records
      */
     getBySessionId(sessionId) {
-        return this.records.filter(r => r.sessionId === sessionId);
+        return this.records.filter((r) => r.sessionId === sessionId);
     }
     /**
      * Gets records by workflow ID
@@ -46,7 +46,7 @@ export class AuditStore {
      * @returns Filtered records
      */
     getByWorkflowId(workflowId) {
-        return this.records.filter(r => r.workflowId === workflowId);
+        return this.records.filter((r) => r.workflowId === workflowId);
     }
     /**
      * Clears all records

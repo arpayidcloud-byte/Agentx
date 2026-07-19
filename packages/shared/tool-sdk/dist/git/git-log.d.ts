@@ -3,7 +3,7 @@
  * @description Git log tool implementation.
  * Provides read-only git log query within sandbox.
  */
-import { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
+import type { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
 /**
  * Git log tool for viewing commit history
  */

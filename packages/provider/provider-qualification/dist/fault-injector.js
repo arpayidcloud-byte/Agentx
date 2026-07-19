@@ -7,7 +7,7 @@ export class FaultInjector {
         // simulated crash
     }
     injectDelay(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
+        return new Promise((resolve) => setTimeout(resolve, ms));
     }
     injectDisconnect() {
         // simulated disconnect

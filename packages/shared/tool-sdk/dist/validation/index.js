@@ -1,7 +1,7 @@
-import { SchemaValidationError, ManifestValidationError, DuplicateToolError } from '../errors/index.js';
+import { SchemaValidationError, ManifestValidationError, DuplicateToolError, } from '../errors/index.js';
 export class ToolValidator {
     validateSchema(schema, args) {
-        // Basic structural validation for demonstration. 
+        // Basic structural validation for demonstration.
         // In production, an AJV or JSON Schema validator is used.
         if (!schema || typeof schema !== 'object') {
             throw new SchemaValidationError(['Invalid schema definition']);
@@ -28,7 +28,8 @@ export class ToolValidator {
         if (!manifest.entryPoint || typeof manifest.entryPoint !== 'string') {
             throw new ManifestValidationError('Manifest is missing required string field: entryPoint');
         }
-        if (!Array.isArray(manifest.declaredToolCategories) || manifest.declaredToolCategories.length === 0) {
+        if (!Array.isArray(manifest.declaredToolCategories) ||
+            manifest.declaredToolCategories.length === 0) {
             throw new ManifestValidationError('Manifest must declare at least one tool category');
         }
         if (!Array.isArray(manifest.tools) || manifest.tools.length === 0) {

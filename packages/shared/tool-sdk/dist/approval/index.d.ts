@@ -26,9 +26,9 @@ export { ApprovalRegistry } from './approval-registry.js';
 export { ApprovalAuditLogger } from './approval-audit.js';
 export { createApprovalPolicy, requiresAutoApproval, requiresManualApproval, requiresDoubleConfirmation, classifyRiskLevel, isApprovalRequired, } from './approval-policy.js';
 export { generateRequestId, createApprovalRequest, updateApprovalRequest, canTransition, } from './approval-request.js';
-export { checkExpiration, isRequestValid, formatTimeRemaining, } from './approval-expiration.js';
+export { checkExpiration, isRequestValid, formatTimeRemaining } from './approval-expiration.js';
 export { generateSessionId, createApprovalSession, isSessionValid, addRequestToSession, deactivateSession, } from './approval-session.js';
-export { createApprovalContext, validateApprovalContext, } from './approval-context.js';
+export { createApprovalContext, validateApprovalContext } from './approval-context.js';
 export { createApprovalAuditEvent, createApprovalCreatedEvent, createApprovalApprovedEvent, createApprovalRejectedEvent, createApprovalCancelledEvent, createApprovalExpiredEvent, createApprovalExecutedEvent, createApprovalFailedEvent, } from './approval-events.js';
 export { createSuccessResult, createRejectionResult, createExpirationResult, createCancellationResult, } from './approval-result.js';
 //# sourceMappingURL=index.d.ts.map

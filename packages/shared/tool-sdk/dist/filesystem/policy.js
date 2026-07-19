@@ -10,12 +10,12 @@ export class FilesystemPolicy {
     isAllowed(realPath) {
         const pathParts = realPath.split('/').filter(Boolean);
         if (!this.config.allowHiddenFiles) {
-            const hasHiddenPart = pathParts.some(part => part.startsWith('.'));
+            const hasHiddenPart = pathParts.some((part) => part.startsWith('.'));
             if (hasHiddenPart) {
                 return false;
             }
         }
-        return this.config.allow.some(pattern => this.matchesPattern(realPath, pattern));
+        return this.config.allow.some((pattern) => this.matchesPattern(realPath, pattern));
     }
     validateFileSize(sizeBytes) {
         if (sizeBytes > this.config.maxFileSizeBytes) {
@@ -32,15 +32,16 @@ export class FilesystemPolicy {
             return false;
         for (let i = 0; i < patternParts.length; i++) {
             const patternPart = patternParts[i];
+            const pathPart = pathParts[i];
             if (patternPart === '**')
                 return true;
             if (!patternPart.includes('*')) {
-                if (patternPart !== pathParts[i])
+                if (patternPart !== pathPart)
                     return false;
             }
             else {
                 const regex = new RegExp('^' + patternPart.replace(/\*/g, '[^/]*') + '$');
-                if (!regex.test(pathParts[i]))
+                if (!regex.test(pathPart))
                     return false;
             }
         }

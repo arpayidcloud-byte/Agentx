@@ -8,7 +8,7 @@ export class CoordinatorHookManager {
         this.hooks.push(hook);
     }
     unregister(name) {
-        this.hooks = this.hooks.filter(h => h.name !== name);
+        this.hooks = this.hooks.filter((h) => h.name !== name);
     }
     async executeBeforeExecution(session) {
         for (const hook of this.hooks) {

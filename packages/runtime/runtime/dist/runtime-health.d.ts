@@ -2,7 +2,7 @@
  * @module runtime/runtime-health
  * @description Health check endpoints for all runtime components.
  */
-import { HealthStatus } from './interfaces.js';
+import type { HealthStatus } from './interfaces.js';
 export declare class HealthChecker {
     private checks;
     /**

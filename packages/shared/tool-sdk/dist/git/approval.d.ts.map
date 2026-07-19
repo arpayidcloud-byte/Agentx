@@ -1,1 +1,1 @@
-{"version":3,"file":"approval.d.ts","sourceRoot":"","sources":["../../src/git/approval.ts"],"names":[],"mappings":"AAAA;;;;GAIG;AAEH,OAAO,EAAE,YAAY,EAAE,yBAAyB,EAAE,MAAM,iBAAiB,CAAC;AAkD1E;;;;GAIG;AACH,wBAAgB,oBAAoB,CAAC,SAAS,EAAE,YAAY,GAAG,yBAAyB,CAWvF"}
+{"version":3,"file":"approval.d.ts","sourceRoot":"","sources":["../../src/git/approval.ts"],"names":[],"mappings":"AAAA;;;;GAIG;AAEH,OAAO,KAAK,EAAE,YAAY,EAAE,yBAAyB,EAAE,MAAM,iBAAiB,CAAC;AAmD/E;;;;GAIG;AACH,wBAAgB,oBAAoB,CAAC,SAAS,EAAE,YAAY,GAAG,yBAAyB,CAYvF"}

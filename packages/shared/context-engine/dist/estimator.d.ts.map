@@ -1,1 +1,1 @@
-{"version":3,"file":"estimator.d.ts","sourceRoot":"","sources":["../src/estimator.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,eAAe,EAAE,MAAM,iBAAiB,CAAC;AAElD,qBAAa,oBAAqB,YAAW,eAAe;IACnD,QAAQ,CAAC,IAAI,EAAE,OAAO,GAAG,MAAM;CAMvC"}
+{"version":3,"file":"estimator.d.ts","sourceRoot":"","sources":["../src/estimator.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,eAAe,EAAE,MAAM,iBAAiB,CAAC;AAEvD,qBAAa,oBAAqB,YAAW,eAAe;IACnD,QAAQ,CAAC,IAAI,EAAE,OAAO,GAAG,MAAM;CAMvC"}

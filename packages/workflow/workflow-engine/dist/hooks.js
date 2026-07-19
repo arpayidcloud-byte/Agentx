@@ -8,7 +8,7 @@ export class WorkflowHookManager {
         this.hooks.push(hook);
     }
     unregister(hookName) {
-        this.hooks = this.hooks.filter(h => h.name !== hookName);
+        this.hooks = this.hooks.filter((h) => h.name !== hookName);
     }
     async executeBeforeHooks(workflow) {
         for (const hook of this.hooks) {

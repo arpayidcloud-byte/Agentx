@@ -3,7 +3,7 @@
  * @description Git restore tool implementation.
  * Restores file contents within sandbox.
  */
-import { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
+import type { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
 /**
  * Git restore tool for restoring file contents
  */

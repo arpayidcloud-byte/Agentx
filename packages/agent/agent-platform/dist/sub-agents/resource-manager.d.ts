@@ -1,4 +1,4 @@
-import { ResourceAllocation, ResourceUsage } from './interfaces.js';
+import type { ResourceAllocation, ResourceUsage } from './interfaces.js';
 export declare class ResourceManager {
     private globalLimits;
     private currentUsage;

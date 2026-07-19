@@ -2,7 +2,7 @@
  * @module runtime/runtime-session
  * @description Session management for the runtime.
  */
-import { RuntimeSession, ExecutionSession, SessionStatus, RuntimeMetrics } from './interfaces.js';
+import type { RuntimeSession, ExecutionSession, SessionStatus, RuntimeMetrics } from './interfaces.js';
 /**
  * Creates a new runtime session
  * @param owner - Session owner

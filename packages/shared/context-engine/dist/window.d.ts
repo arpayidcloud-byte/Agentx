@@ -1,4 +1,4 @@
-import { IContextWindowManager, ITokenEstimator } from './interfaces.js';
+import type { IContextWindowManager, ITokenEstimator } from './interfaces.js';
 export declare class ContextWindowManager implements IContextWindowManager {
     private estimator;
     constructor(estimator: ITokenEstimator);

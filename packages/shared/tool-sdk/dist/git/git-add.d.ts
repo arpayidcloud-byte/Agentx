@@ -3,7 +3,7 @@
  * @description Git add tool implementation.
  * Stages changes for commit within sandbox.
  */
-import { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
+import type { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
 /**
  * Git add tool for staging changes
  */

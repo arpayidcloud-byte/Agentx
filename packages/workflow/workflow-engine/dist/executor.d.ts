@@ -2,7 +2,7 @@
  * @module workflow-engine/executor
  * @description WorkflowExecutor separates orchestration from execution.
  */
-import { ExtendedWorkflowMetrics, WorkflowHook } from './interfaces-v2.js';
+import type { ExtendedWorkflowMetrics, WorkflowHook } from './interfaces-v2.js';
 export declare class WorkflowExecutor {
     private nodeExecutor;
     private planner;

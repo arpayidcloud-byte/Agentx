@@ -3,11 +3,11 @@
  * @description Integration layer matching the runtime configuration.
  */
 import { RuntimeDI } from './runtime-di.js';
-import { RuntimeBootstrapConfig } from './runtime-bootstrap-v2.js';
-import { PipelineResult } from './execution-pipeline.js';
-import { RuntimeHealthReport } from './runtime-health-v2.js';
-import { ObservabilityMetrics } from './runtime-observability.js';
-import { RecoveryAction } from './runtime-recovery.js';
+import type { RuntimeBootstrapConfig } from './runtime-bootstrap-v2.js';
+import type { PipelineResult } from './execution-pipeline.js';
+import type { RuntimeHealthReport } from './runtime-health-v2.js';
+import type { ObservabilityMetrics } from './runtime-observability.js';
+import type { RecoveryAction } from './runtime-recovery.js';
 export declare class RuntimeIntegration {
     private di;
     constructor(config?: RuntimeBootstrapConfig);

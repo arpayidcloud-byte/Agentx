@@ -2,7 +2,7 @@
  * @module provider-qualification/qualification-registry
  * @description Central registry for certified providers.
  */
-import { CertificationReport, QualificationSnapshot } from './interfaces.js';
+import type { CertificationReport, QualificationSnapshot } from './interfaces.js';
 export declare class QualificationRegistry {
     private reports;
     private snapshots;

@@ -3,7 +3,7 @@
  * @description Extended interfaces for Workflow Engine hardening.
  * These interfaces extend M3.1 without breaking existing API.
  */
-import { WorkflowDefinition, WorkflowNode, WorkflowState, NodeState, WorkflowMetrics, ExecutionSnapshot, Checkpoint } from './interfaces.js';
+import type { WorkflowDefinition, WorkflowNode, WorkflowState, NodeState, WorkflowMetrics, ExecutionSnapshot, Checkpoint } from './interfaces.js';
 /** @description Execution planner output */
 export interface ExecutionPlan {
     workflowId: string;

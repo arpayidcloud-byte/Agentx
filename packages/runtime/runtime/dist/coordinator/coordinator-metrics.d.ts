@@ -2,7 +2,7 @@
  * @module coordinator/coordinator-metrics
  * @description Metrics collection and aggregation for the coordinator.
  */
-import { ExecutionCoordinatorMetrics } from './interfaces.js';
+import type { ExecutionCoordinatorMetrics } from './interfaces.js';
 export declare class CoordinatorMetricsCollector {
     private total;
     private active;

@@ -3,7 +3,7 @@
  * @description Approval request validation logic.
  * Validates requests before creation and approval actions.
  */
-import { IApprovalValidator, ApprovalRequest } from './interfaces.js';
+import type { IApprovalValidator, ApprovalRequest } from './interfaces.js';
 /**
  * Approval validator implementation
  */

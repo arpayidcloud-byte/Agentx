@@ -3,7 +3,7 @@
  * @description Approval result creation and formatting.
  * Creates and formats approval results for consumption.
  */
-import { ApprovalRequest, ApprovalResult } from './interfaces.js';
+import type { ApprovalRequest, ApprovalResult } from './interfaces.js';
 /**
  * Creates a successful approval result
  * @param request - The approved request

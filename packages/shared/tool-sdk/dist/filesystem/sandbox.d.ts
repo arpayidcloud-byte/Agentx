@@ -1,4 +1,4 @@
-import { ISandbox, IPathResolver, IFilesystemPolicy } from './interfaces.js';
+import type { ISandbox, IPathResolver, IFilesystemPolicy } from './interfaces.js';
 export declare class FilesystemSandbox implements ISandbox {
     readonly workspaceRoot: string;
     private readonly pathResolver;

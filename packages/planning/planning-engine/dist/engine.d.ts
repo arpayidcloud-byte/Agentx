@@ -1,5 +1,5 @@
-import { IPlanningEngine, ExecutionPlan, ValidationResult, PlanMetrics } from './interfaces.js';
-import { IEventBus } from '@agentx/core-runtime';
+import type { IPlanningEngine, ExecutionPlan, ValidationResult, PlanMetrics } from './interfaces.js';
+import type { IEventBus } from '@agentx/core-runtime';
 export declare class PlanningEngine implements IPlanningEngine {
     private eventBus;
     private metrics;

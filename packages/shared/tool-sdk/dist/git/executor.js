@@ -6,7 +6,7 @@
 import { spawn } from 'child_process';
 import { GitSandbox } from './sandbox.js';
 import { createTimeoutController } from '../shell/timeout.js';
-import { ShellAuditEmitter, createToolInvokedEvent, createToolFinishedEvent, createToolFailedEvent } from '../shell/audit.js';
+import { ShellAuditEmitter, createToolInvokedEvent, createToolFinishedEvent, createToolFailedEvent, } from '../shell/audit.js';
 import { GitTimeoutError } from './errors.js';
 /**
  * Git executor with full security pipeline

@@ -1,6 +1,6 @@
 /// <reference types="node" resolution-mode="require"/>
 /// <reference types="node" resolution-mode="require"/>
-import { IFilesystemValidator } from './interfaces.js';
+import type { IFilesystemValidator } from './interfaces.js';
 export declare class FilesystemValidator implements IFilesystemValidator {
     validateEncoding(buffer: Buffer): boolean;
     detectBinary(buffer: Buffer): boolean;

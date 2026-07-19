@@ -4,7 +4,7 @@
  * Enforces workspace jail, CWD validation, command validation,
  * environment scrubbing, timeout, resource limits, and audit integration.
  */
-import { ShellExecutionContext, ShellExecutionRequest, ParsedCommand } from './interfaces.js';
+import type { ShellExecutionContext, ShellExecutionRequest, ParsedCommand } from './interfaces.js';
 /**
  * Shell sandbox that enforces security policies
  */

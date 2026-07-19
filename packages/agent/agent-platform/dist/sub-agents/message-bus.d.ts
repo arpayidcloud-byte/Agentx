@@ -1,5 +1,5 @@
-import { AgentMessage } from './interfaces.js';
-import { IEventBus } from '@agentx/core-runtime';
+import type { AgentMessage } from './interfaces.js';
+import type { IEventBus } from '@agentx/core-runtime';
 export declare class MessageBus {
     private globalEventBus;
     private handlers;

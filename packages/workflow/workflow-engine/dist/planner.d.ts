@@ -2,8 +2,8 @@
  * @module workflow-engine/planner
  * @description ExecutionPlanner for dependency ordering, priority calculation, and parallel batching.
  */
-import { WorkflowDefinition } from './interfaces.js';
-import { ExecutionPlan } from './interfaces-v2.js';
+import type { WorkflowDefinition } from './interfaces.js';
+import type { ExecutionPlan } from './interfaces-v2.js';
 export declare class ExecutionPlanner {
     plan(workflow: WorkflowDefinition): ExecutionPlan;
     private computeBatches;

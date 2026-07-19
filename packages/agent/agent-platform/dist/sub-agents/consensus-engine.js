@@ -7,7 +7,7 @@ export class ConsensusEngine {
         if (votes.length === 0)
             return '';
         if (this.strategy === 'reviewerOverride') {
-            const reviewerVote = votes.find(v => v.agentRole === 'reviewer');
+            const reviewerVote = votes.find((v) => v.agentRole === 'reviewer');
             if (reviewerVote)
                 return reviewerVote.value;
         }
@@ -22,7 +22,7 @@ export class ConsensusEngine {
         // Deterministic tie breaker based on string localeCompare
         const sortedKeys = Array.from(voteCounts.keys()).sort();
         for (const key of sortedKeys) {
-            const count = voteCounts.get(key);
+            const count = voteCounts.get(key) ?? 0;
             if (count > maxVotes) {
                 maxVotes = count;
                 bestValue = key;

@@ -15,10 +15,10 @@ export class CoordinatorHealthChecker {
         return fn();
     }
     checkAll() {
-        return Array.from(this.checks.values()).map(fn => fn());
+        return Array.from(this.checks.values()).map((fn) => fn());
     }
     isHealthy() {
-        return this.checkAll().every(status => status.healthy);
+        return this.checkAll().every((status) => status.healthy);
     }
 }
 //# sourceMappingURL=coordinator-health.js.map

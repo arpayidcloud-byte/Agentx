@@ -3,7 +3,7 @@
  * @description Git status tool implementation.
  * Provides read-only git status query within sandbox.
  */
-import { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
+import type { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
 /**
  * Git status tool for querying repository status
  */

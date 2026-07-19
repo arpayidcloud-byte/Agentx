@@ -2,7 +2,7 @@
  * @module workflow-engine/engine
  * @description Core workflow execution engine.
  */
-import { WorkflowDefinition, WorkflowState, NodeState, ExecutionHistoryEntry, WorkflowMetrics } from './interfaces.js';
+import type { WorkflowDefinition, WorkflowState, NodeState, ExecutionHistoryEntry, WorkflowMetrics } from './interfaces.js';
 export declare class WorkflowStateMachine {
     private static readonly validTransitions;
     static canTransition(current: WorkflowState, next: WorkflowState): boolean;

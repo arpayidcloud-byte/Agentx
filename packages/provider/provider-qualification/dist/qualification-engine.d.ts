@@ -2,8 +2,8 @@
  * @module provider-qualification/qualification-engine
  * @description Master orchestration engine for Provider Qualification Framework.
  */
-import { IProvider } from '@agentx/runtime-adapters';
-import { CertificationReport } from './interfaces.js';
+import type { IProvider } from '@agentx/runtime-adapters';
+import type { CertificationReport } from './interfaces.js';
 import { QualificationMetricsCollector } from './qualification-metrics.js';
 import { QualificationAuditLogger } from './qualification-audit.js';
 import { QualificationEventEmitter } from './qualification-events.js';

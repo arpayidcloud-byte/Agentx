@@ -2,7 +2,7 @@
  * @module workflow-engine/graph
  * @description Graph models and utilities for workflow execution.
  */
-import { WorkflowDefinition, WorkflowNode, WorkflowEdge } from './interfaces.js';
+import type { WorkflowDefinition, WorkflowNode, WorkflowEdge } from './interfaces.js';
 /** @description Node types in a workflow graph */
 type NodeType = 'task' | 'approval' | 'conditional' | 'loop' | 'parallel' | 'tool' | 'agent' | 'retry';
 /**

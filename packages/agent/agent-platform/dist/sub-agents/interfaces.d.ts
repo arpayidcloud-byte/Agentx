@@ -2,7 +2,7 @@
  * @module sub-agents/interfaces
  * @description Interfaces for the Multi-Agent Orchestration Foundation.
  */
-import { TaskModel, TaskStatus } from '@agentx/core-runtime';
+import type { TaskModel, TaskStatus } from '@agentx/core-runtime';
 export type AgentRole = 'planner' | 'architect' | 'coder' | 'reviewer' | 'tester' | 'security' | 'documentation' | 'qa';
 export interface AgentPoolConfig {
     minAgents: number;
@@ -65,6 +65,21 @@ export interface ExecutionHistoryEntry {
     approvalRequired: boolean;
     retries: number;
     result: 'success' | 'failure' | 'cancelled';
+}
+export interface AgentConfig {
+    providerId?: string;
+    promptTemplate?: string;
+}
+export interface AgentDefinition {
+    id: string;
+    role: AgentRole;
+    allowedToolCategories: string[];
+    systemPromptTemplateId: string;
+}
+export declare class ToolPermissionEvaluator {
+    private definitions;
+    register(definition: AgentDefinition): void;
+    hasPermission(role: AgentRole, toolCategory: string): boolean;
 }
 export interface SubAgent {
     readonly id: string;

@@ -3,7 +3,7 @@
  * @description High-level approval service.
  * Provides a unified API for approval operations.
  */
-import { IApprovalEngine, IApprovalStore, ApprovalRequest, ApprovalResult, CreateApprovalRequestParams } from './interfaces.js';
+import type { IApprovalEngine, IApprovalStore, ApprovalRequest, ApprovalResult, CreateApprovalRequestParams } from './interfaces.js';
 /**
  * Approval service providing high-level API
  */

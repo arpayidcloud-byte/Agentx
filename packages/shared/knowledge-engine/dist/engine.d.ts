@@ -1,5 +1,5 @@
-import { IKnowledgeEngine, IKnowledgeStore, KnowledgeDocument, KnowledgeQuery, KnowledgeNode, KnowledgeRelation, KnowledgeGraph, KnowledgeMetrics } from './interfaces.js';
-import { IEventBus } from '@agentx/core-runtime';
+import type { IKnowledgeEngine, IKnowledgeStore, KnowledgeDocument, KnowledgeQuery, KnowledgeNode, KnowledgeRelation, KnowledgeGraph, KnowledgeMetrics } from './interfaces.js';
+import type { IEventBus } from '@agentx/core-runtime';
 export declare class KnowledgeEngine implements IKnowledgeEngine {
     private store;
     private eventBus;

@@ -3,7 +3,7 @@
  * @description Git branch tool implementation.
  * Provides read-only git branch query within sandbox.
  */
-import { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
+import type { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
 /**
  * Git branch tool for listing branches
  */

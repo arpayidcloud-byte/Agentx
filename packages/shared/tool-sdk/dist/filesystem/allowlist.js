@@ -4,7 +4,7 @@ export class AllowlistConfigLoader {
     static defaultConfig = {
         allow: ['src/**', 'packages/**', 'docs/**', 'prisma/**'],
         maxFileSizeBytes: 10 * 1024 * 1024,
-        allowHiddenFiles: false
+        allowHiddenFiles: false,
     };
     static async loadFromConfig(configPath) {
         if (!configPath) {
@@ -17,7 +17,7 @@ export class AllowlistConfigLoader {
                 return {
                     allow: config.tools.filesystem.allow,
                     maxFileSizeBytes: config.tools.filesystem.maxFileSizeBytes || 10 * 1024 * 1024,
-                    allowHiddenFiles: config.tools.filesystem.allowHiddenFiles ?? false
+                    allowHiddenFiles: config.tools.filesystem.allowHiddenFiles ?? false,
                 };
             }
             return AllowlistConfigLoader.defaultConfig;

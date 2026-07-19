@@ -3,7 +3,7 @@
  * @description Resource limit management for shell execution.
  * Enforces CPU, memory, output size, and execution time limits.
  */
-import { ResourceLimitsConfig } from './interfaces.js';
+import type { ResourceLimitsConfig } from './interfaces.js';
 /**
  * Creates a ResourceLimitsConfig with defaults
  * @param config - Partial configuration to override defaults

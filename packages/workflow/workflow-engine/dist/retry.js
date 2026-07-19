@@ -22,7 +22,7 @@ export class RetryCoordinator {
             };
         }
         const retryableErrors = ['ECONNRESET', 'ETIMEDOUT', 'EAI_AGAIN', '429', '500', '502', '503'];
-        const isRetryable = retryableErrors.some(code => error.message.includes(code));
+        const isRetryable = retryableErrors.some((code) => error.message.includes(code));
         if (!isRetryable) {
             return {
                 shouldRetry: false,
@@ -61,8 +61,7 @@ export class RetryCoordinator {
         this.attempts.clear();
     }
     calculateDelay(attempt) {
-        const delay = this.defaultPolicy.baseDelayMs *
-            Math.pow(this.defaultPolicy.multiplier, attempt);
+        const delay = this.defaultPolicy.baseDelayMs * Math.pow(this.defaultPolicy.multiplier, attempt);
         return Math.min(delay, this.defaultPolicy.maxDelayMs);
     }
 }

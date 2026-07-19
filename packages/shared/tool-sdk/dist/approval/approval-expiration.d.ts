@@ -3,7 +3,7 @@
  * @description Approval expiration management.
  * Handles TTL checks and automatic expiration of approval requests.
  */
-import { ApprovalRequest, ExpirationCheckResult } from './interfaces.js';
+import type { ApprovalRequest, ExpirationCheckResult } from './interfaces.js';
 /**
  * Checks if an approval request has expired
  * @param request - The approval request to check

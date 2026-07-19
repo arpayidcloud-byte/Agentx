@@ -31,7 +31,7 @@ export class ApprovalAuditLogger {
      * @returns Filtered events
      */
     getEventsByType(eventType) {
-        return this.events.filter(e => e.eventType === eventType);
+        return this.events.filter((e) => e.eventType === eventType);
     }
     /**
      * Gets events for a specific request
@@ -39,7 +39,7 @@ export class ApprovalAuditLogger {
      * @returns Filtered events
      */
     getEventsByRequest(requestId) {
-        return this.events.filter(e => e.requestId === requestId);
+        return this.events.filter((e) => e.requestId === requestId);
     }
     /**
      * Gets events for a specific task
@@ -47,7 +47,7 @@ export class ApprovalAuditLogger {
      * @returns Filtered events
      */
     getEventsByTask(taskId) {
-        return this.events.filter(e => e.taskId === taskId);
+        return this.events.filter((e) => e.taskId === taskId);
     }
     /**
      * Clears all events

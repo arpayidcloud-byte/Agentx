@@ -1,4 +1,4 @@
-import { IFilesystemPolicy, FilesystemConfig } from './interfaces.js';
+import type { IFilesystemPolicy, FilesystemConfig } from './interfaces.js';
 export declare class FilesystemPolicy implements IFilesystemPolicy {
     private config;
     constructor(config: FilesystemConfig);

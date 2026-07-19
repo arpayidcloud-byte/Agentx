@@ -3,7 +3,7 @@
  * @description Approval manager for coordinating approval workflows.
  * Manages approval sessions, expiration checks, and lifecycle.
  */
-import { ApprovalRequest, ApprovalResult, CreateApprovalRequestParams } from './interfaces.js';
+import type { ApprovalRequest, ApprovalResult, CreateApprovalRequestParams } from './interfaces.js';
 import { ApprovalService } from './approval-service.js';
 /**
  * Approval manager coordinating the full approval workflow

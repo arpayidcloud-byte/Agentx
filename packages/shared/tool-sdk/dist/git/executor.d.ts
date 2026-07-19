@@ -3,7 +3,7 @@
  * @description Git executor that uses child_process.spawn() ONLY.
  * Never uses exec() or execSync() per Volume 7 requirements.
  */
-import { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
+import type { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
 import { ShellAuditEmitter } from '../shell/audit.js';
 /**
  * Git executor with full security pipeline

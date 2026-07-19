@@ -2,7 +2,7 @@
  * @module workflow-engine/serializer
  * @description Workflow serialization/deserialization for persistence.
  */
-import { WorkflowDefinition, IWorkflowSerializer } from './interfaces.js';
+import type { WorkflowDefinition, IWorkflowSerializer } from './interfaces.js';
 /**
  * JSON serializer for workflow definitions
  */

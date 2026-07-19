@@ -3,7 +3,7 @@
  * @description Approval & Execution Governance interfaces for the AgentX Tool SDK.
  * These interfaces implement the final approval gate before tool execution.
  */
-import { ToolCategory } from '../interfaces/index.js';
+import type { ToolCategory } from '../interfaces/index.js';
 /** @description Approval request states */
 export type ApprovalState = 'WAITING' | 'APPROVED' | 'REJECTED' | 'EXPIRED' | 'CANCELLED' | 'EXECUTED';
 /** @description Risk classification levels */

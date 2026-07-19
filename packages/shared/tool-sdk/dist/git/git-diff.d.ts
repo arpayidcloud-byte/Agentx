@@ -3,7 +3,7 @@
  * @description Git diff tool implementation.
  * Provides read-only git diff query within sandbox.
  */
-import { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
+import type { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
 /**
  * Git diff tool for comparing changes
  */

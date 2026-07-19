@@ -2,7 +2,7 @@
  * @module workflow-engine/validator
  * @description Workflow validation and graph integrity checks.
  */
-import { WorkflowDefinition, WorkflowNode, WorkflowEdge } from './interfaces.js';
+import type { WorkflowDefinition, WorkflowNode, WorkflowEdge } from './interfaces.js';
 /**
  * Validates a workflow definition
  */

@@ -3,7 +3,7 @@
  * @description Git checkout tool implementation.
  * Switches branches or restores files within sandbox.
  */
-import { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
+import type { GitExecutionRequest, GitExecutionResult, GitExecutionContext } from './interfaces.js';
 /**
  * Git checkout tool for switching branches
  */

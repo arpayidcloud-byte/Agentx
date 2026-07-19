@@ -38,7 +38,9 @@ export class CoordinatorStateMachine {
         return validTransitions[this.currentState] || [];
     }
     isTerminal() {
-        return this.currentState === 'COMPLETED' || this.currentState === 'FAILED' || this.currentState === 'CANCELLED';
+        return (this.currentState === 'COMPLETED' ||
+            this.currentState === 'FAILED' ||
+            this.currentState === 'CANCELLED');
     }
     getHistory() {
         return [...this.history];

@@ -58,7 +58,10 @@ export class ExecutionPipeline {
         catch (error) {
             audit.durationMs = Date.now() - startTime;
             audit.result = 'failure';
-            audit.metadata = { ...audit.metadata, error: error instanceof Error ? error.message : String(error) };
+            audit.metadata = {
+                ...audit.metadata,
+                error: error instanceof Error ? error.message : String(error),
+            };
             await this.auditStore.record(audit);
             return {
                 success: false,

@@ -2,7 +2,7 @@
  * @module runtime/runtime-config
  * @description Runtime configuration management.
  */
-import { RuntimeConfig, ResourceLimits } from './interfaces.js';
+import type { RuntimeConfig, ResourceLimits } from './interfaces.js';
 /**
  * Creates runtime configuration with defaults
  * @param overrides - Partial configuration to override defaults

@@ -2,7 +2,7 @@
  * @module workflow-engine/retry
  * @description RetryCoordinator for managing retry logic with backoff policies.
  */
-import { RetryBudget, RetryDecision } from './interfaces-v2.js';
+import type { RetryBudget, RetryDecision } from './interfaces-v2.js';
 export declare class RetryCoordinator {
     private budgets;
     private attempts;

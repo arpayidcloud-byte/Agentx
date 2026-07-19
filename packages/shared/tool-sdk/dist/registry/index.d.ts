@@ -1,4 +1,4 @@
-import { IToolRegistry, ITool, ToolCategory, ToolCapability } from '../interfaces/index.js';
+import type { IToolRegistry, ITool, ToolCategory, ToolCapability } from '../interfaces/index.js';
 export declare class ToolRegistry implements IToolRegistry {
     private tools;
     private categories;

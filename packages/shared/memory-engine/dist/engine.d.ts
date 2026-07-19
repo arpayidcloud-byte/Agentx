@@ -1,5 +1,5 @@
-import { IMemoryEngine, IMemoryStore, Memory, MemorySearchOptions, MemoryMetrics } from './interfaces.js';
-import { IEventBus } from '@agentx/core-runtime';
+import type { IMemoryEngine, IMemoryStore, Memory, MemorySearchOptions, MemoryMetrics } from './interfaces.js';
+import type { IEventBus } from '@agentx/core-runtime';
 export declare class MemoryEngine implements IMemoryEngine {
     private memoryStore;
     private eventBus;
@@ -21,4 +21,5 @@ export declare class InMemoryStore implements IMemoryStore {
     delete(id: string): Promise<void>;
     list(): Promise<Memory[]>;
 }
+export * from './prisma-store.js';
 //# sourceMappingURL=engine.d.ts.map

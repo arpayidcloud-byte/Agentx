@@ -2,7 +2,7 @@
  * @module coordinator/reservation
  * @description Reservation manager for critical system resources.
  */
-import { ExecutionReservation } from './interfaces.js';
+import type { ExecutionReservation } from './interfaces.js';
 export declare class ExecutionReservationManager {
     private reservations;
     reserve(type: 'worker' | 'token' | 'provider' | 'tool' | 'memory' | 'cost', capacity: number, durationMs: number): ExecutionReservation;

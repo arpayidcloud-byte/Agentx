@@ -4,7 +4,7 @@
  * Executes arbitrary shell commands with full sandboxing.
  * Per ADR-0005, shell.exec is Destructive (Risk 90) and requires approval.
  */
-import { ShellExecutionRequest, ShellExecutionResult, ShellExecutionContext, ToolCategory } from './interfaces.js';
+import type { ShellExecutionRequest, ShellExecutionResult, ShellExecutionContext, ToolCategory } from './interfaces.js';
 /**
  * Shell.exec tool for executing arbitrary shell commands
  */

@@ -34,7 +34,7 @@ export class InMemoryApprovalStore {
     }
     /** @inheritdoc */
     async listByState(state) {
-        return Array.from(this.requests.values()).filter(r => r.state === state);
+        return Array.from(this.requests.values()).filter((r) => r.state === state);
     }
 }
 //# sourceMappingURL=approval-store.js.map

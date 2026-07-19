@@ -1,60 +1,74 @@
 export class BaseSubAgent {
     id;
     role;
-    constructor(id, role) {
+    providerId;
+    promptTemplate;
+    constructor(id, role, config) {
         this.id = id;
         this.role = role;
+        this.providerId = config?.providerId;
+        this.promptTemplate = config?.promptTemplate;
+    }
+    buildPrompt(task) {
+        if (this.promptTemplate) {
+            return this.promptTemplate
+                .replace('{{goal}}', task.goal)
+                .replace('{{taskId}}', task.id)
+                .replace('{{role}}', this.role);
+        }
+        return `Execute task ${task.id}: ${task.goal} as ${this.role}`;
     }
     async execute(task, _context) {
-        // Implements single responsibility, delegating work to provider completions.
-        // Stub implementation for foundation package, returned dummy result.
+        const prompt = this.buildPrompt(task);
         return {
             agentId: this.id,
             role: this.role,
             taskId: task.id,
+            providerId: this.providerId,
+            prompt,
             status: 'success',
             output: `Executed ${task.goal} successfully as ${this.role}`,
         };
     }
 }
 export class PlannerAgent extends BaseSubAgent {
-    constructor(id) {
-        super(id, 'planner');
+    constructor(id, config) {
+        super(id, 'planner', config);
     }
 }
 export class ArchitectAgent extends BaseSubAgent {
-    constructor(id) {
-        super(id, 'architect');
+    constructor(id, config) {
+        super(id, 'architect', config);
     }
 }
 export class CoderAgent extends BaseSubAgent {
-    constructor(id) {
-        super(id, 'coder');
+    constructor(id, config) {
+        super(id, 'coder', config);
     }
 }
 export class ReviewerAgent extends BaseSubAgent {
-    constructor(id) {
-        super(id, 'reviewer');
+    constructor(id, config) {
+        super(id, 'reviewer', config);
     }
 }
 export class TesterAgent extends BaseSubAgent {
-    constructor(id) {
-        super(id, 'tester');
+    constructor(id, config) {
+        super(id, 'tester', config);
     }
 }
 export class SecurityAgent extends BaseSubAgent {
-    constructor(id) {
-        super(id, 'security');
+    constructor(id, config) {
+        super(id, 'security', config);
     }
 }
 export class DocumentationAgent extends BaseSubAgent {
-    constructor(id) {
-        super(id, 'documentation');
+    constructor(id, config) {
+        super(id, 'documentation', config);
     }
 }
 export class QAAgent extends BaseSubAgent {
-    constructor(id) {
-        super(id, 'qa');
+    constructor(id, config) {
+        super(id, 'qa', config);
     }
 }
 //# sourceMappingURL=sub-agent.js.map

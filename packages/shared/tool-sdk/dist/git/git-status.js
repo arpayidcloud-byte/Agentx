@@ -37,7 +37,7 @@ export class GitStatusTool {
      * @returns Parsed GitStatusOutput
      */
     parseStatus(output) {
-        const lines = output.split('\n').filter(line => line.trim().length > 0);
+        const lines = output.split('\n').filter((line) => line.trim().length > 0);
         const changed = [];
         for (const line of lines) {
             if (line.length >= 3) {

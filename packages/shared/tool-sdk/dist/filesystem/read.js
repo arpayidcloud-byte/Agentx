@@ -28,7 +28,7 @@ export class FilesystemReadTool {
         }
         return {
             content: buffer.toString('utf-8'),
-            metadata: { size: stats.size, isBinary: false }
+            metadata: { size: stats.size, isBinary: false },
         };
     }
 }

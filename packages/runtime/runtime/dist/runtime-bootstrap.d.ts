@@ -2,7 +2,7 @@
  * @module runtime/runtime-bootstrap
  * @description Runtime bootstrap configuration and setup.
  */
-import { RuntimeConfig, ResourceLimits } from './interfaces.js';
+import type { RuntimeConfig, ResourceLimits } from './interfaces.js';
 export interface BootstrapOptions {
     config?: Partial<RuntimeConfig>;
     enableHooks?: boolean;

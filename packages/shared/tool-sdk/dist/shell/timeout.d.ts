@@ -4,7 +4,7 @@
  * Default timeout is 60 seconds, configurable per Volume 7.
  */
 /// <reference types="node" resolution-mode="require"/>
-import { TimeoutConfig } from './interfaces.js';
+import type { TimeoutConfig } from './interfaces.js';
 /**
  * Creates an AbortController with timeout
  * @param config - Timeout configuration

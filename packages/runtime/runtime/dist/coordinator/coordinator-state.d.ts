@@ -2,7 +2,7 @@
  * @module coordinator/coordinator-state
  * @description State machine for the Production Execution Coordinator.
  */
-import { ExecutionCoordinatorState } from './interfaces.js';
+import type { ExecutionCoordinatorState } from './interfaces.js';
 export declare class CoordinatorStateMachine {
     private currentState;
     private history;

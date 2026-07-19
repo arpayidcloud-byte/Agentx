@@ -2,7 +2,7 @@
  * @module coordinator/coordinator-hooks
  * @description Hook manager for execution lifecycle integration.
  */
-import { CoordinatorHook, CoordinatorSession, ExecutionPhase } from './interfaces.js';
+import type { CoordinatorHook, CoordinatorSession, ExecutionPhase } from './interfaces.js';
 export declare class CoordinatorHookManager {
     private hooks;
     register(hook: CoordinatorHook): void;

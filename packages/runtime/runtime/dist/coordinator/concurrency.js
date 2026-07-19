@@ -30,15 +30,24 @@ export class ConcurrencyController {
     }
     getLimit(type) {
         switch (type) {
-            case 'worker': return this.config.maxWorkers;
-            case 'tool': return this.config.maxTools;
-            case 'provider': return this.config.maxProviders;
-            case 'approval': return this.config.maxApprovals;
-            case 'agent': return this.config.maxAgents;
-            case 'queue': return this.config.maxQueueSize;
-            case 'parallel': return this.config.maxParallel;
-            case 'batch': return this.config.maxBatch;
-            default: return Infinity;
+            case 'worker':
+                return this.config.maxWorkers;
+            case 'tool':
+                return this.config.maxTools;
+            case 'provider':
+                return this.config.maxProviders;
+            case 'approval':
+                return this.config.maxApprovals;
+            case 'agent':
+                return this.config.maxAgents;
+            case 'queue':
+                return this.config.maxQueueSize;
+            case 'parallel':
+                return this.config.maxParallel;
+            case 'batch':
+                return this.config.maxBatch;
+            default:
+                return Infinity;
         }
     }
     reset() {

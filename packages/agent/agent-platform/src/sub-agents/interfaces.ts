@@ -86,6 +86,32 @@ export interface ExecutionHistoryEntry {
   result: 'success' | 'failure' | 'cancelled';
 }
 
+export interface AgentConfig {
+  providerId?: string;
+  promptTemplate?: string;
+}
+
+export interface AgentDefinition {
+  id: string;
+  role: AgentRole;
+  allowedToolCategories: string[];
+  systemPromptTemplateId: string;
+}
+
+export class ToolPermissionEvaluator {
+  private definitions = new Map<string, AgentDefinition>();
+
+  register(definition: AgentDefinition): void {
+    this.definitions.set(definition.role, definition);
+  }
+
+  hasPermission(role: AgentRole, toolCategory: string): boolean {
+    const def = this.definitions.get(role);
+    if (!def) return false;
+    return def.allowedToolCategories.includes(toolCategory);
+  }
+}
+
 export interface SubAgent {
   readonly id: string;
   readonly role: AgentRole;

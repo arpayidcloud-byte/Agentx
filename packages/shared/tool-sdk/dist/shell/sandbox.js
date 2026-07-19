@@ -7,7 +7,7 @@
 import { parseCommand } from './command-parser.js';
 import { validateCommand } from './validator.js';
 import { scrubEnvironment } from './environment.js';
-import { CommandBlockedError, CommandNotAllowedError, InvalidWorkingDirectoryError } from './errors.js';
+import { CommandBlockedError, CommandNotAllowedError, InvalidWorkingDirectoryError, } from './errors.js';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 /**

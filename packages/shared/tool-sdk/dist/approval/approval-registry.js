@@ -8,14 +8,50 @@
  */
 const DEFAULT_REGISTRY = [
     // Read-only operations - Safe
-    { category: 'fs.read', riskScore: 10, riskLevel: 'Safe', requiresApproval: false, description: 'File read operation' },
-    { category: 'git.read', riskScore: 10, riskLevel: 'Safe', requiresApproval: false, description: 'Git read operation' },
+    {
+        category: 'fs.read',
+        riskScore: 10,
+        riskLevel: 'Safe',
+        requiresApproval: false,
+        description: 'File read operation',
+    },
+    {
+        category: 'git.read',
+        riskScore: 10,
+        riskLevel: 'Safe',
+        requiresApproval: false,
+        description: 'Git read operation',
+    },
     // Potentially destructive operations
-    { category: 'fs.write', riskScore: 60, riskLevel: 'PotentiallyDestructive', requiresApproval: true, description: 'File write operation' },
-    { category: 'shell.build', riskScore: 50, riskLevel: 'PotentiallyDestructive', requiresApproval: false, description: 'Build command' },
-    { category: 'git.write', riskScore: 70, riskLevel: 'PotentiallyDestructive', requiresApproval: true, description: 'Git write operation' },
+    {
+        category: 'fs.write',
+        riskScore: 60,
+        riskLevel: 'PotentiallyDestructive',
+        requiresApproval: true,
+        description: 'File write operation',
+    },
+    {
+        category: 'shell.build',
+        riskScore: 50,
+        riskLevel: 'PotentiallyDestructive',
+        requiresApproval: false,
+        description: 'Build command',
+    },
+    {
+        category: 'git.write',
+        riskScore: 70,
+        riskLevel: 'PotentiallyDestructive',
+        requiresApproval: true,
+        description: 'Git write operation',
+    },
     // Destructive operations
-    { category: 'shell.exec', riskScore: 90, riskLevel: 'Destructive', requiresApproval: true, description: 'Shell execution' },
+    {
+        category: 'shell.exec',
+        riskScore: 90,
+        riskLevel: 'Destructive',
+        requiresApproval: true,
+        description: 'Shell execution',
+    },
 ];
 /**
  * Approval registry

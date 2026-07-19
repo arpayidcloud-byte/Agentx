@@ -3,7 +3,7 @@
  * @description Git sandbox implementation.
  * Enforces workspace jail for all git operations.
  */
-import { GitSandboxConfig, GitExecutionRequest, GitRepositoryInfo, GitOperation } from './interfaces.js';
+import type { GitSandboxConfig, GitExecutionRequest, GitRepositoryInfo, GitOperation } from './interfaces.js';
 /**
  * Git sandbox that enforces security policies
  */

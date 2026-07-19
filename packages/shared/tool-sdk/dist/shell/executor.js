@@ -7,7 +7,7 @@
 import { ShellSandbox } from './sandbox.js';
 import { ProcessManager } from './process-manager.js';
 import { createTimeoutController } from './timeout.js';
-import { createResourceLimits, validateOutputSize, validateExecutionTime } from './resource-limits.js';
+import { createResourceLimits, validateOutputSize, validateExecutionTime, } from './resource-limits.js';
 import { ShellAuditEmitter, createToolInvokedEvent, createToolFinishedEvent, createToolFailedEvent, } from './audit.js';
 import { ShellTimeoutError, ResourceLimitExceededError } from './errors.js';
 /**
@@ -35,7 +35,9 @@ export class ShellExecutor {
             const parsed = await this.sandbox.validate(request);
             wasAllowed = true;
             // 2. Classify for approval
-            const category = request.command.includes('build') ? 'shell.build' : 'shell.exec';
+            const category = request.command.includes('build')
+                ? 'shell.build'
+                : 'shell.exec';
             // 3. Emit tool.invoked event
             this.auditEmitter.emit(createToolInvokedEvent(request.command, category, request.taskId, request.traceId, request.agentRole));
             // 4. Create timeout controller
@@ -85,7 +87,9 @@ export class ShellExecutor {
         }
         catch (error) {
             const durationMs = Date.now() - startTime;
-            const category = request.command.includes('build') ? 'shell.build' : 'shell.exec';
+            const category = request.command.includes('build')
+                ? 'shell.build'
+                : 'shell.exec';
             // Emit tool.failed event
             this.auditEmitter.emit(createToolFailedEvent(request.command, category, request.taskId, request.traceId, request.agentRole, error instanceof Error ? error.message : String(error)));
             return {

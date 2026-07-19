@@ -5,7 +5,7 @@
 export class BenchmarkEngine {
     async run(_rateRps, durationMs) {
         const start = Date.now();
-        await new Promise(resolve => setTimeout(resolve, Math.min(100, durationMs)));
+        await new Promise((resolve) => setTimeout(resolve, Math.min(100, durationMs)));
         const duration = Date.now() - start;
         return {
             latencyP50: duration / 2,

@@ -3,8 +3,8 @@
  * @description Approval middleware for tool execution pipeline.
  * Integrates approval checks into the tool execution flow.
  */
-import { IApprovalMiddleware, ApprovalState } from './interfaces.js';
-import { IApprovalStore } from './interfaces.js';
+import type { IApprovalMiddleware, ApprovalState } from './interfaces.js';
+import type { IApprovalStore } from './interfaces.js';
 /**
  * Approval middleware implementation
  */

@@ -3,7 +3,7 @@
  * @description Shell command parser that extracts program, arguments, flags,
  * working directory, and detects dangerous patterns.
  */
-import { ParsedCommand } from './interfaces.js';
+import type { ParsedCommand } from './interfaces.js';
 /**
  * Parses a shell command string into structured components
  * @param command - Raw command string

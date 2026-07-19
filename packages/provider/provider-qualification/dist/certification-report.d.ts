@@ -2,7 +2,7 @@
  * @module provider-qualification/certification-report
  * @description Builds official report from evaluation.
  */
-import { CertificationReport, QualificationScore, ProviderRank } from './interfaces.js';
+import type { CertificationReport, QualificationScore, ProviderRank } from './interfaces.js';
 export declare class CertificationReportBuilder {
     private qualificationId;
     private providerId;

@@ -1,1 +1,1 @@
-{"version":3,"file":"contract-validator.d.ts","sourceRoot":"","sources":["../src/contract-validator.ts"],"names":[],"mappings":"AAAA;;;GAGG;AAEH,OAAO,EAAE,SAAS,EAAE,MAAM,0BAA0B,CAAC;AAGrD,qBAAa,iBAAiB;IAC5B,QAAQ,CAAC,QAAQ,EAAE,SAAS,EAAE,eAAe,EAAE,MAAM,EAAE,GAAG,IAAI;CAO/D"}
+{"version":3,"file":"contract-validator.d.ts","sourceRoot":"","sources":["../src/contract-validator.ts"],"names":[],"mappings":"AAAA;;;GAGG;AAEH,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,0BAA0B,CAAC;AAG1D,qBAAa,iBAAiB;IAC5B,QAAQ,CAAC,QAAQ,EAAE,SAAS,EAAE,eAAe,EAAE,MAAM,EAAE,GAAG,IAAI;CAU/D"}

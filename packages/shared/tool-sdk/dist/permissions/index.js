@@ -4,20 +4,27 @@ export class PermissionResolver {
     constructor() {
         // Default v0.1 permissions per Volume 7 Ch.2 and Vol 3 Ch.2
         this.policies.set('coding', {
-            allowedCategories: ['fs.read', 'fs.write', 'shell.build', 'shell.exec', 'git.read', 'git.write'],
-            maxRiskScore: 100
+            allowedCategories: [
+                'fs.read',
+                'fs.write',
+                'shell.build',
+                'shell.exec',
+                'git.read',
+                'git.write',
+            ],
+            maxRiskScore: 100,
         });
         this.policies.set('review', {
             allowedCategories: ['fs.read', 'git.read'],
-            maxRiskScore: 50
+            maxRiskScore: 50,
         });
         this.policies.set('test', {
             allowedCategories: ['fs.read', 'fs.write', 'shell.build', 'shell.exec'],
-            maxRiskScore: 100
+            maxRiskScore: 100,
         });
         this.policies.set('security', {
             allowedCategories: ['fs.read', 'git.read'],
-            maxRiskScore: 50
+            maxRiskScore: 50,
         });
     }
     resolvePolicyForAgent(agentRole) {

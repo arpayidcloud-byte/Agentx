@@ -5,9 +5,21 @@
 import { CompatibilityValidationError } from './errors.js';
 export class CompatibilityValidator {
     components = [
-        'Runtime', 'WorkflowEngine', 'PlanningEngine', 'ContextEngine', 'MemoryEngine',
-        'KnowledgeEngine', 'ApprovalEngine', 'ToolSDK', 'AgentPlatform', 'Coordinator',
-        'Observability', 'Audit', 'Recovery', 'Supervisor', 'Registry'
+        'Runtime',
+        'WorkflowEngine',
+        'PlanningEngine',
+        'ContextEngine',
+        'MemoryEngine',
+        'KnowledgeEngine',
+        'ApprovalEngine',
+        'ToolSDK',
+        'AgentPlatform',
+        'Coordinator',
+        'Observability',
+        'Audit',
+        'Recovery',
+        'Supervisor',
+        'Registry',
     ];
     validate(componentList) {
         for (const comp of componentList) {

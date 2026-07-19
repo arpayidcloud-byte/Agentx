@@ -9,8 +9,14 @@ export function validateStatusOutput(output) {
         return false;
     }
     // Status output should contain branch info or file status indicators
-    const validIndicators = ['On branch', 'Changes to be committed', 'Changes not staged', 'Untracked files', 'nothing to commit'];
-    return validIndicators.some(indicator => output.includes(indicator));
+    const validIndicators = [
+        'On branch',
+        'Changes to be committed',
+        'Changes not staged',
+        'Untracked files',
+        'nothing to commit',
+    ];
+    return validIndicators.some((indicator) => output.includes(indicator));
 }
 /** @description Validates branch name format */
 export function validateBranchName(name) {
@@ -31,7 +37,7 @@ export function validateBranchName(name) {
         /\[/, // cannot contain [
         /\]/, // cannot contain ]
     ];
-    return !invalidPatterns.some(pattern => pattern.test(name));
+    return !invalidPatterns.some((pattern) => pattern.test(name));
 }
 /** @description Validates git ref format */
 export function validateRef(ref) {
@@ -41,7 +47,7 @@ export function validateRef(ref) {
     // Valid refs: branch names, commit hashes, tags
     // Invalid refs: refs with invalid characters
     const invalidChars = [' ', '\t', '\n', '\r', '~', '^', ':', '?', '*', '[', '\\'];
-    return !invalidChars.some(char => ref.includes(char));
+    return !invalidChars.some((char) => ref.includes(char));
 }
 /** @description Validates commit message */
 export function validateCommitMessage(message) {

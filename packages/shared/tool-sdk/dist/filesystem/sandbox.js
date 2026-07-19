@@ -58,7 +58,7 @@ export class FilesystemSandbox {
     }
     validateHiddenFilePolicy(realPath) {
         const parts = path.relative(this.workspaceRoot, realPath).split(path.sep);
-        const hasHidden = parts.some(part => part.startsWith('.'));
+        const hasHidden = parts.some((part) => part.startsWith('.'));
         if (hasHidden) {
             throw new SandboxViolationError(`Path "${realPath}" accesses hidden files which is disabled in policy`);
         }

@@ -2,7 +2,7 @@
  * @module workflow-engine/hooks
  * @description Workflow hook registration and management.
  */
-import { WorkflowHook } from './interfaces-v2.js';
+import type { WorkflowHook } from './interfaces-v2.js';
 export declare class WorkflowHookManager {
     private hooks;
     register(hook: WorkflowHook): void;

@@ -3,7 +3,7 @@
  * @description Core approval engine implementation.
  * Manages the full approval lifecycle: create, approve, reject, expire, cancel, execute.
  */
-import { IApprovalEngine, IApprovalStore, ApprovalRequest, ApprovalResult, CreateApprovalRequestParams } from './interfaces.js';
+import type { IApprovalEngine, IApprovalStore, ApprovalRequest, ApprovalResult, CreateApprovalRequestParams } from './interfaces.js';
 import { ApprovalAuditLogger } from './approval-audit.js';
 /**
  * Approval engine implementation

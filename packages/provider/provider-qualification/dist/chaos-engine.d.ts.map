@@ -1,1 +1,1 @@
-{"version":3,"file":"chaos-engine.d.ts","sourceRoot":"","sources":["../src/chaos-engine.ts"],"names":[],"mappings":"AAAA;;;GAGG;AAEH,OAAO,EAAE,WAAW,EAAE,MAAM,iBAAiB,CAAC;AAE9C,qBAAa,WAAW;IAChB,eAAe,CAAC,QAAQ,EAAE,MAAM,EAAE,GAAG,OAAO,CAAC,WAAW,CAAC;CAOhE"}
+{"version":3,"file":"chaos-engine.d.ts","sourceRoot":"","sources":["../src/chaos-engine.ts"],"names":[],"mappings":"AAAA;;;GAGG;AAEH,OAAO,KAAK,EAAE,WAAW,EAAE,MAAM,iBAAiB,CAAC;AAEnD,qBAAa,WAAW;IAChB,eAAe,CAAC,QAAQ,EAAE,MAAM,EAAE,GAAG,OAAO,CAAC,WAAW,CAAC;CAOhE"}

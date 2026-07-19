@@ -2,9 +2,9 @@
  * @module runtime/runtime-bootstrap-v2
  * @description Bootstrap configuration for the production runtime.
  */
-import { RuntimeConfig } from './interfaces.js';
-import { IAuditStore } from './audit-store.js';
-import { ICheckpointStore } from './checkpoint-store.js';
+import type { RuntimeConfig } from './interfaces.js';
+import type { IAuditStore } from './audit-store.js';
+import type { ICheckpointStore } from './checkpoint-store.js';
 import { RuntimeDI } from './runtime-di.js';
 export interface RuntimeBootstrapConfig {
     config: RuntimeConfig;
