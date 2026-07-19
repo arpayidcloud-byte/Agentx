@@ -36,7 +36,7 @@ export class BaseProvider {
                 return response;
             }
             catch (e) {
-                if (e.name === 'AbortError' || e instanceof ProviderTimeoutError) {
+                if (e instanceof Error && (e.name === 'AbortError' || e instanceof ProviderTimeoutError)) {
                     throw new ProviderTimeoutError(this.id, undefined, e);
                 }
                 throw this.mapError(e);

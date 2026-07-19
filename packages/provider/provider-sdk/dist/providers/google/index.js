@@ -67,7 +67,8 @@ export class GoogleProvider extends BaseProvider {
         const result = response.response;
         const text = result.text() || '';
         const toolCalls = [];
-        const calls = result.functionCalls ? result.functionCalls() : [];
+        const resultAny = result;
+        const calls = resultAny.functionCalls ? resultAny.functionCalls() : [];
         if (calls) {
             for (const call of calls) {
                 toolCalls.push({
@@ -77,8 +78,8 @@ export class GoogleProvider extends BaseProvider {
                 });
             }
         }
-        const inputTokens = result.usageMetadata?.promptTokenCount || 0;
-        const outputTokens = result.usageMetadata?.candidatesTokenCount || 0;
+        const inputTokens = resultAny.usageMetadata?.promptTokenCount || 0;
+        const outputTokens = resultAny.usageMetadata?.candidatesTokenCount || 0;
         return {
             text,
             toolCalls,

@@ -13,7 +13,7 @@ export class ToolValidator implements IToolValidator {
       throw new SchemaValidationError(['Invalid schema definition']);
     }
 
-    const required = (schema as any).required;
+    const required = schema.required;
     if (Array.isArray(required)) {
       const missing = required.filter((key: string) => args[key] === undefined);
       if (missing.length > 0) {

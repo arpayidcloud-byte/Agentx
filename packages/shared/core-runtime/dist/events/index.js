@@ -85,11 +85,15 @@ export class BullMQEventBus {
     workers = new Map();
     processedEventIds = new Set();
     constructor(redisUrl = 'redis://localhost:6379') {
-        this.redisConnection = new Redis(redisUrl, { maxRetriesPerRequest: null });
+        this.redisConnection = new Redis(redisUrl, {
+            maxRetriesPerRequest: null,
+        });
     }
     async publish(topic, payload, traceId, taskId, metadata) {
         if (!this.queues.has(topic)) {
-            this.queues.set(topic, new Queue(topic, { connection: this.redisConnection }));
+            this.queues.set(topic, new Queue(topic, {
+                connection: this.redisConnection,
+            }));
         }
         const queue = this.queues.get(topic);
         const event = {

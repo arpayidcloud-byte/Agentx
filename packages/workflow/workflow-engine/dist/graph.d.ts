@@ -2,7 +2,7 @@
  * @module workflow-engine/graph
  * @description Graph models and utilities for workflow execution.
  */
-import type { WorkflowDefinition, WorkflowNode, WorkflowEdge } from './interfaces.js';
+import type { WorkflowDefinition, WorkflowNode, WorkflowEdge, NodeConfig, RetryPolicy } from './interfaces.js';
 /** @description Node types in a workflow graph */
 type NodeType = 'task' | 'approval' | 'conditional' | 'loop' | 'parallel' | 'tool' | 'agent' | 'retry';
 /**
@@ -12,9 +12,9 @@ export declare function createWorkflow(id: string, name: string, createdBy: stri
 /**
  * Creates a new workflow node
  */
-export declare function createNode(id: string, type: NodeType, name: string, config: any, options?: {
+export declare function createNode(id: string, type: NodeType, name: string, config: NodeConfig, options?: {
     timeout?: number;
-    retryPolicy?: any;
+    retryPolicy?: RetryPolicy;
 }): WorkflowNode;
 /**
  * Creates a new workflow edge
