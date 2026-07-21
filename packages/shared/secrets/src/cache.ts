@@ -1,71 +1,71 @@
 import { LRUCache } from 'lru-cache';
 
-export interface CacheConfig {
-  ttlMs: number;
-  maxSize: number;
-  negativeTtlMs: number;
+interface SecretCacheConfig {
+  ttlMs?: number;
+  maxSize?: number;
+  negativeTtlMs?: number;
 }
 
 export class SecretCache {
-  private cache: LRUCache<string, { value: string | null; updatedAt: number }>;
-  private negativeCache: LRUCache<string, { value: null; updatedAt: number }>;
-  private config: CacheConfig;
+  private positiveCache: LRUCache<string, string>;
+  private negativeCache: LRUCache<string, boolean>;
 
-  constructor(config: Partial<CacheConfig> = {}) {
-    this.config = {
-      ttlMs: config.ttlMs ?? 5 * 60 * 1000, // 5 minutes
-      maxSize: config.maxSize ?? 100,
-      negativeTtlMs: config.negativeTtlMs ?? 5000, // 5 seconds
-    };
-
-    this.cache = new LRUCache({
-      max: this.config.maxSize,
-      ttl: this.config.ttlMs,
+  constructor(config: SecretCacheConfig = {}) {
+    this.positiveCache = new LRUCache<string, string>({
+      max: config.maxSize || 100,
+      ttl: config.ttlMs || 1000 * 60 * 5,
+      ttlAutopurge: true,
     });
-
-    this.negativeCache = new LRUCache({
-      max: this.config.maxSize,
-      ttl: this.config.negativeTtlMs,
+    this.negativeCache = new LRUCache<string, boolean>({
+      ttl: config.negativeTtlMs || 1000 * 60 * 5,
+      ttlAutopurge: true,
     });
-  }
-
-  get(key: string): string | undefined {
-    const cached = this.cache.get(key);
-    if (cached) {
-      return cached.value ?? undefined;
-    }
-    return undefined;
   }
 
   set(key: string, value: string): void {
     this.negativeCache.delete(key);
-    this.cache.set(key, { value, updatedAt: Date.now() });
+    this.positiveCache.set(key, value);
   }
 
-  delete(key: string): void {
-    this.cache.delete(key);
-    this.negativeCache.delete(key);
+  setNegative(key: string): void {
+    this.positiveCache.delete(key);
+    this.negativeCache.set(key, true);
+  }
+
+  get(key: string): string | undefined {
+    return this.positiveCache.get(key);
   }
 
   has(key: string): boolean {
-    return this.cache.has(key) || this.negativeCache.has(key);
+    return this.positiveCache.has(key) || this.negativeCache.has(key);
   }
 
   hasPositive(key: string): boolean {
-    return this.cache.has(key);
+    return this.positiveCache.has(key);
   }
 
   hasNegative(key: string): boolean {
     return this.negativeCache.has(key);
   }
 
-  setNegative(key: string): void {
-    this.cache.delete(key);
-    this.negativeCache.set(key, { value: null, updatedAt: Date.now() });
+  delete(key: string): void {
+    this.positiveCache.delete(key);
+    this.negativeCache.delete(key);
   }
 
   clear(): void {
-    this.cache.clear();
+    this.positiveCache.clear();
     this.negativeCache.clear();
   }
 }
+
+const globalCache = new LRUCache<string, string>({
+  max: 100,
+  ttl: 1000 * 60 * 5,
+  ttlAutopurge: true,
+});
+
+export const getCache = (key: string): string | undefined => globalCache.get(key);
+export const setCache = (key: string, value: string) => globalCache.set(key, value);
+export const deleteCache = (key: string) => globalCache.delete(key);
+export const clearCache = () => globalCache.clear();

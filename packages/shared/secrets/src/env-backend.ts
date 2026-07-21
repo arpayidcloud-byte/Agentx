@@ -1,12 +1,15 @@
 import type { SecretStore, SecretEntry, SecretMetadata } from './interfaces.js';
-import { OperationNotSupportedError, SecretNotFoundError } from './errors.js';
+import { SecretNotFoundError, OperationNotSupportedError } from './errors.js';
 
 export class EnvVarSecretStore implements SecretStore {
   readonly backendId = 'env';
+  private env: Record<string, string | undefined>;
 
-  constructor(private readonly env: Record<string, string | undefined> = process.env) {}
+  constructor(env: Record<string, string | undefined> = process.env) {
+    this.env = env;
+  }
 
-  public async get(key: string): Promise<SecretEntry> {
+  async get(key: string): Promise<SecretEntry> {
     const value = this.env[key];
     if (value === undefined) {
       throw new SecretNotFoundError(key);
@@ -24,29 +27,23 @@ export class EnvVarSecretStore implements SecretStore {
     };
   }
 
-  public async set(_key: string, _value: string, _metadata?: SecretMetadata): Promise<void> {
-    throw new OperationNotSupportedError(
-      'set() is not supported by EnvVarSecretStore (immutable at runtime)',
-    );
+  async set(_key: string, _value: string, _metadata?: SecretMetadata): Promise<void> {
+    throw new OperationNotSupportedError('set');
   }
 
-  public async delete(_key: string): Promise<void> {
-    throw new OperationNotSupportedError(
-      'delete() is not supported by EnvVarSecretStore (immutable at runtime)',
-    );
+  async delete(_key: string): Promise<void> {
+    throw new OperationNotSupportedError('delete');
   }
 
-  public async list(): Promise<string[]> {
-    return Object.keys(this.env).filter((key) => key.startsWith('AGENTX_SECRET_'));
+  async list(): Promise<string[]> {
+    return Object.keys(this.env).filter((k) => k.startsWith('AGENTX_SECRET_'));
   }
 
-  public async has(key: string): Promise<boolean> {
+  async has(key: string): Promise<boolean> {
     return this.env[key] !== undefined;
   }
 
-  public async rotate(_key: string): Promise<void> {
-    throw new OperationNotSupportedError(
-      'rotate() is not supported by EnvVarSecretStore (immutable at runtime)',
-    );
+  async rotate(_key: string): Promise<void> {
+    throw new OperationNotSupportedError('rotate');
   }
 }
