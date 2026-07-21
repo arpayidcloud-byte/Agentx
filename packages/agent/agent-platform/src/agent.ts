@@ -1,6 +1,5 @@
 // packages/agent/agent-platform/src/agent.ts
 import type { TaskModel, TaskContext } from '@agentx/core-runtime';
-import type { CompletionResponse } from '@agentx/provider-sdk';
 
 export type AgentRole = 'coding' | 'review' | 'test' | 'security';
 
@@ -14,7 +13,7 @@ export interface AgentResult {
   success: boolean;
   output: string;
   toolCalls?: Array<{ tool: string; args: Record<string, unknown> }>;
-  usage?: CompletionResponse['usage'];
+  usage?: { inputTokens: number; outputTokens: number; costUsd: number };
 }
 
 export interface Agent {

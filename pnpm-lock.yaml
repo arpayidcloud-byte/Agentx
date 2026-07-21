@@ -74,9 +74,6 @@ importers:
       '@agentx/core-runtime':
         specifier: workspace:*
         version: link:../../shared/core-runtime
-      '@agentx/provider-sdk':
-        specifier: workspace:*
-        version: link:../../provider/provider-sdk
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 1.6.0
