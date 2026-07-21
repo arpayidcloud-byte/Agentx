@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">90.51% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>137/137</span>
+                <span class='fraction'>124/137</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">88.88% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>8/9</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">90.51% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>137/137</span>
+                <span class='fraction'>124/137</span>
             </div>
         
             
@@ -262,23 +262,6 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -303,17 +286,34 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -413,10 +413,6 @@ export class CognitiveKernel {
     await this.hooks.runBeforeThinking(sessionMeta.sessionId);
 &nbsp;
     try {
-      if (sessionMeta.metadata.fail === true) {
-        throw new Error('Forced execution failure');
-      }
-&nbsp;
       this.lifecycle.transition('EXECUTING');
       this.trace.addStep(sessionMeta.traceId, 'DISPATCH');
 &nbsp;
@@ -424,7 +420,7 @@ export class CognitiveKernel {
       let result = { output: 'default thinking output' };
 &nbsp;
       if (engine) {
-        result = (await this.dispatcher.dispatch(engine, input)) as any;
+        result = (await this.dispatcher.dispatch(engine, input)) as { output: string };
       }
 &nbsp;
       this.lifecycle.transition('CHECKPOINTING');
@@ -440,16 +436,20 @@ export class CognitiveKernel {
       this.events.publish('kernel.completed', { sessionId: sessionMeta.sessionId, result });
 &nbsp;
       return result;
-    } catch (err: any) {
-      this.metrics.recordFailure();
-      this.lifecycle.transition('FAILED');
-      await this.hooks.runOnFailure(sessionMeta.sessionId, err);
-      this.events.publish('kernel.failed', {
-        sessionId: sessionMeta.sessionId,
-        error: err.message,
-      });
-      throw err;
-    }
+<span class="branch-0 cbranch-no" title="branch not covered" >    } catch (err: unknown) {</span>
+<span class="cstat-no" title="statement not covered" >      const message = err instanceof Error ? err.message : String(err);</span>
+<span class="cstat-no" title="statement not covered" >      this.metrics.recordFailure();</span>
+<span class="cstat-no" title="statement not covered" >      this.lifecycle.transition('FAILED');</span>
+<span class="cstat-no" title="statement not covered" >      await this.hooks.runOnFailure(</span>
+<span class="cstat-no" title="statement not covered" >        sessionMeta.sessionId,</span>
+<span class="cstat-no" title="statement not covered" >        err instanceof Error ? err : new Error(String(err)),</span>
+<span class="cstat-no" title="statement not covered" >      );</span>
+<span class="cstat-no" title="statement not covered" >      this.events.publish('kernel.failed', {</span>
+<span class="cstat-no" title="statement not covered" >        sessionId: sessionMeta.sessionId,</span>
+<span class="cstat-no" title="statement not covered" >        error: message,</span>
+<span class="cstat-no" title="statement not covered" >      });</span>
+<span class="cstat-no" title="statement not covered" >      throw err;</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
   }
 &nbsp;
   async recoverSession(sessionId: string): Promise&lt;Record&lt;string, unknown&gt;&gt; {
@@ -481,7 +481,7 @@ export class CognitiveKernel {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-19T05:32:54.944Z
+                at 2026-07-21T18:25:53.279Z
             </div>
         <script src="prettify.js"></script>
         <script>
