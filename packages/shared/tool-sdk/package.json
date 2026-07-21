@@ -18,6 +18,8 @@
     "vitest": "1.6.0"
   },
   "dependencies": {
+    "@agentx/agent-platform": "workspace:*",
+    "@agentx/core-runtime": "workspace:*",
     "yaml": "^2.9.0"
   }
 }
