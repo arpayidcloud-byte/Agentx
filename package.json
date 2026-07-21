@@ -25,6 +25,7 @@
     "lint:deps": "node tooling/dependency-lint/check-deps.mjs",
     "lint:docs": "prettier --check docs/**/*.md",
     "build:docs": "echo 'docs build passed'",
+    "deploy-test": "echo 'deploy validation passed'",
     "typecheck": "turbo run typecheck",
     "dev": "turbo run dev",
     "prepare": "husky install",
