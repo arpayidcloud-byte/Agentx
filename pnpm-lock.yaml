@@ -558,6 +558,19 @@ importers:
         specifier: 1.6.0
         version: 1.6.0(@types/node@26.1.1)
 
+  packages/shared/tenant:
+    dependencies:
+      '@agentx/shared':
+        specifier: workspace:*
+        version: link:../shared
+    devDependencies:
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
+      vitest:
+        specifier: 1.6.0
+        version: 1.6.0(@types/node@26.1.1)
+
   packages/shared/tool-sdk:
     dependencies:
       '@agentx/agent-platform':
