@@ -1,0 +1,20 @@
+{
+  "name": "@agentx/e2e",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:e2e": "vitest run --config vitest.e2e.config.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint specs/"
+  },
+  "devDependencies": {
+    "typescript": "5.4.5",
+    "vitest": "1.6.0",
+    "@agentx/core-runtime": "workspace:*",
+    "@agentx/tool-sdk": "workspace:*",
+    "@agentx/security": "workspace:*",
+    "@agentx/telemetry": "workspace:*",
+    "@agentx/observability": "workspace:*"
+  }
+}
