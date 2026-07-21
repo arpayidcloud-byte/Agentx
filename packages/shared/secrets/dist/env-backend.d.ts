@@ -1,7 +1,7 @@
 import type { SecretStore, SecretEntry, SecretMetadata } from './interfaces.js';
 export declare class EnvVarSecretStore implements SecretStore {
-    private readonly env;
     readonly backendId = "env";
+    private env;
     constructor(env?: Record<string, string | undefined>);
     get(key: string): Promise<SecretEntry>;
     set(_key: string, _value: string, _metadata?: SecretMetadata): Promise<void>;

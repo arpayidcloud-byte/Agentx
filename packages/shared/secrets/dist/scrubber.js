@@ -1,10 +1,7 @@
 export class RedactedString {
-    value;
+    rawValue;
     constructor(value) {
-        this.value = value;
-    }
-    getRawValue() {
-        return this.value;
+        this.rawValue = value;
     }
     toString() {
         return '[REDACTED]';
@@ -18,18 +15,20 @@ export class RedactedString {
     [Symbol.toPrimitive](_hint) {
         return '[REDACTED]';
     }
+    getRawValue() {
+        return this.rawValue;
+    }
 }
-/**
- * Scrubs any keys starting with AGENTX_SECRET_ from the environment object.
- * Returns a new object to avoid mutating the original unless desired.
- */
-export function scrubEnvironment(env) {
-    const scrubbed = {};
-    for (const key of Object.keys(env)) {
-        if (!key.startsWith('AGENTX_SECRET_')) {
-            scrubbed[key] = env[key];
+export const scrubEnvironment = (env) => {
+    const result = {};
+    for (const [key, value] of Object.entries(env)) {
+        if (key.startsWith('AGENTX_SECRET_')) {
+            result[key] = undefined;
+        }
+        else {
+            result[key] = value;
         }
     }
-    return scrubbed;
-}
+    return result;
+};
 //# sourceMappingURL=scrubber.js.map
