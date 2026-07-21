@@ -31,9 +31,17 @@ jobs:
       - run: pnpm build
       - run: pnpm test
       - run: pnpm test:coverage
+      - name: Coverage threshold check
+        run: |
+          THRESHOLD=80
+          COVERAGE=$(cat coverage/coverage-final.json | jq '.total.lines.pct' 2>/dev/null || echo "0")
+          if (( $(echo "$COVERAGE < $THRESHOLD" | bc -l) )); then
+            echo "❌ Coverage $COVERAGE% is below threshold $THRESHOLD%"
+            exit 1
+          fi
+          echo "✅ Coverage $COVERAGE% meets threshold $THRESHOLD%"
       - name: Setup handbook for lint & contract tests
         id: handbook-setup
-        continue-on-error: true
         env:
           HANDBOOK_TOKEN: ${{ secrets.HANDBOOK_TOKEN }}
         run: |
@@ -44,13 +52,11 @@ jobs:
           fi
       - name: Handbook lint
         if: steps.handbook-setup.conclusion == 'success'
-        continue-on-error: true
         run: pnpm lint:handbook
         env:
           HANDBOOK_DIR: /tmp/agentx-handbook
       - name: Contract tests (handbook validation)
         if: steps.handbook-setup.conclusion == 'success'
-        continue-on-error: true
         env:
           HANDBOOK_DIR: /tmp/agentx-handbook
         run: |

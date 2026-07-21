@@ -32,6 +32,18 @@ export class GitExecutor {
   }
 
   /**
+   * Determines the audit category for a git operation
+   * @param operation - The git operation name
+   * @returns ToolCategory ('git.read' or 'git.write')
+   */
+  private getGitCategory(operation: string): ToolCategory {
+    const writeOperations = ['git.add', 'git.commit', 'git.reset', 'git.checkout', 'git.restore'];
+    return writeOperations.includes(operation)
+      ? ('git.write' as ToolCategory)
+      : ('git.read' as ToolCategory);
+  }
+
+  /**
    * Executes a git operation with full security pipeline
    * @param request - The execution request
    * @returns Git execution result
@@ -47,7 +59,7 @@ export class GitExecutor {
       this.auditEmitter.emit(
         createToolInvokedEvent(
           `${request.operation} ${request.args.join(' ')}`,
-          'git.read' as ToolCategory,
+          this.getGitCategory(request.operation),
           request.taskId,
           request.traceId,
           request.agentRole,
@@ -73,7 +85,7 @@ export class GitExecutor {
       this.auditEmitter.emit(
         createToolFinishedEvent(
           `${request.operation} ${request.args.join(' ')}`,
-          'git.read' as ToolCategory,
+          this.getGitCategory(request.operation),
           output.exitCode,
           output.durationMs,
           output.stdout.length,
@@ -101,7 +113,7 @@ export class GitExecutor {
       this.auditEmitter.emit(
         createToolFailedEvent(
           `${request.operation} ${request.args.join(' ')}`,
-          'git.read' as ToolCategory,
+          this.getGitCategory(request.operation),
           request.taskId,
           request.traceId,
           request.agentRole,
