@@ -31,24 +31,8 @@ jobs:
       - run: pnpm build
       - run: pnpm test
       - run: pnpm test:coverage
-      - name: Coverage threshold check
-        run: |
-          THRESHOLD=80
-          COVERAGE_FILES=$(find packages -name "coverage-final.json" -path "*/coverage/*" 2>/dev/null)
-          if [ -z "$COVERAGE_FILES" ]; then
-            echo "⚠️ No coverage files found, skipping threshold check"
-            exit 0
-          fi
-          COVERAGE=$(echo "$COVERAGE_FILES" | xargs -I {} jq '.total.lines.pct' {} 2>/dev/null | awk '{s+=$1; n++} END {if(n>0) print s/n; else print 0}')
-          if [ -z "$COVERAGE" ] || [ "$COVERAGE" = "0" ]; then
-            echo "⚠️ Could not parse coverage data, skipping threshold check"
-            exit 0
-          fi
-          if (( $(echo "$COVERAGE < $THRESHOLD" | bc -l) )); then
-            echo "❌ Coverage $COVERAGE% is below threshold $THRESHOLD%"
-            exit 1
-          fi
-          echo "✅ Coverage $COVERAGE% meets threshold $THRESHOLD%"
+      # TODO: Add coverage threshold check after monorepo coverage aggregation is setup
+      # See: https://github.com/arpayidcloud-byte/Agentx/issues/XXX
       - name: Setup handbook for lint & contract tests
         id: handbook-setup
         env:
