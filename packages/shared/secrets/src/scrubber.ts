@@ -1,43 +1,41 @@
 export class RedactedString {
-  private readonly value: string;
+  private readonly rawValue: string;
 
   constructor(value: string) {
-    this.value = value;
+    this.rawValue = value;
   }
 
-  public getRawValue(): string {
-    return this.value;
-  }
-
-  public toString(): string {
+  toString(): string {
     return '[REDACTED]';
   }
 
-  public toJSON(): string {
+  toJSON(): string {
     return '[REDACTED]';
   }
 
-  public valueOf(): string {
+  valueOf(): string {
     return '[REDACTED]';
   }
 
-  public [Symbol.toPrimitive](_hint: string): string {
+  [Symbol.toPrimitive](_hint: string): string {
     return '[REDACTED]';
+  }
+
+  getRawValue(): string {
+    return this.rawValue;
   }
 }
 
-/**
- * Scrubs any keys starting with AGENTX_SECRET_ from the environment object.
- * Returns a new object to avoid mutating the original unless desired.
- */
-export function scrubEnvironment(
+export const scrubEnvironment = (
   env: Record<string, string | undefined>,
-): Record<string, string | undefined> {
-  const scrubbed: Record<string, string | undefined> = {};
-  for (const key of Object.keys(env)) {
-    if (!key.startsWith('AGENTX_SECRET_')) {
-      scrubbed[key] = env[key];
+): Record<string, string | undefined> => {
+  const result: Record<string, string | undefined> = {};
+  for (const [key, value] of Object.entries(env)) {
+    if (key.startsWith('AGENTX_SECRET_')) {
+      result[key] = undefined;
+    } else {
+      result[key] = value;
     }
   }
-  return scrubbed;
-}
+  return result;
+};
