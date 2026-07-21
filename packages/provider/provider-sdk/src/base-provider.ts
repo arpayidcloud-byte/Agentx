@@ -9,6 +9,7 @@ import type {
 import { CircuitBreaker, executeWithRetry } from './resilience.js';
 import { CostCalculator } from './metrics.js';
 import { ProviderTimeoutError } from './errors.js';
+import { Tracer, Metrics } from '@agentx/observability';
 
 export abstract class BaseProvider implements Provider {
   public readonly id: string;
@@ -17,6 +18,8 @@ export abstract class BaseProvider implements Provider {
   protected config: ProviderConfiguration;
   protected circuitBreaker?: CircuitBreaker;
   protected costCalculator: CostCalculator;
+  protected tracer: Tracer;
+  protected otelMetrics: Metrics;
 
   constructor(config: ProviderConfiguration) {
     this.id = config.providerId;
@@ -25,9 +28,20 @@ export abstract class BaseProvider implements Provider {
       this.circuitBreaker = new CircuitBreaker(config.circuitBreaker);
     }
     this.costCalculator = new CostCalculator();
+    this.tracer = new Tracer(`provider-${this.id}`);
+    this.otelMetrics = new Metrics();
   }
 
   public async complete(req: CompletionRequest): Promise<CompletionResponse> {
+    const span = this.tracer.startSpan('provider-complete');
+    span.setAttribute('provider.id', this.id);
+    if (req.traceId) {
+      span.setAttribute('request.traceId', req.traceId);
+    }
+    if (req.cancellationToken) {
+      span.setAttribute('request.cancellationToken', true);
+    }
+
     const action = async () => {
       const abortController = new AbortController();
       let timeoutId: NodeJS.Timeout | undefined;
@@ -59,6 +73,16 @@ export abstract class BaseProvider implements Provider {
         response.latencyMs = latencyMs;
         response.metrics = metrics;
 
+        span.setAttribute('response.modelId', response.modelId);
+        span.setAttribute('response.latencyMs', latencyMs);
+        if (response.usage) {
+          span.setAttribute('usage.inputTokens', response.usage.inputTokens);
+          span.setAttribute('usage.outputTokens', response.usage.outputTokens);
+          if (response.usage.totalTokens) {
+            span.setAttribute('usage.totalTokens', response.usage.totalTokens);
+          }
+        }
+
         return response;
       } catch (e: unknown) {
         if (e instanceof Error && (e.name === 'AbortError' || e instanceof ProviderTimeoutError)) {
@@ -70,21 +94,38 @@ export abstract class BaseProvider implements Provider {
       }
     };
 
-    if (this.config.retryPolicy) {
-      return executeWithRetry(action, this.config.retryPolicy, this.id, this.circuitBreaker);
-    }
-
-    if (this.circuitBreaker && this.circuitBreaker.isOpen()) {
-      throw new Error('CircuitBreakerOpenError');
-    }
-
     try {
-      const res = await action();
-      if (this.circuitBreaker) this.circuitBreaker.recordSuccess();
+      let res: CompletionResponse;
+      if (this.config.retryPolicy) {
+        res = await executeWithRetry(action, this.config.retryPolicy, this.id, this.circuitBreaker);
+      } else if (this.circuitBreaker && this.circuitBreaker.isOpen()) {
+        throw new Error('CircuitBreakerOpenError');
+      } else {
+        try {
+          res = await action();
+          if (this.circuitBreaker) this.circuitBreaker.recordSuccess();
+        } catch (e) {
+          if (this.circuitBreaker) this.circuitBreaker.recordFailure();
+          throw e;
+        }
+      }
+
+      this.otelMetrics.counter('provider_completions_success', 1, { provider: this.id });
+      if (res.latencyMs) {
+        this.otelMetrics.histogram('provider_latency', res.latencyMs, { provider: this.id });
+      }
+      span.setStatus({ code: 0 });
       return res;
-    } catch (e) {
-      if (this.circuitBreaker) this.circuitBreaker.recordFailure();
-      throw e;
+    } catch (e: unknown) {
+      const error = e instanceof Error ? e : new Error(String(e));
+      this.otelMetrics.counter('provider_completions_error', 1, {
+        provider: this.id,
+        error: error.name,
+      });
+      span.setStatus({ code: 1, message: error.message });
+      throw error;
+    } finally {
+      span.end();
     }
   }
 

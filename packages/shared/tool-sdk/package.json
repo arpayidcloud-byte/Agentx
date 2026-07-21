@@ -20,6 +20,7 @@
   "dependencies": {
     "@agentx/agent-platform": "workspace:*",
     "@agentx/core-runtime": "workspace:*",
+    "@agentx/observability": "workspace:*",
     "yaml": "^2.9.0"
   }
 }

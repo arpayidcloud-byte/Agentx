@@ -17,5 +17,7 @@
     "typescript": "5.4.5",
     "vitest": "1.6.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "commander": "^15.0.0"
+  }
 }

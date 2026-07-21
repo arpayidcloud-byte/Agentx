@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
+import type { ITool } from '../src/index.js';
 import {
   ToolClassifier,
   PermissionResolver,
@@ -7,7 +8,6 @@ import {
   ToolValidator,
   ToolDiscovery,
   ToolExecutionPipelineImpl,
-  ITool,
   PermissionLevel,
   ToolNotFoundError,
   DuplicateToolError,
@@ -17,6 +17,13 @@ import {
   SandboxViolationError,
   CapabilityViolationError,
 } from '../src/index.js';
+import type {
+  ToolExecutionRequest,
+  ToolManifest,
+  ToolDefinition,
+  ToolMetadata,
+  ToolExecutionResponse,
+} from '../src/interfaces/index.js';
 
 describe('Errors', () => {
   it('instantiates all error classes correctly', () => {
@@ -47,7 +54,7 @@ describe('ToolClassifier', () => {
     expect(ToolClassifier.getRiskScore('fs.read')).toBe(10);
 
     // Test default classification score via mock
-    vi.spyOn(ToolClassifier, 'classifyCategory').mockReturnValueOnce('Unknown' as any);
+    vi.spyOn(ToolClassifier, 'classifyCategory').mockReturnValueOnce('Unknown' as never);
     expect(ToolClassifier.getRiskScore('unknown')).toBe(100);
     vi.restoreAllMocks();
   });
@@ -63,7 +70,7 @@ describe('ToolClassifier', () => {
     expect(ToolClassifier.getRequiredPermissionLevel('shell.build')).toBe(PermissionLevel.WRITE);
     expect(ToolClassifier.getRequiredPermissionLevel('fs.read')).toBe(PermissionLevel.READ_ONLY);
 
-    vi.spyOn(ToolClassifier, 'classifyCategory').mockReturnValueOnce('Unknown' as any);
+    vi.spyOn(ToolClassifier, 'classifyCategory').mockReturnValueOnce('Unknown' as never);
     expect(ToolClassifier.getRequiredPermissionLevel('unknown')).toBe(PermissionLevel.SYSTEM);
     vi.restoreAllMocks();
   });
@@ -107,8 +114,8 @@ describe('Permissions', () => {
       context: { agentRole: 'review' },
       category: 'fs.write',
       toolName: 'WriteTool',
-    } as any;
-    const tool = { metadata: { riskScore: 90 } } as any;
+    } as unknown as ToolExecutionRequest;
+    const tool = { metadata: { riskScore: 90 } } as unknown as ITool;
 
     expect(() => evaluator.evaluate(req, tool)).toThrow(PermissionDeniedError);
 
@@ -116,16 +123,20 @@ describe('Permissions', () => {
       context: { agentRole: 'coding' },
       category: 'fs.read',
       toolName: 'ReadTool',
-    } as any;
-    const validTool = { metadata: { riskScore: 10 } } as any;
+    } as unknown as ToolExecutionRequest;
+    const validTool = { metadata: { riskScore: 10 } } as unknown as ITool;
     expect(evaluator.evaluate(validReq, validTool)).toBe(true);
   });
 });
 
 describe('ToolRegistry & Duplicate Detection', () => {
   const mockTool = (name: string, category: string): ITool => ({
-    definition: { name, category, capabilities: { supportsStreaming: true } } as any,
-    metadata: {} as any,
+    definition: {
+      name,
+      category,
+      capabilities: { supportsStreaming: true },
+    } as unknown as ToolDefinition,
+    metadata: {} as unknown as ToolMetadata,
     execute: vi.fn(),
   });
 
@@ -174,7 +185,9 @@ describe('ToolValidator', () => {
     const schema = { required: ['path'] };
     expect(validator.validateSchema(schema, { path: '/' })).toBe(true);
     expect(() => validator.validateSchema(schema, {})).toThrow(SchemaValidationError);
-    expect(() => validator.validateSchema(null as any, {})).toThrow(SchemaValidationError);
+    expect(() => validator.validateSchema(null as unknown as Record<string, unknown>, {})).toThrow(
+      SchemaValidationError,
+    );
   });
 
   it('validates manifests', () => {
@@ -185,7 +198,7 @@ describe('ToolValidator', () => {
       entryPoint: 'main.js',
       declaredToolCategories: ['fs.read'],
       tools: [{}],
-    } as any;
+    } as unknown as ToolManifest;
     expect(validator.validateManifest(validManifest)).toBe(true);
 
     expect(() => validator.validateManifest({ ...validManifest, id: null })).toThrow('id');
@@ -214,16 +227,16 @@ describe('ToolValidator', () => {
           requiresFilesystem: true,
         },
       },
-    } as any;
+    } as unknown as ITool;
     expect(validator.validateCapabilities(validTool)).toBe(true);
 
-    const invalidTool = { definition: { capabilities: null } } as any;
+    const invalidTool = { definition: { capabilities: null } } as unknown as ITool;
     expect(validator.validateCapabilities(invalidTool)).toBe(false);
   });
 
   it('detects duplicates using validator interface', () => {
     const registry = new ToolRegistry();
-    registry.register({ definition: { name: 't1', category: 'c' } } as any);
+    registry.register({ definition: { name: 't1', category: 'c' } } as unknown as ITool);
     expect(() => validator.detectDuplicate(registry, 't1')).toThrow(DuplicateToolError);
     expect(validator.detectDuplicate(registry, 't2')).toBe(false);
   });
@@ -237,7 +250,11 @@ describe('ToolDiscovery', () => {
   it('validates versions and compatibility', () => {
     expect(discovery.validateVersion('1.0.0')).toBe(true);
     expect(discovery.validateVersion('1.0')).toBe(false);
-    expect(discovery.checkCompatibility({ version: '1.0.0' } as any)).toBe(true);
+    expect(
+      discovery.checkCompatibility({
+        version: '1.0.0',
+      } as unknown as ToolManifest),
+    ).toBe(true);
   });
 
   it('registers tools from manifest successfully', () => {
@@ -248,8 +265,8 @@ describe('ToolDiscovery', () => {
       entryPoint: 'main.js',
       declaredToolCategories: ['fs.read'],
       tools: [{}],
-    } as any;
-    const tools = [{ definition: { name: 'dt1', category: 'fs.read' } }] as any;
+    } as unknown as ToolManifest;
+    const tools = [{ definition: { name: 'dt1', category: 'fs.read' } }] as unknown as ITool[];
 
     discovery.registerFromManifest(manifest, tools);
     expect(registry.find('dt1')).toBeDefined();
@@ -263,8 +280,8 @@ describe('ToolDiscovery', () => {
       entryPoint: 'main.js',
       declaredToolCategories: ['fs.read'],
       tools: [{}],
-    } as any;
-    const tools = [{ definition: { name: 'dt2', category: 'fs.write' } }] as any;
+    } as unknown as ToolManifest;
+    const tools = [{ definition: { name: 'dt2', category: 'fs.write' } }] as unknown as ITool[];
 
     expect(() => discovery.registerFromManifest(manifest, tools)).toThrow(
       'not declared in the manifest',
@@ -281,9 +298,14 @@ describe('ToolDiscovery', () => {
 describe('ToolExecutionPipeline', () => {
   it('executes pre, post, and error hooks correctly', async () => {
     const pipeline = new ToolExecutionPipelineImpl();
-    const req = {} as any;
-    const res = { result: { success: true } } as any;
-    const tool = { execute: vi.fn().mockResolvedValue(res) } as any;
+    const req = {} as unknown as ToolExecutionRequest;
+    const res = {
+      result: { success: true },
+    } as unknown as ToolExecutionResponse;
+    const tool = {
+      execute: vi.fn().mockResolvedValue(res),
+      definition: { name: 'test-tool', category: 'test' },
+    } as unknown as ITool;
 
     const preHook = vi.fn();
     const postHook = vi.fn();
@@ -299,7 +321,10 @@ describe('ToolExecutionPipeline', () => {
     expect(errHook).not.toHaveBeenCalled();
 
     // Error test
-    const failTool = { execute: vi.fn().mockRejectedValue(new Error('fail')) } as any;
+    const failTool = {
+      execute: vi.fn().mockRejectedValue(new Error('fail')),
+      definition: { name: 'test-tool', category: 'test' },
+    } as unknown as ITool;
     await expect(pipeline.execute(req, failTool)).rejects.toThrow('fail');
     expect(errHook).toHaveBeenCalled();
   });
@@ -309,8 +334,13 @@ describe('ToolExecutionPipeline', () => {
     const errHook = vi.fn();
     pipeline.addHook({ onError: errHook });
 
-    const failTool = { execute: vi.fn().mockRejectedValue('string error') } as any;
-    await expect(pipeline.execute({} as any, failTool)).rejects.toThrow('string error');
+    const failTool = {
+      execute: vi.fn().mockRejectedValue('string error'),
+      definition: { name: 'test-tool', category: 'test' },
+    } as unknown as ITool;
+    await expect(pipeline.execute({} as unknown as ToolExecutionRequest, failTool)).rejects.toThrow(
+      'string error',
+    );
     expect(errHook).toHaveBeenCalled();
   });
 });
