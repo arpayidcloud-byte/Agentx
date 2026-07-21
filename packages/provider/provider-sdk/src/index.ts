@@ -4,3 +4,4 @@ export * from './resilience.js';
 export * from './base-provider.js';
 export * from './registry.js';
 export * from './conformance/index.js';
+export type { ProviderConfiguration, CompletionRequest, CompletionResponse, NormalizedToolSpec, NormalizedToolCall, Provider } from './interfaces.js';
