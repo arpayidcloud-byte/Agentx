@@ -14,6 +14,12 @@ export declare class GitExecutor {
     private context;
     constructor(context: GitExecutionContext);
     /**
+     * Determines the audit category for a git operation
+     * @param operation - The git operation name
+     * @returns ToolCategory ('git.read' or 'git.write')
+     */
+    private getGitCategory;
+    /**
      * Executes a git operation with full security pipeline
      * @param request - The execution request
      * @returns Git execution result
