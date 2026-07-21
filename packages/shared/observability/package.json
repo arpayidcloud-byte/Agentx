@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/provider-sdk",
+  "name": "@agentx/observability",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -8,20 +8,19 @@
   "scripts": {
     "build": "tsc --build",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run test/provider-sdk.test.ts",
+    "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "lint": "eslint src/"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "1.6.0",
     "typescript": "5.4.5",
     "vitest": "1.6.0"
   },
   "dependencies": {
-    "@agentx/secrets": "workspace:*",
-    "@agentx/runtime-adapters": "workspace:*",
-    "@agentx/observability": "workspace:*",
-    "@anthropic-ai/sdk": "^0.111.0",
-    "@google/generative-ai": "^0.24.1"
+    "@agentx/shared": "workspace:*",
+    "@opentelemetry/api": "^1.4.0",
+    "@opentelemetry/exporter-metrics-otlp-http": "^0.39.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.39.0",
+    "@opentelemetry/sdk-node": "^0.39.0"
   }
 }

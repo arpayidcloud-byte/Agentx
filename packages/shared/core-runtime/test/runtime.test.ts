@@ -1,16 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import type { TaskModel, ITaskRepository } from '../src/index.js';
 import {
   TaskStatus,
   TaskPriority,
-  TaskModel,
   TaskStateMachine,
-  CancellationToken,
   CancellationSource,
   RetryPolicy,
   InMemoryEventBus,
   BullMQEventBus,
   Scheduler,
-  ITaskRepository,
   ExecutionContext,
   IllegalStateTransitionError,
   TaskNotFoundError,
@@ -18,13 +16,14 @@ import {
   EventBusError,
 } from '../src/index.js';
 import { NullLogger } from '@agentx/shared';
+import type { CancellationToken } from '../src/cancellation/index.js';
 import type { ICredentialResolver } from '../src/context/index.js';
+import { TaskContextBuilder } from '../src/context/task-context-builder.js';
+import { Worker } from 'bullmq';
 
 const mockCredentialResolver: ICredentialResolver = {
   resolve: vi.fn().mockResolvedValue('mock-secret'),
 };
-
-import { Queue, Worker } from 'bullmq';
 
 // Mock bullmq and ioredis for BullMQEventBus tests
 vi.mock('bullmq', () => {
@@ -102,7 +101,9 @@ describe('Task State Machine', () => {
 
   it('handles canTransition fallback for invalid statuses or terminal checks', () => {
     expect(TaskStateMachine.canTransition(TaskStatus.COMPLETED, TaskStatus.RUNNING)).toBe(false);
-    expect(TaskStateMachine.canTransition('INVALID' as any, TaskStatus.RUNNING)).toBe(false);
+    expect(
+      TaskStateMachine.canTransition('INVALID' as unknown as TaskStatus, TaskStatus.RUNNING),
+    ).toBe(false);
   });
 });
 
@@ -198,9 +199,9 @@ describe('Retry Engine', () => {
     const source = new CancellationSource();
     source.cancel('stop');
 
-    await expect(policy.execute(async () => 'ok', source.token as any)).rejects.toThrow(
-      'Operation cancelled: stop',
-    );
+    await expect(
+      policy.execute(async () => 'ok', source.token as unknown as CancellationToken),
+    ).rejects.toThrow('Operation cancelled: stop');
   });
 });
 
@@ -218,12 +219,16 @@ describe('InMemoryEventBus', () => {
     expect(mockHandler.mock.calls[0][0].payload.message).toBe('hello');
 
     // Request/Reply
-    bus.reply('service.greet', async (event) => {
-      return { reply: `Hello, ${event.payload.name}` };
+    void bus.reply('service.greet', async (event) => {
+      return { reply: `Hello, ${String((event.payload as Record<string, unknown>).name)}` };
     });
 
-    const replyEvent = await bus.request<any, any>('service.greet', { name: 'Claude' }, 'trace-2');
-    expect(replyEvent.payload.reply).toBe('Hello, Claude');
+    const replyEvent = await bus.request<Record<string, unknown>, Record<string, unknown>>(
+      'service.greet',
+      { name: 'Claude' },
+      'trace-2',
+    );
+    expect((replyEvent.payload as Record<string, unknown>).reply).toBe('Hello, Claude');
 
     // Duplicate event deduplication
     await bus.subscribe('dup.topic', mockHandler);
@@ -236,8 +241,12 @@ describe('InMemoryEventBus', () => {
       sourceModule: 't',
       payload: {},
     };
-    await (bus as any).dispatch('dup.topic', eventEnv);
-    await (bus as any).dispatch('dup.topic', eventEnv); // Redundant dispatch
+    await (
+      bus as unknown as { dispatch: (topic: string, event: unknown) => Promise<void> }
+    ).dispatch('dup.topic', eventEnv);
+    await (
+      bus as unknown as { dispatch: (topic: string, event: unknown) => Promise<void> }
+    ).dispatch('dup.topic', eventEnv); // Redundant dispatch
     expect(mockHandler).toHaveBeenCalledTimes(2);
   });
 
@@ -268,20 +277,20 @@ describe('BullMQEventBus', () => {
     const bus = new BullMQEventBus();
     await bus.publish('topic-a', { test: 1 }, 'tr-1');
 
-    let received: any;
+    let received: unknown;
     await bus.subscribe('topic-a', async (event) => {
       received = event;
     });
 
     // Manually trigger the mock worker handler to cover subscribe and deduplication
     const mockWorkerConstructor = vi.mocked(Worker);
-    const handler = mockWorkerConstructor.mock.calls[0][1] as any;
+    const handler = mockWorkerConstructor.mock.calls[0][1] as (job: unknown) => Promise<unknown>;
 
     const mockJob = {
       data: { id: 'job-unique-1', topic: 'topic-a', traceId: 'tr-1', payload: { test: 1 } },
     };
     await handler(mockJob);
-    expect(received.payload.test).toBe(1);
+    expect((received as Record<string, unknown>).payload.test).toBe(1);
 
     // Call duplicate to test deduplication branch
     await handler(mockJob);
@@ -297,11 +306,18 @@ describe('BullMQEventBus', () => {
     const bus = new BullMQEventBus();
 
     // Setup request/reply loop
-    const requestPromise = bus.request<any, any>('service.test', { val: 42 }, 'tr-1', 100);
+    const _requestPromise = bus.request<Record<string, unknown>, Record<string, unknown>>(
+      'service.test',
+      { val: 42 },
+      'tr-1',
+      100,
+    );
 
     // Simulate a reply worker manually
     const mockWorkerConstructor = vi.mocked(Worker);
-    const replyHandler = mockWorkerConstructor.mock.calls[0][1] as any;
+    const _replyHandler = mockWorkerConstructor.mock.calls[0][1] as (
+      job: unknown,
+    ) => Promise<unknown>;
 
     // Retrieve replyTo channel
     const mockJob = {
@@ -315,11 +331,13 @@ describe('BullMQEventBus', () => {
     };
 
     await bus.reply('service.test', async (event) => {
-      return { val: event.payload.val + 1 };
+      return { val: ((event.payload as Record<string, unknown>).val as number) + 1 };
     });
 
     // Manually trigger the reply handler
-    const responseWorkerHandler = mockWorkerConstructor.mock.calls[1][1] as any;
+    const responseWorkerHandler = mockWorkerConstructor.mock.calls[1][1] as (
+      job: unknown,
+    ) => Promise<unknown>;
     await responseWorkerHandler(mockJob);
 
     // Trigger error path in reply handler to cover catch block
@@ -327,7 +345,9 @@ describe('BullMQEventBus', () => {
     await bus.reply('service.error', async () => {
       throw new Error('fail');
     });
-    const errWorkerHandler = mockWorkerConstructor.mock.calls[3][1] as any;
+    const errWorkerHandler = mockWorkerConstructor.mock.calls[3][1] as (
+      job: unknown,
+    ) => Promise<unknown>;
     await errWorkerHandler({ data: { id: 'job-err-1', topic: 'service.error', payload: {} } });
 
     // Also test replyTo without publish
@@ -402,6 +422,21 @@ describe('Scheduler', () => {
     expect(saved2Post?.status).toBe(TaskStatus.RUNNING);
   });
 
+  it('enqueues tasks with FAILED and RETRYING status', async () => {
+    const tFailed = createMockTask('t-failed', TaskStatus.FAILED);
+    await scheduler.enqueue(tFailed);
+    const savedFailed = await repo.findById('t-failed');
+    // Task transitions QUEUED -> RUNNING immediately since maxParallel allows it
+    expect(savedFailed?.status).toBe(TaskStatus.RUNNING);
+
+    await scheduler.completeTask('t-failed', { status: 'ok' });
+
+    const tRetrying = createMockTask('t-retrying', TaskStatus.RETRYING);
+    await scheduler.enqueue(tRetrying);
+    const savedRetrying = await repo.findById('t-retrying');
+    expect(savedRetrying?.status).toBe(TaskStatus.RUNNING);
+  });
+
   it('handles pause, resume, and cancel operations', async () => {
     const t = createMockTask('t1');
     await scheduler.enqueue(t);
@@ -434,10 +469,76 @@ describe('Scheduler', () => {
     await expect(scheduler.cancel('missing', 'reason')).rejects.toThrow(TaskNotFoundError);
   });
 
+  it('triggers catch blocks in scheduler operations', async () => {
+    // Force findById to throw to trigger catch blocks
+    repo.findById = async () => {
+      throw new Error('db failure');
+    };
+    await expect(scheduler.pause('missing')).rejects.toThrow('db failure');
+    (scheduler as unknown as { pausedTasks: Set<string> }).pausedTasks.add('missing');
+    await expect(scheduler.resume('missing')).rejects.toThrow('db failure');
+    await expect(scheduler.cancel('missing', 'reason')).rejects.toThrow('db failure');
+
+    // Force save to throw
+    repo.save = async () => {
+      throw new Error('save failure');
+    };
+    const t = createMockTask('t1');
+    await expect(scheduler.enqueue(t)).rejects.toThrow('save failure');
+
+    // Restore repo.save for subsequent tests
+    const tasks = new Map<string, TaskModel>();
+    repo.save = async (task) => {
+      tasks.set(task.id, task);
+    };
+    repo.findById = async (id) => tasks.get(id);
+
+    // Force eventBus.publish to throw in completeTask/failTask
+    const t2 = createMockTask('t2');
+    await scheduler.enqueue(t2);
+    bus.publish = async () => {
+      throw new Error('event bus failure');
+    };
+    await expect(scheduler.completeTask('t2', { status: 'ok' })).rejects.toThrow(
+      'event bus failure',
+    );
+    const t3 = createMockTask('t3');
+    // Ensure t3 is accessible
+    (scheduler as unknown as { inFlightTasks: Map<string, TaskModel> }).inFlightTasks.set('t3', t3);
+    await expect(scheduler.failTask('t3', { message: 'fail' })).rejects.toThrow(
+      'event bus failure',
+    );
+  });
+
   it('resumes gracefully if task not found in pausedTasks but missing from repo', async () => {
     // Manually inject invalid state into scheduler
-    (scheduler as any).pausedTasks.add('missing-in-db');
+    (scheduler as unknown as { pausedTasks: Set<string> }).pausedTasks.add('missing-in-db');
     await expect(scheduler.resume('missing-in-db')).rejects.toThrow(TaskNotFoundError);
+  });
+});
+
+describe('TaskContextBuilder', () => {
+  it('builds context from memory reference', async () => {
+    const mockSearch = vi.fn().mockResolvedValue([
+      { content: 'hello', type: 'user' },
+      { content: 'world', type: 'assistant' },
+    ]);
+    const mockMemory = { search: mockSearch };
+    const builder = new TaskContextBuilder(mockMemory);
+    const ctx = await builder.build('task-1');
+    expect(ctx.variables).toEqual({});
+    expect(ctx.history).toHaveLength(2);
+    expect(ctx.history[0].role).toBe('user');
+    expect(ctx.history[0].content).toBe('hello');
+    expect(mockSearch).toHaveBeenCalledWith('task-1', { limit: 10 });
+  });
+
+  it('respects custom maxHistoryItems config', async () => {
+    const mockSearch = vi.fn().mockResolvedValue([]);
+    const mockMemory = { search: mockSearch };
+    const builder = new TaskContextBuilder(mockMemory, { maxHistoryItems: 5 });
+    await builder.build('task-2');
+    expect(mockSearch).toHaveBeenCalledWith('task-2', { limit: 5 });
   });
 });
 

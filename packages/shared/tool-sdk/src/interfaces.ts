@@ -2,7 +2,8 @@
 import type { AgentRole } from '@agentx/agent-platform';
 
 export type { AgentRole };
-export type ToolCategory = 'fs.read' | 'fs.write' | 'shell.build' | 'shell.exec' | 'git.read' | 'git.write';
+export type ToolCategory =
+  'fs.read' | 'fs.write' | 'shell.build' | 'shell.exec' | 'git.read' | 'git.write';
 
 export interface ToolCallContext {
   agentRole: AgentRole;

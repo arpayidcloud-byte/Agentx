@@ -12,6 +12,8 @@ export declare class Scheduler implements IScheduler {
     private pausedTasks;
     private activeCount;
     private maxParallel;
+    private tracer;
+    private metrics;
     constructor(eventBus: IEventBus, taskRepo: ITaskRepository, config?: SchedulerConfig);
     enqueue(task: TaskModel): Promise<void>;
     pause(taskId: string): Promise<void>;
