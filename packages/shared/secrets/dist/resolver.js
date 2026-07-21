@@ -1,40 +1,42 @@
-import { SecretCache } from './cache.js';
+import { auditTrail } from './audit-trail.js';
+import { SecretNotFoundError, CredentialResolutionError, SecretError } from './errors.js';
 import { RedactedString } from './scrubber.js';
-import { SecretNotFoundError, CredentialResolutionError } from './errors.js';
+import { LRUCache } from 'lru-cache';
 export class CachedCredentialResolver {
+    store;
+    config;
     cache;
-    backend;
-    keyMapping;
-    constructor(backend, options) {
-        this.backend = backend;
-        this.keyMapping = options?.keyMapping || {};
-        this.cache = new SecretCache({
-            ttlMs: options?.ttlMs,
-            negativeTtlMs: options?.negativeTtlMs,
+    negativeCache;
+    constructor(store, config = { keyMapping: {}, cacheTtlSeconds: 300, enforceNoLog: true }) {
+        this.store = store;
+        this.config = config;
+        this.cache = new LRUCache({
+            max: 100,
+            ttl: config.cacheTtlSeconds * 1000,
         });
+        this.negativeCache = new Map();
     }
     async resolve(logicalKey) {
-        const backendKey = this.resolveBackendKey(logicalKey);
-        // Check negative cache first
-        if (this.cache.hasNegative(backendKey)) {
-            this.throwResolutionError(logicalKey);
+        auditTrail(logicalKey, 'resolve');
+        const backendKey = this.config.keyMapping[logicalKey] || logicalKey;
+        if (this.negativeCache.has(backendKey)) {
+            throw new CredentialResolutionError(logicalKey);
         }
-        // Check positive cache
         const cached = this.cache.get(backendKey);
         if (cached !== undefined) {
             return cached;
         }
         try {
-            const entry = await this.backend.get(backendKey);
+            const entry = await this.store.get(backendKey);
             this.cache.set(backendKey, entry.value);
             return entry.value;
         }
-        catch (e) {
-            if (e instanceof SecretNotFoundError) {
-                this.cache.setNegative(backendKey);
-                this.throwResolutionError(logicalKey);
+        catch (err) {
+            if (err instanceof SecretNotFoundError) {
+                this.negativeCache.set(backendKey, Date.now() + 60000);
+                throw new CredentialResolutionError(logicalKey);
             }
-            throw e;
+            throw new SecretError(`Failed to resolve secret "${logicalKey}": ${err.message}`);
         }
     }
     async resolveRedacted(logicalKey) {
@@ -42,34 +44,29 @@ export class CachedCredentialResolver {
         return new RedactedString(value);
     }
     async resolveMetadata(logicalKey) {
-        const backendKey = this.resolveBackendKey(logicalKey);
-        const entry = await this.backend.get(backendKey);
-        if (entry.metadata) {
-            return entry.metadata;
+        auditTrail(logicalKey, 'resolve_metadata');
+        const backendKey = this.config.keyMapping[logicalKey] || logicalKey;
+        try {
+            const entry = await this.store.get(backendKey);
+            return (entry.metadata || {
+                category: 'provider',
+                classification: 'high',
+            });
         }
-        return {
-            category: 'provider',
-            classification: 'high',
-        };
+        catch {
+            return undefined;
+        }
     }
     async invalidate(logicalKey) {
-        const backendKey = this.resolveBackendKey(logicalKey);
+        const backendKey = this.config.keyMapping[logicalKey] || logicalKey;
         this.cache.delete(backendKey);
+        this.negativeCache.delete(backendKey);
+        auditTrail(backendKey, 'invalidate');
     }
     async invalidateAll() {
         this.cache.clear();
-    }
-    resolveBackendKey(logicalKey) {
-        return this.keyMapping[logicalKey] || logicalKey;
-    }
-    throwResolutionError(logicalKey) {
-        // Attempt to extract providerId if logicalKey format matches 'provider.{id}.api_key'
-        let providerId = logicalKey;
-        const match = logicalKey.match(/^provider\.(.+?)\.api_key$/);
-        if (match && match[1]) {
-            providerId = match[1];
-        }
-        throw new CredentialResolutionError(providerId);
+        this.negativeCache.clear();
+        auditTrail('*', 'invalidate_all');
     }
 }
 //# sourceMappingURL=resolver.js.map

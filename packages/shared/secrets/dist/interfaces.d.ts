@@ -1,5 +1,5 @@
 export type SecretCategory = 'provider' | 'database' | 'encryption' | 'plugin' | 'auth';
-export type Classification = 'low' | 'medium' | 'high' | 'critical';
+export type Classification = 'critical' | 'high' | 'medium' | 'low';
 export interface SecretMetadata {
     category: SecretCategory;
     classification: Classification;
@@ -21,17 +21,16 @@ export interface SecretStore {
     delete(key: string): Promise<void>;
     list(): Promise<string[]>;
     has(key: string): Promise<boolean>;
-    rotate?(key: string): Promise<void>;
-}
-export interface CredentialResolver {
-    resolve(logicalKey: string): Promise<string>;
-    resolveMetadata(logicalKey: string): Promise<SecretMetadata>;
-    invalidate(logicalKey: string): Promise<void>;
-    invalidateAll(): Promise<void>;
 }
 export interface CredentialResolverConfig {
     keyMapping: Record<string, string>;
     cacheTtlSeconds: number;
     enforceNoLog: boolean;
+}
+export interface CredentialResolver {
+    resolve(logicalKey: string): Promise<string>;
+    resolveMetadata(logicalKey: string): Promise<SecretMetadata | undefined>;
+    invalidate(logicalKey: string): Promise<void>;
+    invalidateAll(): Promise<void>;
 }
 //# sourceMappingURL=interfaces.d.ts.map

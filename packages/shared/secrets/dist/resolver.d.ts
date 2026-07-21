@@ -1,20 +1,16 @@
-import type { CredentialResolver, SecretStore, SecretMetadata } from './interfaces.js';
+import type { CredentialResolver, CredentialResolverConfig, SecretMetadata } from './interfaces.js';
+import type { SecretStore } from './interfaces.js';
 import { RedactedString } from './scrubber.js';
 export declare class CachedCredentialResolver implements CredentialResolver {
-    private cache;
-    private backend;
-    private keyMapping;
-    constructor(backend: SecretStore, options?: {
-        keyMapping?: Record<string, string>;
-        ttlMs?: number;
-        negativeTtlMs?: number;
-    });
+    private readonly store;
+    private readonly config;
+    private readonly cache;
+    private readonly negativeCache;
+    constructor(store: SecretStore, config?: CredentialResolverConfig);
     resolve(logicalKey: string): Promise<string>;
     resolveRedacted(logicalKey: string): Promise<RedactedString>;
-    resolveMetadata(logicalKey: string): Promise<SecretMetadata>;
+    resolveMetadata(logicalKey: string): Promise<SecretMetadata | undefined>;
     invalidate(logicalKey: string): Promise<void>;
     invalidateAll(): Promise<void>;
-    private resolveBackendKey;
-    private throwResolutionError;
 }
 //# sourceMappingURL=resolver.d.ts.map

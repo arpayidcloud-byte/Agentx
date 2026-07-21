@@ -1,7 +1,7 @@
-import { OperationNotSupportedError, SecretNotFoundError } from './errors.js';
+import { SecretNotFoundError, OperationNotSupportedError } from './errors.js';
 export class EnvVarSecretStore {
-    env;
     backendId = 'env';
+    env;
     constructor(env = process.env) {
         this.env = env;
     }
@@ -23,19 +23,19 @@ export class EnvVarSecretStore {
         };
     }
     async set(_key, _value, _metadata) {
-        throw new OperationNotSupportedError('set() is not supported by EnvVarSecretStore (immutable at runtime)');
+        throw new OperationNotSupportedError('set');
     }
     async delete(_key) {
-        throw new OperationNotSupportedError('delete() is not supported by EnvVarSecretStore (immutable at runtime)');
+        throw new OperationNotSupportedError('delete');
     }
     async list() {
-        return Object.keys(this.env).filter((key) => key.startsWith('AGENTX_SECRET_'));
+        return Object.keys(this.env).filter((k) => k.startsWith('AGENTX_SECRET_'));
     }
     async has(key) {
         return this.env[key] !== undefined;
     }
     async rotate(_key) {
-        throw new OperationNotSupportedError('rotate() is not supported by EnvVarSecretStore (immutable at runtime)');
+        throw new OperationNotSupportedError('rotate');
     }
 }
 //# sourceMappingURL=env-backend.js.map
