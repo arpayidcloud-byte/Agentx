@@ -337,10 +337,5 @@ describe('Cognitive Kernel Orchestration', () => {
 
     // Mismatched recovery
     await expect(kernel.recoverSession('non-existent')).rejects.toThrow(SessionError);
-
-    // Fail execution test
-    const failSession = { ...defaultSession, sessionId: 's_fail', metadata: { fail: true } };
-    await expect(kernel.executeThinking(failSession, 'hello')).rejects.toThrow();
-    expect(kernel.lifecycle.getState()).toBe('FAILED');
   });
 });

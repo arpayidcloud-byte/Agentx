@@ -21,6 +21,17 @@ export class GitExecutor {
         this.auditEmitter = new ShellAuditEmitter();
     }
     /**
+     * Determines the audit category for a git operation
+     * @param operation - The git operation name
+     * @returns ToolCategory ('git.read' or 'git.write')
+     */
+    getGitCategory(operation) {
+        const writeOperations = ['git.add', 'git.commit', 'git.reset', 'git.checkout', 'git.restore'];
+        return writeOperations.includes(operation)
+            ? 'git.write'
+            : 'git.read';
+    }
+    /**
      * Executes a git operation with full security pipeline
      * @param request - The execution request
      * @returns Git execution result
@@ -31,7 +42,7 @@ export class GitExecutor {
             // 1. Validate command through sandbox
             const repoInfo = this.sandbox.validate(request);
             // 2. Emit tool.invoked event
-            this.auditEmitter.emit(createToolInvokedEvent(`${request.operation} ${request.args.join(' ')}`, 'git.read', request.taskId, request.traceId, request.agentRole));
+            this.auditEmitter.emit(createToolInvokedEvent(`${request.operation} ${request.args.join(' ')}`, this.getGitCategory(request.operation), request.taskId, request.traceId, request.agentRole));
             // 3. Create timeout controller
             const { controller, cleanup } = createTimeoutController({ timeoutMs: 30000 });
             // 4. Determine working directory
@@ -43,7 +54,7 @@ export class GitExecutor {
             // 7. Cleanup timeout
             cleanup();
             // 8. Emit tool.finished event
-            this.auditEmitter.emit(createToolFinishedEvent(`${request.operation} ${request.args.join(' ')}`, 'git.read', output.exitCode, output.durationMs, output.stdout.length, output.stderr.length, request.taskId, request.traceId, request.agentRole));
+            this.auditEmitter.emit(createToolFinishedEvent(`${request.operation} ${request.args.join(' ')}`, this.getGitCategory(request.operation), output.exitCode, output.durationMs, output.stdout.length, output.stderr.length, request.taskId, request.traceId, request.agentRole));
             return {
                 exitCode: output.exitCode,
                 stdout: output.stdout,
@@ -58,7 +69,7 @@ export class GitExecutor {
         catch (error) {
             const durationMs = Date.now() - startTime;
             // Emit tool.failed event
-            this.auditEmitter.emit(createToolFailedEvent(`${request.operation} ${request.args.join(' ')}`, 'git.read', request.taskId, request.traceId, request.agentRole, error instanceof Error ? error.message : String(error)));
+            this.auditEmitter.emit(createToolFailedEvent(`${request.operation} ${request.args.join(' ')}`, this.getGitCategory(request.operation), request.taskId, request.traceId, request.agentRole, error instanceof Error ? error.message : String(error)));
             return {
                 exitCode: 1,
                 stdout: '',

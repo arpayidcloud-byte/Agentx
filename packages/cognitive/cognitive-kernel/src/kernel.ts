@@ -74,10 +74,6 @@ export class CognitiveKernel {
     await this.hooks.runBeforeThinking(sessionMeta.sessionId);
 
     try {
-      if (sessionMeta.metadata.fail === true) {
-        throw new Error('Forced execution failure');
-      }
-
       this.lifecycle.transition('EXECUTING');
       this.trace.addStep(sessionMeta.traceId, 'DISPATCH');
 

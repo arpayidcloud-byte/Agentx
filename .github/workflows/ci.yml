@@ -31,9 +31,10 @@ jobs:
       - run: pnpm build
       - run: pnpm test
       - run: pnpm test:coverage
+      # TODO: Add coverage threshold check after monorepo coverage aggregation is setup
+      # See: https://github.com/arpayidcloud-byte/Agentx/issues/XXX
       - name: Setup handbook for lint & contract tests
         id: handbook-setup
-        continue-on-error: true
         env:
           HANDBOOK_TOKEN: ${{ secrets.HANDBOOK_TOKEN }}
         run: |
@@ -44,13 +45,11 @@ jobs:
           fi
       - name: Handbook lint
         if: steps.handbook-setup.conclusion == 'success'
-        continue-on-error: true
         run: pnpm lint:handbook
         env:
           HANDBOOK_DIR: /tmp/agentx-handbook
       - name: Contract tests (handbook validation)
         if: steps.handbook-setup.conclusion == 'success'
-        continue-on-error: true
         env:
           HANDBOOK_DIR: /tmp/agentx-handbook
         run: |
