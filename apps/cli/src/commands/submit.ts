@@ -1,63 +1,46 @@
 import { randomUUID } from 'crypto';
-import * as fs from 'fs';
-import * as path from 'path';
+import { getRuntime } from '../lib/runtime.js';
+import { TaskStatus, TaskPriority } from '@agentx/core-runtime';
 
-const DATA_DIR = path.resolve(process.cwd(), '.agentx');
-
-function ensureDataDir(): void {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
-  }
-}
-
-interface TaskRecord {
-  id: string;
-  goal: string;
-  status: 'CREATED' | 'PLANNING' | 'RUNNING' | 'WAITING_APPROVAL' | 'COMPLETED' | 'FAILED';
-  graphId?: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-function saveTask(task: TaskRecord): void {
-  ensureDataDir();
-  const tasksFile = path.join(DATA_DIR, 'tasks.json');
-  const tasks = loadTasks();
-  tasks[task.id] = task;
-  fs.writeFileSync(tasksFile, JSON.stringify(tasks, null, 2));
-}
-
-function loadTasks(): Record<string, TaskRecord> {
-  const tasksFile = path.join(DATA_DIR, 'tasks.json');
-  if (!fs.existsSync(tasksFile)) return {};
-  return JSON.parse(fs.readFileSync(tasksFile, 'utf-8')) as Record<string, TaskRecord>;
-}
-
-export async function submit(args: string[]): Promise<void> {
+export async function submit(args: string[]): Promise<string> {
   const goal = args.join(' ');
   if (!goal) {
     throw new Error('Usage: agentx submit "<goal>"');
   }
 
+  const { scheduler } = getRuntime();
+
   const taskId = randomUUID();
   const graphId = `graph-${randomUUID().slice(0, 8)}`;
-  const now = new Date().toISOString();
+  const now = new Date();
 
-  const task: TaskRecord = {
+  const task = {
     id: taskId,
     goal,
-    status: 'CREATED',
-    graphId,
+    status: TaskStatus.CREATED,
+    priority: TaskPriority.NORMAL,
+    rootTaskId: taskId,
+    dependsOn: [],
+    traceId: graphId,
+    metadata: {
+      retryCount: 0,
+    },
+    context: {
+      variables: {},
+      history: [],
+    },
     createdAt: now,
     updatedAt: now,
   };
 
-  saveTask(task);
+  await scheduler.enqueue(task);
 
   console.log(`Task created: ${taskId}`);
   console.log(`  Goal: ${goal}`);
   console.log(`  Graph: ${graphId}`);
-  console.log(`  Status: CREATED`);
+  console.log(`  Status: ${TaskStatus.CREATED}`);
   console.log(`\nRun "agentx status ${taskId}" to check progress.`);
   console.log(`Run "agentx watch ${graphId}" to stream execution.`);
+
+  return taskId;
 }
