@@ -13,7 +13,8 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@agentx/core-runtime": "workspace:*"
+    "@agentx/core-runtime": "workspace:*",
+    "@agentx/provider-sdk": "workspace:*"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "1.6.0",
