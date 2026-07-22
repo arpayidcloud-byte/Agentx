@@ -72,15 +72,15 @@ export class PrismaApprovalRepository implements IApprovalRepository {
     });
   }
 
-  private toApprovalModel(prismaApproval: Record<string, unknown>): ApprovalModel {
+  private toApprovalModel(prismaApproval: any): ApprovalModel {
     return {
-      id: prismaApproval.id,
-      taskId: prismaApproval.taskId,
-      status: prismaApproval.status,
-      reason: prismaApproval.reason,
-      approvedBy: prismaApproval.approvedBy,
-      decidedAt: prismaApproval.decidedAt,
-      createdAt: prismaApproval.createdAt,
+      id: prismaApproval.id as string,
+      taskId: prismaApproval.taskId as string,
+      status: prismaApproval.status as 'PENDING' | 'APPROVED' | 'REJECTED',
+      reason: prismaApproval.reason as string | undefined,
+      approvedBy: prismaApproval.approvedBy as string | undefined,
+      decidedAt: prismaApproval.decidedAt as Date | undefined,
+      createdAt: prismaApproval.createdAt as Date,
     };
   }
 }
