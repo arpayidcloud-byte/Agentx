@@ -6,6 +6,7 @@ import { EventTopic } from '../interfaces/events.js';
 import { TaskStateMachine } from '../state-machine/index.js';
 import { TaskNotFoundError } from '../errors.js';
 import { Tracer, Metrics } from '@agentx/observability';
+import type { AgentRegistry } from '../registry/agent-registry.js';
 
 export interface SchedulerConfig {
   maxConcurrentTaskGraphs?: number;
@@ -19,13 +20,20 @@ export class Scheduler implements IScheduler {
   private maxParallel: number;
   private tracer = new Tracer('core-runtime-scheduler');
   private metrics = new Metrics();
+  private agentRegistry?: AgentRegistry;
 
   constructor(
     private readonly eventBus: IEventBus,
     private readonly taskRepo: ITaskRepository,
     config: SchedulerConfig = {},
+    agentRegistry?: AgentRegistry,
   ) {
     this.maxParallel = config.maxParallelAgents ?? 10;
+    this.agentRegistry = agentRegistry;
+  }
+
+  public setAgentRegistry(registry: AgentRegistry): void {
+    this.agentRegistry = registry;
   }
 
   public async enqueue(task: TaskModel): Promise<void> {
@@ -154,7 +162,40 @@ export class Scheduler implements IScheduler {
           (task as TaskModel).traceId,
           (task as TaskModel).id,
         );
+
+        // Execute agent if registry is configured
+        if (this.agentRegistry && task.assignedAgentRole) {
+          this.executeAgent(task).catch((err) => {
+            this.failTask(taskId, err).catch(console.error);
+          });
+        }
       }
+    }
+  }
+
+  private async executeAgent(task: TaskModel): Promise<void> {
+    const span = this.tracer.startSpan('agent-execution');
+    span.setAttribute('task.id', task.id);
+    span.setAttribute('agent.role', task.assignedAgentRole || 'unknown');
+
+    try {
+      if (!this.agentRegistry) {
+        throw new Error('Agent registry not configured');
+      }
+
+      const role = task.assignedAgentRole || 'coder';
+      const result = await this.agentRegistry.executeByRole(role, task, task.context);
+
+      await this.completeTask(task.id, result);
+      this.metrics.counter('agent_executions', 1, { role, status: 'success' });
+      span.setStatus({ code: 0 });
+    } catch (e: unknown) {
+      const error = e instanceof Error ? e : new Error(String(e));
+      span.setStatus({ code: 1, message: error.message });
+      this.metrics.counter('agent_executions', 1, { status: 'failure' });
+      throw error;
+    } finally {
+      span.end();
     }
   }
 
