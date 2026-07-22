@@ -1,4 +1,4 @@
-import type { EventEnvelope } from '@agentx/core-runtime';
+
 import { PrismaClient } from '@prisma/client';
 
 export interface EventModel {
