@@ -4,7 +4,12 @@ import type { IEventBus } from '@agentx/core-runtime';
 
 let _runtime: ProductionRuntime | null = null;
 
-export function getRuntime(): { scheduler: Scheduler; bus: IEventBus; prisma: unknown; taskRepo: ITaskRepository } {
+export function getRuntime(): {
+  scheduler: Scheduler;
+  bus: IEventBus;
+  prisma: unknown;
+  taskRepo: ITaskRepository;
+} {
   if (!_runtime) {
     _runtime = new ProductionRuntime(process.env.REDIS_URL || 'redis://localhost:6379');
     // Fire & forget start

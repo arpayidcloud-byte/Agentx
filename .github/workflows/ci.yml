@@ -19,6 +19,8 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
+      - name: Generate Prisma Client
+        run: pnpm prisma generate
       - run: pnpm typecheck
       - run: pnpm lint
       - run: pnpm lint:deps
@@ -50,7 +52,7 @@ jobs:
           HANDBOOK_DIR: /tmp/agentx-handbook
       - name: Contract tests (handbook validation)
         if: steps.handbook-setup.conclusion == 'success'
-        continue-on-error: true  # TODO: Remove after Volume 16 contract implementation complete
+        continue-on-error: true # TODO: Remove after Volume 16 contract implementation complete
         env:
           HANDBOOK_DIR: /tmp/agentx-handbook
         run: |
