@@ -12,7 +12,10 @@
     "test:coverage": "vitest run --coverage",
     "lint": "eslint src/"
   },
-  "dependencies": {},
+  "dependencies": {
+    "bullmq": "^5.80.2",
+    "ioredis": "^5.11.1"
+  },
   "devDependencies": {
     "@vitest/coverage-v8": "1.6.0",
     "typescript": "5.4.5",
