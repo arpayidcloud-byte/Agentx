@@ -72,7 +72,7 @@ export class PrismaApprovalRepository implements IApprovalRepository {
     });
   }
 
-  private toApprovalModel(prismaApproval: any): ApprovalModel {
+  private toApprovalModel(prismaApproval: Record<string, unknown>): ApprovalModel {
     return {
       id: prismaApproval.id as string,
       taskId: prismaApproval.taskId as string,
