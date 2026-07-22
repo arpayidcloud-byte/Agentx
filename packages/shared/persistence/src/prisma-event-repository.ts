@@ -1,4 +1,3 @@
-
 import type { PrismaClient } from '@prisma/client';
 
 export interface EventModel {
@@ -49,11 +48,11 @@ export class PrismaEventRepository implements IEventRepository {
 
   private toEventModel(prismaEvent: Record<string, unknown>): EventModel {
     return {
-      id: prismaEvent.id,
-      topic: prismaEvent.topic,
+      id: prismaEvent.id as string,
+      topic: prismaEvent.topic as string,
       payload: prismaEvent.payload as Record<string, unknown>,
-      taskId: prismaEvent.taskId,
-      createdAt: prismaEvent.createdAt,
+      taskId: prismaEvent.taskId as string | undefined,
+      createdAt: prismaEvent.createdAt as Date,
     };
   }
 }

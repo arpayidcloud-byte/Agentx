@@ -1,4 +1,4 @@
-import type { ITaskRepository, TaskModel, TaskStatus } from '@agentx/core-runtime';
+import type { ITaskRepository, TaskModel, TaskStatus, TaskPriority } from '@agentx/core-runtime';
 import type { PrismaClient } from '@prisma/client';
 
 export class PrismaTaskRepository implements ITaskRepository {
@@ -16,10 +16,10 @@ export class PrismaTaskRepository implements ITaskRepository {
         assignedAgentRole: task.assignedAgentRole,
         dependsOn: task.dependsOn,
         traceId: task.traceId,
-        metadata: task.metadata as any,
-        context: task.context as any,
-        result: task.result as any,
-        error: task.error as any,
+        metadata: task.metadata as Record<string, unknown>,
+        context: task.context as Record<string, unknown>,
+        result: task.result as Record<string, unknown>,
+        error: task.error as Record<string, unknown>,
         updatedAt: new Date(),
       },
       create: {
@@ -32,10 +32,10 @@ export class PrismaTaskRepository implements ITaskRepository {
         assignedAgentRole: task.assignedAgentRole,
         dependsOn: task.dependsOn,
         traceId: task.traceId,
-        metadata: task.metadata as any,
-        context: task.context as any,
-        result: task.result as any,
-        error: task.error as any,
+        metadata: task.metadata as Record<string, unknown>,
+        context: task.context as Record<string, unknown>,
+        result: task.result as Record<string, unknown>,
+        error: task.error as Record<string, unknown>,
         createdAt: task.createdAt,
         updatedAt: task.updatedAt,
       },
@@ -64,21 +64,21 @@ export class PrismaTaskRepository implements ITaskRepository {
 
   private toTaskModel(prismaTask: Record<string, unknown>): TaskModel {
     return {
-      id: prismaTask.id,
-      goal: prismaTask.goal,
+      id: prismaTask.id as string,
+      goal: prismaTask.goal as string,
       status: prismaTask.status as TaskStatus,
-      priority: prismaTask.priority,
-      parentTaskId: prismaTask.parentTaskId,
-      rootTaskId: prismaTask.rootTaskId,
-      assignedAgentRole: prismaTask.assignedAgentRole,
-      dependsOn: prismaTask.dependsOn,
-      traceId: prismaTask.traceId,
-      metadata: prismaTask.metadata as any,
-      context: prismaTask.context as any,
-      result: prismaTask.result as any,
-      error: prismaTask.error as any,
-      createdAt: prismaTask.createdAt,
-      updatedAt: prismaTask.updatedAt,
+      priority: prismaTask.priority as TaskPriority,
+      parentTaskId: prismaTask.parentTaskId as string | undefined,
+      rootTaskId: prismaTask.rootTaskId as string,
+      assignedAgentRole: prismaTask.assignedAgentRole as string | undefined,
+      dependsOn: prismaTask.dependsOn as string[],
+      traceId: prismaTask.traceId as string,
+      metadata: prismaTask.metadata as Record<string, unknown>,
+      context: prismaTask.context as Record<string, unknown>,
+      result: prismaTask.result as Record<string, unknown>,
+      error: prismaTask.error as Record<string, unknown>,
+      createdAt: prismaTask.createdAt as Date,
+      updatedAt: prismaTask.updatedAt as Date,
     };
   }
 }
