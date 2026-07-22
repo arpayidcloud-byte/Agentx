@@ -1,9 +1,10 @@
 import { ProductionRuntime } from '@agentx/runtime-production';
-import { Scheduler, InMemoryEventBus, AgentRegistry } from '@agentx/core-runtime';
+import { Scheduler, InMemoryEventBus } from '@agentx/core-runtime';
 import type { ITaskRepository, IEventBus } from '@agentx/core-runtime';
 import { InMemoryTaskRepository } from './in-memory-task-repository.js';
 import { ProviderRegistry, CredentialResolver, ProviderFactory } from '@agentx/provider-sdk';
 import { CoderAgent, ReviewerAgent, TesterAgent, SecurityAgent } from '@agentx/agent-platform';
+import { AgentRegistry } from './agent-registry.js';
 
 let _runtime: ProductionRuntime | null = null;
 let _testRuntime: {
@@ -61,7 +62,9 @@ export function getRuntime(): {
       const bus = new InMemoryEventBus();
       const providerRegistry = createProviderRegistry();
       const agentRegistry = createAgentRegistry(providerRegistry);
-      const scheduler = new Scheduler(bus, taskRepo, {}, agentRegistry);
+      const scheduler = new Scheduler(bus, taskRepo);
+      // Wire agent registry to scheduler after construction
+      (scheduler as any).agentRegistry = agentRegistry;
       _testRuntime = { scheduler, bus, taskRepo, agentRegistry, providerRegistry };
     }
     return _testRuntime;
