@@ -10,44 +10,34 @@ import type {
 } from '@agentx/core-runtime';
 import type { PrismaClient } from '@prisma/client';
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export class PrismaTaskRepository implements ITaskRepository {
   constructor(private prisma: PrismaClient) {}
 
   async save(task: TaskModel): Promise<void> {
+    const data: any = {
+      id: task.id,
+      goal: task.goal,
+      status: task.status as string,
+      priority: String(task.priority),
+      parentTaskId: task.parentTaskId,
+      rootTaskId: task.rootTaskId,
+      assignedAgentRole: task.assignedAgentRole,
+      dependsOn: task.dependsOn,
+      traceId: task.traceId,
+      metadata: task.metadata as any,
+      context: task.context as any,
+      result: task.result ?? null,
+      error: task.error ?? null,
+      createdAt: task.createdAt,
+      updatedAt: task.updatedAt,
+    };
+
     await this.prisma.task.upsert({
       where: { id: task.id },
-      update: {
-        goal: task.goal,
-        status: task.status as string,
-        priority: String(task.priority),
-        parentTaskId: task.parentTaskId,
-        rootTaskId: task.rootTaskId,
-        assignedAgentRole: task.assignedAgentRole,
-        dependsOn: task.dependsOn,
-        traceId: task.traceId,
-        metadata: task.metadata as unknown as Record<string, unknown>,
-        context: task.context as unknown as Record<string, unknown>,
-        result: task.result as unknown as Record<string, unknown> | null,
-        error: task.error as unknown as Record<string, unknown> | null,
-        updatedAt: task.updatedAt,
-      },
-      create: {
-        id: task.id,
-        goal: task.goal,
-        status: task.status as string,
-        priority: String(task.priority),
-        parentTaskId: task.parentTaskId,
-        rootTaskId: task.rootTaskId,
-        assignedAgentRole: task.assignedAgentRole,
-        dependsOn: task.dependsOn,
-        traceId: task.traceId,
-        metadata: task.metadata as unknown as Record<string, unknown>,
-        context: task.context as unknown as Record<string, unknown>,
-        result: task.result as unknown as Record<string, unknown> | null,
-        error: task.error as unknown as Record<string, unknown> | null,
-        createdAt: task.createdAt,
-        updatedAt: task.updatedAt,
-      },
+      update: data,
+      create: data,
     });
   }
 

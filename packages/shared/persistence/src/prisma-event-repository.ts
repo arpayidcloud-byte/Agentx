@@ -1,5 +1,7 @@
 import type { PrismaClient } from '@prisma/client';
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export interface EventModel {
   id: string;
   topic: string;
@@ -22,7 +24,7 @@ export class PrismaEventRepository implements IEventRepository {
       data: {
         id: event.id,
         topic: event.topic,
-        payload: event.payload as unknown as Record<string, unknown>,
+        payload: event.payload as any,
         taskId: event.taskId,
         createdAt: event.createdAt || new Date(),
       },
