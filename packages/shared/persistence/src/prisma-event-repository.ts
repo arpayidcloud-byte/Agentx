@@ -1,4 +1,4 @@
-import type { PrismaClient, Prisma } from '@prisma/client';
+import type { PrismaClient } from '@prisma/client';
 
 export interface EventModel {
   id: string;
@@ -22,7 +22,7 @@ export class PrismaEventRepository implements IEventRepository {
       data: {
         id: event.id,
         topic: event.topic,
-        payload: event.payload as unknown as Prisma.InputJsonValue,
+        payload: event.payload as unknown as Record<string, unknown>,
         taskId: event.taskId,
         createdAt: event.createdAt || new Date(),
       },

@@ -393,6 +393,9 @@ importers:
 
   packages/runtime/runtime-adapters:
     dependencies:
+      '@agentx/core-runtime':
+        specifier: workspace:*
+        version: link:../../shared/core-runtime
       bullmq:
         specifier: ^5.80.2
         version: 5.80.2
