@@ -9,4 +9,5 @@ export * from './retry/index.js';
 export * from './scheduler/index.js';
 export * from './events/index.js';
 export * from './context/index.js';
+export * from './repositories/in-memory-task-repository.js';
 //# sourceMappingURL=index.js.map

@@ -1,8 +1,6 @@
 import { ProductionRuntime } from '@agentx/runtime-production';
-import { Scheduler, InMemoryEventBus } from '@agentx/core-runtime';
-import { InMemoryTaskRepository } from '@agentx/runtime-adapters';
-import type { ITaskRepository } from '@agentx/core-runtime';
-import type { IEventBus } from '@agentx/core-runtime';
+import { Scheduler, InMemoryEventBus, InMemoryTaskRepository } from '@agentx/core-runtime';
+import type { ITaskRepository, IEventBus } from '@agentx/core-runtime';
 
 let _runtime: ProductionRuntime | null = null;
 let _testRuntime: { scheduler: Scheduler; bus: IEventBus; taskRepo: ITaskRepository } | null = null;
