@@ -1,9 +1,9 @@
 # AgentX Project Workflow
 
-**Version:** 1.1
+**Version:** 1.2
 **Created:** July 2026
 **Updated:** July 2026
-**Purpose:** Acuan utama pengerjaan project AgentX
+**Purpose:** Acuan utama pengerjaan project AgentX dengan MCP integration
 
 ---
 
@@ -14,6 +14,60 @@
 │  RULE: TIDAK LANJUT FASE/BATCH BARU JIKA PR BELUM HIJAU │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## 🤖 MCP Integration
+
+### Codebase Memory MCP
+
+**Status:** ✅ Active
+**Config:** `/root/.config/opencode/config.json`
+**Binary:** `/root/.local/bin/codebase-memory-mcp`
+
+#### Mandatory MCP Usage (Semua Fase)
+
+**WAJIB gunakan MCP sebelum mulai task:**
+
+```bash
+# 1. Pahami architecture
+get_architecture()
+
+# 2. Cari relevant code
+search_graph(name_pattern=".*FunctionName.*")
+
+# 3. Trace dependencies
+trace_path(function_name="X", direction="inbound")
+
+# 4. Baca source code
+get_code_snippet(qualified_name="pkg/file.Function")
+```
+
+#### MCP Workflow
+
+```
+1. ORCHESTRATOR: MCP Exploration
+   │
+   ├─ get_architecture() → Pahami big picture
+   ├─ search_graph(pattern) → Cari relevant code
+   ├─ trace_path(function) → Trace dependencies
+   └─ get_code_snippet() → Baca implementation
+   │
+   ↓
+2. ORCHESTRATOR: Plan dengan context lengkap
+   │
+   ↓
+3. SUB-AGENTS: Execute dengan MCP reference
+```
+
+#### Kapan Gunakan MCP
+
+| Use MCP ✅          | Jangan MCP ❌                           |
+| ------------------- | --------------------------------------- |
+| Cari function/class | Search string literals                  |
+| Trace call graph    | Search error messages                   |
+| Pahami architecture | Search config files                     |
+| Code review         | MCP return insufficient → grep fallback |
 
 ---
 
@@ -68,21 +122,31 @@
    └─ PR merah? → FIX DULU, jangan lanjut
    │
    ↓
-2. ORCHESTRATOR: Plan batch tasks
+2. ORCHESTRATOR: MCP Exploration (WAJIB - 5 menit)
+   │
+   ├─ get_architecture() → Pahami big picture fase ini
+   ├─ search_graph(pattern=".*RelevantFunction.*") → Cari code terkait
+   ├─ trace_path(function="TargetFunction", direction="inbound") → Trace callers
+   ├─ trace_path(function="TargetFunction", direction="outbound") → Trace calls
+   └─ get_code_snippet(qualified_name="pkg/file.Class") → Baca implementation
+   │
+   ↓
+3. ORCHESTRATOR: Plan batch tasks (dengan MCP context)
    │
    ├─ Identifikasi tasks dalam batch
    ├─ Assign ke sub-agents (parallel)
-   └─ Set dependencies antar task
+   ├─ Set dependencies antar task
+   └─ Provide MCP references ke sub-agents
    │
    ↓
-3. SUB-AGENTS: Execute parallel
+4. SUB-AGENTS: Execute parallel (dengan MCP)
    │
-   ├─ Sub-Agent A: Task 1
-   ├─ Sub-Agent B: Task 2
-   └─ Sub-Agent C: Task N
+   ├─ Sub-Agent A: Task 1 + MCP search/trace
+   ├─ Sub-Agent B: Task 2 + MCP search/trace
+   └─ Sub-Agent C: Task N + MCP search/trace
    │
    ↓
-4. ORCHESTRATOR: Pre-PR Local Testing (WAJIB)
+5. ORCHESTRATOR: Pre-PR Local Testing (WAJIB)
    │
    ├─ 4.1 Setup Environment
    │  ├─ Install dependencies: pnpm install
@@ -107,17 +171,17 @@
       └─ Reset test data
    │
    ↓
-5. ORCHESTRATOR: Create PR
+6. ORCHESTRATOR: Create PR
    │
    ├─ Push ke branch feature
    ├─ Create/update PR
    └─ Tag reviewers
    │
    ↓
-6. ORCHESTRATOR: CI Gate
+7. ORCHESTRATOR: CI Gate
    │
    ├─ CI hijau? → Merge, lanjut batch berikutnya
-   └─ CI merah? → Fix, ULANGI DARI STEP 4 (local test dulu!)
+   └─ CI merah? → Fix, ULANGI DARI STEP 5 (local test dulu!)
 ```
 
 ---
@@ -181,12 +245,14 @@ Phase 2 (Batch 4) - PR #30 CI GAGAL
 ## ✅ Checklist Sebelum Create PR (WAJIB)
 
 ### 4.1 Environment Setup
+
 - [ ] `pnpm install` — install semua dependencies
 - [ ] `docker run -d -p 6379:6379 redis:7` — start Redis
 - [ ] `docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres:16` — start PostgreSQL
 - [ ] `pnpm prisma generate` — generate Prisma client
 
 ### 4.2 Full CI Pipeline Local
+
 - [ ] `pnpm typecheck` — **HARUS** hijau ✅
 - [ ] `pnpm lint` — **HARUS** hijau ✅ (warnings OK, errors NO)
 - [ ] `pnpm build` — **HARUS** hijau ✅
@@ -194,11 +260,13 @@ Phase 2 (Batch 4) - PR #30 CI GAGAL
 - [ ] `pnpm test:coverage` — threshold ≥ 80%
 
 ### 4.3 Integration Tests (jika ada perubahan infra)
+
 - [ ] Test Redis connection
 - [ ] Test PostgreSQL connection
 - [ ] Test BullMQ queues
 
 ### 4.4 Cleanup
+
 - [ ] `docker stop <containers>` — stop test containers
 - [ ] Reset test data
 
@@ -260,6 +328,29 @@ services:
       interval: 5s
       timeout: 3s
       retries: 3
+```
+
+### MCP Commands Reference
+
+```bash
+# 1. Architecture Overview
+get_architecture()
+
+# 2. Search Functions/Classes
+search_graph(name_pattern=".*Agent.*")
+search_graph(name_pattern=".*Provider.*")
+search_graph(name_pattern=".*Repository.*")
+
+# 3. Trace Dependencies
+trace_path(function_name="submit", direction="inbound")
+trace_path(function_name="execute", direction="outbound")
+
+# 4. Read Source Code
+get_code_snippet(qualified_name="@agentx/core-runtime.Scheduler")
+get_code_snippet(qualified_name="@agentx/agent-platform.BaseAgent")
+
+# 5. Complex Queries
+query_graph("MATCH (n:Function) WHERE n.name CONTAINS 'Agent' RETURN n")
 ```
 
 ### Quick Test Script
