@@ -2,10 +2,18 @@ import { getRuntime } from '../lib/runtime.js';
 
 export async function status(args: string[]): Promise<void> {
   const taskId = args[0];
-  const { scheduler } = getRuntime();
+  const { scheduler, taskRepo } = getRuntime();
 
   if (!taskId) {
-    console.log('Usage: agentx status <task-id>');
+    const tasks = taskRepo.getAll();
+    if (tasks.length === 0) {
+      console.log('No tasks found');
+      return;
+    }
+    console.log('Tasks:');
+    for (const task of tasks) {
+      console.log(`  ${task.id} - ${task.status} - ${task.goal}`);
+    }
     return;
   }
 

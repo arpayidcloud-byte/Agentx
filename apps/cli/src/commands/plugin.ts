@@ -1,7 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-
-const DATA_DIR = path.resolve(process.cwd(), '.agentx');
+import { getRuntime } from '../lib/runtime.js';
 
 interface PluginRecord {
   id: string;
@@ -11,18 +10,42 @@ interface PluginRecord {
   installedAt: string;
 }
 
-function loadPlugins(): Record<string, PluginRecord> {
-  const file = path.join(DATA_DIR, 'plugins.json');
-  if (!fs.existsSync(file)) return {};
-  return JSON.parse(fs.readFileSync(file, 'utf-8'));
-}
-
-function savePlugins(plugins: Record<string, PluginRecord>): void {
-  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-  fs.writeFileSync(path.join(DATA_DIR, 'plugins.json'), JSON.stringify(plugins, null, 2));
-}
-
 export async function plugin(args: string[]): Promise<void> {
+  const { taskRepo } = getRuntime();
+  const pluginsKey = '__plugins__';
+  
+  function loadPlugins(): Record<string, PluginRecord> {
+    const all = taskRepo.getAll();
+    const pluginTask = all.find(t => t.id === pluginsKey);
+    if (!pluginTask) return {};
+    return (pluginTask.context?.variables as Record<string, PluginRecord>) || {};
+  }
+
+  function savePlugins(plugins: Record<string, PluginRecord>): void {
+    const existing = taskRepo.getAll().find(t => t.id === pluginsKey);
+    if (existing) {
+      existing.context!.variables = plugins as unknown as Record<string, unknown>;
+      existing.updatedAt = new Date();
+    } else {
+      taskRepo.save({
+        id: pluginsKey,
+        goal: 'Plugin storage',
+        status: 'SYSTEM',
+        priority: 'LOW',
+        rootTaskId: pluginsKey,
+        dependsOn: [],
+        traceId: pluginsKey,
+        metadata: {},
+        context: {
+          variables: plugins as unknown as Record<string, unknown>,
+          history: [],
+        },
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+    }
+  }
+
   const subcommand = args[0];
 
   if (!subcommand || subcommand === 'list') {

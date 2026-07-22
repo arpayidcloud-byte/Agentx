@@ -38,3 +38,8 @@ export function getRuntime() {
     taskRepo: taskRepoInstance,
   };
 }
+
+export function resetRuntime(): void {
+  schedulerInstance = null;
+  taskRepoInstance = null;
+}

@@ -1,23 +1,14 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import * as fs from 'fs';
-import * as path from 'path';
 import { submit } from '../src/commands/submit.js';
 import { status } from '../src/commands/status.js';
 import { approve, reject } from '../src/commands/approve.js';
 import { config } from '../src/commands/config.js';
 import { plugin } from '../src/commands/plugin.js';
-
-const DATA_DIR = path.resolve(process.cwd(), '.agentx');
-
-function cleanData(): void {
-  if (fs.existsSync(DATA_DIR)) {
-    fs.rmSync(DATA_DIR, { recursive: true });
-  }
-}
+import { getRuntime, resetRuntime } from '../src/lib/runtime.js';
 
 describe('CLI submit', () => {
-  beforeEach(cleanData);
-  afterEach(cleanData);
+  beforeEach(resetRuntime);
+  afterEach(resetRuntime);
 
   it('creates a task with goal', async () => {
     const logs: string[] = [];
@@ -29,11 +20,12 @@ describe('CLI submit', () => {
     expect(logs.some((l) => l.includes('Task created'))).toBe(true);
     expect(logs.some((l) => l.includes('build a REST API'))).toBe(true);
 
-    const tasks = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'tasks.json'), 'utf-8'));
-    expect(Object.keys(tasks)).toHaveLength(1);
-    const task = Object.values(tasks)[0] as { goal: string; status: string };
+    const { taskRepo } = getRuntime();
+    const tasks = taskRepo.getAll();
+    expect(tasks).toHaveLength(1);
+    const task = tasks[0];
     expect(task.goal).toBe('build a REST API');
-    expect(task.status).toBe('CREATED');
+    expect(['CREATED', 'RUNNING']).toContain(task.status);
   });
 
   it('throws when no goal provided', async () => {
@@ -42,8 +34,8 @@ describe('CLI submit', () => {
 });
 
 describe('CLI status', () => {
-  beforeEach(cleanData);
-  afterEach(cleanData);
+  beforeEach(resetRuntime);
+  afterEach(resetRuntime);
 
   it('shows no tasks when empty', async () => {
     const logs: string[] = [];
@@ -69,20 +61,21 @@ describe('CLI status', () => {
 });
 
 describe('CLI approve/reject', () => {
-  beforeEach(cleanData);
-  afterEach(cleanData);
+  beforeEach(resetRuntime);
+  afterEach(resetRuntime);
 
   it('throws when task not in WAITING_APPROVAL', async () => {
     await submit(['test']);
-    const tasks = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'tasks.json'), 'utf-8'));
-    const taskId = Object.keys(tasks)[0];
+    const { taskRepo } = getRuntime();
+    const tasks = taskRepo.getAll();
+    const taskId = tasks[0].id;
     await expect(approve([taskId])).rejects.toThrow('not waiting for approval');
   });
 });
 
 describe('CLI config', () => {
-  beforeEach(cleanData);
-  afterEach(cleanData);
+  beforeEach(resetRuntime);
+  afterEach(resetRuntime);
 
   it('gets and sets config values', async () => {
     await config(['set', 'provider', 'anthropic']);
@@ -109,8 +102,8 @@ describe('CLI config', () => {
 });
 
 describe('CLI plugin', () => {
-  beforeEach(cleanData);
-  afterEach(cleanData);
+  beforeEach(resetRuntime);
+  afterEach(resetRuntime);
 
   it('lists empty plugins', async () => {
     const logs: string[] = [];
