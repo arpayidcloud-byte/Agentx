@@ -1,6 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { getRuntime } from '../lib/runtime.js';
+import type { TaskStatus, TaskPriority, TaskModel, TaskMetadata } from '@agentx/core-runtime';
+import { TaskStatus as TaskStatusEnum } from '@agentx/core-runtime';
 
 interface PluginRecord {
   id: string;
@@ -27,15 +29,16 @@ export async function plugin(args: string[]): Promise<void> {
       existing.context!.variables = plugins as unknown as Record<string, unknown>;
       existing.updatedAt = new Date();
     } else {
+      const metadata: TaskMetadata = { retryCount: 0 };
       taskRepo.save({
         id: pluginsKey,
         goal: 'Plugin storage',
-        status: 'SYSTEM',
-        priority: 'LOW',
+        status: TaskStatusEnum.CREATED as TaskStatus,
+        priority: 'normal' as TaskPriority,
         rootTaskId: pluginsKey,
         dependsOn: [],
         traceId: pluginsKey,
-        metadata: {},
+        metadata,
         context: {
           variables: plugins as unknown as Record<string, unknown>,
           history: [],
