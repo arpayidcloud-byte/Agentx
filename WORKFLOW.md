@@ -180,6 +180,7 @@ get_code_snippet(qualified_name="pkg/file.Function")
    ↓
 7. ORCHESTRATOR: CI Gate
    │
+   ├─ Hanya .md files? → Langsung merge (skip CI)
    ├─ CI hijau? → Merge, lanjut batch berikutnya
    └─ CI merah? → Fix, ULANGI DARI STEP 5 (local test dulu!)
 ```
