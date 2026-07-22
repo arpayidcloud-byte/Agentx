@@ -18,7 +18,8 @@
     "db:studio": "prisma studio"
   },
   "dependencies": {
-    "@prisma/client": "^5.14.0"
+    "@prisma/client": "^5.14.0",
+    "@agentx/core-runtime": "workspace:*"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "1.6.0",
