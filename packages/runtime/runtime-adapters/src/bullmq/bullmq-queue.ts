@@ -37,7 +37,7 @@ export class BullMQProvider implements IQueueProvider {
       await this.redis.ping();
       return { healthy: true, latencyMs: 1, lastChecked: new Date(), status: 'ACTIVE' };
     } catch (e) {
-      return { healthy: false, latencyMs: 0, lastChecked: new Date(), status: 'DEGRADED', error: String(e) };
+      return { healthy: false, latencyMs: 0, lastChecked: new Date(), status: 'DEGRADED', details: { error: String(e) } };
     }
   }
 
@@ -53,7 +53,7 @@ export class BullMQProvider implements IQueueProvider {
   private getQueue(topic: string): Queue {
     let q = this.queues.get(topic);
     if (!q) {
-      q = new Queue(topic, { connection: this.redis });
+      q = new Queue(topic, { connection: this.redis as any });
       this.queues.set(topic, q);
     }
     return q;
