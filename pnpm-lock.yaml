@@ -386,6 +386,13 @@ importers:
         version: 1.6.0(@types/node@26.1.1)
 
   packages/runtime/runtime-adapters:
+    dependencies:
+      bullmq:
+        specifier: ^5.80.2
+        version: 5.80.2
+      ioredis:
+        specifier: ^5.11.1
+        version: 5.11.1
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 1.6.0
