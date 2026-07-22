@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from '@prisma/client';
 
 export interface ApprovalModel {
   id: string;
@@ -72,7 +72,7 @@ export class PrismaApprovalRepository implements IApprovalRepository {
     });
   }
 
-  private toApprovalModel(prismaApproval: any): ApprovalModel {
+  private toApprovalModel(prismaApproval: Record<string, unknown>): ApprovalModel {
     return {
       id: prismaApproval.id,
       taskId: prismaApproval.taskId,
