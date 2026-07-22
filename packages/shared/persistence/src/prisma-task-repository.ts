@@ -20,7 +20,6 @@ export class PrismaTaskRepository implements ITaskRepository {
         context: task.context as any,
         result: task.result as any,
         error: task.error as any,
-        completedAt: task.completedAt,
         updatedAt: new Date(),
       },
       create: {
@@ -37,7 +36,6 @@ export class PrismaTaskRepository implements ITaskRepository {
         context: task.context as any,
         result: task.result as any,
         error: task.error as any,
-        completedAt: task.completedAt,
         createdAt: task.createdAt,
         updatedAt: task.updatedAt,
       },
@@ -79,7 +77,6 @@ export class PrismaTaskRepository implements ITaskRepository {
       context: prismaTask.context as any,
       result: prismaTask.result as any,
       error: prismaTask.error as any,
-      completedAt: prismaTask.completedAt,
       createdAt: prismaTask.createdAt,
       updatedAt: prismaTask.updatedAt,
     };
