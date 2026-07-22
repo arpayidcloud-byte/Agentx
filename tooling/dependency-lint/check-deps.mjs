@@ -72,7 +72,7 @@ const PACKAGE_VOLUME_MAP = {
   'packages/distributed/distributed-cognition': 11,
 
   // Vol 13 — Observability
-  'packages/runtime/runtime-production': 13,
+  'packages/runtime/runtime-production': 8,
 
   // Vol 14 — Testing & QA
   'packages/quality/architecture-sdk': 14,
@@ -115,7 +115,7 @@ const IMPORT_VOLUME_MAP = {
   'enterprise-runtime': 10,
   'developer-platform': 10,
   'distributed-cognition': 11,
-  'runtime-production': 13,
+  'runtime-production': 8,
   'architecture-sdk': 14,
   'production-quality': 14,
   'secrets': 16,
