@@ -26,7 +26,8 @@ export interface Agent {
 // Helper function to call LLM provider
 async function callLLM(prompt: string, modelId?: string): Promise<string> {
   const registry = new ProviderRegistry();
-  const provider = registry.getDefault();
+  const providers = registry.list();
+  const provider = providers[0];
   if (!provider) {
     throw new Error('No provider configured');
   }
@@ -37,7 +38,7 @@ async function callLLM(prompt: string, modelId?: string): Promise<string> {
     modelId: modelId || 'claude-sonnet-4-20250514',
   };
 
-  const response = await provider.complete(request);
+  const response = await registry.complete(provider.id, request);
   return response.content;
 }
 
