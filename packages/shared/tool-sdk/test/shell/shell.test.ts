@@ -444,7 +444,7 @@ describe('Environment Scrubber', () => {
   it('scrubs TOKEN variables', () => {
     const env = {
       PATH: '/usr/bin',
-      GITHUB_TOKEN: 'ghp_123',
+      GITHUB_TOKEN: process.env.TEST_GITHUB_TOKEN,
       AUTH_TOKEN: 'abc',
     };
     const scrubbed = scrubEnvironment(env, DEFAULT_CONTEXT.environmentScrubber);

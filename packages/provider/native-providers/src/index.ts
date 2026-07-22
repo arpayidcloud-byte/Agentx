@@ -1,6 +1,7 @@
 /**
  * @module native-providers
- * @description Native Vendor Integration Layer (NVIL) exports.
+ * @description [DEPRECATED] Native Vendor Integration Layer (NVIL) exports. Use @agentx/provider-sdk instead.
+ * @deprecated This package is deprecated. Use @agentx/provider-sdk instead.
  */
 
 export * from './interfaces.js';
