@@ -3,10 +3,7 @@ import { Command } from 'commander';
 
 const program = new Command();
 
-program
-  .name('agentx')
-  .description('AgentX CLI')
-  .version('0.1.0');
+program.name('agentx').description('AgentX CLI').version('0.1.0');
 
 program
   .command('run <goal>')

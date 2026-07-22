@@ -15,22 +15,22 @@ interface PluginRecord {
 export async function plugin(args: string[]): Promise<void> {
   const { taskRepo } = getRuntime();
   const pluginsKey = '__plugins__';
-  
+
   function loadPlugins(): Record<string, PluginRecord> {
     const all = taskRepo.getAll();
-    const pluginTask = all.find(t => t.id === pluginsKey);
+    const pluginTask = all.find((t) => t.id === pluginsKey);
     if (!pluginTask) return {};
     return (pluginTask.context?.variables as Record<string, PluginRecord>) || {};
   }
 
   function savePlugins(plugins: Record<string, PluginRecord>): void {
-    const existing = taskRepo.getAll().find(t => t.id === pluginsKey);
+    const existing = taskRepo.getAll().find((t) => t.id === pluginsKey);
     if (existing) {
       existing.context!.variables = plugins as unknown as Record<string, unknown>;
       existing.updatedAt = new Date();
     } else {
       const metadata: TaskMetadata = { retryCount: 0 };
-      taskRepo.save({
+      void taskRepo.save({
         id: pluginsKey,
         goal: 'Plugin storage',
         status: TaskStatusEnum.CREATED as unknown as TaskStatus,
