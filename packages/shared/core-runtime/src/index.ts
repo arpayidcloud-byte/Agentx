@@ -10,3 +10,4 @@ export * from './scheduler/index.js';
 export * from './events/index.js';
 export * from './context/index.js';
 export * from './repositories/in-memory-task-repository.js';
+export * from './registry/agent-registry.js';

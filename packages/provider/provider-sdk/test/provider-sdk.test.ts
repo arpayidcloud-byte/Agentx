@@ -230,7 +230,12 @@ describe('Validators and Version', () => {
 
   it('covers credentials resolver and template helpers', async () => {
     const resolver = new CredentialResolver();
-    expect(await resolver.resolve('key')).toBe('stub-key');
+    // Test with env var set
+    process.env.TEST_KEY = 'test-value';
+    expect(await resolver.resolve('provider.test.key')).toBe('test-value');
+    delete process.env.TEST_KEY;
+    // Test missing key throws
+    await expect(resolver.resolve('provider.missing.key')).rejects.toThrow('Credential not found');
 
     const template = createQueueTemplate();
     expect(template.getMetadata().id).toBe('template-queue');
