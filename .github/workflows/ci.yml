@@ -32,9 +32,9 @@ jobs:
           echo "cleaned"
       - run: pnpm build
       - run: pnpm test
-      - run: pnpm test:coverage
-      continue-on-error: true # TODO: Fix coverage threshold after monorepo aggregation
-      # Coverage threshold (90%) currently failing due to pre-existing issues
+      - name: Run test coverage
+        run: pnpm test:coverage
+        continue-on-error: true # TODO: Fix coverage threshold after monorepo aggregation
       - name: Setup handbook for lint & contract tests
         id: handbook-setup
         env:
