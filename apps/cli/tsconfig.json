@@ -5,5 +5,11 @@
     "rootDir": "src"
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+  "exclude": ["node_modules", "dist", "**/*.test.ts"],
+  "references": [
+    { "path": "../../packages/shared/core-runtime" },
+    { "path": "../../packages/runtime/runtime-production" },
+    { "path": "../../packages/runtime/runtime-adapters" },
+    { "path": "../../packages/shared/tool-sdk" }
+  ]
 }
