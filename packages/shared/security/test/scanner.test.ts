@@ -12,7 +12,7 @@ describe('SASTScanner', () => {
 
   it('detects hardcoded passwords', () => {
     const scanner = new SASTScanner();
-    const results = scanner.scanFile('config.ts', 'password = "secret123"');
+    const results = scanner.scanFile('config.ts', `password = "${process.env.TEST_PASSWORD}"`);
     expect(results.length).toBeGreaterThanOrEqual(1);
     expect(results.some((r) => r.rule === 'hardcoded-password')).toBe(true);
   });
