@@ -4,7 +4,7 @@ import { SecretPatternDetector } from '../src/secret-detector.js';
 describe('SecretPatternDetector', () => {
   it('detects AWS access keys', () => {
     const detector = new SecretPatternDetector();
-    const matches = detector.detect(`const key = "${process.env.TEST_AWS_KEY}"`);
+    const matches = detector.detect(`const key = "AKIAIOSFODNN7EXAMPLE"`);
     expect(matches.length).toBeGreaterThanOrEqual(1);
     expect(matches[0].pattern).toBe('AWS Access Key');
     expect(matches[0].severity).toBe('critical');
@@ -12,7 +12,7 @@ describe('SecretPatternDetector', () => {
 
   it('detects GitHub tokens', () => {
     const detector = new SecretPatternDetector();
-    const matches = detector.detect(`token: ${process.env.TEST_GITHUB_TOKEN}`);
+    const matches = detector.detect(`token: ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`);
     expect(matches.length).toBeGreaterThanOrEqual(1);
     expect(matches.some((m) => m.pattern === 'GitHub Token')).toBe(true);
   });
@@ -39,7 +39,7 @@ describe('SecretPatternDetector', () => {
 
   it('reports correct line numbers', () => {
     const detector = new SecretPatternDetector();
-    const matches = detector.detect(`line 1\nconst key = "${process.env.TEST_AWS_KEY}"\nline 3`);
+    const matches = detector.detect(`line 1\nconst key = "AKIAIOSFODNN7EXAMPLE"\nline 3`);
     expect(matches.length).toBeGreaterThanOrEqual(1);
     expect(matches[0].line).toBe(2);
   });
