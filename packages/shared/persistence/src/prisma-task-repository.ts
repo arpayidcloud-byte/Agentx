@@ -1,4 +1,4 @@
-import type { ITaskRepository, TaskModel, TaskStatus, TaskPriority } from '@agentx/core-runtime';
+import type { ITaskRepository, TaskModel, TaskStatus, TaskPriority, TaskMetadata, TaskContext, TaskResult, TaskError } from '@agentx/core-runtime';
 import type { PrismaClient } from '@prisma/client';
 
 export class PrismaTaskRepository implements ITaskRepository {
