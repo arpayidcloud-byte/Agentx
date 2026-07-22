@@ -18,7 +18,9 @@
     "vitest": "1.6.0"
   },
   "dependencies": {
+    "@agentx/agent-platform": "workspace:*",
     "@agentx/core-runtime": "workspace:*",
+    "@agentx/provider-sdk": "workspace:*",
     "@agentx/runtime-adapters": "workspace:*",
     "@agentx/runtime-production": "workspace:*",
     "@agentx/tool-sdk": "workspace:*",

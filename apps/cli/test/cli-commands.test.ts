@@ -25,7 +25,8 @@ describe('CLI submit', () => {
     expect(tasks).toHaveLength(1);
     const task = tasks[0];
     expect(task.goal).toBe('build a REST API');
-    expect(['CREATED', 'RUNNING']).toContain(task.status);
+    // Task may be in any state from CREATED to COMPLETED/FAILED depending on agent execution
+    expect(task.assignedAgentRole).toBe('coder');
   });
 
   it('throws when no goal provided', async () => {

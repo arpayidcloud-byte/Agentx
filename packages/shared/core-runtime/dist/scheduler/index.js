@@ -12,10 +12,15 @@ export class Scheduler {
     maxParallel;
     tracer = new Tracer('core-runtime-scheduler');
     metrics = new Metrics();
-    constructor(eventBus, taskRepo, config = {}) {
+    agentRegistry;
+    constructor(eventBus, taskRepo, config = {}, agentRegistry) {
         this.eventBus = eventBus;
         this.taskRepo = taskRepo;
         this.maxParallel = config.maxParallelAgents ?? 10;
+        this.agentRegistry = agentRegistry;
+    }
+    setAgentRegistry(registry) {
+        this.agentRegistry = registry;
     }
     async enqueue(task) {
         const span = this.tracer.startSpan('scheduler-enqueue');
@@ -137,7 +142,37 @@ export class Scheduler {
                 this.activeCount++;
                 await this.taskRepo.save(task);
                 await this.eventBus.publish(EventTopic.TASK_STARTED, task, task.traceId, task.id);
+                // Execute agent if registry is configured
+                if (this.agentRegistry && task.assignedAgentRole) {
+                    this.executeAgent(task).catch((err) => {
+                        this.failTask(taskId, err).catch(console.error);
+                    });
+                }
             }
+        }
+    }
+    async executeAgent(task) {
+        const span = this.tracer.startSpan('agent-execution');
+        span.setAttribute('task.id', task.id);
+        span.setAttribute('agent.role', task.assignedAgentRole || 'unknown');
+        try {
+            if (!this.agentRegistry) {
+                throw new Error('Agent registry not configured');
+            }
+            const role = task.assignedAgentRole || 'coder';
+            const result = await this.agentRegistry.executeByRole(role, task, task.context);
+            await this.completeTask(task.id, result);
+            this.metrics.counter('agent_executions', 1, { role, status: 'success' });
+            span.setStatus({ code: 0 });
+        }
+        catch (e) {
+            const error = e instanceof Error ? e : new Error(String(e));
+            span.setStatus({ code: 1, message: error.message });
+            this.metrics.counter('agent_executions', 1, { status: 'failure' });
+            throw error;
+        }
+        finally {
+            span.end();
         }
     }
     async completeTask(taskId, result) {
