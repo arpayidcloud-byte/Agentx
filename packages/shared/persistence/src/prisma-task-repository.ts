@@ -8,46 +8,34 @@ import type {
   TaskResult,
   TaskError,
 } from '@agentx/core-runtime';
-import type { PrismaClient } from '@prisma/client';
+import type { PrismaClient, Prisma } from '@prisma/client';
 
 export class PrismaTaskRepository implements ITaskRepository {
   constructor(private prisma: PrismaClient) {}
 
   async save(task: TaskModel): Promise<void> {
+    const data = {
+      id: task.id,
+      goal: task.goal,
+      status: task.status as string,
+      priority: String(task.priority),
+      parentTaskId: task.parentTaskId,
+      rootTaskId: task.rootTaskId,
+      assignedAgentRole: task.assignedAgentRole,
+      dependsOn: task.dependsOn,
+      traceId: task.traceId,
+      metadata: task.metadata as unknown as Prisma.InputJsonValue,
+      context: task.context as unknown as Prisma.InputJsonValue,
+      result: task.result ? (task.result as unknown as Prisma.InputJsonValue) : Prisma.JsonNull,
+      error: task.error ? (task.error as unknown as Prisma.InputJsonValue) : Prisma.JsonNull,
+      createdAt: task.createdAt,
+      updatedAt: task.updatedAt,
+    };
+
     await this.prisma.task.upsert({
       where: { id: task.id },
-      update: {
-        goal: task.goal,
-        status: task.status,
-        priority: task.priority,
-        parentTaskId: task.parentTaskId,
-        rootTaskId: task.rootTaskId,
-        assignedAgentRole: task.assignedAgentRole,
-        dependsOn: task.dependsOn,
-        traceId: task.traceId,
-        metadata: task.metadata as unknown as TaskMetadata,
-        context: task.context as unknown as TaskContext,
-        result: task.result as unknown as TaskResult,
-        error: task.error as unknown as TaskError,
-        updatedAt: new Date(),
-      },
-      create: {
-        id: task.id,
-        goal: task.goal,
-        status: task.status,
-        priority: task.priority,
-        parentTaskId: task.parentTaskId,
-        rootTaskId: task.rootTaskId,
-        assignedAgentRole: task.assignedAgentRole,
-        dependsOn: task.dependsOn,
-        traceId: task.traceId,
-        metadata: task.metadata as unknown as TaskMetadata,
-        context: task.context as unknown as TaskContext,
-        result: task.result as unknown as TaskResult,
-        error: task.error as unknown as TaskError,
-        createdAt: task.createdAt,
-        updatedAt: task.updatedAt,
-      },
+      update: data,
+      create: data,
     });
   }
 
@@ -64,14 +52,14 @@ export class PrismaTaskRepository implements ITaskRepository {
       where: { rootTaskId: rootId },
       orderBy: { createdAt: 'asc' },
     });
-    return tasks.map((t: Record<string, unknown>) => this.toTaskModel(t));
+    return tasks.map((t) => this.toTaskModel(t));
   }
 
   async getAll(): Promise<TaskModel[]> {
     const tasks = await this.prisma.task.findMany({
       orderBy: { createdAt: 'desc' },
     });
-    return tasks.map((t: Record<string, unknown>) => this.toTaskModel(t));
+    return tasks.map((t) => this.toTaskModel(t));
   }
 
   private toTaskModel(prismaTask: Record<string, unknown>): TaskModel {
@@ -79,7 +67,7 @@ export class PrismaTaskRepository implements ITaskRepository {
       id: prismaTask.id as string,
       goal: prismaTask.goal as string,
       status: prismaTask.status as TaskStatus,
-      priority: prismaTask.priority as TaskPriority,
+      priority: Number(prismaTask.priority) as TaskPriority,
       parentTaskId: prismaTask.parentTaskId as string | undefined,
       rootTaskId: prismaTask.rootTaskId as string,
       assignedAgentRole: prismaTask.assignedAgentRole as string | undefined,
