@@ -1,5 +1,5 @@
 import type { ITaskRepository, TaskModel, TaskStatus } from '@agentx/core-runtime';
-import { PrismaClient } from '../prisma/client/index.js';
+import { PrismaClient } from '@prisma/client';
 
 export class PrismaTaskRepository implements ITaskRepository {
   constructor(private prisma: PrismaClient) {}
@@ -57,7 +57,7 @@ export class PrismaTaskRepository implements ITaskRepository {
       where: { rootTaskId: rootId },
       orderBy: { createdAt: 'asc' },
     });
-    return tasks.map(t => this.toTaskModel(t));
+    return tasks.map((t: any) => this.toTaskModel(t));
   }
 
   getAll(): TaskModel[] {

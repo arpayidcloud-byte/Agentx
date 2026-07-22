@@ -1,5 +1,5 @@
 import type { IEventRepository, EventModel } from '@agentx/core-runtime';
-import { PrismaClient } from '../prisma/client/index.js';
+import { PrismaClient } from '@prisma/client';
 
 export class PrismaEventRepository implements IEventRepository {
   constructor(private prisma: PrismaClient) {}
@@ -21,7 +21,7 @@ export class PrismaEventRepository implements IEventRepository {
       where: { taskId },
       orderBy: { createdAt: 'asc' },
     });
-    return events.map(e => this.toEventModel(e));
+    return events.map((e: any) => this.toEventModel(e));
   }
 
   async findByTopic(topic: string, limit?: number): Promise<EventModel[]> {
@@ -30,7 +30,7 @@ export class PrismaEventRepository implements IEventRepository {
       orderBy: { createdAt: 'desc' },
       take: limit,
     });
-    return events.map(e => this.toEventModel(e));
+    return events.map((e: any) => this.toEventModel(e));
   }
 
   private toEventModel(prismaEvent: any): EventModel {
