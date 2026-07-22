@@ -1,5 +1,5 @@
 import { Queue } from 'bullmq';
-import Redis from 'ioredis';
+import { Redis } from 'ioredis';
 import type {
   IQueueProvider,
   ProviderMetadata,
@@ -37,7 +37,7 @@ export class BullMQProvider implements IQueueProvider {
       await this.redis.ping();
       return { healthy: true, latencyMs: 1, lastChecked: new Date(), status: 'ACTIVE' };
     } catch (e) {
-      return { healthy: false, latencyMs: 0, lastChecked: new Date(), status: 'DEGRADED', reason: String(e) };
+      return { healthy: false, latencyMs: 0, lastChecked: new Date(), status: 'DEGRADED', error: String(e) };
     }
   }
 
