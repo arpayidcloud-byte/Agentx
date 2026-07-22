@@ -1,6 +1,7 @@
 // packages/agent/agent-platform/src/agent.ts
 import type { TaskModel, TaskContext } from '@agentx/core-runtime';
-import { BaseAgent } from './base-agent.js';
+import type { CompletionRequest } from '@agentx/provider-sdk';
+import { ProviderRegistry } from '@agentx/provider-sdk';
 
 export type AgentRole = 'coding' | 'review' | 'test' | 'security';
 
@@ -22,19 +23,38 @@ export interface Agent {
   run(task: TaskModel, context: TaskContext): Promise<AgentResult>;
 }
 
-// Specialized agent implementations that extend BaseAgent
-export class CodingAgent extends BaseAgent implements Agent {
+// Helper function to call LLM provider
+async function callLLM(prompt: string, modelId?: string): Promise<string> {
+  const registry = new ProviderRegistry();
+  const providers = registry.list();
+  const provider = providers[0];
+  if (!provider) {
+    throw new Error('No provider configured');
+  }
+
+  const request: CompletionRequest = {
+    systemPrompt: '',
+    userPrompt: prompt,
+    modelId: modelId || 'claude-sonnet-4-20250514',
+  };
+
+  const response = await registry.complete(provider.id, request);
+  return response.text;
+}
+
+// Specialized agent implementations
+export class CodingAgent implements Agent {
   readonly role: AgentRole = 'coding';
 
   async run(task: TaskModel, _context: TaskContext): Promise<AgentResult> {
     try {
       const prompt = `You are an expert software engineer. Implement the following task:
 
-Task: ${task.input}
+Task: ${task.goal}
 
 Provide clean, production-ready code with proper error handling.`;
 
-      const output = await this.callProvider(prompt);
+      const output = await callLLM(prompt);
 
       return {
         success: true,
@@ -49,14 +69,14 @@ Provide clean, production-ready code with proper error handling.`;
   }
 }
 
-export class ReviewAgent extends BaseAgent implements Agent {
+export class ReviewAgent implements Agent {
   readonly role: AgentRole = 'review';
 
   async run(task: TaskModel, _context: TaskContext): Promise<AgentResult> {
     try {
       const prompt = `You are a senior code reviewer. Review the following code:
 
-${task.input}
+${task.goal}
 
 Check for:
 - Code quality and best practices
@@ -67,7 +87,7 @@ Check for:
 
 Provide specific, actionable feedback.`;
 
-      const output = await this.callProvider(prompt);
+      const output = await callLLM(prompt);
 
       return {
         success: true,
@@ -82,14 +102,14 @@ Provide specific, actionable feedback.`;
   }
 }
 
-export class TestAgent extends BaseAgent implements Agent {
+export class TestAgent implements Agent {
   readonly role: AgentRole = 'test';
 
   async run(task: TaskModel, _context: TaskContext): Promise<AgentResult> {
     try {
       const prompt = `You are an expert test engineer. Generate comprehensive tests for:
 
-${task.input}
+${task.goal}
 
 Include:
 - Unit tests
@@ -99,7 +119,7 @@ Include:
 
 Use appropriate testing frameworks and best practices.`;
 
-      const output = await this.callProvider(prompt);
+      const output = await callLLM(prompt);
 
       return {
         success: true,
@@ -114,14 +134,14 @@ Use appropriate testing frameworks and best practices.`;
   }
 }
 
-export class SecurityAgent extends BaseAgent implements Agent {
+export class SecurityAgent implements Agent {
   readonly role: AgentRole = 'security';
 
   async run(task: TaskModel, _context: TaskContext): Promise<AgentResult> {
     try {
       const prompt = `You are a security expert. Analyze the following code for vulnerabilities:
 
-${task.input}
+${task.goal}
 
 Check for:
 - Injection attacks (SQL, XSS, command injection)
@@ -132,7 +152,7 @@ Check for:
 
 List vulnerabilities by severity (Critical, High, Medium, Low).`;
 
-      const output = await this.callProvider(prompt);
+      const output = await callLLM(prompt);
 
       return {
         success: true,

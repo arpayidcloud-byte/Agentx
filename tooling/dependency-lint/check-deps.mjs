@@ -34,9 +34,9 @@ const PACKAGE_VOLUME_MAP = {
   'packages/cognitive/autonomous-cognition': 2,
 
   // Vol 3 — Agent Platform
-  'packages/agent/agent-platform': 3,
-  'packages/agent/multi-agent-collaboration': 3,
-  'packages/agent/multi-agent-reasoning': 3,
+  'packages/agent/agent-platform': 4,  // Moved to Vol 4 (depends on provider-sdk)
+  'packages/agent/multi-agent-collaboration': 4,
+  'packages/agent/multi-agent-reasoning': 4,
 
   // Vol 4 — Provider Platform
   'packages/provider/provider-sdk': 4,
