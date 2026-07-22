@@ -22,6 +22,7 @@ export interface ITaskRepository {
   save(task: TaskModel): Promise<void>;
   findById(id: string): Promise<TaskModel | undefined>;
   findByRootId(rootId: string): Promise<TaskModel[]>;
+  getAll(): Promise<TaskModel[]>;
 }
 
 export interface ITaskLifecycleObserver {

@@ -12,7 +12,13 @@
     "test:coverage": "vitest run --coverage",
     "lint": "eslint src/"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@agentx/persistence": "workspace:*",
+    "@agentx/runtime-adapters": "workspace:*",
+    "@agentx/core-runtime": "workspace:*",
+    "@agentx/tool-sdk": "workspace:*",
+    "@prisma/client": "^5.0.0"
+  },
   "devDependencies": {
     "@vitest/coverage-v8": "1.6.0",
     "typescript": "5.4.5",

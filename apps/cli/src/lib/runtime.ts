@@ -1,45 +1,24 @@
-import type { TaskModel } from '@agentx/core-runtime';
-import type { ITaskRepository } from '@agentx/core-runtime';
-import { Scheduler } from '@agentx/core-runtime';
-import { InMemoryEventBus } from '@agentx/core-runtime';
+import { ProductionRuntime } from '@agentx/runtime-production';
 
-class InMemoryTaskRepository implements ITaskRepository {
-  private tasks = new Map<string, TaskModel>();
-
-  async save(task: TaskModel): Promise<void> {
-    this.tasks.set(task.id, task);
-  }
-
-  async findById(id: string): Promise<TaskModel | undefined> {
-    return this.tasks.get(id);
-  }
-
-  async findByRootId(rootId: string): Promise<TaskModel[]> {
-    return Array.from(this.tasks.values()).filter((t) => t.rootTaskId === rootId);
-  }
-
-  getAll(): TaskModel[] {
-    return Array.from(this.tasks.values());
-  }
-}
-
-let schedulerInstance: Scheduler | null = null;
-let taskRepoInstance: InMemoryTaskRepository | null = null;
+let _runtime: ProductionRuntime | null = null;
 
 export function getRuntime() {
-  if (!schedulerInstance || !taskRepoInstance) {
-    const eventBus = new InMemoryEventBus();
-    taskRepoInstance = new InMemoryTaskRepository();
-    schedulerInstance = new Scheduler(eventBus, taskRepoInstance);
+  if (!_runtime) {
+    _runtime = new ProductionRuntime(process.env.REDIS_URL || 'redis://localhost:6379');
+    // Fire & forget start
+    _runtime.start().catch(console.error);
   }
-
   return {
-    scheduler: schedulerInstance,
-    taskRepo: taskRepoInstance,
+    scheduler: _runtime.scheduler,
+    bus: _runtime.eventBus,
+    prisma: _runtime.prisma,
+    taskRepo: _runtime.taskRepo,
   };
 }
 
 export function resetRuntime(): void {
-  schedulerInstance = null;
-  taskRepoInstance = null;
+  if (_runtime) {
+    _runtime.stop().catch(console.error);
+  }
+  _runtime = null;
 }

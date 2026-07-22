@@ -21,5 +21,6 @@ export * from './memory/memory-telemetry.js';
 export * from './memory/memory-secret.js';
 export * from './memory/memory-worker-discovery.js';
 export * from './redis/redis-lock.js';
+export * from './bullmq/bullmq-queue.js';
 export * from './factory.js';
 //# sourceMappingURL=index.d.ts.map

@@ -20,6 +20,7 @@
   "dependencies": {
     "@agentx/core-runtime": "workspace:*",
     "@agentx/runtime-adapters": "workspace:*",
+    "@agentx/runtime-production": "workspace:*",
     "@agentx/tool-sdk": "workspace:*",
     "commander": "^15.0.0"
   }

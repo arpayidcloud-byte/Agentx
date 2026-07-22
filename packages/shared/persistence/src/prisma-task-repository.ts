@@ -1,4 +1,13 @@
-import type { ITaskRepository, TaskModel, TaskStatus, TaskPriority, TaskMetadata, TaskContext, TaskResult, TaskError } from '@agentx/core-runtime';
+import type {
+  ITaskRepository,
+  TaskModel,
+  TaskStatus,
+  TaskPriority,
+  TaskMetadata,
+  TaskContext,
+  TaskResult,
+  TaskError,
+} from '@agentx/core-runtime';
 import type { PrismaClient } from '@prisma/client';
 
 export class PrismaTaskRepository implements ITaskRepository {
@@ -58,8 +67,11 @@ export class PrismaTaskRepository implements ITaskRepository {
     return tasks.map((t: Record<string, unknown>) => this.toTaskModel(t));
   }
 
-  getAll(): TaskModel[] {
-    return [];
+  async getAll(): Promise<TaskModel[]> {
+    const tasks = await this.prisma.task.findMany({
+      orderBy: { createdAt: 'desc' },
+    });
+    return tasks.map((t: Record<string, unknown>) => this.toTaskModel(t));
   }
 
   private toTaskModel(prismaTask: Record<string, unknown>): TaskModel {
