@@ -1,25 +1,68 @@
 import { ProductionRuntime } from '@agentx/runtime-production';
-import { Scheduler, InMemoryEventBus } from '@agentx/core-runtime';
+import { Scheduler, InMemoryEventBus, AgentRegistry } from '@agentx/core-runtime';
 import type { ITaskRepository, IEventBus } from '@agentx/core-runtime';
 import { InMemoryTaskRepository } from './in-memory-task-repository.js';
+import { ProviderRegistry, CredentialResolver, ProviderFactory } from '@agentx/provider-sdk';
+import { CoderAgent, ReviewerAgent, TesterAgent, SecurityAgent } from '@agentx/agent-platform';
 
 let _runtime: ProductionRuntime | null = null;
-let _testRuntime: { scheduler: Scheduler; bus: IEventBus; taskRepo: ITaskRepository } | null = null;
+let _testRuntime: {
+  scheduler: Scheduler;
+  bus: IEventBus;
+  taskRepo: ITaskRepository;
+  agentRegistry: AgentRegistry;
+  providerRegistry: ProviderRegistry;
+} | null = null;
 
 const USE_TEST_RUNTIME = process.env.NODE_ENV === 'test' || process.env.VITEST === 'true';
+
+function createProviderRegistry(): ProviderRegistry {
+  const registry = new ProviderRegistry();
+  const credentialResolver = new CredentialResolver();
+  const factory = new ProviderFactory(credentialResolver);
+  
+  // Register Anthropic provider if API key is available
+  try {
+    const anthropic = factory.createProvider({
+      providerId: 'anthropic',
+      defaultModelId: 'claude-sonnet-4-20250514',
+    });
+    registry.register(anthropic);
+  } catch (error) {
+    console.warn('Anthropic provider not configured (missing API key)');
+  }
+  
+  return registry;
+}
+
+function createAgentRegistry(providerRegistry: ProviderRegistry): AgentRegistry {
+  const registry = new AgentRegistry();
+  
+  // Register core agents with shared ProviderRegistry
+  registry.register(new CoderAgent('coder-1', { providerId: 'anthropic' }, providerRegistry));
+  registry.register(new ReviewerAgent('reviewer-1', { providerId: 'anthropic' }, providerRegistry));
+  registry.register(new TesterAgent('tester-1', { providerId: 'anthropic' }, providerRegistry));
+  registry.register(new SecurityAgent('security-1', { providerId: 'anthropic' }, providerRegistry));
+  
+  return registry;
+}
 
 export function getRuntime(): {
   scheduler: Scheduler;
   bus: IEventBus;
   prisma?: unknown;
   taskRepo: ITaskRepository;
+  agentRegistry: AgentRegistry;
+  providerRegistry: ProviderRegistry;
 } {
   if (USE_TEST_RUNTIME) {
     if (!_testRuntime) {
       const taskRepo = new InMemoryTaskRepository();
       const bus = new InMemoryEventBus();
-      const scheduler = new Scheduler(bus, taskRepo);
-      _testRuntime = { scheduler, bus, taskRepo };
+      const providerRegistry = createProviderRegistry();
+      const agentRegistry = createAgentRegistry(providerRegistry);
+      const scheduler = new Scheduler(bus, taskRepo, {}, agentRegistry);
+      _testRuntime = { scheduler, bus, taskRepo, agentRegistry, providerRegistry };
     }
     return _testRuntime;
   }
@@ -33,6 +76,8 @@ export function getRuntime(): {
     bus: _runtime.eventBus,
     prisma: _runtime.prisma,
     taskRepo: _runtime.taskRepo,
+    agentRegistry: new AgentRegistry(),
+    providerRegistry: new ProviderRegistry(),
   };
 }
 

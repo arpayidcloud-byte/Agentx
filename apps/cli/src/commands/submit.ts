@@ -3,9 +3,13 @@ import { getRuntime } from '../lib/runtime.js';
 import { TaskStatus, TaskPriority } from '@agentx/core-runtime';
 
 export async function submit(args: string[]): Promise<string> {
-  const goal = args.join(' ');
+  // Parse --role flag
+  const roleIndex = args.findIndex((a) => a === '--role');
+  const assignedRole = roleIndex >= 0 ? args[roleIndex + 1] : 'coder';
+  const goal = args.filter((a) => !a.startsWith('--') && a !== '--role').join(' ');
+  
   if (!goal) {
-    throw new Error('Usage: agentx submit "<goal>"');
+    throw new Error('Usage: agentx submit "<goal>" [--role <agent-role>]');
   }
 
   const { scheduler } = getRuntime();
@@ -22,6 +26,7 @@ export async function submit(args: string[]): Promise<string> {
     rootTaskId: taskId,
     dependsOn: [],
     traceId: graphId,
+    assignedAgentRole: assignedRole,
     metadata: {
       retryCount: 0,
     },

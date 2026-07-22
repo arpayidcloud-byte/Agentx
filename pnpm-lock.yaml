@@ -62,9 +62,15 @@ importers:
 
   apps/cli:
     dependencies:
+      '@agentx/agent-platform':
+        specifier: workspace:*
+        version: link:../../packages/agent/agent-platform
       '@agentx/core-runtime':
         specifier: workspace:*
         version: link:../../packages/shared/core-runtime
+      '@agentx/provider-sdk':
+        specifier: workspace:*
+        version: link:../../packages/provider/provider-sdk
       '@agentx/runtime-adapters':
         specifier: workspace:*
         version: link:../../packages/runtime/runtime-adapters
