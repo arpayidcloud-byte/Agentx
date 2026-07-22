@@ -53,7 +53,7 @@ export class BullMQProvider implements IQueueProvider {
   private getQueue(topic: string): Queue {
     let q = this.queues.get(topic);
     if (!q) {
-      q = new Queue(topic, { connection: this.redis as any });
+      q = new Queue(topic, { connection: this.redis as unknown as any });
       this.queues.set(topic, q);
     }
     return q;
