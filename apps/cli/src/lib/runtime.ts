@@ -1,11 +1,10 @@
 import { ProductionRuntime } from '@agentx/runtime-production';
 import type { ITaskRepository, Scheduler } from '@agentx/core-runtime';
-
-type PrismaClient = any;
+import type { IEventBus } from '@agentx/core-runtime';
 
 let _runtime: ProductionRuntime | null = null;
 
-export function getRuntime(): { scheduler: Scheduler; bus: any; prisma: PrismaClient; taskRepo: ITaskRepository } {
+export function getRuntime(): { scheduler: Scheduler; bus: IEventBus; prisma: unknown; taskRepo: ITaskRepository } {
   if (!_runtime) {
     _runtime = new ProductionRuntime(process.env.REDIS_URL || 'redis://localhost:6379');
     // Fire & forget start
