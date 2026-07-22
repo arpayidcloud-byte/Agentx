@@ -68,9 +68,15 @@ importers:
       '@agentx/runtime-adapters':
         specifier: workspace:*
         version: link:../../packages/runtime/runtime-adapters
+      '@agentx/runtime-production':
+        specifier: workspace:*
+        version: link:../../packages/runtime/runtime-production
       '@agentx/tool-sdk':
         specifier: workspace:*
         version: link:../../packages/shared/tool-sdk
+      '@prisma/client':
+        specifier: ^7.9.0
+        version: 7.9.0(prisma@5.22.0)(typescript@5.4.5)
       commander:
         specifier: ^15.0.0
         version: 15.0.0
@@ -387,6 +393,9 @@ importers:
 
   packages/runtime/runtime-adapters:
     dependencies:
+      '@agentx/core-runtime':
+        specifier: workspace:*
+        version: link:../../shared/core-runtime
       bullmq:
         specifier: ^5.80.2
         version: 5.80.2
@@ -405,6 +414,22 @@ importers:
         version: 1.6.0(@types/node@26.1.1)
 
   packages/runtime/runtime-production:
+    dependencies:
+      '@agentx/core-runtime':
+        specifier: workspace:*
+        version: link:../../shared/core-runtime
+      '@agentx/persistence':
+        specifier: workspace:*
+        version: link:../../shared/persistence
+      '@agentx/runtime-adapters':
+        specifier: workspace:*
+        version: link:../runtime-adapters
+      '@agentx/tool-sdk':
+        specifier: workspace:*
+        version: link:../../shared/tool-sdk
+      '@prisma/client':
+        specifier: ^5.0.0
+        version: 5.22.0(prisma@5.22.0)
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 1.6.0
@@ -1305,6 +1330,9 @@ packages:
     resolution: {integrity: sha512-SEeaJLb3qBNF/OaXnaR1NmmBbFYk1zC0ZH/52fATcRPLFg/p791YrcyFFy44Bo9sLaGuSuLp5Q6axbb/O+v/RA==}
     engines: {node: ^14.18.0 || >=16.0.0}
 
+  '@prisma/client-runtime-utils@7.9.0':
+    resolution: {integrity: sha512-kMVmS4ZEy3xlkca+TfxOEm/ToVVlOS2x1Tc6/wIRf/HfczBqENtSPcKszy4ZpFNzjJ8SRKvlU5V0rrpoFw2KOg==}
+
   '@prisma/client@5.22.0':
     resolution: {integrity: sha512-M0SVXfyHnQREBKxCgyo7sffrKttwE6R8PMq330MIUF0pTwjUhLbW84pFDlf06B27XyCR++VtjugEnIHdr07SVA==}
     engines: {node: '>=16.13'}
@@ -1312,6 +1340,18 @@ packages:
       prisma: '*'
     peerDependenciesMeta:
       prisma:
+        optional: true
+
+  '@prisma/client@7.9.0':
+    resolution: {integrity: sha512-BTG/mB+WL/1sD2gWwdNc2uuVJjNNBgCDlPFdjco6jJArgbg4IAChtzVeW4debFa/NKBbsGedCjET316sjllWTQ==}
+    engines: {node: ^20.19 || ^22.12 || >=24.0}
+    peerDependencies:
+      prisma: '*'
+      typescript: '>=5.4.0'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
+      typescript:
         optional: true
 
   '@prisma/debug@5.22.0':
@@ -3831,9 +3871,18 @@ snapshots:
 
   '@pkgr/core@0.3.6': {}
 
+  '@prisma/client-runtime-utils@7.9.0': {}
+
   '@prisma/client@5.22.0(prisma@5.22.0)':
     optionalDependencies:
       prisma: 5.22.0
+
+  '@prisma/client@7.9.0(prisma@5.22.0)(typescript@5.4.5)':
+    dependencies:
+      '@prisma/client-runtime-utils': 7.9.0
+    optionalDependencies:
+      prisma: 5.22.0
+      typescript: 5.4.5
 
   '@prisma/debug@5.22.0': {}
 

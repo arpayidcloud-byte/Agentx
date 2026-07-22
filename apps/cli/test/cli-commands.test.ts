@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { submit } from '../src/commands/submit.js';
 import { status } from '../src/commands/status.js';
-import { approve, reject } from '../src/commands/approve.js';
+import { approve } from '../src/commands/approve.js';
 import { config } from '../src/commands/config.js';
 import { plugin } from '../src/commands/plugin.js';
 import { getRuntime, resetRuntime } from '../src/lib/runtime.js';
@@ -21,7 +21,7 @@ describe('CLI submit', () => {
     expect(logs.some((l) => l.includes('build a REST API'))).toBe(true);
 
     const { taskRepo } = getRuntime();
-    const tasks = taskRepo.getAll();
+    const tasks = await taskRepo.getAll();
     expect(tasks).toHaveLength(1);
     const task = tasks[0];
     expect(task.goal).toBe('build a REST API');
@@ -67,7 +67,7 @@ describe('CLI approve/reject', () => {
   it('throws when task not in WAITING_APPROVAL', async () => {
     await submit(['test']);
     const { taskRepo } = getRuntime();
-    const tasks = taskRepo.getAll();
+    const tasks = await taskRepo.getAll();
     const taskId = tasks[0].id;
     await expect(approve([taskId])).rejects.toThrow('not waiting for approval');
   });

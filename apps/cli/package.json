@@ -20,7 +20,9 @@
   "dependencies": {
     "@agentx/core-runtime": "workspace:*",
     "@agentx/runtime-adapters": "workspace:*",
+    "@agentx/runtime-production": "workspace:*",
     "@agentx/tool-sdk": "workspace:*",
+    "@prisma/client": "^7.9.0",
     "commander": "^15.0.0"
   }
 }

@@ -5,7 +5,7 @@ export async function status(args: string[]): Promise<void> {
   const { scheduler, taskRepo } = getRuntime();
 
   if (!taskId) {
-    const tasks = taskRepo.getAll();
+    const tasks = await taskRepo.getAll();
     if (tasks.length === 0) {
       console.log('No tasks found');
       return;
