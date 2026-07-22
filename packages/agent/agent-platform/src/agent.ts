@@ -39,7 +39,7 @@ async function callLLM(prompt: string, modelId?: string): Promise<string> {
   };
 
   const response = await registry.complete(provider.id, request);
-  return response.content;
+  return response.text;
 }
 
 // Specialized agent implementations
