@@ -37,7 +37,13 @@ export class BullMQProvider implements IQueueProvider {
       await this.redis.ping();
       return { healthy: true, latencyMs: 1, lastChecked: new Date(), status: 'ACTIVE' };
     } catch (e) {
-      return { healthy: false, latencyMs: 0, lastChecked: new Date(), status: 'DEGRADED', details: { error: String(e) } };
+      return {
+        healthy: false,
+        latencyMs: 0,
+        lastChecked: new Date(),
+        status: 'DEGRADED',
+        details: { error: String(e) },
+      };
     }
   }
 
@@ -53,7 +59,8 @@ export class BullMQProvider implements IQueueProvider {
   private getQueue(topic: string): Queue {
     let q = this.queues.get(topic);
     if (!q) {
-      q = new Queue(topic, { connection: this.redis as unknown as any });
+      // @ts-ignore - bullmq redis connection type mismatch
+      q = new Queue(topic, { connection: this.redis });
       this.queues.set(topic, q);
     }
     return q;
@@ -64,10 +71,10 @@ export class BullMQProvider implements IQueueProvider {
     try {
       const q = this.getQueue(topic);
       const bullPriority = Math.max(1, 100 - priority);
-      
-      await q.add('job', message, { 
+
+      await q.add('job', message, {
         priority: bullPriority,
-        jobId: `msg-${Date.now()}-${Math.random()}`
+        jobId: `msg-${Date.now()}-${Math.random()}`,
       });
       this.successes++;
     } catch (e) {
