@@ -61,6 +61,15 @@ importers:
 
   apps/cli:
     dependencies:
+      '@agentx/core-runtime':
+        specifier: workspace:*
+        version: link:../../packages/shared/core-runtime
+      '@agentx/runtime-adapters':
+        specifier: workspace:*
+        version: link:../../packages/runtime/runtime-adapters
+      '@agentx/tool-sdk':
+        specifier: workspace:*
+        version: link:../../packages/shared/tool-sdk
       commander:
         specifier: ^15.0.0
         version: 15.0.0

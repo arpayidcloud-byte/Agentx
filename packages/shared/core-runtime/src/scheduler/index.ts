@@ -209,4 +209,8 @@ export class Scheduler implements IScheduler {
       span.end();
     }
   }
+
+  public async getTask(taskId: string): Promise<TaskModel | undefined> {
+    return this.inFlightTasks.get(taskId) || (await this.taskRepo.findById(taskId));
+  }
 }

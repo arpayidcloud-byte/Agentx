@@ -22,5 +22,6 @@ export declare class Scheduler implements IScheduler {
     private dispatch;
     completeTask(taskId: string, result: unknown): Promise<void>;
     failTask(taskId: string, error: unknown): Promise<void>;
+    getTask(taskId: string): Promise<TaskModel | undefined>;
 }
 //# sourceMappingURL=index.d.ts.map

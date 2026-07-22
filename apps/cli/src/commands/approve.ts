@@ -1,78 +1,50 @@
-import * as fs from 'fs';
-import * as path from 'path';
-
-const DATA_DIR = path.resolve(process.cwd(), '.agentx');
-
-function loadTasks(): Record<
-  string,
-  {
-    id: string;
-    goal: string;
-    status: string;
-    graphId?: string;
-    createdAt: string;
-    updatedAt: string;
-  }
-> {
-  const tasksFile = path.join(DATA_DIR, 'tasks.json');
-  if (!fs.existsSync(tasksFile)) return {};
-  return JSON.parse(fs.readFileSync(tasksFile, 'utf-8')) as Record<
-    string,
-    {
-      id: string;
-      goal: string;
-      status: string;
-      graphId?: string;
-      createdAt: string;
-      updatedAt: string;
-    }
-  >;
-}
-
-function saveTasks(tasks: Record<string, unknown>): void {
-  fs.writeFileSync(path.join(DATA_DIR, 'tasks.json'), JSON.stringify(tasks, null, 2));
-}
+import { getRuntime } from '../lib/runtime.js';
+import { TaskStatus } from '@agentx/core-runtime';
 
 export async function approve(args: string[]): Promise<void> {
   const taskId = args[0];
-  if (!taskId) throw new Error('Usage: agentx approve <taskId>');
+  const reason = args.slice(1).join(' ') || 'Approved';
 
-  const tasks = loadTasks();
-  const task = tasks[taskId] || Object.entries(tasks).find(([_, t]) => t.id.startsWith(taskId));
-
-  if (!task) throw new Error(`Task not found: ${taskId}`);
-
-  const t = Array.isArray(task) ? task[1] : task;
-  if (t.status !== 'WAITING_APPROVAL') {
-    throw new Error(`Task ${t.id} is not waiting for approval (status: ${t.status})`);
+  if (!taskId) {
+    throw new Error('Usage: agentx approve <taskId> [reason]');
   }
 
-  t.status = 'RUNNING';
-  t.updatedAt = new Date().toISOString();
-  saveTasks(tasks);
+  const { scheduler, taskRepo } = getRuntime();
 
-  console.log(`✅ Approved task ${t.id}`);
-  console.log(`  Status: RUNNING`);
+  const task = await taskRepo.findById(taskId);
+  if (!task) {
+    throw new Error(`Task not found: ${taskId}`);
+  }
+
+  if (task.status !== TaskStatus.WAITING_APPROVAL) {
+    throw new Error(`Task ${task.id} is not waiting for approval (status: ${task.status})`);
+  }
+
+  await scheduler.resume(taskId);
+  console.log(`Task ${taskId} approved`);
+  console.log(`  Reason: ${reason}`);
 }
 
 export async function reject(args: string[]): Promise<void> {
   const taskId = args[0];
-  if (!taskId) throw new Error('Usage: agentx reject <taskId>');
+  const reason = args.slice(1).join(' ') || 'Rejected';
 
-  const tasks = loadTasks();
-  const task = tasks[taskId] || Object.entries(tasks).find(([_, t]) => t.id.startsWith(taskId));
-
-  if (!task) throw new Error(`Task not found: ${taskId}`);
-
-  const t = Array.isArray(task) ? task[1] : task;
-  if (t.status !== 'WAITING_APPROVAL') {
-    throw new Error(`Task ${t.id} is not waiting for approval (status: ${t.status})`);
+  if (!taskId) {
+    throw new Error('Usage: agentx reject <taskId> [reason]');
   }
 
-  t.status = 'FAILED';
-  t.updatedAt = new Date().toISOString();
-  saveTasks(tasks);
+  const { scheduler, taskRepo } = getRuntime();
 
-  console.log(`❌ Rejected task ${t.id}`);
-  console.log(`  Status: FAILED`);
+  const task = await taskRepo.findById(taskId);
+  if (!task) {
+    throw new Error(`Task not found: ${taskId}`);
+  }
+
+  if (task.status !== TaskStatus.WAITING_APPROVAL) {
+    throw new Error(`Task ${task.id} is not waiting for approval (status: ${task.status})`);
+  }
+
+  await scheduler.cancel(taskId, reason);
+  console.log(`Task ${taskId} rejected`);
+  console.log(`  Reason: ${reason}`);
 }

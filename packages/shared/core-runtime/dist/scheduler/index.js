@@ -194,5 +194,8 @@ export class Scheduler {
             span.end();
         }
     }
+    async getTask(taskId) {
+        return this.inFlightTasks.get(taskId) || (await this.taskRepo.findById(taskId));
+    }
 }
 //# sourceMappingURL=index.js.map
