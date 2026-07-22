@@ -63,8 +63,9 @@ export function getRuntime(): {
       const providerRegistry = createProviderRegistry();
       const agentRegistry = createAgentRegistry(providerRegistry);
       const scheduler = new Scheduler(bus, taskRepo);
-      // Wire agent registry to scheduler after construction
-      (scheduler as any).agentRegistry = agentRegistry;
+      // Wire agent registry to scheduler
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (scheduler as unknown as { setAgentRegistry: (r: unknown) => void }).setAgentRegistry(agentRegistry);
       _testRuntime = { scheduler, bus, taskRepo, agentRegistry, providerRegistry };
     }
     return _testRuntime;
@@ -79,8 +80,8 @@ export function getRuntime(): {
     bus: _runtime.eventBus,
     prisma: _runtime.prisma,
     taskRepo: _runtime.taskRepo,
-    agentRegistry: new AgentRegistry(),
-    providerRegistry: new ProviderRegistry(),
+    agentRegistry: new AgentRegistry() as InstanceType<typeof AgentRegistry>,
+    providerRegistry: new ProviderRegistry() as InstanceType<typeof ProviderRegistry>,
   };
 }
 
