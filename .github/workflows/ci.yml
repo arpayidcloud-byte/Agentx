@@ -20,7 +20,7 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - name: Generate Prisma Client
-        run: pnpm prisma generate
+        run: pnpm --filter @agentx/persistence db:generate
       - run: pnpm typecheck
       - run: pnpm lint
       - run: pnpm lint:deps
