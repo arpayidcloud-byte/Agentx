@@ -19,9 +19,7 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
-      - name: Generate Prisma Client (root)
-        run: npx prisma generate --schema=./prisma/schema.prisma
-      - name: Generate Prisma Client (persistence)
+      - name: Generate Prisma Client
         run: pnpm --filter @agentx/persistence db:generate
       - run: pnpm typecheck
       - run: pnpm lint
