@@ -8,7 +8,8 @@ import type {
   TaskResult,
   TaskError,
 } from '@agentx/core-runtime';
-import { PrismaClient, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
+import type { PrismaClient } from '@prisma/client';
 
 export class PrismaTaskRepository implements ITaskRepository {
   constructor(private prisma: PrismaClient) {}
