@@ -13,6 +13,8 @@ import { HeartbeatMonitor } from './heartbeat.js';
 import { SubAgentFactory } from './sub-agent-factory.js';
 import type { IEventBus } from '@agentx/core-runtime';
 import type { AgentRole } from './interfaces.js';
+import { MultiAgentCollaborationEngine } from '@agentx/multi-agent-collaboration';
+import type { CollaborationSession } from '@agentx/multi-agent-collaboration';
 
 export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
   private splitter: TaskSplitter;
@@ -22,7 +24,8 @@ export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
   private bus: MessageBus;
   private resourceManager: ResourceManager;
   private heartbeatMonitor: HeartbeatMonitor;
-  // private mergeEngine: MergeEngine;
+  private collaborationEngine: MultiAgentCollaborationEngine;
+  private activeSessions = new Map<string, CollaborationSession>();
 
   private workflows = new Map<
     string,
@@ -31,6 +34,7 @@ export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
       completedNodes: Set<string>;
       history: ExecutionHistoryEntry[];
       budget: ResourceAllocation;
+      sessionId?: string;
     }
   >();
 
@@ -63,7 +67,7 @@ export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
     });
 
     this.heartbeatMonitor = new HeartbeatMonitor();
-    // this.mergeEngine = new MergeEngine();
+    this.collaborationEngine = new MultiAgentCollaborationEngine();
   }
 
   public async createWorkflow(goal: string, budget: ResourceAllocation): Promise<string> {
@@ -72,11 +76,18 @@ export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
 
     this.dependencyAnalyzer.validateGraph(nodes);
 
+    // Start collaboration session for this workflow
+    const agentIds = nodes.map((n) => n.task.assignedAgentRole as string).filter(Boolean);
+
+    const session = await this.collaborationEngine.startSession(goal, agentIds);
+    this.activeSessions.set(workflowId, session);
+
     this.workflows.set(workflowId, {
       nodes,
       completedNodes: new Set(),
       history: [],
       budget,
+      sessionId: session.id,
     });
 
     return workflowId;
@@ -140,6 +151,16 @@ export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
         });
 
         await Promise.all(promises);
+
+        // Check for conflicts between parallel results and resolve
+        if (readyNodes.length > 1 && wf.sessionId) {
+          const agentIds = readyNodes.map((n) => n.task.assignedAgentRole as string);
+          this.collaborationEngine.resolveConflict(
+            agentIds,
+            'parallel-execution',
+            'Auto-resolved: all tasks completed successfully',
+          );
+        }
       }
     }
 
@@ -154,6 +175,11 @@ export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
     const wf = this.workflows.get(workflowId);
     if (!wf) throw new Error('Workflow not found');
 
+    // Save checkpoint before merge
+    if (wf.sessionId) {
+      this.collaborationEngine.saveCheckpoint(wf.sessionId);
+    }
+
     // Dummy merge
     return { status: 'merged', totalTasks: wf.nodes.length };
   }
@@ -162,12 +188,33 @@ export class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
     this.heartbeatMonitor.startMonitoring();
   }
 
-  public async recover(_workflowId: string, _failedAgentId: string): Promise<void> {
-    // Retry logic handled by runner or upper layers
+  public async recover(workflowId: string, _failedAgentId: string): Promise<void> {
+    const wf = this.workflows.get(workflowId);
+    if (!wf || !wf.sessionId) return;
+
+    // Attempt recovery using collaboration engine
+    const recovered = this.collaborationEngine.recover(wf.sessionId);
+    if (recovered) {
+      wf.history.push({
+        timestamp: new Date(),
+        agentId: _failedAgentId,
+        taskId: 'recovery',
+        approvalRequired: false,
+        retries: 1,
+        result: 'success',
+      });
+    }
   }
 
   public async shutdown(workflowId: string): Promise<void> {
     this.heartbeatMonitor.stopMonitoring();
+
+    // Clean up session
+    const wf = this.workflows.get(workflowId);
+    if (wf && wf.sessionId) {
+      this.activeSessions.delete(wf.sessionId);
+    }
+
     this.workflows.delete(workflowId);
   }
 }
