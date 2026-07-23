@@ -17,6 +17,11 @@ export declare class MemoryEngine implements IMemoryEngine {
     getShortTermMemories(limit?: number): Promise<Memory[]>;
     getLongTermMemories(minImportance?: number, limit?: number): Promise<Memory[]>;
     retrieveByType(type: MemoryType, limit?: number): Promise<Memory[]>;
+    retrieveByRecency(limit?: number): Promise<Memory[]>;
+    retrieveByImportance(minImportance?: number, limit?: number): Promise<Memory[]>;
+    retrieveByRelevance(query: string, limit?: number): Promise<Memory[]>;
+    retrieveBySession(sessionId: string, limit?: number): Promise<Memory[]>;
+    retrieveByTask(taskId: string, limit?: number): Promise<Memory[]>;
     private addToLRUCache;
     private removeLRUNode;
     private removeFromLRUCache;

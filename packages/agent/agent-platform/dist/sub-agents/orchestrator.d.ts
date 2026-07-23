@@ -8,6 +8,8 @@ export declare class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
     private bus;
     private resourceManager;
     private heartbeatMonitor;
+    private collaborationEngine;
+    private activeSessions;
     private workflows;
     constructor(globalEventBus: IEventBus);
     createWorkflow(goal: string, budget: ResourceAllocation): Promise<string>;
@@ -16,7 +18,7 @@ export declare class MultiAgentOrchestrator implements IMultiAgentOrchestrator {
     execute(workflowId: string): Promise<unknown>;
     merge(workflowId: string): Promise<unknown>;
     supervise(_workflowId: string): void;
-    recover(_workflowId: string, _failedAgentId: string): Promise<void>;
+    recover(workflowId: string, _failedAgentId: string): Promise<void>;
     shutdown(workflowId: string): Promise<void>;
 }
 //# sourceMappingURL=orchestrator.d.ts.map

@@ -45,9 +45,53 @@ export function validateCommand(parsed, config) {
     if (parsed.hasSubshell) {
         reasons.push('Subshell expansion is not allowed');
     }
+    // 8. Validate argument paths (prevent path traversal and out-of-workspace access)
+    const argPathReasons = validateArgumentPaths(parsed.args, config);
+    reasons.push(...argPathReasons);
     return {
         valid: reasons.length === 0,
         reasons,
     };
+}
+/**
+ * Validates that command arguments don't contain path traversal or out-of-workspace paths
+ * @param args - Command arguments to validate
+ * @param config - Shell sandbox configuration
+ * @returns Array of validation failure reasons (empty if valid)
+ */
+export function validateArgumentPaths(args, config) {
+    const reasons = [];
+    const workspaceRoot = config.defaultWorkingDirectory || process.cwd();
+    for (const arg of args) {
+        // Skip flags and options
+        if (arg.startsWith('-'))
+            continue;
+        // Check for null bytes (potential injection)
+        if (arg.includes('\0')) {
+            reasons.push(`Null byte detected in argument: '${arg.substring(0, 50)}'`);
+            continue;
+        }
+        // Check for path traversal
+        if (arg.includes('..')) {
+            reasons.push(`Path traversal detected in argument: '${arg}'`);
+            continue;
+        }
+        // Check for absolute paths outside workspace
+        if (arg.startsWith('/') && !arg.startsWith(workspaceRoot)) {
+            reasons.push(`Absolute path outside workspace: '${arg}'`);
+            continue;
+        }
+        // Check for encoded path traversal
+        if (arg.includes('%2e%2e') || arg.includes('%2E%2E')) {
+            reasons.push(`Encoded path traversal detected in argument: '${arg}'`);
+            continue;
+        }
+        // Check for home directory expansion
+        if (arg.startsWith('~') && arg.length > 1) {
+            reasons.push(`Home directory expansion not allowed: '${arg}'`);
+            continue;
+        }
+    }
+    return reasons;
 }
 //# sourceMappingURL=validator.js.map

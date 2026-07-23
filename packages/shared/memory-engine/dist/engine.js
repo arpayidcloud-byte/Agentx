@@ -90,6 +90,42 @@ export class MemoryEngine {
         }
         return this.memoryStore.search('', { type, limit });
     }
+    async retrieveByRecency(limit) {
+        const all = await this.memoryStore.list();
+        return all
+            .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+            .slice(0, limit || this.maxCacheSize);
+    }
+    async retrieveByImportance(minImportance, limit) {
+        const all = await this.memoryStore.list();
+        return all
+            .filter((m) => !minImportance || m.importance >= minImportance)
+            .sort((a, b) => b.importance - a.importance)
+            .slice(0, limit || this.maxCacheSize);
+    }
+    async retrieveByRelevance(query, limit) {
+        const all = await this.memoryStore.list();
+        const scored = all.map((memory) => {
+            let score = 0;
+            if (memory.content.includes(query))
+                score += 10;
+            if (memory.metadata && JSON.stringify(memory.metadata).includes(query))
+                score += 5;
+            score += memory.importance;
+            return { memory, score };
+        });
+        return scored
+            .filter((item) => item.score > 0)
+            .sort((a, b) => b.score - a.score)
+            .slice(0, limit || this.maxCacheSize)
+            .map((item) => item.memory);
+    }
+    async retrieveBySession(sessionId, limit) {
+        return this.memoryStore.search('', { sessionId, limit });
+    }
+    async retrieveByTask(taskId, limit) {
+        return this.memoryStore.search('', { taskId, limit });
+    }
     addToLRUCache(memory) {
         if (this.lruCache.has(memory.id)) {
             this.removeLRUNode(this.lruCache.get(memory.id));

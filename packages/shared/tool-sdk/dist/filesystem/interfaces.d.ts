@@ -10,6 +10,8 @@ export interface FileMetadata {
 }
 export interface FilesystemConfig {
     allow: string[];
+    allowedReadPatterns?: string[];
+    allowedWritePatterns?: string[];
     maxFileSizeBytes: number;
     allowHiddenFiles: boolean;
 }

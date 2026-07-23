@@ -7,8 +7,10 @@ import { createTaskRoutes } from './routes/tasks.js';
 import { createApprovalRoutes } from './routes/approvals.js';
 import { createHealthRoutes } from './routes/health.js';
 import { createEventRoutes } from './routes/events.js';
+import { createMetricsRoutes } from './routes/metrics.js';
 import { createGitHubWebhookRoutes } from './integrations/github.js';
 import { createAuthMiddleware } from './middleware/auth.js';
+import type { PrometheusExporter } from '@agentx/observability';
 
 export { SlackNotifier } from './integrations/slack.js';
 
@@ -18,6 +20,7 @@ export interface ApiServerConfig {
   apiKey?: string;
   rateLimitMax: number;
   rateLimitWindow: number;
+  prometheusExporter?: PrometheusExporter;
 }
 
 export async function createApiServer(config: ApiServerConfig) {
@@ -64,6 +67,10 @@ export async function createApiServer(config: ApiServerConfig) {
   await fastify.register(createHealthRoutes, { prefix: '/api/v1' });
   await fastify.register(createEventRoutes, { prefix: '/api/v1' });
   await fastify.register(createGitHubWebhookRoutes);
+
+  if (config.prometheusExporter) {
+    await fastify.register(createMetricsRoutes, { exporter: config.prometheusExporter });
+  }
 
   return fastify;
 }

@@ -1,4 +1,5 @@
 import { createHash } from 'crypto';
+import { trace, SpanStatusCode, type Tracer, type Span } from '@opentelemetry/api';
 
 export interface LogEntry {
   readonly level: string;
@@ -88,11 +89,44 @@ export interface TraceSpan {
   readonly checksum: string;
 }
 
+export interface SpanContext {
+  readonly spanId: string;
+  readonly traceId: string;
+  readonly operation: string;
+  readonly startTime: Date;
+  readonly otelSpan?: Span;
+}
+
 export class DistributedTracing {
   private spans: TraceSpan[] = [];
+  private activeSpans = new Map<string, SpanContext>();
+  private tracer: Tracer;
 
-  startSpan(_traceId: string, _operation: string): string {
-    return `span-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+  constructor(tracerName: string = 'agentx') {
+    this.tracer = trace.getTracer(tracerName);
+  }
+
+  startSpan(traceId: string, operation: string): string {
+    const spanId = `span-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+    const startTime = new Date();
+
+    const otelSpan = this.tracer.startSpan(operation, {
+      attributes: {
+        'trace.id': traceId,
+        'span.id': spanId,
+      },
+    });
+
+    const spanContext: SpanContext = {
+      spanId,
+      traceId,
+      operation,
+      startTime,
+      otelSpan,
+    };
+
+    this.activeSpans.set(spanId, spanContext);
+    return spanId;
   }
 
   finishSpan(
@@ -102,8 +136,19 @@ export class DistributedTracing {
     startTime: Date,
     status: 'OK' | 'ERROR',
   ): TraceSpan {
+    const spanContext = this.activeSpans.get(spanId);
     const endTime = new Date();
     const durationMs = endTime.getTime() - startTime.getTime();
+
+    if (spanContext?.otelSpan) {
+      spanContext.otelSpan.setStatus({
+        code: status === 'OK' ? SpanStatusCode.OK : SpanStatusCode.ERROR,
+      });
+      spanContext.otelSpan.setAttribute('operation.duration_ms', durationMs);
+      spanContext.otelSpan.end();
+      this.activeSpans.delete(spanId);
+    }
+
     const checksum = createHash('sha256')
       .update(JSON.stringify({ traceId, operation, spanId, durationMs }))
       .digest('hex');
@@ -139,6 +184,39 @@ export class DistributedTracing {
         .digest('hex');
       return computed === s.checksum;
     });
+  }
+
+  injectContext(spanId: string): Record<string, string> {
+    const spanContext = this.activeSpans.get(spanId);
+    if (!spanContext) return {};
+
+    const headers: Record<string, string> = {
+      traceparent: `00-${spanContext.traceId}-${spanId}-01`,
+    };
+
+    return headers;
+  }
+
+  extractContext(headers: Record<string, string>): string | null {
+    const traceparent = headers['traceparent'];
+    if (!traceparent || typeof traceparent !== 'string') return null;
+
+    const parts = traceparent.split('-');
+    if (parts.length !== 4) return null;
+
+    const traceId = parts[1];
+    if (!traceId) return null;
+
+    return this.startSpan(traceId, 'extracted-span');
+  }
+
+  getCurrentTraceId(spanId: string): string | null {
+    return this.activeSpans.get(spanId)?.traceId ?? null;
+  }
+
+  clearSpans(): void {
+    this.spans = [];
+    this.activeSpans.clear();
   }
 }
 

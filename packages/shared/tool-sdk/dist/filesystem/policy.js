@@ -1,13 +1,17 @@
 import { FileTooLargeError } from './errors.js';
 export class FilesystemPolicy {
     config;
+    allowedReadPatterns;
+    allowedWritePatterns;
     constructor(config) {
         this.config = config;
+        this.allowedReadPatterns = config.allowedReadPatterns || config.allow || [];
+        this.allowedWritePatterns = config.allowedWritePatterns || config.allow || [];
     }
     getConfig() {
         return this.config;
     }
-    isAllowed(realPath) {
+    isAllowed(realPath, operation) {
         const pathParts = realPath.split('/').filter(Boolean);
         if (!this.config.allowHiddenFiles) {
             const hasHiddenPart = pathParts.some((part) => part.startsWith('.'));
@@ -15,7 +19,14 @@ export class FilesystemPolicy {
                 return false;
             }
         }
-        return this.config.allow.some((pattern) => this.matchesPattern(realPath, pattern));
+        const patterns = operation === 'write' ? this.allowedWritePatterns : this.allowedReadPatterns;
+        return patterns.some((pattern) => this.matchesPattern(realPath, pattern));
+    }
+    isReadAllowed(realPath) {
+        return this.isAllowed(realPath, 'read');
+    }
+    isWriteAllowed(realPath) {
+        return this.isAllowed(realPath, 'write');
     }
     validateFileSize(sizeBytes) {
         if (sizeBytes > this.config.maxFileSizeBytes) {
@@ -23,7 +34,6 @@ export class FilesystemPolicy {
         }
     }
     matchesPattern(filePath, pattern) {
-        // Normalize both paths to relative from workspace root
         const normalizedPath = filePath.replace(/^\//, '');
         const normalizedPattern = pattern.replace(/^\//, '');
         const patternParts = normalizedPattern.split('/');

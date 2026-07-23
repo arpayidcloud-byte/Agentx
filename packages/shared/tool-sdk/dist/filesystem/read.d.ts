@@ -3,7 +3,8 @@ export declare class FilesystemReadTool {
     private readonly sandbox;
     private readonly validator;
     private readonly policy;
-    constructor(sandbox: ISandbox, validator: IFilesystemValidator, policy: IFilesystemPolicy);
+    private readonly timeoutMs;
+    constructor(sandbox: ISandbox, validator: IFilesystemValidator, policy: IFilesystemPolicy, timeoutMs?: number);
     read(requestPath: string): Promise<{
         content: string;
         metadata: {
@@ -11,5 +12,6 @@ export declare class FilesystemReadTool {
             isBinary: boolean;
         };
     }>;
+    private withTimeout;
 }
 //# sourceMappingURL=read.d.ts.map
