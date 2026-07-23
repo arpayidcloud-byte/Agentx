@@ -6,11 +6,41 @@ import type {
   ToolExecutionResponse,
 } from '../interfaces/index.js';
 import { Tracer, Metrics } from '@agentx/observability';
+import { CacheManager } from '@agentx/cache';
+
+interface CacheKey {
+  toolName: string;
+  category: string;
+  argsHash: string;
+  workingDirectory: string;
+}
 
 export class ToolExecutionPipelineImpl implements ToolExecutionPipeline {
   private hooks: ExecutionHooks[] = [];
   private tracer = new Tracer('tool-sdk-pipeline');
   private metrics = new Metrics();
+  private cache: CacheManager<string, ToolExecutionResponse>;
+
+  constructor(cacheTtlMs: number = 300_000) {
+    this.cache = new CacheManager<string, ToolExecutionResponse>();
+    this.cacheTtlMs = cacheTtlMs;
+  }
+
+  private cacheTtlMs: number;
+
+  private generateCacheKey(req: ToolExecutionRequest): string {
+    const key: CacheKey = {
+      toolName: req.toolName || 'unknown',
+      category: req.category || 'unknown',
+      argsHash: JSON.stringify(req.arguments || {}),
+      workingDirectory: req.context?.workingDirectory || '',
+    };
+    return `tool:${key.category}:${key.toolName}:${Buffer.from(key.argsHash).toString('base64')}:${key.workingDirectory}`;
+  }
+
+  private isReadOperation(category: string): boolean {
+    return category?.endsWith('.read') ?? false;
+  }
 
   public addHook(hook: ExecutionHooks): void {
     this.hooks.push(hook);
@@ -20,6 +50,20 @@ export class ToolExecutionPipelineImpl implements ToolExecutionPipeline {
     const span = this.tracer.startSpan('tool-execute');
     span.setAttribute('tool.name', tool.definition.name);
     span.setAttribute('tool.category', tool.definition.category);
+
+    // Check cache for read operations
+    const cacheKey = this.generateCacheKey(req);
+    if (this.isReadOperation(req.category)) {
+      const cached = await this.cache.get(cacheKey);
+      if (cached) {
+        this.metrics.counter('tool_cache_hit', 1, { tool: tool.definition.name });
+        span.setAttribute('tool.cache_hit', true);
+        span.end();
+        return cached;
+      }
+      this.metrics.counter('tool_cache_miss', 1, { tool: tool.definition.name });
+      span.setAttribute('tool.cache_hit', false);
+    }
 
     // PreExecute hooks
     for (const hook of this.hooks) {
@@ -31,6 +75,12 @@ export class ToolExecutionPipelineImpl implements ToolExecutionPipeline {
     let response: ToolExecutionResponse;
     try {
       response = await tool.execute(req);
+
+      // Cache successful read operations
+      if (this.isReadOperation(req.category) && response.result.success) {
+        await this.cache.set(cacheKey, response, this.cacheTtlMs);
+      }
+
       this.metrics.counter('tool_executions_success', 1, { tool: tool.definition.name });
       span.setStatus({ code: 0 });
     } catch (error: unknown) {

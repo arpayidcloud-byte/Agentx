@@ -651,6 +651,9 @@ importers:
       '@agentx/agent-platform':
         specifier: workspace:*
         version: link:../../agent/agent-platform
+      '@agentx/cache':
+        specifier: workspace:*
+        version: link:../cache
       '@agentx/core-runtime':
         specifier: workspace:*
         version: link:../core-runtime
