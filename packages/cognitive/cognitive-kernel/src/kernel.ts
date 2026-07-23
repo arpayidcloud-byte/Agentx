@@ -4,6 +4,7 @@
  */
 
 import type { KernelConfig, SessionMetadata } from './interfaces.js';
+import type { LearningEngine } from '@agentx/cognitive-learning';
 import { KernelLifecycle } from './kernel-lifecycle.js';
 import { KernelSupervisor } from './kernel-supervisor.js';
 import { KernelScheduler } from './kernel-scheduler.js';
@@ -44,8 +45,10 @@ export class CognitiveKernel {
   private validator = new KernelValidator();
   private stats = new KernelStatistics(this.metrics);
   private obs = new KernelObservability(this.trace);
+  private learningEngine?: LearningEngine;
 
-  constructor(_config: KernelConfig) {
+  constructor(_config: KernelConfig, learningEngine?: LearningEngine) {
+    this.learningEngine = learningEngine;
     this.supervisor.registerComponent(
       'budget',
       () => this.budget.getSnapshot().globalTokens < 100000,
@@ -69,7 +72,14 @@ export class CognitiveKernel {
     this.lifecycle.transition('THINKING');
     this.events.publish('kernel.session.created', { sessionId: sessionMeta.sessionId });
     this.trace.startTrace(sessionMeta.traceId);
-    this.audit.log(sessionMeta.traceId, sessionMeta.sessionId, 'start_thinking', { input });
+
+    const decisionContext = {
+      sessionId: sessionMeta.sessionId,
+      goalId: sessionMeta.goalId,
+      input,
+      timestamp: new Date(),
+    };
+    this.audit.log(sessionMeta.traceId, sessionMeta.sessionId, 'start_thinking', decisionContext);
 
     await this.hooks.runBeforeThinking(sessionMeta.sessionId);
 
@@ -92,7 +102,32 @@ export class CognitiveKernel {
       this.events.publish('kernel.checkpoint.saved', { checkpointId: checkpoint.metadata.id });
 
       this.lifecycle.transition('COMPLETED');
-      this.metrics.recordSession(Date.now() - startTime);
+      const durationMs = Date.now() - startTime;
+      this.metrics.recordSession(durationMs);
+
+      const decisionRecord = {
+        sessionId: sessionMeta.sessionId,
+        goalId: sessionMeta.goalId,
+        decision: 'thinking_completed',
+        reasoning: 'Engine dispatched successfully',
+        outcome: 'success',
+        durationMs,
+        timestamp: new Date(),
+      };
+      this.audit.log(sessionMeta.traceId, sessionMeta.sessionId, 'decision_logged', decisionRecord);
+
+      if (this.learningEngine) {
+        await this.learningEngine.collectExperience({
+          sessionId: sessionMeta.sessionId,
+          taskId: sessionMeta.sessionId,
+          action: 'thinking',
+          input: String(input),
+          output: result.output,
+          outcome: 'success',
+          durationMs,
+        });
+      }
+
       await this.hooks.runAfterThinking(sessionMeta.sessionId, result);
       this.events.publish('kernel.completed', { sessionId: sessionMeta.sessionId, result });
 
@@ -101,6 +136,31 @@ export class CognitiveKernel {
       const message = err instanceof Error ? err.message : String(err);
       this.metrics.recordFailure();
       this.lifecycle.transition('FAILED');
+
+      const failureRecord = {
+        sessionId: sessionMeta.sessionId,
+        goalId: sessionMeta.goalId,
+        decision: 'thinking_failed',
+        reasoning: message,
+        outcome: 'failure',
+        timestamp: new Date(),
+      };
+      this.audit.log(sessionMeta.traceId, sessionMeta.sessionId, 'decision_logged', failureRecord);
+
+      if (this.learningEngine) {
+        await this.learningEngine
+          .collectExperience({
+            sessionId: sessionMeta.sessionId,
+            taskId: sessionMeta.sessionId,
+            action: 'thinking',
+            input: String(input),
+            output: message,
+            outcome: 'failure',
+            durationMs: Date.now() - startTime,
+          })
+          .catch(() => {});
+      }
+
       await this.hooks.runOnFailure(
         sessionMeta.sessionId,
         err instanceof Error ? err : new Error(String(err)),
