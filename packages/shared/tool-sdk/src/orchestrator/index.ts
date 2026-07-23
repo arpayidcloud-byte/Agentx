@@ -10,6 +10,7 @@ import type {
   ToolResult as ProviderToolResult,
   CompletionResponse,
 } from '@agentx/provider-sdk';
+import { Metrics, Tracer } from '@agentx/observability';
 
 export interface ToolOrchestratorConfig {
   maxIterations: number;
@@ -30,6 +31,8 @@ export class ToolOrchestrator {
   private registry: IToolRegistry;
   private pipeline: ToolExecutionPipeline;
   private config: ToolOrchestratorConfig;
+  private metrics: Metrics;
+  private tracer: Tracer;
 
   constructor(
     registry: IToolRegistry,
@@ -43,6 +46,8 @@ export class ToolOrchestrator {
       timeoutMs: config?.timeoutMs ?? 60000,
       workingDirectory: config?.workingDirectory ?? process.cwd(),
     };
+    this.metrics = new Metrics();
+    this.tracer = new Tracer('tool-orchestrator');
   }
 
   public async executeToolCalls(
@@ -52,14 +57,24 @@ export class ToolOrchestrator {
     const results: ProviderToolResult[] = [];
 
     for (const toolCall of toolCalls) {
+      const span = this.tracer.startSpan('tool-orchestrator-execute');
+      span.setAttribute('tool.call_id', toolCall.callId);
+      span.setAttribute('tool.name', toolCall.toolName);
+
+      const startTime = Date.now();
+
       const tool = this.registry.find(toolCall.toolName);
       if (!tool) {
+        this.metrics.counter('tool_orchestrator_tool_not_found', 1, {
+          tool: toolCall.toolName,
+        });
         results.push({
           callId: toolCall.callId,
           output: '',
           success: false,
           error: `Tool '${toolCall.toolName}' not found`,
         });
+        span.end();
         continue;
       }
 
@@ -71,7 +86,24 @@ export class ToolOrchestrator {
           context,
         };
 
+        this.metrics.counter('tool_orchestrator_tool_executed', 1, {
+          tool: toolCall.toolName,
+          category: tool.definition.category,
+        });
+
         const response = await this.pipeline.execute(request, tool);
+
+        const durationMs = Date.now() - startTime;
+        this.metrics.histogram('tool_orchestrator_execution_latency', durationMs, {
+          tool: toolCall.toolName,
+          success: String(response.result.success),
+        });
+
+        if (!response.result.success) {
+          this.metrics.counter('tool_orchestrator_tool_failed', 1, {
+            tool: toolCall.toolName,
+          });
+        }
 
         results.push({
           callId: toolCall.callId,
@@ -79,13 +111,31 @@ export class ToolOrchestrator {
           success: response.result.success,
           error: response.result.error,
         });
+
+        span.setAttribute('tool.success', response.result.success);
+        span.end();
       } catch (error) {
+        const durationMs = Date.now() - startTime;
+        this.metrics.counter('tool_orchestrator_tool_error', 1, {
+          tool: toolCall.toolName,
+        });
+        this.metrics.histogram('tool_orchestrator_execution_latency', durationMs, {
+          tool: toolCall.toolName,
+          error: 'true',
+        });
+
         results.push({
           callId: toolCall.callId,
           output: '',
           success: false,
           error: error instanceof Error ? error.message : String(error),
         });
+
+        span.setStatus({
+          code: 1,
+          message: error instanceof Error ? error.message : String(error),
+        });
+        span.end();
       }
     }
 
@@ -96,13 +146,25 @@ export class ToolOrchestrator {
     initialResponse: CompletionResponse,
     context: ToolExecutionContext,
   ): Promise<OrchestrationResult> {
+    const span = this.tracer.startSpan('tool-orchestrator-loop');
+    span.setAttribute('orchestrator.max_iterations', this.config.maxIterations);
+
     const allToolCalls: NormalizedToolCall[] = [];
     const allToolResults: ProviderToolResult[] = [];
     let iterations = 0;
     const response = initialResponse;
 
+    this.metrics.counter('tool_orchestrator_loop_started', 1, {
+      task_id: context.taskId,
+    });
+
     while (response.toolCalls.length > 0 && iterations < this.config.maxIterations) {
       iterations++;
+
+      span.setAttribute(
+        `orchestrator.iteration_${iterations}_tool_count`,
+        response.toolCalls.length,
+      );
 
       allToolCalls.push(...response.toolCalls);
 
@@ -111,6 +173,12 @@ export class ToolOrchestrator {
 
       if (toolResults.some((r) => !r.success)) {
         const failedTools = toolResults.filter((r) => !r.success);
+        this.metrics.counter('tool_orchestrator_loop_failed', 1, {
+          task_id: context.taskId,
+          iteration: String(iterations),
+        });
+        span.setStatus({ code: 1, message: 'Tool execution failed' });
+        span.end();
         return {
           finalText: response.text,
           toolCalls: allToolCalls,
@@ -125,6 +193,11 @@ export class ToolOrchestrator {
     }
 
     if (iterations >= this.config.maxIterations) {
+      this.metrics.counter('tool_orchestrator_loop_max_iterations', 1, {
+        task_id: context.taskId,
+      });
+      span.setStatus({ code: 1, message: 'Max iterations reached' });
+      span.end();
       return {
         finalText: response.text,
         toolCalls: allToolCalls,
@@ -134,6 +207,13 @@ export class ToolOrchestrator {
         error: `Max iterations (${this.config.maxIterations}) reached`,
       };
     }
+
+    this.metrics.counter('tool_orchestrator_loop_completed', 1, {
+      task_id: context.taskId,
+      iterations: String(iterations),
+    });
+    span.setAttribute('orchestrator.total_iterations', iterations);
+    span.end();
 
     return {
       finalText: response.text,
