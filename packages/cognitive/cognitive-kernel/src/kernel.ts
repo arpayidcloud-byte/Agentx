@@ -5,7 +5,6 @@
 
 import type { KernelConfig, SessionMetadata } from './interfaces.js';
 import type { LearningEngine } from '@agentx/cognitive-learning';
-import type { GoalIntakeEngine, GoalAnalyzer, GoalDecomposer } from '@agentx/autonomous-cognition';
 import { KernelLifecycle } from './kernel-lifecycle.js';
 import { KernelSupervisor } from './kernel-supervisor.js';
 import { KernelScheduler } from './kernel-scheduler.js';
@@ -25,6 +24,53 @@ import { KernelValidator } from './kernel-validator.js';
 import { KernelStatistics } from './kernel-statistics.js';
 import { KernelObservability } from './kernel-observability.js';
 import { SessionError } from './errors.js';
+
+interface GoalIntakeEngine {
+  intake(
+    title: string,
+    description: string,
+    priority: number,
+    metadata?: Record<string, unknown>,
+  ): Goal;
+  transition(goalId: string, newState: string): Goal;
+  get(goalId: string): Goal | undefined;
+  getAll(): Goal[];
+}
+
+interface GoalAnalyzer {
+  analyze(goal: Goal): GoalAnalysis;
+}
+
+interface GoalDecomposer {
+  decompose(goalId: string, subGoalTitles: string[]): GoalDecomposition;
+}
+
+interface Goal {
+  goalId: string;
+  title: string;
+  description: string;
+  priority: number;
+  state: string;
+  createdAt: Date;
+  metadata: Record<string, unknown>;
+  checksum: string;
+}
+
+interface GoalAnalysis {
+  goalId: string;
+  complexity: number;
+  estimatedTasks: number;
+  requiredCapabilities: string[];
+  riskScore: number;
+  checksum: string;
+}
+
+interface GoalDecomposition {
+  goalId: string;
+  subGoals: string[];
+  dependencies: string[][];
+  checksum: string;
+}
 
 export class CognitiveKernel {
   public lifecycle = new KernelLifecycle();
