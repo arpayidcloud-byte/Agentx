@@ -5,6 +5,7 @@
 
 import type { KernelConfig, SessionMetadata } from './interfaces.js';
 import type { LearningEngine } from '@agentx/cognitive-learning';
+import type { GoalIntakeEngine, GoalAnalyzer, GoalDecomposer } from '@agentx/autonomous-cognition';
 import { KernelLifecycle } from './kernel-lifecycle.js';
 import { KernelSupervisor } from './kernel-supervisor.js';
 import { KernelScheduler } from './kernel-scheduler.js';
@@ -46,9 +47,21 @@ export class CognitiveKernel {
   private stats = new KernelStatistics(this.metrics);
   private obs = new KernelObservability(this.trace);
   private learningEngine?: LearningEngine;
+  private goalIntake?: GoalIntakeEngine;
+  private goalAnalyzer?: GoalAnalyzer;
+  private goalDecomposer?: GoalDecomposer;
 
-  constructor(_config: KernelConfig, learningEngine?: LearningEngine) {
+  constructor(
+    _config: KernelConfig,
+    learningEngine?: LearningEngine,
+    goalIntake?: GoalIntakeEngine,
+    goalAnalyzer?: GoalAnalyzer,
+    goalDecomposer?: GoalDecomposer,
+  ) {
     this.learningEngine = learningEngine;
+    this.goalIntake = goalIntake;
+    this.goalAnalyzer = goalAnalyzer;
+    this.goalDecomposer = goalDecomposer;
     this.supervisor.registerComponent(
       'budget',
       () => this.budget.getSnapshot().globalTokens < 100000,
@@ -193,5 +206,95 @@ export class CognitiveKernel {
 
   getObservability() {
     return this.obs;
+  }
+
+  createGoal(
+    title: string,
+    description: string,
+    priority: number,
+    metadata: Record<string, unknown> = {},
+  ) {
+    if (!this.goalIntake) {
+      throw new SessionError('Goal engine not configured', 'kernel');
+    }
+    const goal = this.goalIntake.intake(title, description, priority, metadata);
+    this.audit.log('kernel', goal.goalId, 'goal_created', { title, priority });
+    this.events.publish('kernel.goal.created', { goalId: goal.goalId, title });
+    return goal;
+  }
+
+  transitionGoal(goalId: string, newState: string) {
+    if (!this.goalIntake) {
+      throw new SessionError('Goal engine not configured', 'kernel');
+    }
+    const goal = this.goalIntake.transition(
+      goalId,
+      newState as
+        'INTAKE' | 'ANALYZING' | 'DECOMPOSED' | 'SCHEDULED' | 'EXECUTING' | 'COMPLETED' | 'FAILED',
+    );
+    this.audit.log('kernel', goalId, 'goal_transitioned', { newState });
+    this.events.publish('kernel.goal.transitioned', { goalId, newState });
+    return goal;
+  }
+
+  analyzeGoal(goalId: string) {
+    if (!this.goalIntake || !this.goalAnalyzer) {
+      throw new SessionError('Goal engine not configured', 'kernel');
+    }
+    const goal = this.goalIntake.get(goalId);
+    if (!goal) {
+      throw new SessionError(`Goal not found: ${goalId}`, 'kernel');
+    }
+    const analysis = this.goalAnalyzer.analyze(goal);
+    this.audit.log('kernel', goalId, 'goal_analyzed', {
+      complexity: analysis.complexity,
+      estimatedTasks: analysis.estimatedTasks,
+      riskScore: analysis.riskScore,
+    });
+    this.events.publish('kernel.goal.analyzed', { goalId, analysis });
+    return analysis;
+  }
+
+  decomposeGoal(goalId: string, subGoalTitles: string[]) {
+    if (!this.goalDecomposer) {
+      throw new SessionError('Goal decomposer not configured', 'kernel');
+    }
+    const decomposition = this.goalDecomposer.decompose(goalId, subGoalTitles);
+    this.audit.log('kernel', goalId, 'goal_decomposed', {
+      subGoals: decomposition.subGoals,
+      dependencies: decomposition.dependencies,
+    });
+    this.events.publish('kernel.goal.decomposed', { goalId, decomposition });
+    return decomposition;
+  }
+
+  getGoalProgress(goalId: string) {
+    if (!this.goalIntake) {
+      throw new SessionError('Goal engine not configured', 'kernel');
+    }
+    const goal = this.goalIntake.get(goalId);
+    if (!goal) {
+      throw new SessionError(`Goal not found: ${goalId}`, 'kernel');
+    }
+    return {
+      goalId: goal.goalId,
+      title: goal.title,
+      state: goal.state,
+      priority: goal.priority,
+      createdAt: goal.createdAt,
+    };
+  }
+
+  getAllGoals() {
+    if (!this.goalIntake) {
+      throw new SessionError('Goal engine not configured', 'kernel');
+    }
+    return this.goalIntake.getAll().map((goal) => ({
+      goalId: goal.goalId,
+      title: goal.title,
+      state: goal.state,
+      priority: goal.priority,
+      createdAt: goal.createdAt,
+    }));
   }
 }
