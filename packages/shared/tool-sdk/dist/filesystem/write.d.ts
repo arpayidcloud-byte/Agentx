@@ -4,9 +4,11 @@ export declare class FilesystemWriteTool {
     private readonly atomicWriter;
     private readonly validator;
     private readonly policy;
-    constructor(sandbox: ISandbox, atomicWriter: IAtomicWriter, validator: IFilesystemValidator, policy: IFilesystemPolicy);
+    private readonly timeoutMs;
+    constructor(sandbox: ISandbox, atomicWriter: IAtomicWriter, validator: IFilesystemValidator, policy: IFilesystemPolicy, timeoutMs?: number);
     write(requestPath: string, content: string): Promise<{
         success: boolean;
     }>;
+    private withTimeout;
 }
 //# sourceMappingURL=write.d.ts.map

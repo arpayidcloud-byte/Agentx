@@ -5,6 +5,7 @@ import { MessageBus } from './message-bus.js';
 import { ResourceManager } from './resource-manager.js';
 import { HeartbeatMonitor } from './heartbeat.js';
 import { SubAgentFactory } from './sub-agent-factory.js';
+import { MultiAgentCollaborationEngine } from '@agentx/multi-agent-collaboration';
 export class MultiAgentOrchestrator {
     splitter;
     dependencyAnalyzer;
@@ -13,7 +14,8 @@ export class MultiAgentOrchestrator {
     bus;
     resourceManager;
     heartbeatMonitor;
-    // private mergeEngine: MergeEngine;
+    collaborationEngine;
+    activeSessions = new Map();
     workflows = new Map();
     constructor(globalEventBus) {
         this.splitter = new TaskSplitter();
@@ -37,17 +39,22 @@ export class MultiAgentOrchestrator {
             maxConcurrentTools: 5,
         });
         this.heartbeatMonitor = new HeartbeatMonitor();
-        // this.mergeEngine = new MergeEngine();
+        this.collaborationEngine = new MultiAgentCollaborationEngine();
     }
     async createWorkflow(goal, budget) {
         const workflowId = `wf-${Date.now()}`;
         const nodes = this.splitter.decomposeTask(goal, {}, budget);
         this.dependencyAnalyzer.validateGraph(nodes);
+        // Start collaboration session for this workflow
+        const agentIds = nodes.map((n) => n.task.assignedAgentRole).filter(Boolean);
+        const session = await this.collaborationEngine.startSession(goal, agentIds);
+        this.activeSessions.set(workflowId, session);
         this.workflows.set(workflowId, {
             nodes,
             completedNodes: new Set(),
             history: [],
             budget,
+            sessionId: session.id,
         });
         return workflowId;
     }
@@ -96,6 +103,11 @@ export class MultiAgentOrchestrator {
                     });
                 });
                 await Promise.all(promises);
+                // Check for conflicts between parallel results and resolve
+                if (readyNodes.length > 1 && wf.sessionId) {
+                    const agentIds = readyNodes.map((n) => n.task.assignedAgentRole);
+                    this.collaborationEngine.resolveConflict(agentIds, 'parallel-execution', 'Auto-resolved: all tasks completed successfully');
+                }
             }
         }
         if (wf.completedNodes.size < wf.nodes.length) {
@@ -107,17 +119,40 @@ export class MultiAgentOrchestrator {
         const wf = this.workflows.get(workflowId);
         if (!wf)
             throw new Error('Workflow not found');
+        // Save checkpoint before merge
+        if (wf.sessionId) {
+            this.collaborationEngine.saveCheckpoint(wf.sessionId);
+        }
         // Dummy merge
         return { status: 'merged', totalTasks: wf.nodes.length };
     }
     supervise(_workflowId) {
         this.heartbeatMonitor.startMonitoring();
     }
-    async recover(_workflowId, _failedAgentId) {
-        // Retry logic handled by runner or upper layers
+    async recover(workflowId, _failedAgentId) {
+        const wf = this.workflows.get(workflowId);
+        if (!wf || !wf.sessionId)
+            return;
+        // Attempt recovery using collaboration engine
+        const recovered = this.collaborationEngine.recover(wf.sessionId);
+        if (recovered) {
+            wf.history.push({
+                timestamp: new Date(),
+                agentId: _failedAgentId,
+                taskId: 'recovery',
+                approvalRequired: false,
+                retries: 1,
+                result: 'success',
+            });
+        }
     }
     async shutdown(workflowId) {
         this.heartbeatMonitor.stopMonitoring();
+        // Clean up session
+        const wf = this.workflows.get(workflowId);
+        if (wf && wf.sessionId) {
+            this.activeSessions.delete(wf.sessionId);
+        }
         this.workflows.delete(workflowId);
     }
 }
