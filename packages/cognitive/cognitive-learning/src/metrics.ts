@@ -24,6 +24,7 @@ export class LearningMetricsCollector {
   public reflectionsCreated = 0;
   public adaptationsGenerated = 0;
   public improvementsGenerated = 0;
+  public experiencesCollected = 0;
   public totalConfidenceDelta = 0;
   public totalSuccesses = 0;
   public totalFailures = 0;

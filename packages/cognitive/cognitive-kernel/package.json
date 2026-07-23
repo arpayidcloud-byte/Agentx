@@ -17,5 +17,8 @@
     "typescript": "5.4.5",
     "vitest": "1.6.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@agentx/cognitive-learning": "workspace:*",
+    "@agentx/autonomous-cognition": "workspace:*"
+  }
 }

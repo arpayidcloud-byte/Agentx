@@ -17,12 +17,17 @@ export type LearningState =
 export interface Experience {
   id: string;
   sessionId: string;
-  goal: string;
+  goal?: string;
+  taskId?: string;
+  action?: string;
+  input?: string;
+  output?: string;
   reasoningTrace: string[];
   decision: string;
   confidence: number;
   outcome: 'success' | 'failure' | 'partial';
   feedback: string[];
+  durationMs?: number;
   timestamp: Date;
   checksum: string;
 }

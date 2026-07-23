@@ -164,6 +164,13 @@ importers:
         version: 1.6.0(@types/node@26.1.1)
 
   packages/cognitive/cognitive-kernel:
+    dependencies:
+      '@agentx/autonomous-cognition':
+        specifier: workspace:*
+        version: link:../autonomous-cognition
+      '@agentx/cognitive-learning':
+        specifier: workspace:*
+        version: link:../cognitive-learning
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 1.6.0

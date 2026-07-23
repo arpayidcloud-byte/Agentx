@@ -149,4 +149,37 @@ export class LearningEngine {
       this.events.publish('learning.recovered', { sessionId });
     }
   }
+
+  async collectExperience(data: {
+    sessionId: string;
+    taskId: string;
+    action: string;
+    input: string;
+    output: string;
+    outcome: 'success' | 'failure';
+    durationMs: number;
+  }): Promise<void> {
+    const experience: Experience = {
+      id: `exp-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+      sessionId: data.sessionId,
+      taskId: data.taskId,
+      action: data.action,
+      input: data.input,
+      output: data.output,
+      goal: '',
+      reasoningTrace: [],
+      decision: data.outcome === 'success' ? 'completed' : 'failed',
+      confidence: data.outcome === 'success' ? 0.8 : 0.2,
+      outcome: data.outcome,
+      feedback: [],
+      durationMs: data.durationMs,
+      timestamp: new Date(),
+      checksum: '',
+    };
+    experience.checksum = Buffer.from(JSON.stringify(experience)).toString('base64');
+
+    this.experienceStore.store(experience);
+    this.metrics.experiencesCollected++;
+    this.events.publish('experience.collected', { experienceId: experience.id });
+  }
 }
