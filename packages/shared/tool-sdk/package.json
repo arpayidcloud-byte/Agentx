@@ -22,6 +22,7 @@
     "@agentx/cache": "workspace:*",
     "@agentx/core-runtime": "workspace:*",
     "@agentx/observability": "workspace:*",
+    "@agentx/provider-sdk": "workspace:*",
     "yaml": "^2.9.0"
   }
 }
