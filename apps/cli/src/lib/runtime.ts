@@ -17,11 +17,19 @@ let _testRuntime: {
 
 const USE_TEST_RUNTIME = process.env.NODE_ENV === 'test' || process.env.VITEST === 'true';
 
+/**
+ * Creates a ProviderRegistry with available providers.
+ * @returns Configured ProviderRegistry with registered providers
+ * @example
+ * ```ts
+ * const registry = createProviderRegistry();
+ * ```
+ */
 function createProviderRegistry(): ProviderRegistry {
   const registry = new ProviderRegistry();
   const credentialResolver = new CredentialResolver();
   const factory = new ProviderFactory(credentialResolver);
-  
+
   // Register Anthropic provider if API key is available
   try {
     const anthropic = factory.createProvider({
@@ -32,22 +40,42 @@ function createProviderRegistry(): ProviderRegistry {
   } catch (error) {
     console.warn('Anthropic provider not configured (missing API key)');
   }
-  
+
   return registry;
 }
 
+/**
+ * Creates an AgentRegistry with core agents registered.
+ * @param providerRegistry - Registry of AI providers for agent execution
+ * @returns Configured AgentRegistry with coder, reviewer, tester, and security agents
+ * @example
+ * ```ts
+ * const agentRegistry = createAgentRegistry(providerRegistry);
+ * ```
+ */
 function createAgentRegistry(providerRegistry: ProviderRegistry): AgentRegistry {
   const registry = new AgentRegistry();
-  
+
   // Register core agents with shared ProviderRegistry
   registry.register(new CoderAgent('coder-1', { providerId: 'anthropic' }, providerRegistry));
   registry.register(new ReviewerAgent('reviewer-1', { providerId: 'anthropic' }, providerRegistry));
   registry.register(new TesterAgent('tester-1', { providerId: 'anthropic' }, providerRegistry));
   registry.register(new SecurityAgent('security-1', { providerId: 'anthropic' }, providerRegistry));
-  
+
   return registry;
 }
 
+/**
+ * Gets or creates the runtime instance for the application.
+ * Returns a test runtime in test environments (NODE_ENV=test or VITEST=true),
+ * otherwise returns a production runtime.
+ * @returns Runtime components including scheduler, event bus, task repository, and registries
+ * @example
+ * ```ts
+ * const runtime = getRuntime();
+ * await runtime.scheduler.enqueue(task);
+ * ```
+ */
 export function getRuntime(): {
   scheduler: Scheduler;
   bus: IEventBus;
@@ -65,7 +93,9 @@ export function getRuntime(): {
       const scheduler = new Scheduler(bus, taskRepo);
       // Wire agent registry to scheduler
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (scheduler as unknown as { setAgentRegistry: (r: unknown) => void }).setAgentRegistry(agentRegistry);
+      (scheduler as unknown as { setAgentRegistry: (r: unknown) => void }).setAgentRegistry(
+        agentRegistry,
+      );
       _testRuntime = { scheduler, bus, taskRepo, agentRegistry, providerRegistry };
     }
     return _testRuntime;
@@ -85,6 +115,14 @@ export function getRuntime(): {
   };
 }
 
+/**
+ * Resets and stops the runtime instance.
+ * Clears both production and test runtime instances.
+ * @example
+ * ```ts
+ * resetRuntime();
+ * ```
+ */
 export function resetRuntime(): void {
   if (_runtime) {
     _runtime.stop().catch(console.error);

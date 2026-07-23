@@ -3,10 +3,28 @@ import { EventBusError } from '../errors.js';
 import { Queue, Worker } from 'bullmq';
 import { Redis } from 'ioredis';
 
+/**
+ * In-memory implementation of IEventBus for testing and development.
+ * Provides pub/sub, request/reply, and broadcast patterns.
+ * @example
+ * ```ts
+ * const bus = new InMemoryEventBus();
+ * await bus.subscribe('task.created', handler);
+ * await bus.publish('task.created', task, traceId);
+ * ```
+ */
 export class InMemoryEventBus implements IEventBus {
   private handlers = new Map<string, Set<(e: EventEnvelope<unknown>) => Promise<void>>>();
   private processedEventIds = new Set<string>();
 
+  /**
+   * Publishes an event to a topic.
+   * @param topic - Event topic to publish to
+   * @param payload - Event payload data
+   * @param traceId - Trace ID for distributed tracing
+   * @param taskId - Optional task ID associated with the event
+   * @param metadata - Optional metadata for the event
+   */
   public async publish<T>(
     topic: string,
     payload: T,
@@ -28,6 +46,11 @@ export class InMemoryEventBus implements IEventBus {
     await this.dispatch(topic, event);
   }
 
+  /**
+   * Subscribes a handler to a topic.
+   * @param topic - Topic to subscribe to
+   * @param handler - Async handler function to process events
+   */
   public async subscribe<T>(
     topic: string,
     handler: (event: EventEnvelope<T>) => Promise<void>,
@@ -38,10 +61,23 @@ export class InMemoryEventBus implements IEventBus {
     this.handlers.get(topic)!.add(handler as (e: EventEnvelope<unknown>) => Promise<void>);
   }
 
+  /**
+   * Unsubscribes all handlers from a topic.
+   * @param topic - Topic to unsubscribe from
+   */
   public async unsubscribe(topic: string): Promise<void> {
     this.handlers.delete(topic);
   }
 
+  /**
+   * Sends a request and waits for a reply.
+   * @param topic - Request topic
+   * @param payload - Request payload
+   * @param traceId - Trace ID for distributed tracing
+   * @param timeoutMs - Timeout in milliseconds (default: 5000)
+   * @returns Promise resolving to the reply event envelope
+   * @throws EventBusError if request times out
+   */
   public async request<TReq, TRes>(
     topic: string,
     payload: TReq,
@@ -65,6 +101,11 @@ export class InMemoryEventBus implements IEventBus {
     });
   }
 
+  /**
+   * Registers a handler that replies to requests on a topic.
+   * @param topic - Request topic to handle
+   * @param handler - Async handler that processes requests and returns responses
+   */
   public async reply<TReq, TRes>(
     topic: string,
     handler: (event: EventEnvelope<TReq>) => Promise<TRes>,
@@ -82,6 +123,12 @@ export class InMemoryEventBus implements IEventBus {
     });
   }
 
+  /**
+   * Broadcasts an event to all subscribers of a topic.
+   * @param topic - Topic to broadcast to
+   * @param payload - Event payload
+   * @param traceId - Trace ID for distributed tracing
+   */
   public async broadcast<T>(topic: string, payload: T, traceId: string): Promise<void> {
     await this.publish(topic, payload, traceId);
   }

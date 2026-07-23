@@ -14,10 +14,27 @@ import {
   ProviderError,
 } from '../../errors.js';
 
+/**
+ * Configuration for Anthropic provider.
+ */
 export interface AnthropicProviderConfig extends ProviderConfiguration {
+  /** Credential resolver for API key management */
   credentialResolver: CredentialResolver;
 }
 
+/**
+ * Anthropic AI provider implementation.
+ * Supports Claude models with text completion, tool use, streaming, and vision.
+ * @example
+ * ```ts
+ * const provider = new AnthropicProvider({
+ *   providerId: 'anthropic',
+ *   defaultModelId: 'claude-sonnet-4-20250514',
+ *   credentialResolver,
+ * });
+ * const response = await provider.complete(request);
+ * ```
+ */
 export class AnthropicProvider extends BaseProvider {
   public readonly capabilities: ProviderCapabilities = {
     completion: true,

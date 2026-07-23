@@ -3,6 +3,17 @@
  * @description Hierarchical runtime errors.
  */
 
+/**
+ * Base class for all runtime errors.
+ * Use for unrecoverable runtime failures.
+ * @param message - Error message describing the failure
+ * @param code - Error code for programmatic handling
+ * @param source - Module or component where the error originated
+ * @example
+ * ```ts
+ * throw new RuntimeError('Task execution failed', 'EXECUTION_ERROR', 'scheduler');
+ * ```
+ */
 export class RuntimeError extends Error {
   constructor(
     message: string,
@@ -15,6 +26,16 @@ export class RuntimeError extends Error {
   }
 }
 
+/**
+ * Error that can be recovered from with retry or fallback.
+ * Use for transient failures like network timeouts or rate limits.
+ * @param message - Error message describing the failure
+ * @param source - Module or component where the error originated
+ * @example
+ * ```ts
+ * throw new RuntimeRecoverableError('API rate limit exceeded', 'provider');
+ * ```
+ */
 export class RuntimeRecoverableError extends RuntimeError {
   constructor(message: string, source: string) {
     super(message, 'RECOVERABLE', source);
@@ -27,6 +48,16 @@ export class RuntimeNonRecoverableError extends RuntimeError {
   }
 }
 
+/**
+ * Error thrown when an operation exceeds its time limit.
+ * Use for task execution timeouts, API call timeouts, etc.
+ * @param message - Error message describing the timeout
+ * @param source - Module or component where the timeout occurred
+ * @example
+ * ```ts
+ * throw new RuntimeTimeoutError('Task execution exceeded 30s limit', 'scheduler');
+ * ```
+ */
 export class RuntimeTimeoutError extends RuntimeError {
   constructor(message: string, source: string) {
     super(message, 'TIMEOUT', source);
