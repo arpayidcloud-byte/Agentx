@@ -15,6 +15,8 @@ export default defineConfig({
       '@agentx/telemetry': path.resolve(root, 'packages/shared/telemetry/src/index.ts'),
       '@agentx/observability': path.resolve(root, 'packages/shared/observability/src/index.ts'),
       '@agentx/shared': path.resolve(root, 'packages/shared/shared/src/index.ts'),
+      '@agentx/provider-sdk': path.resolve(root, 'packages/provider/provider-sdk/src/index.ts'),
+      '@agentx/agent-platform': path.resolve(root, 'packages/agent/agent-platform/src/index.ts'),
     },
   },
   test: {
