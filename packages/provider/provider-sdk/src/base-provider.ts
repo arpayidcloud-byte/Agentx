@@ -11,6 +11,17 @@ import { CostCalculator } from './metrics.js';
 import { ProviderTimeoutError } from './errors.js';
 import { Tracer, Metrics } from '@agentx/observability';
 
+/**
+ * Abstract base class for AI provider implementations.
+ * Provides common functionality for completion, health checks, and error handling.
+ * @example
+ * ```ts
+ * class MyProvider extends BaseProvider {
+ *   protected async doComplete(req, signal) { ... }
+ *   protected mapError(error) { ... }
+ * }
+ * ```
+ */
 export abstract class BaseProvider implements Provider {
   public readonly id: string;
   public abstract readonly capabilities: ProviderCapabilities;
@@ -21,6 +32,10 @@ export abstract class BaseProvider implements Provider {
   protected tracer: Tracer;
   protected otelMetrics: Metrics;
 
+  /**
+   * Creates a new BaseProvider instance.
+   * @param config - Provider configuration including ID, timeouts, and retry policies
+   */
   constructor(config: ProviderConfiguration) {
     this.id = config.providerId;
     this.config = config;
@@ -32,6 +47,13 @@ export abstract class BaseProvider implements Provider {
     this.otelMetrics = new Metrics();
   }
 
+  /**
+   * Executes a completion request with retry and circuit breaker support.
+   * @param req - Completion request with prompt, model, and options
+   * @returns Completion response with text, tool calls, and usage metrics
+   * @throws ProviderTimeoutError if request exceeds timeout
+   * @throws Error if circuit breaker is open or request fails
+   */
   public async complete(req: CompletionRequest): Promise<CompletionResponse> {
     const span = this.tracer.startSpan('provider-complete');
     span.setAttribute('provider.id', this.id);
@@ -129,6 +151,10 @@ export abstract class BaseProvider implements Provider {
     }
   }
 
+  /**
+   * Checks the health status of the provider.
+   * @returns Provider status including health and circuit breaker state
+   */
   public async checkHealth(): Promise<ProviderStatus> {
     return {
       providerId: this.id,

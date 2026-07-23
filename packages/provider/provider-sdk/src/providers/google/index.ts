@@ -10,10 +10,27 @@ import type {
 import type { CredentialResolver } from '../../conformance/credential-resolver.js';
 import { ProviderInvalidCredentialsError, ProviderError } from '../../errors.js';
 
+/**
+ * Configuration for Google provider.
+ */
 export interface GoogleProviderConfig extends ProviderConfiguration {
+  /** Credential resolver for API key management */
   credentialResolver: CredentialResolver;
 }
 
+/**
+ * Google Generative AI provider implementation.
+ * Supports Gemini models with text completion, tool use, streaming, and vision.
+ * @example
+ * ```ts
+ * const provider = new GoogleProvider({
+ *   providerId: 'google',
+ *   defaultModelId: 'gemini-pro',
+ *   credentialResolver,
+ * });
+ * const response = await provider.complete(request);
+ * ```
+ */
 export class GoogleProvider extends BaseProvider {
   public readonly capabilities: ProviderCapabilities = {
     completion: true,
