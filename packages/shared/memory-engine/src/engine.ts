@@ -4,8 +4,16 @@ import type {
   Memory,
   MemorySearchOptions,
   MemoryMetrics,
+  MemoryType,
 } from './interfaces.js';
 import type { IEventBus } from '@agentx/core-runtime';
+
+interface LRUCacheNode {
+  key: string;
+  value: Memory;
+  previous: LRUCacheNode | null;
+  next: LRUCacheNode | null;
+}
 
 export class MemoryEngine implements IMemoryEngine {
   private metrics: MemoryMetrics = {
@@ -15,10 +23,18 @@ export class MemoryEngine implements IMemoryEngine {
     expiredCount: 0,
   };
 
+  private lruCache = new Map<string, LRUCacheNode>();
+  private lruHead: LRUCacheNode | null = null;
+  private lruTail: LRUCacheNode | null = null;
+  private readonly maxCacheSize: number;
+
   constructor(
     private memoryStore: IMemoryStore,
     private eventBus: IEventBus,
-  ) {}
+    maxCacheSize: number = 100,
+  ) {
+    this.maxCacheSize = maxCacheSize;
+  }
 
   public async store(data: Partial<Memory>): Promise<Memory> {
     const now = new Date();
@@ -37,6 +53,7 @@ export class MemoryEngine implements IMemoryEngine {
     }
 
     await this.memoryStore.save(memory);
+    this.addToLRUCache(memory);
     void this.updateMetrics();
 
     await this.eventBus.publish('memory.created', memory, `trace_${memory.id}`);
@@ -45,6 +62,17 @@ export class MemoryEngine implements IMemoryEngine {
 
   public async retrieve(query: string, options?: MemorySearchOptions): Promise<Memory[]> {
     await this.cleanupExpired();
+
+    if (query && options?.type) {
+      const cached = Array.from(this.lruCache.values())
+        .map((node) => node.value)
+        .filter((m) => m.type === options.type && m.content.includes(query));
+
+      if (cached.length > 0) {
+        return cached.slice(0, options.limit || cached.length);
+      }
+    }
+
     return this.memoryStore.search(query, options);
   }
 
@@ -53,6 +81,7 @@ export class MemoryEngine implements IMemoryEngine {
     if (!mem) return;
 
     await this.memoryStore.delete(memoryId);
+    this.removeFromLRUCache(memoryId);
     void this.updateMetrics();
     await this.eventBus.publish('memory.deleted', { id: memoryId }, `trace_${memoryId}`);
   }
@@ -60,12 +89,12 @@ export class MemoryEngine implements IMemoryEngine {
   public async compact(): Promise<void> {
     this.metrics.compactCount++;
     await this.cleanupExpired();
-    // Simulate further compaction logic by deleting low importance memories if needed
-    // Simple implementation for foundation
+
     const all = await this.memoryStore.list();
     for (const mem of all) {
       if (mem.importance <= 2 && mem.type === 'working') {
         await this.memoryStore.delete(mem.id);
+        this.removeFromLRUCache(mem.id);
       }
     }
     void this.updateMetrics();
@@ -75,12 +104,87 @@ export class MemoryEngine implements IMemoryEngine {
     return { ...this.metrics };
   }
 
+  public async getShortTermMemories(limit?: number): Promise<Memory[]> {
+    const memories = Array.from(this.lruCache.values())
+      .map((node) => node.value)
+      .slice(0, limit || this.maxCacheSize);
+    return memories;
+  }
+
+  public async getLongTermMemories(minImportance: number = 7, limit?: number): Promise<Memory[]> {
+    return this.memoryStore.search('', { minImportance, limit });
+  }
+
+  public async retrieveByType(type: MemoryType, limit?: number): Promise<Memory[]> {
+    const cached = Array.from(this.lruCache.values())
+      .map((node) => node.value)
+      .filter((m) => m.type === type);
+
+    if (cached.length > 0) {
+      return cached.slice(0, limit || cached.length);
+    }
+
+    return this.memoryStore.search('', { type, limit });
+  }
+
+  private addToLRUCache(memory: Memory): void {
+    if (this.lruCache.has(memory.id)) {
+      this.removeLRUNode(this.lruCache.get(memory.id)!);
+    }
+
+    const node: LRUCacheNode = {
+      key: memory.id,
+      value: memory,
+      previous: null,
+      next: this.lruHead,
+    };
+
+    if (this.lruHead) {
+      this.lruHead.previous = node;
+    }
+    this.lruHead = node;
+
+    if (!this.lruTail) {
+      this.lruTail = node;
+    }
+
+    this.lruCache.set(memory.id, node);
+
+    while (this.lruCache.size > this.maxCacheSize && this.lruTail) {
+      this.removeLRUNode(this.lruTail);
+    }
+  }
+
+  private removeLRUNode(node: LRUCacheNode): void {
+    if (node.previous) {
+      node.previous.next = node.next;
+    } else {
+      this.lruHead = node.next;
+    }
+
+    if (node.next) {
+      node.next.previous = node.previous;
+    } else {
+      this.lruTail = node.previous;
+    }
+
+    this.lruCache.delete(node.key);
+  }
+
+  private removeFromLRUCache(memoryId: string): void {
+    const node = this.lruCache.get(memoryId);
+    if (node) {
+      this.removeLRUNode(node);
+    }
+  }
+
   private async cleanupExpired(): Promise<void> {
     const all = await this.memoryStore.list();
     const now = new Date();
     for (const mem of all) {
       if (mem.expiresAt && mem.expiresAt < now) {
         await this.memoryStore.delete(mem.id);
+        this.removeFromLRUCache(mem.id);
         this.metrics.expiredCount++;
         await this.eventBus.publish('memory.expired', { id: mem.id }, `trace_${mem.id}`);
       }

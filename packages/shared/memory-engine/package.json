@@ -17,6 +17,7 @@
     "vitest": "1.6.0"
   },
   "dependencies": {
-    "@agentx/core-runtime": "workspace:*"
+    "@agentx/core-runtime": "workspace:*",
+    "@prisma/client": "5.14.0"
   }
 }

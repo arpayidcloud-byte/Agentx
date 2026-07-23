@@ -1,80 +1,114 @@
-import type { IMemoryStore, Memory, MemorySearchOptions } from './interfaces.js';
-import type { TaskModel, TaskStatus } from '@agentx/core-runtime';
+import type { IMemoryStore, Memory, MemorySearchOptions, MemoryType } from './interfaces.js';
+import { PrismaClient } from '@prisma/client';
 
-export interface AuditEvent {
+type PrismaMemoryRecord = {
   id: string;
-  taskId: string;
-  action: string;
-  payload: unknown;
-  timestamp: Date;
-}
-
-export interface StoredTaskContext {
-  taskId: string;
-  variables: Record<string, unknown>;
-  history: Array<{ role: string; content: unknown }>;
-}
+  type: string;
+  content: string;
+  importance: number;
+  sessionId: string | null;
+  taskId: string | null;
+  metadata: Record<string, unknown>;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
 export class PrismaMemoryStore implements IMemoryStore {
-  private memories = new Map<string, Memory>();
-  private tasks = new Map<string, TaskModel>();
-  private auditEvents = new Map<string, AuditEvent[]>();
-  private taskContexts = new Map<string, StoredTaskContext>();
+  private prisma: PrismaClient;
+
+  constructor(prisma?: PrismaClient) {
+    this.prisma = prisma || new PrismaClient();
+  }
 
   async save(memory: Memory): Promise<void> {
-    this.memories.set(memory.id, memory);
+    await this.prisma.memory.create({
+      data: {
+        id: memory.id,
+        type: memory.type,
+        content: memory.content,
+        importance: memory.importance,
+        sessionId: memory.sessionId || null,
+        taskId: memory.taskId || null,
+        metadata: memory.metadata || {},
+      },
+    });
   }
 
   async find(id: string): Promise<Memory | undefined> {
-    return this.memories.get(id);
+    const record = (await this.prisma.memory.findUnique({
+      where: { id },
+    })) as PrismaMemoryRecord | null;
+
+    if (!record) return undefined;
+
+    return this.prismaToMemory(record);
   }
 
   async search(query: string, options?: MemorySearchOptions): Promise<Memory[]> {
-    let results = Array.from(this.memories.values());
+    const where: Record<string, unknown> = {};
 
     if (query) {
-      results = results.filter((m) => m.content.includes(query));
-    }
-    if (options?.type) {
-      results = results.filter((m) => m.type === options.type);
-    }
-    const minImportance = options?.minImportance;
-    if (minImportance) {
-      results = results.filter((m) => m.importance >= minImportance);
-    }
-    if (options?.limit) {
-      results = results.slice(0, options.limit);
+      where.content = { contains: query };
     }
 
-    return results;
+    if (options?.type) {
+      where.type = options.type;
+    }
+
+    if (options?.minImportance) {
+      where.importance = { gte: options.minImportance };
+    }
+
+    if (options?.sessionId) {
+      where.sessionId = options.sessionId;
+    }
+
+    if (options?.taskId) {
+      where.taskId = options.taskId;
+    }
+
+    const records = (await this.prisma.memory.findMany({
+      where,
+      orderBy: options?.orderByImportance ? { importance: 'desc' } : { createdAt: 'desc' },
+      take: options?.limit,
+    })) as PrismaMemoryRecord[];
+
+    return records.map((record) => this.prismaToMemory(record));
   }
 
   async delete(id: string): Promise<void> {
-    this.memories.delete(id);
+    await this.prisma.memory.delete({
+      where: { id },
+    });
   }
 
   async list(): Promise<Memory[]> {
-    return Array.from(this.memories.values());
+    const records = (await this.prisma.memory.findMany({
+      orderBy: { createdAt: 'desc' },
+    })) as PrismaMemoryRecord[];
+
+    return records.map((record) => this.prismaToMemory(record));
   }
 
-  async saveTask(task: TaskModel): Promise<void> {
-    this.tasks.set(task.id, task);
+  async clear(): Promise<void> {
+    await this.prisma.memory.deleteMany();
   }
 
-  async loadTaskContext(taskId: string): Promise<StoredTaskContext | undefined> {
-    return this.taskContexts.get(taskId);
+  async disconnect(): Promise<void> {
+    await this.prisma.$disconnect();
   }
 
-  async appendAuditEvent(taskId: string, event: AuditEvent): Promise<void> {
-    const existing = this.auditEvents.get(taskId);
-    if (existing) {
-      existing.push(event);
-    } else {
-      this.auditEvents.set(taskId, [event]);
-    }
-  }
-
-  async queryByStatus(status: TaskStatus): Promise<TaskModel[]> {
-    return Array.from(this.tasks.values()).filter((t) => t.status === status);
+  private prismaToMemory(record: PrismaMemoryRecord): Memory {
+    return {
+      id: record.id,
+      type: record.type as MemoryType,
+      content: record.content,
+      importance: record.importance,
+      sessionId: record.sessionId || undefined,
+      taskId: record.taskId || undefined,
+      createdAt: record.createdAt,
+      updatedAt: record.updatedAt,
+      metadata: record.metadata as Record<string, unknown>,
+    };
   }
 }

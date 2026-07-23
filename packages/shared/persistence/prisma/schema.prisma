@@ -57,3 +57,19 @@ model Approval {
   
   @@index([status])
 }
+
+model Memory {
+  id          String   @id @default(cuid())
+  type        String
+  content     String
+  importance  Int      @default(50)
+  sessionId   String?
+  taskId      String?
+  metadata    Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([type, importance])
+  @@index([sessionId])
+  @@index([taskId])
+}
