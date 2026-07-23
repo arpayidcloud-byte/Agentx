@@ -3,16 +3,20 @@ import { FileTooLargeError } from './errors.js';
 
 export class FilesystemPolicy implements IFilesystemPolicy {
   private config: FilesystemConfig;
+  private allowedReadPatterns: string[];
+  private allowedWritePatterns: string[];
 
   constructor(config: FilesystemConfig) {
     this.config = config;
+    this.allowedReadPatterns = config.allowedReadPatterns || config.allow || [];
+    this.allowedWritePatterns = config.allowedWritePatterns || config.allow || [];
   }
 
   public getConfig(): FilesystemConfig {
     return this.config;
   }
 
-  public isAllowed(realPath: string): boolean {
+  public isAllowed(realPath: string, operation?: 'read' | 'write'): boolean {
     const pathParts = realPath.split('/').filter(Boolean);
 
     if (!this.config.allowHiddenFiles) {
@@ -22,7 +26,16 @@ export class FilesystemPolicy implements IFilesystemPolicy {
       }
     }
 
-    return this.config.allow.some((pattern) => this.matchesPattern(realPath, pattern));
+    const patterns = operation === 'write' ? this.allowedWritePatterns : this.allowedReadPatterns;
+    return patterns.some((pattern) => this.matchesPattern(realPath, pattern));
+  }
+
+  public isReadAllowed(realPath: string): boolean {
+    return this.isAllowed(realPath, 'read');
+  }
+
+  public isWriteAllowed(realPath: string): boolean {
+    return this.isAllowed(realPath, 'write');
   }
 
   public validateFileSize(sizeBytes: number): void {
@@ -32,7 +45,6 @@ export class FilesystemPolicy implements IFilesystemPolicy {
   }
 
   private matchesPattern(filePath: string, pattern: string): boolean {
-    // Normalize both paths to relative from workspace root
     const normalizedPath = filePath.replace(/^\//, '');
     const normalizedPattern = pattern.replace(/^\//, '');
 
