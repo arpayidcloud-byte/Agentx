@@ -289,12 +289,22 @@ export class CognitiveKernel {
     if (!this.goalIntake) {
       throw new SessionError('Goal engine not configured', 'kernel');
     }
-    return this.goalIntake.getAll().map((goal) => ({
-      goalId: goal.goalId,
-      title: goal.title,
-      state: goal.state,
-      priority: goal.priority,
-      createdAt: goal.createdAt,
-    }));
+    return this.goalIntake
+      .getAll()
+      .map(
+        (goal: {
+          goalId: string;
+          title: string;
+          state: string;
+          priority: number;
+          createdAt: Date;
+        }) => ({
+          goalId: goal.goalId,
+          title: goal.title,
+          state: goal.state,
+          priority: goal.priority,
+          createdAt: goal.createdAt,
+        }),
+      );
   }
 }
