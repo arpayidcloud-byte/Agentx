@@ -1,8 +1,8 @@
 # AgentX Project Workflow
 
-**Version:** 1.2
+**Version:** 1.3
 **Created:** July 2026
-**Updated:** July 2026
+**Updated:** July 24, 2026
 **Purpose:** Acuan utama pengerjaan project AgentX dengan MCP integration
 
 ---
@@ -268,10 +268,27 @@ Examples:
 | Phase 7 — Production Hardening | ✅ **COMPLETE** | PR #46, #47 MERGED | ✅  |
 | Phase 8 — Documentation        | ✅ **COMPLETE** | PR #49 MERGED      | ✅  |
 | Phase 9 — Validation Sprint    | ✅ **COMPLETE** | v1.0.0 Released    | ✅  |
+| v1.0.1 Patch                   | ✅ **COMPLETE** | Direct to main     | ✅  |
 
 ---
 
 ## 🚨 Current Blocker
+
+```
+v1.0.1 Patch ✅ COMPLETE
+│
+├─ Fix vitest vulnerabilities: ✅ DONE
+│  ├─ vitest 1.6.0 → 3.2.6 (fix GHSA-9crc-q9x8-hgqq, GHSA-5xrq-8626-4rwp)
+│  ├─ @vitest/coverage-v8 1.6.0 → 3.2.6
+│  └─ 45 packages updated
+│
+├─ .gitignore cleanup: ✅ DONE
+│  └─ Removed duplicate entries (17 lines → 9 lines)
+│
+└─ 🎉 v1.0.1 PATCH RELEASED! 🎉
+```
+
+### Previous Status (v1.0.0)
 
 ```
 Phase 9 - Validation Sprint ✅ COMPLETE
