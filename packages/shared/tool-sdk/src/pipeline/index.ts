@@ -7,6 +7,7 @@ import type {
 } from '../interfaces/index.js';
 import { Tracer, Metrics } from '@agentx/observability';
 import { CacheManager } from '@agentx/cache';
+import { createTimeoutController } from '../shell/timeout.js';
 
 interface CacheKey {
   toolName: string;
@@ -20,10 +21,12 @@ export class ToolExecutionPipelineImpl implements ToolExecutionPipeline {
   private tracer = new Tracer('tool-sdk-pipeline');
   private metrics = new Metrics();
   private cache: CacheManager<string, ToolExecutionResponse>;
+  private timeoutMs: number;
 
-  constructor(cacheTtlMs: number = 300_000) {
+  constructor(cacheTtlMs: number = 300_000, timeoutMs: number = 60000) {
     this.cache = new CacheManager<string, ToolExecutionResponse>();
     this.cacheTtlMs = cacheTtlMs;
+    this.timeoutMs = timeoutMs;
   }
 
   private cacheTtlMs: number;
@@ -73,8 +76,18 @@ export class ToolExecutionPipelineImpl implements ToolExecutionPipeline {
     }
 
     let response: ToolExecutionResponse;
+    const { controller, cleanup } = createTimeoutController({ timeoutMs: this.timeoutMs });
+
     try {
-      response = await tool.execute(req);
+      // Execute with timeout
+      response = await Promise.race([
+        tool.execute(req),
+        new Promise<ToolExecutionResponse>((_, reject) => {
+          controller.signal.addEventListener('abort', () => {
+            reject(new Error(`Tool execution timed out after ${this.timeoutMs}ms`));
+          });
+        }),
+      ]);
 
       // Cache successful read operations
       if (this.isReadOperation(req.category) && response.result.success) {
@@ -96,6 +109,7 @@ export class ToolExecutionPipelineImpl implements ToolExecutionPipeline {
       }
       throw error;
     } finally {
+      cleanup();
       span.end();
     }
 
