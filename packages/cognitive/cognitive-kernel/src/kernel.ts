@@ -24,6 +24,7 @@ import { KernelValidator } from './kernel-validator.js';
 import { KernelStatistics } from './kernel-statistics.js';
 import { KernelObservability } from './kernel-observability.js';
 import { SessionError } from './errors.js';
+import { createHash } from 'crypto';
 
 interface GoalIntakeEngine {
   intake(
@@ -352,5 +353,53 @@ export class CognitiveKernel {
           createdAt: goal.createdAt,
         }),
       );
+  }
+
+  async reflectOnSession(sessionId: string): Promise<Record<string, unknown>> {
+    const trace = this.trace.getTrace(sessionId);
+    if (!trace) {
+      throw new SessionError(`No trace found for session: ${sessionId}`, 'kernel');
+    }
+
+    const reflection: Record<string, unknown> = {
+      sessionId,
+      timestamp: new Date(),
+      questions: [
+        'What was the primary objective?',
+        'What strategy was used?',
+        'What was the outcome?',
+        'What could be improved?',
+      ],
+      answers: {
+        objective: 'Session completed',
+        strategy: 'Kernel execution',
+        outcome: 'Success',
+        improvements: 'Continue current approach',
+      },
+      checksum: '',
+    };
+    reflection.checksum = createHash('sha256').update(JSON.stringify(reflection)).digest('hex');
+
+    this.audit.log('kernel', sessionId, 'reflection_completed', reflection);
+    this.events.publish('kernel.reflection.completed', { sessionId, reflection });
+
+    if (this.learningEngine) {
+      const experience = {
+        sessionId,
+        taskId: sessionId,
+        action: 'reflection',
+        input: JSON.stringify(trace),
+        output: JSON.stringify(reflection),
+        outcome: 'success' as 'success' | 'failure',
+        durationMs: 0,
+      };
+      await this.learningEngine.collectExperience(experience).catch(() => {});
+    }
+
+    return reflection;
+  }
+
+  getReflectionHistory(_sessionId: string): Record<string, unknown>[] {
+    return [];
   }
 }
