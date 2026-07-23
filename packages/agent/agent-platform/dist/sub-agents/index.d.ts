@@ -1,6 +1,7 @@
 export * from './interfaces.js';
 export * from './errors.js';
 export * from './sub-agent.js';
+export * from './extended-agents.js';
 export * from './sub-agent-factory.js';
 export * from './agent-pool.js';
 export * from './task-splitter.js';
