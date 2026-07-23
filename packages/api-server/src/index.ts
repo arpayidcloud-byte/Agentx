@@ -7,7 +7,10 @@ import { createTaskRoutes } from './routes/tasks.js';
 import { createApprovalRoutes } from './routes/approvals.js';
 import { createHealthRoutes } from './routes/health.js';
 import { createEventRoutes } from './routes/events.js';
+import { createGitHubWebhookRoutes } from './integrations/github.js';
 import { createAuthMiddleware } from './middleware/auth.js';
+
+export { SlackNotifier } from './integrations/slack.js';
 
 export interface ApiServerConfig {
   port: number;
@@ -60,6 +63,7 @@ export async function createApiServer(config: ApiServerConfig) {
   await fastify.register(createApprovalRoutes, { prefix: '/api/v1' });
   await fastify.register(createHealthRoutes, { prefix: '/api/v1' });
   await fastify.register(createEventRoutes, { prefix: '/api/v1' });
+  await fastify.register(createGitHubWebhookRoutes);
 
   return fastify;
 }
