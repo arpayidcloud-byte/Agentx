@@ -1,15 +1,25 @@
-import type { IMemoryEngine, IMemoryStore, Memory, MemorySearchOptions, MemoryMetrics } from './interfaces.js';
+import type { IMemoryEngine, IMemoryStore, Memory, MemorySearchOptions, MemoryMetrics, MemoryType } from './interfaces.js';
 import type { IEventBus } from '@agentx/core-runtime';
 export declare class MemoryEngine implements IMemoryEngine {
     private memoryStore;
     private eventBus;
     private metrics;
-    constructor(memoryStore: IMemoryStore, eventBus: IEventBus);
+    private lruCache;
+    private lruHead;
+    private lruTail;
+    private readonly maxCacheSize;
+    constructor(memoryStore: IMemoryStore, eventBus: IEventBus, maxCacheSize?: number);
     store(data: Partial<Memory>): Promise<Memory>;
     retrieve(query: string, options?: MemorySearchOptions): Promise<Memory[]>;
     forget(memoryId: string): Promise<void>;
     compact(): Promise<void>;
     getMetrics(): MemoryMetrics;
+    getShortTermMemories(limit?: number): Promise<Memory[]>;
+    getLongTermMemories(minImportance?: number, limit?: number): Promise<Memory[]>;
+    retrieveByType(type: MemoryType, limit?: number): Promise<Memory[]>;
+    private addToLRUCache;
+    private removeLRUNode;
+    private removeFromLRUCache;
     private cleanupExpired;
     private updateMetrics;
 }

@@ -21,7 +21,10 @@ export interface Memory {
   importance: number; // 1 to 10
   ttl?: number; // expiration in seconds
   createdAt: Date;
+  updatedAt?: Date;
   expiresAt?: Date;
+  sessionId?: string;
+  taskId?: string;
   metadata?: Record<string, unknown>;
 }
 
@@ -29,6 +32,9 @@ export interface MemorySearchOptions {
   limit?: number;
   minImportance?: number;
   type?: MemoryType;
+  sessionId?: string;
+  taskId?: string;
+  orderByImportance?: boolean;
 }
 
 export interface IMemoryStore {
