@@ -343,4 +343,78 @@ describe('ToolExecutionPipeline', () => {
     );
     expect(errHook).toHaveBeenCalled();
   });
+
+  it('caches read operations and returns cached results', async () => {
+    const pipeline = new ToolExecutionPipelineImpl(300_000);
+    const req = {
+      toolName: 'ReadTool',
+      category: 'fs.read',
+      arguments: { path: '/test' },
+      context: { workingDirectory: '/workspace', taskId: 't1', traceId: 'tr1', agentRole: 'coder' },
+    } as unknown as ToolExecutionRequest;
+    const res = {
+      result: { success: true, output: 'cached content' },
+    } as unknown as ToolExecutionResponse;
+    const executeFn = vi.fn().mockResolvedValue(res);
+    const tool = {
+      execute: executeFn,
+      definition: { name: 'ReadTool', category: 'fs.read' },
+    } as unknown as ITool;
+
+    // First call - cache miss
+    const result1 = await pipeline.execute(req, tool);
+    expect(result1).toBe(res);
+    expect(executeFn).toHaveBeenCalledTimes(1);
+
+    // Second call - cache hit
+    const result2 = await pipeline.execute(req, tool);
+    expect(result2).toBe(res);
+    expect(executeFn).toHaveBeenCalledTimes(1); // Not called again
+  });
+
+  it('does not cache write operations', async () => {
+    const pipeline = new ToolExecutionPipelineImpl(300_000);
+    const res = {
+      result: { success: true, output: 'written' },
+    } as unknown as ToolExecutionResponse;
+    const executeFn = vi.fn().mockResolvedValue(res);
+    const req = {
+      toolName: 'WriteTool',
+      category: 'fs.write',
+      arguments: { path: '/test', content: 'data' },
+      context: { workingDirectory: '/workspace', taskId: 't1', traceId: 'tr1', agentRole: 'coder' },
+    } as unknown as ToolExecutionRequest;
+    const tool = {
+      execute: executeFn,
+      definition: { name: 'WriteTool', category: 'fs.write' },
+    } as unknown as ITool;
+
+    const result1 = await pipeline.execute(req, tool);
+    const result2 = await pipeline.execute(req, tool);
+    expect(executeFn).toHaveBeenCalledTimes(2); // Called twice
+    expect(result1).toBe(res);
+    expect(result2).toBe(res);
+  });
+
+  it('does not cache failed operations', async () => {
+    const pipeline = new ToolExecutionPipelineImpl(300_000);
+    const failRes = {
+      result: { success: false, error: 'File not found' },
+    } as unknown as ToolExecutionResponse;
+    const executeFn = vi.fn().mockResolvedValue(failRes);
+    const req = {
+      toolName: 'ReadTool',
+      category: 'fs.read',
+      arguments: { path: '/missing' },
+      context: { workingDirectory: '/workspace', taskId: 't1', traceId: 'tr1', agentRole: 'coder' },
+    } as unknown as ToolExecutionRequest;
+    const tool = {
+      execute: executeFn,
+      definition: { name: 'ReadTool', category: 'fs.read' },
+    } as unknown as ITool;
+
+    await pipeline.execute(req, tool);
+    await pipeline.execute(req, tool);
+    expect(executeFn).toHaveBeenCalledTimes(2); // Called twice (not cached)
+  });
 });
