@@ -187,6 +187,59 @@ get_code_snippet(qualified_name="pkg/file.Function")
 
 ---
 
+## ⚡ Fast-Path: Documentation Only Changes
+
+**RULE: Jika perubahan HANYA file `.md` atau `docs/`, langsung merge ke main (TANPA PR)**
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  DOCS-ONLY CHANGES → NO PR, DIRECT MERGE TO MAIN            │
+└──────────────────────────────────────────────────────────────┘
+
+Flow:
+1. Cek perubahan: git diff --name-only
+   │
+   ├─ Hanya *.md files? → LANGSUNG MERGE (skip PR)
+   └─ Ada code changes? → Normal PR flow
+
+2. Direct merge:
+   git add <files>
+   git commit -m "docs: <message>"
+   git push origin main
+
+3. Skip:
+   - No PR creation needed
+   - No CI wait needed (GitHub skip CI for .md only)
+   - No review needed
+
+Examples:
+✅ WORKFLOW.md update → Direct merge
+✅ IMPLEMENTATION_PLAN_2026.md update → Direct merge
+✅ README.md update → Direct merge
+✅ docs/*.md changes → Direct merge
+
+❌ Code + docs changes → Normal PR flow
+```
+
+### Checklist Docs-Only Merge
+
+- [ ] `git diff --name-only` → hanya `*.md` files
+- [ ] Commit message prefix: `docs:`
+- [ ] No code changes (`.ts`, `.js`, `.json`, `.yaml`, etc.)
+- [ ] Push langsung ke `main`
+
+### Kapan Gunakan Fast-Path
+
+| Use Fast-Path ✅           | Normal PR Flow ❌         |
+| -------------------------- | ------------------------- |
+| WORKFLOW.md update         | Code changes              |
+| IMPLEMENTATION_PLAN update | Config changes            |
+| README.md update           | Test changes              |
+| docs/*.md additions        | Mixed code + docs changes |
+| Handbook corrections       |                           |
+
+---
+
 ## 📋 Project Status
 
 ### Current State (July 2026)
