@@ -127,6 +127,45 @@ export class MemoryEngine implements IMemoryEngine {
     return this.memoryStore.search('', { type, limit });
   }
 
+  public async retrieveByRecency(limit?: number): Promise<Memory[]> {
+    const all = await this.memoryStore.list();
+    return all
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+      .slice(0, limit || this.maxCacheSize);
+  }
+
+  public async retrieveByImportance(minImportance?: number, limit?: number): Promise<Memory[]> {
+    const all = await this.memoryStore.list();
+    return all
+      .filter((m) => !minImportance || m.importance >= minImportance)
+      .sort((a, b) => b.importance - a.importance)
+      .slice(0, limit || this.maxCacheSize);
+  }
+
+  public async retrieveByRelevance(query: string, limit?: number): Promise<Memory[]> {
+    const all = await this.memoryStore.list();
+    const scored = all.map((memory) => {
+      let score = 0;
+      if (memory.content.includes(query)) score += 10;
+      if (memory.metadata && JSON.stringify(memory.metadata).includes(query)) score += 5;
+      score += memory.importance;
+      return { memory, score };
+    });
+    return scored
+      .filter((item) => item.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, limit || this.maxCacheSize)
+      .map((item) => item.memory);
+  }
+
+  public async retrieveBySession(sessionId: string, limit?: number): Promise<Memory[]> {
+    return this.memoryStore.search('', { sessionId, limit });
+  }
+
+  public async retrieveByTask(taskId: string, limit?: number): Promise<Memory[]> {
+    return this.memoryStore.search('', { taskId, limit });
+  }
+
   private addToLRUCache(memory: Memory): void {
     if (this.lruCache.has(memory.id)) {
       this.removeLRUNode(this.lruCache.get(memory.id)!);
