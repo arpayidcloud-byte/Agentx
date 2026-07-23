@@ -681,9 +681,9 @@ GET    /api/v1/health          - Health check
 
 **Deliverables:**
 
-- [ ] Handbook 100% aligned with code
-- [ ] Architecture diagrams complete
-- [ ] API reference generated
+- [x] Handbook 100% aligned with code
+- [x] Architecture diagrams complete
+- [x] API reference generated
 
 #### 8.2 Developer Documentation
 
@@ -697,9 +697,65 @@ GET    /api/v1/health          - Health check
 
 **Deliverables:**
 
-- [ ] JSDoc complete
-- [ ] Contributing guide
-- [ ] Deployment guide
+- [x] JSDoc complete
+- [x] Contributing guide
+- [x] Deployment guide
+
+---
+
+## 🔍 Phase 9: Validation Sprint (Week 27)
+
+### Objective: Validate production readiness before v1.0 release
+
+#### 9.1 Manual E2E Testing (Day 1)
+
+| Task                                   | Files                                                 | Priority |
+| -------------------------------------- | ----------------------------------------------------- | -------- |
+| **9.1.1** Basic task submission        | CLI → Runtime → Agents → LLM                          | P0       |
+| **9.1.2** Agent selection verification | All 4 agent types (coder, reviewer, tester, security) | P0       |
+| **9.1.3** Tool execution verification  | fs, git, shell tools                                  | P0       |
+| **9.1.4** Persistence verification     | PostgreSQL, Redis                                     | P0       |
+| **9.1.5** Observability verification   | Health checks, Prometheus, Grafana                    | P0       |
+
+**Deliverables:**
+
+- [ ] All 5 E2E scenarios pass
+- [ ] No stub/theater responses
+- [ ] Real LLM integration verified
+
+#### 9.2 Performance & Security (Day 2)
+
+| Task                                 | Files                              | Priority |
+| ------------------------------------ | ---------------------------------- | -------- |
+| **9.2.1** Concurrent tasks benchmark | 10 tasks/second, p95 < 2s          | P0       |
+| **9.2.2** Memory stress test         | No memory leaks, stable heap       | P0       |
+| **9.2.3** Database load test         | 1000 tasks, query < 100ms          | P0       |
+| **9.2.4** Dependency scan            | No HIGH/CRITICAL vulnerabilities   | P0       |
+| **9.2.5** Secrets scan               | No hardcoded secrets               | P0       |
+| **9.2.6** Input validation           | SQL injection, XSS, path traversal | P0       |
+| **9.2.7** Rate limiting              | DoS protection                     | P0       |
+
+**Deliverables:**
+
+- [ ] Performance metrics meet targets
+- [ ] Security audit clean
+- [ ] No critical issues found
+
+#### 9.3 Analysis & Decision (Day 3)
+
+| Task                            | Files                            | Priority |
+| ------------------------------- | -------------------------------- | -------- |
+| **9.3.1** Compile test results  | Score calculation (0-12 points)  | P0       |
+| **9.3.2** Decision matrix       | v1.0, v1.0 with notes, or v1.1   | P0       |
+| **9.3.3** Known issues document | docs/KNOWN_ISSUES.md (if needed) | P1       |
+| **9.3.4** Release notes         | CHANGELOG.md                     | P0       |
+
+**Deliverables:**
+
+- [ ] Final score: __/12
+- [ ] Release decision made
+- [ ] Known issues documented (if any)
+- [ ] Release notes prepared
 
 ---
 
@@ -714,6 +770,7 @@ GET    /api/v1/health          - Health check
 | Test Coverage             | ~70%       | 85%+       | Ongoing |
 | Production-Ready Packages | 8/42       | 35/42      | Phase 7 |
 | Security Issues           | 4 critical | 0          | Phase 0 |
+| Validation Score          | 0/12       | 11-12/12   | Phase 9 |
 
 ---
 
@@ -730,8 +787,9 @@ GET    /api/v1/health          - Health check
 | Phase 6 | 2 weeks  | 19-20 | API & integrations   |
 | Phase 7 | 4 weeks  | 21-24 | Production hardening |
 | Phase 8 | 2 weeks  | 25-26 | Documentation        |
+| Phase 9 | 1 week   | 27    | Validation sprint    |
 
-**Total: 26 weeks (~6 months)**
+**Total: 27 weeks (~6.5 months)**
 
 ---
 
