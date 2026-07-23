@@ -54,12 +54,20 @@ export class ToolExecutionPipelineImpl implements ToolExecutionPipeline {
     span.setAttribute('tool.name', tool.definition.name);
     span.setAttribute('tool.category', tool.definition.category);
 
+    const startTime = Date.now();
+
     // Check cache for read operations
     const cacheKey = this.generateCacheKey(req);
     if (this.isReadOperation(req.category)) {
       const cached = await this.cache.get(cacheKey);
       if (cached) {
+        const durationMs = Date.now() - startTime;
         this.metrics.counter('tool_cache_hit', 1, { tool: tool.definition.name });
+        this.metrics.histogram('tool_execution_latency', durationMs, {
+          tool: tool.definition.name,
+          category: tool.definition.category,
+          cached: 'true',
+        });
         span.setAttribute('tool.cache_hit', true);
         span.end();
         return cached;
@@ -94,10 +102,23 @@ export class ToolExecutionPipelineImpl implements ToolExecutionPipeline {
         await this.cache.set(cacheKey, response, this.cacheTtlMs);
       }
 
+      const durationMs = Date.now() - startTime;
       this.metrics.counter('tool_executions_success', 1, { tool: tool.definition.name });
+      this.metrics.histogram('tool_execution_latency', durationMs, {
+        tool: tool.definition.name,
+        category: tool.definition.category,
+        cached: 'false',
+      });
       span.setStatus({ code: 0 });
     } catch (error: unknown) {
+      const durationMs = Date.now() - startTime;
       this.metrics.counter('tool_executions_error', 1, { tool: tool.definition.name });
+      this.metrics.histogram('tool_execution_latency', durationMs, {
+        tool: tool.definition.name,
+        category: tool.definition.category,
+        cached: 'false',
+        error: 'true',
+      });
       span.setStatus({ code: 1, message: error instanceof Error ? error.message : String(error) });
       // Error hooks
       for (const hook of this.hooks) {

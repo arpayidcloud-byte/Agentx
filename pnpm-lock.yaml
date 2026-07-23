@@ -660,6 +660,9 @@ importers:
       '@agentx/observability':
         specifier: workspace:*
         version: link:../observability
+      '@agentx/provider-sdk':
+        specifier: workspace:*
+        version: link:../../provider/provider-sdk
       yaml:
         specifier: ^2.9.0
         version: 2.9.0
