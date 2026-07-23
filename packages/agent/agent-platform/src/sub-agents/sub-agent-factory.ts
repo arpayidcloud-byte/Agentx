@@ -1,6 +1,13 @@
 import type { AgentRole, SubAgent } from './interfaces.js';
-import { CoderAgent, ReviewerAgent, TesterAgent, SecurityAgent } from './sub-agent.js';
-import { PlannerAgent, ArchitectAgent, DocumentationAgent, QAAgent } from './extended-agents.js';
+import {
+  PlannerAgent,
+  ArchitectAgent,
+  CoderAgent,
+  ReviewerAgent,
+  TesterAgent,
+  SecurityAgent,
+} from './sub-agent.js';
+import { DocumentationAgent, QAAgent } from './extended-agents.js';
 
 export class SubAgentFactory {
   public createAgent(role: AgentRole): SubAgent {

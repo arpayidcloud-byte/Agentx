@@ -1,5 +1,5 @@
-import { CoderAgent, ReviewerAgent, TesterAgent, SecurityAgent } from './sub-agent.js';
-import { PlannerAgent, ArchitectAgent, DocumentationAgent, QAAgent } from './extended-agents.js';
+import { PlannerAgent, ArchitectAgent, CoderAgent, ReviewerAgent, TesterAgent, SecurityAgent } from './sub-agent.js';
+import { DocumentationAgent, QAAgent } from './extended-agents.js';
 export class SubAgentFactory {
     createAgent(role) {
         const id = `${role}-${Math.random().toString(36).substring(2, 9)}`;
