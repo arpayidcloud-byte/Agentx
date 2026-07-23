@@ -374,6 +374,9 @@ describe('ToolExecutionPipeline', () => {
 
   it('does not cache write operations', async () => {
     const pipeline = new ToolExecutionPipelineImpl(300_000);
+    const res = {
+      result: { success: true, output: 'written' },
+    } as unknown as ToolExecutionResponse;
     const executeFn = vi.fn().mockResolvedValue(res);
     const req = {
       toolName: 'WriteTool',
@@ -381,9 +384,6 @@ describe('ToolExecutionPipeline', () => {
       arguments: { path: '/test', content: 'data' },
       context: { workingDirectory: '/workspace', taskId: 't1', traceId: 'tr1', agentRole: 'coder' },
     } as unknown as ToolExecutionRequest;
-    const res = {
-      result: { success: true, output: 'written' },
-    } as unknown as ToolExecutionResponse;
     const tool = {
       execute: executeFn,
       definition: { name: 'WriteTool', category: 'fs.write' },
@@ -398,6 +398,9 @@ describe('ToolExecutionPipeline', () => {
 
   it('does not cache failed operations', async () => {
     const pipeline = new ToolExecutionPipelineImpl(300_000);
+    const failRes = {
+      result: { success: false, error: 'File not found' },
+    } as unknown as ToolExecutionResponse;
     const executeFn = vi.fn().mockResolvedValue(failRes);
     const req = {
       toolName: 'ReadTool',
@@ -405,9 +408,6 @@ describe('ToolExecutionPipeline', () => {
       arguments: { path: '/missing' },
       context: { workingDirectory: '/workspace', taskId: 't1', traceId: 'tr1', agentRole: 'coder' },
     } as unknown as ToolExecutionRequest;
-    const failRes = {
-      result: { success: false, error: 'File not found' },
-    } as unknown as ToolExecutionResponse;
     const tool = {
       execute: executeFn,
       definition: { name: 'ReadTool', category: 'fs.read' },
