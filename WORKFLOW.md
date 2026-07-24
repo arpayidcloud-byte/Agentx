@@ -20,6 +20,156 @@ This document defines the **standard development workflow** for AgentX, aligned 
 3. **Small Batches** - Frequent, small PRs (not large monolithic changes)
 4. **Documentation** - Code changes require doc updates
 5. **Testing** - No feature without tests
+6. **Agent Architecture** - Orchestrator + DevOps + Sub-Agents model
+7. **MCP-First** - Always use MCP tools before implementation
+
+---
+
+## 🤖 Agent Architecture
+
+### Overview
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    ORCHESTRATOR                          │
+│  - Planning, coordination, CI/CD, merge decisions        │
+│  - DevOps: build, test, deploy, monitoring               │
+│  - MCP Exploration before each task                      │
+└───────────────────────┬─────────────────────────────────┘
+                        │
+        ┌───────────────┼───────────────┐
+        │               │               │
+        ↓               ↓               ↓
+   ┌────────┐      ┌────────┐      ┌────────┐
+   │ Agent 1│      │ Agent 2│      │ Agent 3│
+   │ (Dev)  │      │ (Dev)  │      │ (Dev)  │
+   └────────┘      └────────┘      └────────┘
+```
+
+### Roles
+
+| Role             | Responsibility                                           | Key Rules                                                                           |
+| ---------------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| **Orchestrator** | Planning, task assignment, coordination, merge decisions | - Uses MCP before planning<br>- Assigns tasks to sub-agents<br>- Reviews PRs        |
+| **DevOps**       | CI/CD, build, test, deploy, monitoring, infrastructure   | - **BLOCKS merge if CI red**<br>- Runs pre-PR testing<br>- Monitors deployments     |
+| **Sub-Agents**   | Parallel implementation of specific tasks                | - Use MCP for exploration<br>- Execute assigned batches<br>- Report to Orchestrator |
+
+### MCP Usage (Required for All Roles)
+
+**Before EVERY task:**
+
+```bash
+# 1. Understand architecture
+get_architecture()
+
+# 2. Find relevant code
+search_graph(name_pattern=".*TargetFunction.*")
+
+# 3. Trace dependencies
+trace_path(function_name="TargetFunction", direction="inbound")
+trace_path(function_name="TargetFunction", direction="outbound")
+
+# 4. Read source code
+get_code_snippet(qualified_name="pkg/file.Class")
+
+# 5. Query for complex patterns
+query_graph(query="MATCH (n:Node) WHERE n.property = 'value' RETURN n")
+```
+
+**When to Use MCP:**
+
+| Use MCP ✅              | Don't Use MCP ❌                         |
+| ----------------------- | ---------------------------------------- |
+| Find function/class     | Search string literals                   |
+| Trace call graph        | Search error messages                    |
+| Understand architecture | Search config files                      |
+| Code review             | MCP returns insufficient → grep fallback |
+
+### Sub-Agent Scaling
+
+| Scenario         | Sub-Agents | Example Tasks                         |
+| ---------------- | ---------- | ------------------------------------- |
+| **Small batch**  | 2-3        | Fix CI, update docs, run tests        |
+| **Medium batch** | 4-6        | Implement 3 agents + 2 tools + 1 test |
+| **Large batch**  | 8-10       | Full phase implementation             |
+
+---
+
+## 🚨 DevOps Golden Rule
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  ⛔ RULE: NO MERGE / NO NEXT PHASE IF CI IS RED         │
+└─────────────────────────────────────────────────────────┘
+```
+
+### DevOps Responsibilities
+
+1. **Pre-PR Testing** (Required before every PR)
+
+   ```bash
+   # Run full CI pipeline locally
+   pnpm typecheck  → MUST PASS ✅
+   pnpm lint       → MUST PASS ✅ (warnings OK, errors NO)
+   pnpm build      → MUST PASS ✅
+   pnpm test       → MUST PASS ✅
+   pnpm test:coverage → Check threshold
+   ```
+
+2. **CI Gate Monitoring**
+   - Watch GitHub Actions status
+   - Block merge if any job fails
+   - Notify team of failures
+
+3. **Phase/Batch Progression**
+
+   ```
+   Current Batch Complete? → CI Green? → YES → Next Batch
+                                      ↓
+                                      NO → FIX FIRST
+   ```
+
+4. **Rollback Authority**
+   - If production issue detected
+   - Revert last merge immediately
+   - Create incident ticket
+
+### CI Status Rules
+
+| CI Status        | DevOps Action                        |
+| ---------------- | ------------------------------------ |
+| ✅ All green     | Approve merge, proceed to next batch |
+| ⚠️ Warnings only | Can merge (fix in follow-up)         |
+| ❌ Any failure   | **BLOCK MERGE**, fix first           |
+
+### Pre-PR Testing Checklist
+
+**DevOps MUST verify before PR creation:**
+
+```bash
+# 1. Setup Environment
+pnpm install
+docker run -d -p 6379:6379 redis:7
+docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres:16
+pnpm prisma generate
+
+# 2. Run Full CI Pipeline
+pnpm typecheck    # HARUS HIJAU ✅
+pnpm lint         # HARUS HIJAU ✅ (warnings OK, errors NO)
+pnpm build        # HARUS HIJAU ✅
+pnpm test         # HARUS HIJAU ✅
+pnpm test:coverage # Cek threshold ≥ 80%
+
+# 3. Integration Tests (jika ada Redis/DB)
+# Test dengan real Redis connection
+# Test dengan real PostgreSQL connection
+# Test dengan BullMQ queues
+
+# 4. Clean Up
+docker stop $(docker ps -q)
+```
+
+**If ANY step fails → FIX FIRST, don't create PR!**
 
 ---
 
