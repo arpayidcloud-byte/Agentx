@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/$pkg",
+  "name": "@agentx/cloud",
   "version": "0.1.0",
   "private": true,
   "type": "module",

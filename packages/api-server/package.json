@@ -22,6 +22,8 @@
     "@agentx/cognitive-kernel": "workspace:*",
     "@agentx/core-runtime": "workspace:*",
     "@agentx/memory-engine": "workspace:*",
+    "@agentx/observability": "workspace:*",
+    "@agentx/shared": "workspace:*",
     "@fastify/cors": "^10.0.0",
     "@fastify/helmet": "^13.1.0",
     "@fastify/rate-limit": "^10.0.0",
