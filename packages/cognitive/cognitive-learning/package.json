@@ -7,7 +7,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc --build",
-    "typecheck": "echo 'skip typecheck'",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run test/cognitive-learning.test.ts",
     "test:coverage": "vitest run --coverage",
     "lint": "eslint src/"
