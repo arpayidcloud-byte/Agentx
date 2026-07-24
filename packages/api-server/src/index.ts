@@ -19,6 +19,7 @@ export interface ApiServerConfig {
   host: string;
   apiKey?: string;
   githubWebhookSecret?: string;
+  allowedOrigins: string[];
   rateLimitMax: number;
   rateLimitWindow: number;
   prometheusExporter?: PrometheusExporter;
@@ -30,7 +31,11 @@ export async function createApiServer(config: ApiServerConfig) {
   });
 
   await fastify.register(cors, {
-    origin: true,
+    origin: config.allowedOrigins,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-Id'],
+    credentials: true,
+    maxAge: 86400,
   });
 
   await fastify.register(rateLimit, {
