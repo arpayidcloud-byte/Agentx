@@ -987,3 +987,548 @@ git reset --hard HEAD~1
 **Next Review:** August 1, 2026  
 **Owner:** Engineering Lead  
 **Status:** Active
+
+---
+
+## 🌿 Branch Strategy
+
+| Branch          | Purpose             | Protection                      |
+| --------------- | ------------------- | ------------------------------- |
+| `main`          | Production ready    | Required CI, 2 approvals        |
+| `release/v*`    | Release preparation | Required CI, Tech Lead approval |
+| `phase*-batch*` | Feature development | Required CI, 1 approval         |
+| `hotfix/*`      | Emergency fixes     | Required CI, Tech Lead approval |
+
+**Branch Naming Convention:**
+
+```bash
+# Feature branches (tied to Master Plan)
+git checkout -b phase0-batch0.1-remove-secrets
+git checkout -b phase1-batch1.1-console-log
+
+# Hotfix branches
+git checkout -b hotfix/security-fix-2026-07-24
+git checkout -b hotfix/ci-fix-2026-07-24
+
+# Release branches
+git checkout -b release/v0.2.0-beta.1
+git checkout -b release/v1.0.0
+```
+
+**Branch Protection Rules:**
+
+- `main`: Requires CI pass, 2 approvals, up-to-date branch
+- `release/*`: Requires CI pass, Tech Lead approval
+- `phase*-batch*`: Requires CI pass, 1 approval
+- `hotfix/*`: Requires CI pass, Tech Lead approval (can be retroactive)
+
+---
+
+## 👀 Code Review Guidelines
+
+### Reviewer Checklist
+
+**Reviewer MUST check:**
+
+- [ ] Pre-PR tests passed (screenshot in PR)
+- [ ] MCP exploration documented (which tools used)
+- [ ] Tests added/updated (for code changes)
+- [ ] Documentation updated (README, API docs, etc.)
+- [ ] No `console.log` in production code
+- [ ] No hardcoded values (URLs, secrets, etc.)
+- [ ] No secrets committed (check .env, config files)
+- [ ] No `any` types (unless justified)
+- [ ] Error handling added
+- [ ] Breaking changes documented
+
+### Approval Requirements
+
+| PR Size  | Lines   | Approvals Required          | Reviewer Level            |
+| -------- | ------- | --------------------------- | ------------------------- |
+| Small    | <200    | 1 approval                  | Any developer             |
+| Medium   | 200-500 | 2 approvals                 | Senior developer          |
+| Large    | >500    | 3 approvals + Tech Lead     | Tech Lead + 2 seniors     |
+| Critical | Any     | Tech Lead + Security review | Tech Lead + Security team |
+
+**Critical PRs** (always require Tech Lead + Security):
+
+- Authentication/Authorization changes
+- Secret handling changes
+- API endpoint changes
+- Database schema changes
+- Security fixes
+
+### Review SLA
+
+| PR Priority   | Review Time | Escalation           |
+| ------------- | ----------- | -------------------- |
+| P0 (Critical) | 1 hour      | Immediate Slack ping |
+| P1 (High)     | 4 hours     | Slack ping after 2h  |
+| P2 (Medium)   | 24 hours    | Slack ping after 12h |
+| P3 (Low)      | 48 hours    | No escalation        |
+
+---
+
+## 🔒 Security Review for PRs
+
+### When Security Review Required
+
+**Mandatory security review for:**
+
+- Authentication/Authorization changes
+- API endpoint changes
+- Secret handling changes
+- Database query changes (SQL injection risk)
+- User input handling (XSS/injection risk)
+- File upload/download changes
+- CORS/security header changes
+- Rate limiting changes
+
+### Security Checklist
+
+**Security reviewer MUST verify:**
+
+- [ ] No secrets in code (API keys, passwords, tokens)
+- [ ] Input validation added for all user inputs
+- [ ] SQL injection prevented (parameterized queries)
+- [ ] XSS prevention (escaping, sanitization)
+- [ ] CSRF protection (tokens, SameSite cookies)
+- [ ] Rate limiting considered for public endpoints
+- [ ] Authentication required for protected routes
+- [ ] Authorization checks for resource access
+- [ ] Sensitive data encrypted at rest and in transit
+- [ ] Audit logging for sensitive operations
+
+### Security Scan Requirements
+
+```bash
+# Before PR (developer)
+pnpm audit
+
+# Before merge (CI)
+pnpm audit --audit-level=high
+
+# Before release (DevOps)
+pnpm audit --audit-level=moderate
+npx snyk test
+```
+
+---
+
+## 🖥️ Environment Management
+
+### Environments
+
+| Environment  | Purpose        | Access             | URL               |
+| ------------ | -------------- | ------------------ | ----------------- |
+| `local`      | Development    | All developers     | localhost         |
+| `staging`    | Pre-production | Dev team only      | staging.agentx.io |
+| `production` | Live           | DevOps + Tech Lead | agentx.io         |
+
+### Environment Variables
+
+**`.env.local`** - Local development:
+
+```bash
+# Example .env.local
+NODE_ENV=development
+DATABASE_URL=postgresql://localhost:5432/agentx_dev
+REDIS_URL=redis://localhost:6379
+ANTHROPIC_API_KEY=sk-ant-...
+```
+
+**`.env.staging`** - Staging environment (committed to repo with placeholder values):
+
+```bash
+# Example .env.staging (placeholder values)
+NODE_ENV=staging
+DATABASE_URL=postgresql://staging-db:5432/agentx_staging
+REDIS_URL=redis://staging-redis:6379
+ANTHROPIC_API_KEY=REPLACE_IN_STAGING
+```
+
+**`.env.production`** - Production (NEVER committed, stored in secrets manager):
+
+```bash
+# Stored in AWS Secrets Manager / HashiCorp Vault
+NODE_ENV=production
+DATABASE_URL=postgresql://prod-db:5432/agentx_prod
+REDIS_URL=redis://prod-redis:6379
+ANTHROPIC_API_KEY=<from secrets manager>
+```
+
+### Environment Deployment Rules
+
+| Environment  | Deployment Trigger   | Approval Required  |
+| ------------ | -------------------- | ------------------ |
+| `local`      | Developer discretion | None               |
+| `staging`    | Merge to `main`      | Auto-deploy        |
+| `production` | Release tag          | Tech Lead approval |
+
+---
+
+## 📦 Release Process
+
+### Pre-Release Checklist
+
+**Before creating release:**
+
+- [ ] All tests passing (CI green)
+- [ ] Coverage threshold met (≥80%)
+- [ ] Documentation updated (README, API docs)
+- [ ] CHANGELOG.md updated
+- [ ] Version numbers updated (all packages)
+- [ ] Security scan passed (0 HIGH/CRITICAL)
+- [ ] Performance tests passed (if applicable)
+- [ ] Staging deployment verified
+
+### Release Steps
+
+**1. Create release branch:**
+
+```bash
+git checkout -b release/v0.2.0-beta.1
+```
+
+**2. Update versions:**
+
+```bash
+# Update all package.json versions
+pnpm changeset version
+```
+
+**3. Final CI run:**
+
+```bash
+# Ensure CI passes on release branch
+git push origin release/v0.2.0-beta.1
+# Wait for CI to complete
+```
+
+**4. Tag commit:**
+
+```bash
+git tag -a v0.2.0-beta.1 -m "Release v0.2.0-beta.1"
+git push origin v0.2.0-beta.1
+```
+
+**5. Create GitHub Release:**
+
+- Go to GitHub Releases
+- Create release from tag
+- Add release notes from CHANGELOG.md
+- Attach binaries (if applicable)
+
+**6. Publish to npm (if applicable):**
+
+```bash
+pnpm changeset publish
+```
+
+**7. Deploy to production:**
+
+```bash
+# Trigger production deployment
+gh workflow run deploy.yml --ref v0.2.0-beta.1
+```
+
+**8. Announce release:**
+
+- Slack announcement
+- Email to stakeholders
+- Social media (if public release)
+
+### Post-Release Checklist
+
+**After release:**
+
+- [ ] Monitor production for errors (1 hour)
+- [ ] Check error rates (should not increase)
+- [ ] Verify key metrics (latency, throughput)
+- [ ] Respond to user feedback
+- [ ] Document any issues in post-mortem
+
+---
+
+## 🚨 Emergency Procedures
+
+### Production Incident
+
+**If production issue detected:**
+
+**1. Immediate rollback:**
+
+```bash
+# Revert last deployment
+git revert HEAD
+git push origin main
+
+# Or rollback to specific version
+git checkout <last-good-commit>
+git push origin main --force
+```
+
+**2. Create incident ticket:**
+
+- Severity: P0 (critical) / P1 (high) / P2 (medium)
+- Assign to on-call engineer
+- Notify stakeholders via Slack
+
+**3. Triage:**
+
+- Assess impact (users affected, revenue impact)
+- Identify root cause
+- Estimate fix time
+
+**4. Fix and deploy:**
+
+- Create hotfix branch
+- Fix issue
+- Emergency PR review (Tech Lead + 1 senior)
+- Deploy hotfix
+
+**5. Post-mortem (within 24h):**
+
+- Root cause analysis
+- Timeline of events
+- Prevention measures
+- Action items
+
+### Incident Severity Levels
+
+| Severity      | Description                  | Response Time | Escalation         |
+| ------------- | ---------------------------- | ------------- | ------------------ |
+| P0 - Critical | Service down, data loss      | Immediate     | CTO, all engineers |
+| P1 - High     | Major feature broken         | 1 hour        | Tech Lead, on-call |
+| P2 - Medium   | Minor feature broken         | 4 hours       | On-call engineer   |
+| P3 - Low      | Cosmetic issue, nice-to-have | 24 hours      | No escalation      |
+
+### Emergency Contacts
+
+| Role             | Name            | Contact             |
+| ---------------- | --------------- | ------------------- |
+| On-call Engineer | [Rotate weekly] | Slack: @on-call     |
+| Tech Lead        | [Name]          | Slack: @tech-lead   |
+| DevOps Lead      | [Name]          | Slack: @devops-lead |
+| CTO              | [Name]          | Slack: @cto         |
+
+---
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+**CI fails on typecheck:**
+
+```bash
+# Run typecheck locally to see errors
+pnpm typecheck --verbose
+
+# Fix reported errors
+# Common issues:
+# - Missing type definitions
+# - Import/export mismatches
+# - Prisma type errors (run pnpm prisma generate)
+```
+
+**Tests fail randomly (flaky tests):**
+
+```bash
+# Check for race conditions
+pnpm test --run-in-band
+
+# Check for async issues
+# Look for missing await keywords
+# Check for unhandled Promise rejections
+```
+
+**Build fails:**
+
+```bash
+# Clean and rebuild
+pnpm clean
+pnpm install
+pnpm build
+
+# Check for:
+# - Circular dependencies
+# - Missing exports
+# - TypeScript configuration issues
+```
+
+**Coverage threshold not met:**
+
+```bash
+# Check which files have low coverage
+pnpm test:coverage --thresholds=auto
+
+# Add tests for uncovered lines
+# Or add /* istanbul ignore next */ for unavoidable cases
+```
+
+**Dependency conflicts:**
+
+```bash
+# Check for duplicate versions
+pnpm why <package-name>
+
+# Resolve conflicts with overrides
+# Add to pnpm-workspace.yaml overrides section
+```
+
+**Memory issues during build:**
+
+```bash
+# Increase Node memory limit
+export NODE_OPTIONS="--max-old-space-size=4096"
+pnpm build
+```
+
+### Debug Mode
+
+**Enable verbose logging:**
+
+```bash
+# For builds
+pnpm build --verbose
+
+# For tests
+pnpm test --verbose
+
+# For typecheck
+pnpm typecheck --extendedDiagnostics
+```
+
+### Getting Help
+
+**If stuck:**
+
+1. Check troubleshooting guide (this section)
+2. Search existing issues
+3. Ask in Slack #help channel
+4. Create issue with:
+   - Error message
+   - Steps to reproduce
+   - Expected behavior
+   - Actual behavior
+   - Environment details
+
+---
+
+## 📋 Team Metrics
+
+### Development Metrics
+
+| Metric               | Target     | Current | Review Cadence |
+| -------------------- | ---------- | ------- | -------------- |
+| PR size              | <400 lines | -       | Weekly         |
+| PR review time       | <24h       | -       | Weekly         |
+| CI pass rate         | >90%       | -       | Weekly         |
+| Bug escape rate      | <5%        | -       | Monthly        |
+| Test coverage        | >80%       | 92%*    | Per PR         |
+| Technical debt ratio | <10%       | -       | Monthly        |
+
+_\*Many stub tests, not real coverage_
+
+### Review Cadence
+
+| Meeting               | Frequency | Duration | Attendees           | Metrics Reviewed    |
+| --------------------- | --------- | -------- | ------------------- | ------------------- |
+| Sprint Review         | Bi-weekly | 30 min   | Dev team            | Sprint metrics      |
+| Metrics Review        | Weekly    | 15 min   | Tech Lead + PM      | Weekly metrics      |
+| Process Improvement   | Monthly   | 1 hour   | All engineers       | All metrics         |
+| Workflow Optimization | Quarterly | 2 hours  | Tech Lead + seniors | Workflow efficiency |
+
+### Metric Definitions
+
+**PR size:**
+
+- Lines added + removed
+- Target: <400 lines (easier to review)
+
+**PR review time:**
+
+- Time from PR creation to first review
+- Target: <24h (unblock developers)
+
+**CI pass rate:**
+
+- Percentage of CI runs that pass
+- Target: >90% (reliable pipeline)
+
+**Bug escape rate:**
+
+- Bugs found in production / total bugs
+- Target: <5% (catch bugs before production)
+
+**Technical debt ratio:**
+
+- TODO/FIXME comments / total lines
+- Target: <10% (manageable debt)
+
+---
+
+## 📎 Appendices
+
+### Appendix A: Git Commands
+
+```bash
+# Create feature branch
+git checkout -b phase0-batch0.1-description
+
+# Sync with main
+git fetch origin
+git rebase origin/main
+
+# Squash commits before PR
+git rebase -i origin/main
+
+# Undo last commit (keep changes)
+git reset --soft HEAD~1
+
+# Undo last commit (discard changes)
+git reset --hard HEAD~1
+
+# Stash changes
+git stash
+
+# Apply stashed changes
+git stash pop
+```
+
+### Appendix B: Pre-PR Checklist (Printable)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  PRE-PR CHECKLIST                                            │
+├─────────────────────────────────────────────────────────────┤
+│  [ ] pnpm typecheck    → HIJAU (0 errors)                  │
+│  [ ] pnpm lint         → HIJAU (0 errors)                  │
+│  [ ] pnpm build        → HIJAU (0 failures)                │
+│  [ ] pnpm test         → HIJAU (0 failures)                │
+│  [ ] pnpm test:coverage → ≥ 80% threshold                  │
+│  [ ] MCP exploration documented                             │
+│  [ ] Tests added/updated                                    │
+│  [ ] Documentation updated                                  │
+│  [ ] No console.log in production code                      │
+│  [ ] No hardcoded values                                    │
+│  [ ] No secrets committed                                   │
+│  [ ] Pre-PR test screenshot attached to PR                  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Appendix C: References
+
+- [Master Production Plan](./MASTER_PLAN_PRODUCTION.md)
+- [Architecture](./ARCHITECTURE.md)
+- [Contributing](./CONTRIBUTING.md)
+- [Deployment](./DEPLOYMENT.md)
+- [Troubleshooting](./TROUBLESHOOTING.md)
+
+---
+
+**Last Updated:** July 24, 2026  
+**Next Review:** August 1, 2026  
+**Owner:** Engineering Lead  
+**Status:** Active  
+**Version:** 2.4
