@@ -3,6 +3,7 @@ import cors from '@fastify/cors';
 import rateLimit from '@fastify/rate-limit';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
+import helmet from '@fastify/helmet';
 import { createTaskRoutes } from './routes/tasks.js';
 import { createApprovalRoutes } from './routes/approvals.js';
 import { createHealthRoutes } from './routes/health.js';
@@ -28,6 +29,36 @@ export interface ApiServerConfig {
 export async function createApiServer(config: ApiServerConfig) {
   const fastify = Fastify({
     logger: true,
+  });
+
+  await fastify.register(helmet, {
+    contentSecurityPolicy:
+      process.env.NODE_ENV === 'production'
+        ? {
+            directives: {
+              defaultSrc: ["'self'"],
+              scriptSrc: ["'self'"],
+              styleSrc: ["'self'", "'unsafe-inline'"],
+              imgSrc: ["'self'", 'data:'],
+              fontSrc: ["'self'"],
+              objectSrc: ["'none'"],
+              frameAncestors: ["'none'"],
+              baseUri: ["'self'"],
+              formAction: ["'self'"],
+            },
+          }
+        : false,
+    hsts:
+      process.env.NODE_ENV === 'production'
+        ? {
+            maxAge: 31536000,
+            includeSubDomains: true,
+            preload: true,
+          }
+        : false,
+    frameguard: { action: 'deny' },
+    noSniff: true,
+    referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
   });
 
   await fastify.register(cors, {

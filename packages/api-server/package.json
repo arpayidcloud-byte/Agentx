@@ -19,13 +19,14 @@
     "vitest": "^3.2.6"
   },
   "dependencies": {
-    "@agentx/core-runtime": "workspace:*",
     "@agentx/cognitive-kernel": "workspace:*",
+    "@agentx/core-runtime": "workspace:*",
     "@agentx/memory-engine": "workspace:*",
-    "fastify": "^5.0.0",
     "@fastify/cors": "^10.0.0",
+    "@fastify/helmet": "^13.1.0",
     "@fastify/rate-limit": "^10.0.0",
     "@fastify/swagger": "^9.0.0",
-    "@fastify/swagger-ui": "^5.0.0"
+    "@fastify/swagger-ui": "^5.0.0",
+    "fastify": "^5.0.0"
   }
 }
