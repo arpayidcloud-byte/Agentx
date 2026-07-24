@@ -8,28 +8,26 @@ import type {
   TaskResult,
   TaskError,
 } from '@agentx/core-runtime';
-import type { PrismaClient } from '@prisma/client';
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { Prisma, PrismaClient } from '@prisma/client';
 
 export class PrismaTaskRepository implements ITaskRepository {
   constructor(private prisma: PrismaClient) {}
 
   async save(task: TaskModel): Promise<void> {
-    const data: any = {
+    const data: Prisma.TaskUncheckedCreateInput = {
       id: task.id,
       goal: task.goal,
       status: task.status as string,
       priority: String(task.priority),
-      parentTaskId: task.parentTaskId,
+      parentTaskId: task.parentTaskId ?? null,
       rootTaskId: task.rootTaskId,
       assignedAgentRole: task.assignedAgentRole,
       dependsOn: task.dependsOn,
       traceId: task.traceId,
-      metadata: task.metadata as any,
-      context: task.context as any,
-      result: task.result ?? null,
-      error: task.error ?? null,
+      metadata: task.metadata as unknown as Prisma.InputJsonValue,
+      context: task.context as unknown as Prisma.InputJsonValue,
+      result: (task.result ?? null) as unknown as Prisma.InputJsonValue,
+      error: (task.error ?? null) as unknown as Prisma.InputJsonValue,
       createdAt: task.createdAt,
       updatedAt: task.updatedAt,
     };
