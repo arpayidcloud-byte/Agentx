@@ -2,6 +2,7 @@ import type { IEventBus, EventEnvelope } from '../interfaces/events.js';
 import { EventBusError } from '../errors.js';
 import { Queue, Worker } from 'bullmq';
 import { Redis } from 'ioredis';
+import { AgentXLoggerFactory } from '@agentx/shared';
 
 /**
  * In-memory implementation of IEventBus for testing and development.
@@ -16,6 +17,7 @@ import { Redis } from 'ioredis';
 export class InMemoryEventBus implements IEventBus {
   private handlers = new Map<string, Set<(e: EventEnvelope<unknown>) => Promise<void>>>();
   private processedEventIds = new Set<string>();
+  private logger = new AgentXLoggerFactory().createLogger('core-runtime:event-bus');
 
   /**
    * Publishes an event to a topic.
@@ -118,7 +120,7 @@ export class InMemoryEventBus implements IEventBus {
           await this.publish(replyTo, responsePayload, event.traceId, event.taskId);
         }
       } catch (e) {
-        console.error('Error handling reply', e);
+        this.logger.error('Error handling reply', e instanceof Error ? e : new Error(String(e)));
       }
     });
   }
@@ -146,11 +148,17 @@ export class InMemoryEventBus implements IEventBus {
           const promise = handler(event as EventEnvelope<unknown>);
           if (promise && typeof (promise as Promise<void>).catch === 'function') {
             (promise as Promise<void>).catch((err: unknown) => {
-              console.error(`Error in event handler for topic ${topic}`, err);
+              this.logger.error(
+                `Error in event handler for topic ${topic}`,
+                err instanceof Error ? err : new Error(String(err)),
+              );
             });
           }
         } catch (err) {
-          console.error(`Error in event handler for topic ${topic}`, err);
+          this.logger.error(
+            `Error in event handler for topic ${topic}`,
+            err instanceof Error ? err : new Error(String(err)),
+          );
         }
       }
     }
@@ -162,6 +170,7 @@ export class BullMQEventBus implements IEventBus {
   private queues = new Map<string, Queue>();
   private workers = new Map<string, Worker>();
   private processedEventIds = new Set<string>();
+  private logger = new AgentXLoggerFactory().createLogger('core-runtime:event-bus');
 
   constructor(redisUrl: string = 'redis://localhost:6379') {
     this.redisConnection = new Redis(redisUrl, {
@@ -272,7 +281,7 @@ export class BullMQEventBus implements IEventBus {
           await this.publish(replyTo, responsePayload, event.traceId, event.taskId);
         }
       } catch (e) {
-        console.error('Error handling reply', e);
+        this.logger.error('Error handling reply', e instanceof Error ? e : new Error(String(e)));
       }
     });
   }

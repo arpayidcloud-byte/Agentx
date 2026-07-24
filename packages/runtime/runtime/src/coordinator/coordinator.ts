@@ -8,10 +8,7 @@ import type {
   CoordinatorSession,
   ExecutionCoordinatorState,
   ExecutionCoordinatorMetrics,
-  ExecutionPhase,
   ExecutionTicket,
-  ExecutionSchedule,
-  ExecutionReservation,
   CoordinatorStatistics,
 } from './interfaces.js';
 import { CoordinatorStateMachine } from './coordinator-state.js';
@@ -85,20 +82,6 @@ export class ProductionExecutionCoordinator {
     this.auditLogger.log(session.id, session.traceId, 'schedule', 'PLANNING', 'success', {
       schedule,
     });
-
-    // Use schedule, ticket, executionPhase to cover unused variables
-    const _schedule = schedule;
-    const _ticket = ticket;
-    const _phase: ExecutionPhase = 'PLANNING';
-    const _reservation: ExecutionReservation = {
-      id: 'r1',
-      type: 'worker',
-      capacity: 1,
-      used: 0,
-      expiresAt: new Date(),
-    };
-    const _sched: ExecutionSchedule = _schedule;
-    console.log(_schedule, _ticket, _phase, _reservation, _sched);
 
     this.stateMachine.transition('DISPATCHING');
     ticket.status = 'EXECUTING';

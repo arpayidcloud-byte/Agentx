@@ -14,8 +14,11 @@ export interface SlackNotification {
   }>;
 }
 
+import { AgentXLoggerFactory } from '@agentx/shared';
+
 export class SlackNotifier {
   private webhookUrl: string;
+  private logger = new AgentXLoggerFactory().createLogger('api-server:slack');
 
   constructor(webhookUrl: string) {
     this.webhookUrl = webhookUrl;
@@ -35,7 +38,7 @@ export class SlackNotifier {
         throw new Error(`Slack API returned ${response.status}`);
       }
     } catch (error) {
-      console.error('Failed to send Slack notification:', error);
+      this.logger.error('Failed to send Slack notification', error);
       throw error;
     }
   }

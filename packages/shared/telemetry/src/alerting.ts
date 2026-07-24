@@ -1,4 +1,5 @@
 import type { AlertEvent, AlertRule } from './interfaces.js';
+import { AgentXLoggerFactory } from '@agentx/shared';
 
 export interface AlertNotifier {
   send(event: AlertEvent): Promise<void>;
@@ -37,6 +38,8 @@ export class SlackNotifier implements AlertNotifier {
 }
 
 export class EmailNotifier implements AlertNotifier {
+  private logger = new AgentXLoggerFactory().createLogger('telemetry:alerting');
+
   constructor(
     private _smtpHost: string,
     private _smtpPort: number,
@@ -56,11 +59,11 @@ export class EmailNotifier implements AlertNotifier {
       `Time: ${event.timestamp.toISOString()}`,
     ].join('\n');
 
-    console.log(
+    this.logger.info(
       `[Email] To: ${this.to.join(', ')} via ${this._smtpHost}:${this._smtpPort} from ${this._from}`,
     );
-    console.log(`[Email] Subject: ${subject}`);
-    console.log(`[Email] Body:\n${body}`);
+    this.logger.info(`[Email] Subject: ${subject}`);
+    this.logger.info(`[Email] Body:\n${body}`);
   }
 }
 

@@ -6,6 +6,7 @@ import { EventTopic } from '../interfaces/events.js';
 import { TaskStateMachine } from '../state-machine/index.js';
 import { TaskNotFoundError } from '../errors.js';
 import { Tracer, Metrics } from '@agentx/observability';
+import { AgentXLoggerFactory } from '@agentx/shared';
 import type { AgentRegistry } from '../registry/agent-registry.js';
 
 /**
@@ -34,6 +35,7 @@ export class Scheduler implements IScheduler {
   private maxParallel: number;
   private tracer = new Tracer('core-runtime-scheduler');
   private metrics = new Metrics();
+  private logger = new AgentXLoggerFactory().createLogger('core-runtime:scheduler');
   private agentRegistry?: AgentRegistry;
 
   /**
@@ -217,7 +219,7 @@ export class Scheduler implements IScheduler {
         // Execute agent if registry is configured
         if (this.agentRegistry && task.assignedAgentRole) {
           this.executeAgent(task).catch((err) => {
-            this.failTask(taskId, err).catch(console.error);
+            this.failTask(taskId, err).catch((e) => this.logger.error('Failed to fail task', e));
           });
         }
       }
