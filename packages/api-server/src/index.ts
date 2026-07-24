@@ -17,7 +17,7 @@ export { SlackNotifier } from './integrations/slack.js';
 export interface ApiServerConfig {
   port: number;
   host: string;
-  apiKey?: string;
+  apiKey: string;
   githubWebhookSecret?: string;
   allowedOrigins: string[];
   rateLimitMax: number;
@@ -64,9 +64,7 @@ export async function createApiServer(config: ApiServerConfig) {
     routePrefix: '/docs',
   });
 
-  if (config.apiKey) {
-    fastify.addHook('onRequest', createAuthMiddleware(config.apiKey));
-  }
+  fastify.addHook('onRequest', createAuthMiddleware(config.apiKey));
 
   await fastify.register(createTaskRoutes, { prefix: '/api/v1' });
   await fastify.register(createApprovalRoutes, { prefix: '/api/v1' });
