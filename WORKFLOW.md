@@ -442,7 +442,14 @@ function processUser(user: User): Promise<Result> {}
 function processUser(user: any): any {}
 ```
 
-### Step 5: Local Testing (Required)
+### Step 5: Local Testing (CRITICAL - MANDATORY)
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  ⚠️  RULE: NO PR WITHOUT FULL LOCAL TEST                    │
+│     Reduce CI failures by testing locally FIRST             │
+└──────────────────────────────────────────────────────────────┘
+```
 
 **Before creating PR**, run full CI pipeline locally:
 
@@ -450,20 +457,47 @@ function processUser(user: any): any {}
 # 1. Install dependencies
 pnpm install
 
-# 2. Typecheck - MUST PASS
+# 2. Typecheck - MUST PASS ✅
 pnpm typecheck
 
-# 3. Lint - MUST PASS (warnings OK, errors NO)
+# 3. Lint - MUST PASS ✅ (warnings OK, errors NO)
 pnpm lint
 
-# 4. Build - MUST PASS
+# 4. Build - MUST PASS ✅
 pnpm build
 
-# 5. Tests - MUST PASS
+# 5. Tests - MUST PASS ✅
 pnpm test
 
-# 6. Coverage - Check threshold
+# 6. Coverage - Check threshold ≥ 80% ✅
 pnpm test:coverage
+```
+
+**Pre-PR Test Checklist:**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  PRE-PR CHECKLIST - ALL MUST PASS ✅                        │
+├─────────────────────────────────────────────────────────────┤
+│  [ ] pnpm typecheck    → HIJAU (0 errors)                  │
+│  [ ] pnpm lint         → HIJAU (0 errors)                  │
+│  [ ] pnpm build        → HIJAU (0 failures)                │
+│  [ ] pnpm test         → HIJAU (0 failures)                │
+│  [ ] pnpm test:coverage → ≥ 80% threshold                  │
+│  [ ] Integration tests → PASS (if applicable)              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**If ANY test fails:**
+
+```bash
+# ❌ DON'T: Create PR and hope CI passes
+# ✅ DO: Fix locally first, THEN create PR
+
+# 1. Fix the failing tests
+# 2. Re-run full pipeline
+# 3. Verify ALL green
+# 4. THEN create PR
 ```
 
 **For integration tests:**
@@ -484,6 +518,47 @@ pnpm test:e2e
 # Cleanup
 docker stop $(docker ps -q)
 ```
+
+### Step 5.5: DevOps Verification (REQUIRED)
+
+**DevOps MUST verify before allowing PR:**
+
+```bash
+# Run verification script
+./scripts/pre-pr-check.sh
+
+# Or manually:
+echo "=== PRE-PR VERIFICATION ==="
+echo "1. Typecheck..."
+pnpm typecheck || exit 1
+
+echo "2. Lint..."
+pnpm lint || exit 1
+
+echo "3. Build..."
+pnpm build || exit 1
+
+echo "4. Tests..."
+pnpm test || exit 1
+
+echo "5. Coverage..."
+pnpm test:coverage || exit 1
+
+echo "✅ ALL CHECKS PASSED - PR CAN BE CREATED"
+```
+
+**CI Failure Rate Tracking:**
+
+| Developer | PRs | CI Failures | Failure Rate |
+| --------- | --- | ----------- | ------------ |
+| Target    | -   | -           | < 10%        |
+| Team Avg  | -   | -           | Calculate    |
+
+**If failure rate > 10%:**
+
+- Review pre-PR process
+- Add more local test coverage
+- Update pre-pr-check.sh script
 
 ### Step 6: Create PR
 
