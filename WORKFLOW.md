@@ -1532,3 +1532,255 @@ git stash pop
 **Owner:** Engineering Lead  
 **Status:** Active  
 **Version:** 2.4
+
+---
+
+## 🔀 Hybrid Approach: MCP + Shell Tools
+
+### When to Use What
+
+**Save 80-99% tokens by using the right tool!**
+
+| Task                    | Best Tool                  | Why                        | Token Savings |
+| ----------------------- | -------------------------- | -------------------------- | ------------- |
+| Find function/class     | **MCP** `search_graph`     | Understands code structure | -             |
+| Find string literal     | **grep/rg**                | Faster, precise            | ~80%          |
+| Find file by name       | **find/glob**              | Simple, fast               | ~90%          |
+| Read source code        | **MCP** `get_code_snippet` | Context-aware              | -             |
+| Check git status        | **git** commands           | Direct info                | ~95%          |
+| Parse JSON              | **jq**                     | Structured output          | ~70%          |
+| Count lines/files       | **wc/find**                | Quick stats                | ~99%          |
+| Compare files           | **diff**                   | Shows only differences     | ~85%          |
+| Directory structure     | **tree**                   | Visual overview            | ~60%          |
+| Trace dependencies      | **MCP** `trace_path`       | Code-aware tracing         | -             |
+| Understand architecture | **MCP** `get_architecture` | High-level view            | -             |
+
+### Token-Saving Examples
+
+**Example 1: Find packages missing license**
+
+❌ **Inefficient (MCP only):**
+
+```bash
+# 1. get_architecture() → 1000 tokens
+# 2. search_graph("package.json") → 500 tokens
+# 3. Read each package.json → 5000 tokens
+# Total: 6500+ tokens
+```
+
+✅ **Efficient (Hybrid):**
+
+```bash
+# 1. Find all package.json
+find packages -name "package.json" -not -path "*/node_modules/*" | wc -l
+# 51 packages
+
+# 2. Find missing license
+find packages -name "package.json" -exec grep -L '"license"' {} \; | wc -l
+# 0 missing
+
+# Total: ~50 tokens (99% savings!)
+```
+
+**Example 2: Find console.log in source**
+
+❌ **Inefficient:**
+
+```bash
+# MCP search_graph → 500 tokens
+# Read files → 2000 tokens
+```
+
+✅ **Efficient:**
+
+```bash
+grep -r "console\.log" packages/*/src --include="*.ts" | grep -v test
+# 2 results in 0.5 seconds
+# Total: ~10 tokens (98% savings!)
+```
+
+**Example 3: Check what files changed**
+
+❌ **Inefficient:**
+
+```bash
+# Read each file to check changes → 1000+ tokens
+```
+
+✅ **Efficient:**
+
+```bash
+git diff --name-only HEAD~1
+# Shows all changed files instantly
+# Total: ~5 tokens (99.5% savings!)
+```
+
+---
+
+## 🛠️ Complete MCP Tools Guide
+
+### Available MCP Tools (codebase-memory-mcp)
+
+| Tool                               | Purpose                              | When to Use                     | Token Cost  |
+| ---------------------------------- | ------------------------------------ | ------------------------------- | ----------- |
+| `get_architecture()`               | High-level architecture overview     | Start of new phase/batch        | Medium      |
+| `search_graph(pattern)`            | Find code by name pattern            | Find functions, classes, routes | Medium      |
+| `trace_path(function, direction)`  | Trace dependencies                   | Understand call graph           | Medium      |
+| `get_code_snippet(qualified_name)` | Read specific function/class source  | Read implementation details     | Low-Medium  |
+| `query_graph(cypher)`              | Complex queries with Cypher          | Find patterns across codebase   | Medium-High |
+| `search_code(pattern)`             | Search code content                  | Alternative to grep             | Medium      |
+| `list_projects()`                  | List indexed projects                | Multi-project repos             | Low         |
+| `index_status(project)`            | Check index status                   | Verify MCP is ready             | Low         |
+| `detect_changes()`                 | Detect codebase changes              | After major changes             | Low         |
+| `manage_adr(action)`               | Manage Architecture Decision Records | ADR workflow                    | Low         |
+
+### MCP Tool Usage by Phase
+
+**Phase 0 (Cleanup):**
+
+```bash
+# Minimal MCP needed - use shell tools
+find packages -name "package.json"  # Shell (99% token savings)
+grep -r "console.log" packages/     # Shell (98% token savings)
+git diff --name-only                # Shell (99% token savings)
+
+# MCP only for:
+get_architecture()  # Once at start to understand structure
+```
+
+**Phase 1-2 (Code Quality):**
+
+```bash
+# Hybrid approach
+grep -r "eslint-disable" packages/  # Find eslint disables
+search_graph(name_pattern=".*any.*") # Find any types (MCP)
+get_code_snippet(qualified_name="pkg/file.Class") # Read specific code
+```
+
+**Phase 3+ (Implementation):**
+
+```bash
+# More MCP for code understanding
+get_architecture()           # Understand big picture
+search_graph(name_pattern=".*Handler.*") # Find handlers
+trace_path(function_name="Handler", direction="inbound") # Trace callers
+trace_path(function_name="Handler", direction="outbound") # Trace calls
+get_code_snippet(qualified_name="pkg/file.Handler") # Read implementation
+```
+
+### MCP Best Practices
+
+**✅ DO:**
+
+```bash
+# 1. Use MCP at start of phase/batch
+get_architecture()
+
+# 2. Use MCP for code understanding
+search_graph(name_pattern=".*TargetFunction.*")
+trace_path(function_name="TargetFunction", direction="inbound")
+
+# 3. Use shell tools for simple searches
+grep -r "TODO" packages/
+find . -name "*.md" | wc -l
+
+# 4. Combine MCP + shell for efficiency
+search_graph(name_pattern=".*Handler.*")  # Find handlers
+grep -r "console.log" packages/agent/     # Find logs in specific dir
+```
+
+**❌ DON'T:**
+
+```bash
+# Don't use MCP for simple string search
+search_graph(pattern="TODO")  # Use grep instead
+
+# Don't use MCP to count files
+# Use find | wc -l instead
+
+# Don't use MCP to check git status
+# Use git status instead
+```
+
+### Token Budget by Phase
+
+| Phase                      | MCP Usage | Shell Usage | Est. Tokens |
+| -------------------------- | --------- | ----------- | ----------- |
+| Phase 0 (Cleanup)          | 10%       | 90%         | ~500        |
+| Phase 1-2 (Quality)        | 30%       | 70%         | ~2000       |
+| Phase 3-5 (Implementation) | 50%       | 50%         | ~5000       |
+| Phase 6-8 (Production)     | 40%       | 60%         | ~3000       |
+
+**Total estimated savings: 80-90% vs MCP-only approach**
+
+---
+
+## 📊 Efficiency Metrics
+
+### Track Your Efficiency
+
+**After each batch, calculate:**
+
+```bash
+# Token efficiency
+tokens_used / tasks_completed = tokens_per_task
+
+# Tool efficiency
+mcp_calls / shell_calls = hybrid_ratio
+
+# Time efficiency
+time_spent / tasks_completed = time_per_task
+```
+
+**Target Metrics:**
+
+| Metric                   | Target  | Current |
+| ------------------------ | ------- | ------- |
+| Tokens per task          | <1000   | -       |
+| Hybrid ratio (MCP:Shell) | 1:5     | -       |
+| Time per task            | <30 min | -       |
+
+### Continuous Improvement
+
+**Weekly review:**
+
+1. Which tasks used too many tokens?
+2. Could shell tools have been used instead?
+3. What patterns can be automated?
+4. Update this guide with learnings
+
+---
+
+## 🎯 Quick Reference Card
+
+**Print this for quick reference:**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  HYBRID APPROACH QUICK REFERENCE                             │
+├─────────────────────────────────────────────────────────────┤
+│  FIND FILES:     find . -name "*.ts" | wc -l                │
+│  FIND STRINGS:   grep -r "pattern" packages/ --include=*.ts │
+│  CHECK GIT:      git diff --name-only HEAD~1                │
+│  PARSE JSON:     jq '.field' file.json                      │
+│  COUNT LINES:    wc -l file.txt                              │
+│  STRUCTURE:      tree -L 2 -I 'node_modules'                │
+│  COMPARE:        diff file1 file2                            │
+├─────────────────────────────────────────────────────────────┤
+│  MCP TOOLS:                                                  │
+│  - get_architecture()        → Start of phase               │
+│  - search_graph(pattern)     → Find code                    │
+│  - trace_path(func, dir)     → Trace dependencies           │
+│  - get_code_snippet(name)    → Read source                  │
+│  - query_graph(cypher)       → Complex queries              │
+├─────────────────────────────────────────────────────────────┤
+│  RULE: Use shell tools for 80% of searches, MCP for 20%    │
+│        (code understanding only)                            │
+│  SAVINGS: 80-99% token reduction                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+**Last Updated:** July 24, 2026  
+**Version:** 2.5 (Hybrid Approach Added)
