@@ -1,5 +1,34 @@
-## ⚠️ DEPRECATED
+# @agentx/native-providers
 
-This package is deprecated. Use `@agentx/provider-sdk` instead.
+## ⚠️ Deprecated
 
-This package contains stub implementations and should not be used in production.
+This package is deprecated. Please use `@agentx/provider-sdk` instead.
+
+## Description
+
+[DEPRECATED] Native providers - use @agentx/provider-sdk
+
+## Installation
+
+```bash
+pnpm add @agentx/native-providers
+```
+
+## Usage
+
+```typescript
+import {} from '@agentx/native-providers';
+
+// TODO: Add usage example
+```
+
+## Development
+
+```bash
+pnpm test
+pnpm build
+```
+
+## License
+
+MIT

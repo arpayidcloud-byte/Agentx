@@ -1,5 +1,11 @@
 {
   "name": "@agentx/vendor-certification",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arpayidcloud-byte/Agentx.git",
+    "directory": "packages/provider/vendor-certification"
+  },
   "version": "0.1.0",
   "private": true,
   "type": "module",

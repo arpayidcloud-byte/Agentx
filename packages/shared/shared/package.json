@@ -1,5 +1,11 @@
 {
   "name": "@agentx/shared",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arpayidcloud-byte/Agentx.git",
+    "directory": "packages/shared/shared"
+  },
   "version": "0.1.0",
   "private": true,
   "type": "module",

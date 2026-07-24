@@ -1,5 +1,11 @@
 {
   "name": "@agentx/planning-engine",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arpayidcloud-byte/Agentx.git",
+    "directory": "packages/planning/planning-engine"
+  },
   "version": "0.1.0",
   "private": true,
   "type": "module",
