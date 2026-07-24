@@ -142,6 +142,165 @@ query_graph(query="MATCH (n:Node) WHERE n.property = 'value' RETURN n")
 | ⚠️ Warnings only | Can merge (fix in follow-up)         |
 | ❌ Any failure   | **BLOCK MERGE**, fix first           |
 
+### Docs-Only Fast Path
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  ⚡ RULE: DOCS-ONLY CHANGES → AUTO-MERGE (NO CI REQUIRED)   │
+└──────────────────────────────────────────────────────────────┘
+```
+
+**Criteria for Auto-Merge:**
+
+| File Type                               | Auto-Merge? | CI Required? |
+| --------------------------------------- | ----------- | ------------ |
+| `*.md` (docs only)                      | ✅ YES      | ❌ NO        |
+| `docs/**/*.md`                          | ✅ YES      | ❌ NO        |
+| `README.md`                             | ✅ YES      | ❌ NO        |
+| `CHANGELOG.md`                          | ✅ YES      | ❌ NO        |
+| Code files (`*.ts`, `*.js`, etc.)       | ❌ NO       | ✅ YES       |
+| Config files (`*.json`, `*.yaml`, etc.) | ❌ NO       | ✅ YES       |
+
+**DevOps Auto-Merge Process:**
+
+```bash
+# 1. Check if PR is docs-only
+git diff --name-only HEAD~1 HEAD | grep -v '\.md$'
+
+# If NO output → docs-only → AUTO-MERGE
+# If output exists → code changes → CI REQUIRED
+
+# 2. Auto-merge (if docs-only)
+git merge --no-ff <branch>
+
+# 3. Skip CI checks
+# No typecheck, lint, build, test required
+```
+
+**Examples:**
+
+| PR Content                            | Action         |
+| ------------------------------------- | -------------- |
+| Updated README.md                     | ✅ Auto-merge  |
+| Added docs/guides/new-feature.md      | ✅ Auto-merge  |
+| Updated WORKFLOW.md                   | ✅ Auto-merge  |
+| Updated MASTER_PLAN_PRODUCTION.md     | ✅ Auto-merge  |
+| Changed packages/runtime/src/index.ts | ❌ CI required |
+| Changed package.json                  | ❌ CI required |
+
+---
+
+## 📊 Progress Tracking
+
+### Update Master Plan After Merge
+
+**After EVERY batch/phase merge**, update progress:
+
+```bash
+# 1. Verify CI is green
+gh run list --limit 1 --jq '.[0].conclusion'  # Must be "success"
+
+# 2. Update MASTER_PLAN_PRODUCTION.md
+# Mark batch as complete with checkmark ✅
+# Add PR link
+# Add completion date
+
+# 3. Update WORKFLOW.md
+# Update "Current Phase" table
+# Mark batch status as "Complete"
+
+# 4. Commit progress update
+git add MASTER_PLAN_PRODUCTION.md WORKFLOW.md
+git commit -m "docs: update progress - Phase X Batch Y complete"
+git push origin main
+```
+
+### Progress Update Template
+
+**In MASTER_PLAN_PRODUCTION.md:**
+
+```markdown
+## Batch 0.1: Remove Committed Secrets
+
+### Tasks
+
+- [x] Rotate all API keys ✅
+- [x] Remove .env files from git ✅
+- [x] Create .env.example ✅
+
+### Status
+
+- **Completed:** July 24, 2026
+- **PR:** #50
+- **CI:** ✅ Green
+```
+
+**In WORKFLOW.md:**
+
+```markdown
+### Current Phase
+
+**Phase 0: Cleanup & Security** (Week 0)
+
+| Batch                  | Status         | PR  | Notes               |
+| ---------------------- | -------------- | --- | ------------------- |
+| 0.1 - Remove Secrets   | ✅ Complete    | #50 | All secrets removed |
+| 0.2 - Remove Artifacts | ⬜ Not started | -   | Next                |
+```
+
+### Auto-Continue to Next Session
+
+**After progress update:**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  ✅ Batch Complete → CI Green → Docs Updated           │
+│     ↓                                                   │
+│  🚀 AUTO-CONTINUE to Next Batch/Session                │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Process:**
+
+1. **Verify batch complete:**
+   - All tasks checked ✅
+   - PR merged ✅
+   - CI green ✅
+
+2. **Update docs:**
+   - MASTER_PLAN_PRODUCTION.md ✅
+   - WORKFLOW.md ✅
+
+3. **Auto-continue:**
+   - Read next batch in MASTER_PLAN_PRODUCTION.md
+   - Create feature branch for next batch
+   - Start MCP exploration
+   - Launch sub-agents for implementation
+
+**Example Flow:**
+
+```bash
+# Batch 0.1 complete
+→ Update docs
+→ Push progress
+→ Auto-continue to Batch 0.2
+
+# Next session starts automatically
+git checkout -b phase0-batch0.2-remove-artifacts
+# MCP exploration
+# Sub-agent assignment
+# Implementation
+```
+
+### Session Continuity Rules
+
+| Condition                                | Action                              |
+| ---------------------------------------- | ----------------------------------- |
+| Batch complete + CI green + docs updated | ✅ Auto-continue to next batch      |
+| Batch complete + CI red                  | ❌ Block, fix CI first              |
+| Batch complete + docs not updated        | ⚠️ Update docs first, then continue |
+| Batch incomplete                         | ❌ Finish batch first               |
+
 ### Pre-PR Testing Checklist
 
 **DevOps MUST verify before PR creation:**
