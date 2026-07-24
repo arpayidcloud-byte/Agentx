@@ -25,9 +25,9 @@
   "dependencies": {
     "@agentx/shared": "workspace:*",
     "@opentelemetry/api": "^1.9.0",
-    "@opentelemetry/exporter-metrics-otlp-http": "^0.57.0",
-    "@opentelemetry/exporter-trace-otlp-http": "^0.57.0",
-    "@opentelemetry/sdk-node": "^0.57.0",
+    "@opentelemetry/exporter-metrics-otlp-http": "^0.221.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.221.0",
+    "@opentelemetry/sdk-node": "^0.221.0",
     "prom-client": "^15.1.3"
   }
 }
