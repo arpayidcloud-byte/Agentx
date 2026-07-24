@@ -3,6 +3,16 @@ import { EventTopic } from '../interfaces/events.js';
 import { TaskStateMachine } from '../state-machine/index.js';
 import { TaskNotFoundError } from '../errors.js';
 import { Tracer, Metrics } from '@agentx/observability';
+import { AgentXLoggerFactory } from '@agentx/shared';
+/**
+ * Scheduler manages task execution lifecycle and agent dispatch.
+ * Handles task queuing, state transitions, and concurrent execution limits.
+ * @example
+ * ```ts
+ * const scheduler = new Scheduler(eventBus, taskRepo, { maxParallelAgents: 10 });
+ * await scheduler.enqueue(task);
+ * ```
+ */
 export class Scheduler {
     eventBus;
     taskRepo;
@@ -12,16 +22,38 @@ export class Scheduler {
     maxParallel;
     tracer = new Tracer('core-runtime-scheduler');
     metrics = new Metrics();
+    logger = new AgentXLoggerFactory().createLogger('core-runtime:scheduler');
     agentRegistry;
+    /**
+     * Creates a new Scheduler instance.
+     * @param eventBus - Event bus for async communication and event publishing
+     * @param taskRepo - Task repository for persistence
+     * @param config - Optional scheduler configuration
+     * @param agentRegistry - Optional agent registry for task execution
+     */
     constructor(eventBus, taskRepo, config = {}, agentRegistry) {
         this.eventBus = eventBus;
         this.taskRepo = taskRepo;
         this.maxParallel = config.maxParallelAgents ?? 10;
         this.agentRegistry = agentRegistry;
     }
+    /**
+     * Sets the agent registry for task execution.
+     * @param registry - Agent registry to use for executing tasks
+     */
     setAgentRegistry(registry) {
         this.agentRegistry = registry;
     }
+    /**
+     * Enqueues a task for execution if it's in a valid initial state.
+     * Transitions task to QUEUED status and triggers dispatch.
+     * @param task - Task to enqueue
+     * @throws Error if task save or event publishing fails
+     * @example
+     * ```ts
+     * await scheduler.enqueue({ id: 'task-1', status: TaskStatus.CREATED, ... });
+     * ```
+     */
     async enqueue(task) {
         const span = this.tracer.startSpan('scheduler-enqueue');
         span.setAttribute('task.id', task.id);
@@ -48,6 +80,11 @@ export class Scheduler {
             span.end();
         }
     }
+    /**
+     * Pauses a running task, transitioning it to WAITING_APPROVAL status.
+     * @param taskId - ID of the task to pause
+     * @throws TaskNotFoundError if task doesn't exist
+     */
     async pause(taskId) {
         const span = this.tracer.startSpan('scheduler-pause');
         span.setAttribute('task.id', taskId);
@@ -72,6 +109,11 @@ export class Scheduler {
             span.end();
         }
     }
+    /**
+     * Resumes a paused task, transitioning it back to RUNNING status.
+     * @param taskId - ID of the task to resume
+     * @throws TaskNotFoundError if task doesn't exist
+     */
     async resume(taskId) {
         const span = this.tracer.startSpan('scheduler-resume');
         span.setAttribute('task.id', taskId);
@@ -99,6 +141,12 @@ export class Scheduler {
             span.end();
         }
     }
+    /**
+     * Cancels a task with the given reason.
+     * @param taskId - ID of the task to cancel
+     * @param reason - Reason for cancellation
+     * @throws TaskNotFoundError if task doesn't exist
+     */
     async cancel(taskId, reason) {
         const span = this.tracer.startSpan('scheduler-cancel');
         span.setAttribute('task.id', taskId);
@@ -145,7 +193,7 @@ export class Scheduler {
                 // Execute agent if registry is configured
                 if (this.agentRegistry && task.assignedAgentRole) {
                     this.executeAgent(task).catch((err) => {
-                        this.failTask(taskId, err).catch(console.error);
+                        this.failTask(taskId, err).catch((e) => this.logger.error('Failed to fail task', e));
                     });
                 }
             }
@@ -175,6 +223,11 @@ export class Scheduler {
             span.end();
         }
     }
+    /**
+     * Marks a task as completed with the given result.
+     * @param taskId - ID of the completed task
+     * @param result - Task execution result
+     */
     async completeTask(taskId, result) {
         const span = this.tracer.startSpan('scheduler-complete');
         span.setAttribute('task.id', taskId);
@@ -202,6 +255,11 @@ export class Scheduler {
             span.end();
         }
     }
+    /**
+     * Marks a task as failed with the given error.
+     * @param taskId - ID of the failed task
+     * @param error - Error that caused the failure
+     */
     async failTask(taskId, error) {
         const span = this.tracer.startSpan('scheduler-fail');
         span.setAttribute('task.id', taskId);
@@ -229,6 +287,11 @@ export class Scheduler {
             span.end();
         }
     }
+    /**
+     * Retrieves a task by ID from in-flight tasks or repository.
+     * @param taskId - ID of the task to retrieve
+     * @returns Task model if found, undefined otherwise
+     */
     async getTask(taskId) {
         return this.inFlightTasks.get(taskId) || (await this.taskRepo.findById(taskId));
     }

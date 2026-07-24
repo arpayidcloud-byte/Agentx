@@ -1,9 +1,29 @@
 import { EventBusError } from '../errors.js';
 import { Queue, Worker } from 'bullmq';
 import { Redis } from 'ioredis';
+import { AgentXLoggerFactory } from '@agentx/shared';
+/**
+ * In-memory implementation of IEventBus for testing and development.
+ * Provides pub/sub, request/reply, and broadcast patterns.
+ * @example
+ * ```ts
+ * const bus = new InMemoryEventBus();
+ * await bus.subscribe('task.created', handler);
+ * await bus.publish('task.created', task, traceId);
+ * ```
+ */
 export class InMemoryEventBus {
     handlers = new Map();
     processedEventIds = new Set();
+    logger = new AgentXLoggerFactory().createLogger('core-runtime:event-bus');
+    /**
+     * Publishes an event to a topic.
+     * @param topic - Event topic to publish to
+     * @param payload - Event payload data
+     * @param traceId - Trace ID for distributed tracing
+     * @param taskId - Optional task ID associated with the event
+     * @param metadata - Optional metadata for the event
+     */
     async publish(topic, payload, traceId, taskId, metadata) {
         const event = {
             id: Math.random().toString(36).substring(2) + Date.now().toString(36),
@@ -18,15 +38,33 @@ export class InMemoryEventBus {
         };
         await this.dispatch(topic, event);
     }
+    /**
+     * Subscribes a handler to a topic.
+     * @param topic - Topic to subscribe to
+     * @param handler - Async handler function to process events
+     */
     async subscribe(topic, handler) {
         if (!this.handlers.has(topic)) {
             this.handlers.set(topic, new Set());
         }
         this.handlers.get(topic).add(handler);
     }
+    /**
+     * Unsubscribes all handlers from a topic.
+     * @param topic - Topic to unsubscribe from
+     */
     async unsubscribe(topic) {
         this.handlers.delete(topic);
     }
+    /**
+     * Sends a request and waits for a reply.
+     * @param topic - Request topic
+     * @param payload - Request payload
+     * @param traceId - Trace ID for distributed tracing
+     * @param timeoutMs - Timeout in milliseconds (default: 5000)
+     * @returns Promise resolving to the reply event envelope
+     * @throws EventBusError if request times out
+     */
     async request(topic, payload, traceId, timeoutMs = 5000) {
         return new Promise((resolve, reject) => {
             const replyTopic = `${topic}.reply.${Math.random().toString(36).substring(2)}`;
@@ -39,6 +77,11 @@ export class InMemoryEventBus {
             this.publish(topic, payload, traceId, undefined, { replyTo: replyTopic }).catch(reject);
         });
     }
+    /**
+     * Registers a handler that replies to requests on a topic.
+     * @param topic - Request topic to handle
+     * @param handler - Async handler that processes requests and returns responses
+     */
     async reply(topic, handler) {
         await this.subscribe(topic, async (event) => {
             try {
@@ -49,10 +92,16 @@ export class InMemoryEventBus {
                 }
             }
             catch (e) {
-                console.error('Error handling reply', e);
+                this.logger.error('Error handling reply', e instanceof Error ? e : new Error(String(e)));
             }
         });
     }
+    /**
+     * Broadcasts an event to all subscribers of a topic.
+     * @param topic - Topic to broadcast to
+     * @param payload - Event payload
+     * @param traceId - Trace ID for distributed tracing
+     */
     async broadcast(topic, payload, traceId) {
         await this.publish(topic, payload, traceId);
     }
@@ -68,12 +117,12 @@ export class InMemoryEventBus {
                     const promise = handler(event);
                     if (promise && typeof promise.catch === 'function') {
                         promise.catch((err) => {
-                            console.error(`Error in event handler for topic ${topic}`, err);
+                            this.logger.error(`Error in event handler for topic ${topic}`, err instanceof Error ? err : new Error(String(err)));
                         });
                     }
                 }
                 catch (err) {
-                    console.error(`Error in event handler for topic ${topic}`, err);
+                    this.logger.error(`Error in event handler for topic ${topic}`, err instanceof Error ? err : new Error(String(err)));
                 }
             }
         }
@@ -84,6 +133,7 @@ export class BullMQEventBus {
     queues = new Map();
     workers = new Map();
     processedEventIds = new Set();
+    logger = new AgentXLoggerFactory().createLogger('core-runtime:event-bus');
     constructor(redisUrl = 'redis://localhost:6379') {
         this.redisConnection = new Redis(redisUrl, {
             maxRetriesPerRequest: null,
@@ -164,7 +214,7 @@ export class BullMQEventBus {
                 }
             }
             catch (e) {
-                console.error('Error handling reply', e);
+                this.logger.error('Error handling reply', e instanceof Error ? e : new Error(String(e)));
             }
         });
     }
