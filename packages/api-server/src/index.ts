@@ -18,6 +18,7 @@ export interface ApiServerConfig {
   port: number;
   host: string;
   apiKey?: string;
+  githubWebhookSecret?: string;
   rateLimitMax: number;
   rateLimitWindow: number;
   prometheusExporter?: PrometheusExporter;
@@ -66,7 +67,9 @@ export async function createApiServer(config: ApiServerConfig) {
   await fastify.register(createApprovalRoutes, { prefix: '/api/v1' });
   await fastify.register(createHealthRoutes, { prefix: '/api/v1' });
   await fastify.register(createEventRoutes, { prefix: '/api/v1' });
-  await fastify.register(createGitHubWebhookRoutes);
+  await fastify.register(createGitHubWebhookRoutes, {
+    secret: config.githubWebhookSecret || '',
+  });
 
   if (config.prometheusExporter) {
     await fastify.register(createMetricsRoutes, { exporter: config.prometheusExporter });
