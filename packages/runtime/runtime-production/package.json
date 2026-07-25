@@ -23,7 +23,7 @@
     "@agentx/runtime-adapters": "workspace:*",
     "@agentx/core-runtime": "workspace:*",
     "@agentx/tool-sdk": "workspace:*",
-    "@prisma/client": "^5.0.0"
+    "@prisma/client": "^5.14.0"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^3.2.6",
