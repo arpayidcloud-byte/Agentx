@@ -1,5 +1,5 @@
 import type { IMemoryStore, Memory, MemorySearchOptions, MemoryType } from './interfaces.js';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, type Prisma } from '@prisma/client';
 
 type PrismaMemoryRecord = {
   id: string;
@@ -29,7 +29,7 @@ export class PrismaMemoryStore implements IMemoryStore {
         importance: memory.importance,
         sessionId: memory.sessionId || null,
         taskId: memory.taskId || null,
-        metadata: memory.metadata || {},
+        metadata: (memory.metadata || {}) as Prisma.InputJsonValue,
       },
     });
   }
