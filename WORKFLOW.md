@@ -848,6 +848,8 @@ Week 15-16: Phase 8 - Final Validation & Release
 
 ### MCP Tools
 
+#### Codebase Memory MCP
+
 | Tool                               | Purpose                          |
 | ---------------------------------- | -------------------------------- |
 | `get_architecture()`               | High-level architecture overview |
@@ -855,6 +857,31 @@ Week 15-16: Phase 8 - Final Validation & Release
 | `trace_path(function, direction)`  | Trace dependencies               |
 | `get_code_snippet(qualified_name)` | Read source code                 |
 | `query_graph(cypher)`              | Complex queries                  |
+
+#### GitHub MCP
+
+| Tool                    | Purpose                               |
+| ----------------------- | ------------------------------------- |
+| `search_repositories`   | Search GitHub repositories            |
+| `get_file_contents`     | Get file/directory contents from repo |
+| `create_or_update_file` | Create/update single file in repo     |
+| `push_files`            | Push multiple files in single commit  |
+| `create_issue`          | Create new GitHub issue               |
+| `create_pull_request`   | Create new pull request               |
+| `list_issues`           | List and filter repository issues     |
+| `update_issue`          | Update existing issue                 |
+| `add_issue_comment`     | Add comment to issue                  |
+| `search_code`           | Search code across GitHub             |
+| `search_issues`         | Search issues and PRs                 |
+| `list_commits`          | Get commits in a branch               |
+| `get_pull_request`      | Get PR details                        |
+| `list_pull_requests`    | List and filter PRs                   |
+| `merge_pull_request`    | Merge a pull request                  |
+| `create_branch`         | Create new branch                     |
+| `fork_repository`       | Fork a repository                     |
+| `create_repository`     | Create new repository                 |
+
+**Setup:** GitHub MCP sudah dikonfigurasi di `opencode.json` dengan environment variable `GITHUB_PERSONAL_ACCESS_TOKEN`.
 
 ---
 
