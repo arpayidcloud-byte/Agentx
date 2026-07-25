@@ -43,3 +43,9 @@ export {
   RBACDecision,
   createRBACMiddleware,
 } from './rbac-provider.js';
+export {
+  RateLimiter,
+  RateLimitConfig,
+  RateLimitInfo,
+  RateLimitResult,
+} from '../security/rate-limiter.js';
