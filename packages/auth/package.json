@@ -8,27 +8,37 @@
   },
   "version": "0.1.0",
   "private": true,
-  "deprecated": true,
   "type": "module",
-  "main": "./src/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./src/index.ts",
-      "types": "./src/index.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     }
   },
   "files": [
-    "src",
+    "dist",
     "README.md"
   ],
   "scripts": {
-    "test": "echo 'skip - deprecated'",
-    "lint": "echo 'skip - deprecated'",
+    "build": "tsc --build",
     "typecheck": "tsc --noEmit",
-    "build": "echo 'skip - deprecated'"
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src/"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.3",
+    "uuid": "^14.0.1"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20.0.0",
-    "typescript": "^5.4.5"
+    "@types/uuid": "^9.0.8",
+    "typescript": "^5.4.5",
+    "vitest": "^3.2.6"
   }
 }

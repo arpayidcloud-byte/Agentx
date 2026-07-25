@@ -1,2 +1,2 @@
-export interface User { id: string; role: 'owner'|'developer'|'viewer'; }
-export class AuthService { async authenticate(t: string): Promise<User> { return {id:'u1',role:'owner'}; } }
+export { AuthService } from './jwt-auth.service.js';
+export type { User, AuthTokens, AuthResult, JWTPayload } from './jwt-auth.service.js';
