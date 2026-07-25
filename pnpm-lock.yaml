@@ -120,63 +120,78 @@ importers:
         specifier: workspace:*
         version: link:../../provider/provider-sdk
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/agent/multi-agent-collaboration:
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/agent/multi-agent-reasoning:
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/cognitive/autonomous-cognition:
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/cognitive/cognitive-contracts:
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/cognitive/cognitive-kernel:
     dependencies:
@@ -187,51 +202,63 @@ importers:
         specifier: workspace:*
         version: link:../cognitive-learning
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/cognitive/cognitive-learning:
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/distributed/distributed-cognition:
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/planning/goal-intelligence:
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/planning/planning-engine:
     dependencies:
@@ -239,27 +266,33 @@ importers:
         specifier: workspace:*
         version: link:../../shared/core-runtime
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/platform/developer-platform:
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/provider/native-providers:
     dependencies:
@@ -267,15 +300,18 @@ importers:
         specifier: workspace:*
         version: link:../../runtime/runtime-adapters
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/provider/provider-qualification:
     dependencies:
@@ -283,27 +319,33 @@ importers:
         specifier: workspace:*
         version: link:../../runtime/runtime-adapters
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/provider/provider-release:
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/provider/provider-sdk:
     dependencies:
@@ -323,75 +365,93 @@ importers:
         specifier: ^0.24.1
         version: 0.24.1
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/provider/vendor-certification:
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/quality/architecture-sdk:
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/quality/production-quality:
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/reasoning/reasoning-algorithms:
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/reasoning/reasoning-framework:
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/runtime/enterprise-runtime:
     dependencies:
@@ -420,15 +480,18 @@ importers:
         specifier: ^1.43.0
         version: 1.43.0
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/runtime/runtime:
     dependencies:
@@ -436,15 +499,18 @@ importers:
         specifier: workspace:*
         version: link:../../shared/core-runtime
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/runtime/runtime-adapters:
     dependencies:
@@ -458,15 +524,18 @@ importers:
         specifier: ^5.11.1
         version: 5.11.1
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/runtime/runtime-production:
     dependencies:
@@ -486,15 +555,18 @@ importers:
         specifier: ^5.14.0
         version: 5.22.0(prisma@5.22.0)
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/shared/cache:
     dependencies:
@@ -502,12 +574,15 @@ importers:
         specifier: workspace:*
         version: link:../shared
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/shared/context-engine:
     dependencies:
@@ -515,15 +590,18 @@ importers:
         specifier: workspace:*
         version: link:../core-runtime
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/shared/core-runtime:
     dependencies:
@@ -540,12 +618,15 @@ importers:
         specifier: ^5.11.1
         version: 5.11.1
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/shared/knowledge-engine:
     dependencies:
@@ -553,15 +634,18 @@ importers:
         specifier: workspace:*
         version: link:../core-runtime
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/shared/memory-engine:
     dependencies:
@@ -572,12 +656,15 @@ importers:
         specifier: ^5.14.0
         version: 5.22.0(prisma@5.22.0)
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/shared/observability:
     dependencies:
@@ -600,12 +687,15 @@ importers:
         specifier: ^15.1.3
         version: 15.1.3
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/shared/persistence:
     dependencies:
@@ -616,9 +706,12 @@ importers:
         specifier: ^5.14.0
         version: 5.22.0(prisma@5.22.0)
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       prisma:
         specifier: ^5.14.0
         version: 5.22.0
@@ -627,7 +720,7 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/shared/secrets:
     dependencies:
@@ -654,24 +747,30 @@ importers:
         specifier: workspace:*
         version: link:../shared
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/shared/shared:
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/shared/telemetry:
     dependencies:
@@ -682,12 +781,15 @@ importers:
         specifier: workspace:*
         version: link:../shared
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/shared/tenant:
     dependencies:
@@ -695,12 +797,15 @@ importers:
         specifier: workspace:*
         version: link:../shared
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/shared/tool-sdk:
     dependencies:
@@ -723,51 +828,63 @@ importers:
         specifier: ^2.9.0
         version: 2.9.0
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/workflow/workflow-engine:
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/workflow/workflow-hardening:
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   packages/workflow/workflow-orchestration:
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.43
       '@vitest/coverage-v8':
         specifier: ^3.2.6
-        version: 3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 3.2.7(vitest@3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0))
       typescript:
         specifier: 5.4.5
         version: 5.4.5
       vitest:
         specifier: ^3.2.6
-        version: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
 
   tooling/dependency-lint:
     devDependencies:
@@ -6088,25 +6205,6 @@ snapshots:
       test-exclude: 7.0.2
       tinyrainbow: 2.0.0
       vitest: 3.2.7(@types/node@20.19.43)(jiti@2.6.1)(yaml@2.9.0)
-    transitivePeerDependencies:
-      - supports-color
-
-  '@vitest/coverage-v8@3.2.7(vitest@3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0))':
-    dependencies:
-      '@ampproject/remapping': 2.3.0
-      '@bcoe/v8-coverage': 1.0.2
-      ast-v8-to-istanbul: 0.3.12
-      debug: 4.4.3
-      istanbul-lib-coverage: 3.2.2
-      istanbul-lib-report: 3.0.1
-      istanbul-lib-source-maps: 5.0.6
-      istanbul-reports: 3.2.0
-      magic-string: 0.30.21
-      magicast: 0.3.5
-      std-env: 3.10.0
-      test-exclude: 7.0.2
-      tinyrainbow: 2.0.0
-      vitest: 3.2.7(@types/node@26.1.1)(jiti@2.6.1)(yaml@2.9.0)
     transitivePeerDependencies:
       - supports-color
 
