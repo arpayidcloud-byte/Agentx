@@ -172,7 +172,7 @@ export class BullMQEventBus implements IEventBus {
   private processedEventIds = new Set<string>();
   private logger = new AgentXLoggerFactory().createLogger('core-runtime:event-bus');
 
-  constructor(redisUrl: string = 'redis://localhost:6379') {
+  constructor(redisUrl: string = process.env.REDIS_URL || 'redis://localhost:6379') {
     this.redisConnection = new Redis(redisUrl, {
       maxRetriesPerRequest: null,
     } as unknown as Redis['options']) as Redis;

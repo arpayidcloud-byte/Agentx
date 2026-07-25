@@ -17,7 +17,7 @@ export class ProductionRuntime {
   public scheduler: Scheduler;
   public eventBus: InMemoryEventBus; // Until we make a BullMQ bus
 
-  constructor(redisUrl: string = 'redis://localhost:6379') {
+  constructor(redisUrl: string = process.env.REDIS_URL || 'redis://localhost:6379') {
     this.prisma = new PrismaClient();
     this.taskRepo = new PrismaTaskRepository(this.prisma);
     this.eventRepo = new PrismaEventRepository(this.prisma);

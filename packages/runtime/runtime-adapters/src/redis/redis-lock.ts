@@ -13,7 +13,7 @@ export class RedisLockProvider implements ILockProvider {
   private successes = 0;
   private failures = 0;
 
-  constructor(redisUrl: string = 'redis://localhost:6379') {
+  constructor(redisUrl: string = process.env.REDIS_URL || 'redis://localhost:6379') {
     this.redis = new Redis(redisUrl);
   }
 
@@ -35,7 +35,13 @@ export class RedisLockProvider implements ILockProvider {
       await this.redis.ping();
       return { healthy: true, latencyMs: 1, lastChecked: new Date(), status: 'ACTIVE' };
     } catch (e) {
-      return { healthy: false, latencyMs: 0, lastChecked: new Date(), status: 'DEGRADED', details: { reason: String(e) } };
+      return {
+        healthy: false,
+        latencyMs: 0,
+        lastChecked: new Date(),
+        status: 'DEGRADED',
+        details: { reason: String(e) },
+      };
     }
   }
 
@@ -51,15 +57,15 @@ export class RedisLockProvider implements ILockProvider {
   async acquire(key: string, ttlMs: number): Promise<string> {
     this.total++;
     const lockId = `lock-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-    
+
     // Set IF NOT EXISTS with PX (milliseconds)
     const result = await this.redis.set(`lock:${key}`, lockId, 'PX', ttlMs, 'NX');
-    
+
     if (result === 'OK') {
       this.successes++;
       return lockId;
     }
-    
+
     this.failures++;
     throw new Error(`Lock already held: ${key}`);
   }

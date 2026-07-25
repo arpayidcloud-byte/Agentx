@@ -483,7 +483,7 @@ importers:
         specifier: workspace:*
         version: link:../../shared/tool-sdk
       '@prisma/client':
-        specifier: ^5.0.0
+        specifier: ^5.14.0
         version: 5.22.0(prisma@5.22.0)
     devDependencies:
       '@vitest/coverage-v8':
@@ -569,8 +569,8 @@ importers:
         specifier: workspace:*
         version: link:../core-runtime
       '@prisma/client':
-        specifier: 5.14.0
-        version: 5.14.0(prisma@5.22.0)
+        specifier: ^5.14.0
+        version: 5.22.0(prisma@5.22.0)
     devDependencies:
       typescript:
         specifier: 5.4.5
@@ -1694,18 +1694,6 @@ packages:
       {
         integrity: sha512-kMVmS4ZEy3xlkca+TfxOEm/ToVVlOS2x1Tc6/wIRf/HfczBqENtSPcKszy4ZpFNzjJ8SRKvlU5V0rrpoFw2KOg==,
       }
-
-  '@prisma/client@5.14.0':
-    resolution:
-      {
-        integrity: sha512-akMSuyvLKeoU4LeyBAUdThP/uhVP3GuLygFE3MlYzaCb3/J8SfsYBE5PkaFuLuVpLyA6sFoW+16z/aPhNAESqg==,
-      }
-    engines: { node: '>=16.13' }
-    peerDependencies:
-      prisma: '*'
-    peerDependenciesMeta:
-      prisma:
-        optional: true
 
   '@prisma/client@5.22.0':
     resolution:
@@ -5813,10 +5801,6 @@ snapshots:
   '@pkgr/core@0.3.6': {}
 
   '@prisma/client-runtime-utils@7.9.0': {}
-
-  '@prisma/client@5.14.0(prisma@5.22.0)':
-    optionalDependencies:
-      prisma: 5.22.0
 
   '@prisma/client@5.22.0(prisma@5.22.0)':
     optionalDependencies:

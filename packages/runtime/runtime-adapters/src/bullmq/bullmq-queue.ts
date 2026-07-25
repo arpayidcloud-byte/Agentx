@@ -15,7 +15,7 @@ export class BullMQProvider implements IQueueProvider {
   private successes = 0;
   private failures = 0;
 
-  constructor(redisUrl: string = 'redis://localhost:6379') {
+  constructor(redisUrl: string = process.env.REDIS_URL || 'redis://localhost:6379') {
     this.redis = new Redis(redisUrl, { maxRetriesPerRequest: null });
   }
 
