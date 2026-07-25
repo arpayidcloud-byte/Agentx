@@ -808,13 +808,13 @@ docs/
 
 **Phase 1: Code Quality & Standards** (Week 1-2)
 
-| Batch                       | Status         | PR  | Notes           |
-| --------------------------- | -------------- | --- | --------------- |
-| 1.1 - Remove console.log    | ✅ Complete    | -   | 0 found         |
-| 1.2 - Remove Hardcoded URLs | ✅ Complete    | -   | 5 files updated |
-| 1.3 - Add exports & files   | ✅ Complete    | -   | 41 packages     |
-| 1.4 - Add @types/node       | ✅ Complete    | -   | 41 packages     |
-| 1.5 - Standardize Vitest    | ⬜ Not started | -   | Config          |
+| Batch                       | Status      | PR  | Notes           |
+| --------------------------- | ----------- | --- | --------------- |
+| 1.1 - Remove console.log    | ✅ Complete | -   | 0 found         |
+| 1.2 - Remove Hardcoded URLs | ✅ Complete | -   | 5 files updated |
+| 1.3 - Add exports & files   | ✅ Complete | -   | 41 packages     |
+| 1.4 - Add @types/node       | ✅ Complete | -   | 41 packages     |
+| 1.5 - Standardize Vitest    | ✅ Complete | -   | 36 packages     |
 
 ### Phase 0 Summary (Completed)
 
