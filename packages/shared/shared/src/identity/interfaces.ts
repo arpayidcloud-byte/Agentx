@@ -35,3 +35,11 @@ export interface IdentityToRBACBridge {
   getPermissions(identity: Identity): Promise<string[]>;
   hasRole(identity: Identity, role: string): Promise<boolean>;
 }
+
+export {
+  RBACProvider,
+  RBACIdentity,
+  RBACContext,
+  RBACDecision,
+  createRBACMiddleware,
+} from './rbac-provider.js';
