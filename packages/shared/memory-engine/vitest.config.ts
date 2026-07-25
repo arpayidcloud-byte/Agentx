@@ -1,5 +1,4 @@
 import { defineConfig } from 'vitest/config';
-import path from 'path';
 
 export default defineConfig({
   test: {
@@ -11,10 +10,10 @@ export default defineConfig({
       include: ['src/**/*.ts'],
       exclude: ['src/index.ts', 'src/**/*.test.ts'],
       thresholds: {
-        lines: 75,
+        lines: 80,
         functions: 80,
         branches: 75,
-        statements: 75,
+        statements: 80,
       },
     },
   },
