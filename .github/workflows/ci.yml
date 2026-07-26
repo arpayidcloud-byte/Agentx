@@ -58,7 +58,7 @@ jobs:
             echo "⚠️  Potential hardcoded secrets found"
             exit 1
           fi
-          echo "✅ No hardcoded secrets found
+          echo "✅ No hardcoded secrets found"
       - name: Setup handbook for lint & contract tests
         id: handbook-setup
         env:
