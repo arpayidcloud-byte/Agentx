@@ -63,6 +63,10 @@ pnpm agentx shutdown "Maintenance"  # Trigger graceful shutdown
 pnpm test:load              # Run performance load tests (100-1000 users)
 pnpm test:load:shutdown     # Test graceful shutdown under load
 
+# Security Testing
+pnpm test:security          # Run OWASP Top 10 security tests
+pnpm security:scan          # Run comprehensive security scan
+
 # Other commands
 pnpm agentx config      # Manage configuration
 pnpm agentx cost        # Show cost analysis
