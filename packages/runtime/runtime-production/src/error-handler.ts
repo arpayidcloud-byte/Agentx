@@ -265,9 +265,16 @@ export class ErrorHandler {
       error: error.message,
     });
 
-    // Add to DLQ with metadata
+    // Convert TaskModel to QueueMessage format for DLQ
     const dlqEntry = {
-      ...task,
+      id: task.id,
+      traceId: task.traceId || '',
+      workflowId: task.rootTaskId,
+      payload: task,
+      priority: task.priority,
+      retryCount: task.metadata?.retryCount ? Number(task.metadata.retryCount) : 0,
+      status: 'FAILED' as const,
+      createdAt: task.createdAt,
       metadata: {
         ...task.metadata,
         errorType: error.name,
@@ -278,8 +285,7 @@ export class ErrorHandler {
       },
     };
 
-    // DLQ accepts QueueMessage type, TaskModel is compatible
-    this.deadLetterQueue.send(dlqEntry as unknown as typeof dlqEntry);
+    this.deadLetterQueue.send(dlqEntry);
   }
 
   /**
