@@ -25,6 +25,9 @@ pnpm typecheck
 echo "🎨 Running lint..."
 pnpm lint
 
+echo "🔗 Running lint deps..."
+pnpm lint:deps
+
 echo "🏗️  Running build..."
 pnpm build
 
