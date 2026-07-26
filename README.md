@@ -56,8 +56,12 @@ pnpm agentx dlq list    # List failed tasks
 pnpm agentx dlq size    # Show DLQ size
 pnpm agentx dlq clear   # Clear DLQ
 
-# Graceful shutdown (NEW!)
+# Graceful shutdown
 pnpm agentx shutdown "Maintenance"  # Trigger graceful shutdown
+
+# Load Testing
+pnpm test:load              # Run performance load tests (100-1000 users)
+pnpm test:load:shutdown     # Test graceful shutdown under load
 
 # Other commands
 pnpm agentx config      # Manage configuration
