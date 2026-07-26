@@ -617,7 +617,7 @@ Coverage thresholds vary:
 
 ### Status
 
-**COMPLETE** - PR #57
+**COMPLETE** - PR #57 merged to main (2026-07-26)
 
 ---
 
@@ -649,7 +649,61 @@ Coverage thresholds vary:
 
 ### Status
 
-**COMPLETE** - PR #57
+**COMPLETE** - PR #57 merged to main (2026-07-26)
+
+---
+
+## Batch 2.4: Security Audit
+
+### Tasks
+
+1. **Integrate SAST Scanner to CI**
+   - [ ] Add security scan step to `.github/workflows/ci.yml`
+   - [ ] Use `packages/shared/security/src/scanner.ts`
+   - [ ] Run on every PR
+
+2. **Secret Detection Pre-commit Hook**
+   - [ ] Create `scripts/pre-commit-secret-detect.sh`
+   - [ ] Use `packages/shared/security/src/secret-detector.ts`
+   - [ ] Install as husky hook
+
+3. **Security Audit API Endpoints**
+   - [ ] Create `packages/api-server/src/routes/security.ts`
+   - [ ] `POST /api/v1/security/scan` (owner only)
+   - [ ] `GET /api/v1/security/secrets` (owner only)
+   - [ ] `GET /api/v1/security/audit-log` (developer+)
+
+4. **Vulnerability Scan & Fix**
+   - [ ] Run `pnpm audit --audit-level=high`
+   - [ ] Fix 0 HIGH/CRITICAL vulnerabilities
+   - [ ] Document findings
+
+### Success Criteria
+
+- ✅ SAST scan in CI
+- ✅ Secret detection pre-commit
+- ✅ Security audit API implemented
+- ✅ 0 HIGH/CRITICAL vulnerabilities
+
+### Status
+
+**IN PROGRESS** - Start here for next AI session
+
+**Branch to create:** `phase2-batch2.4-security-audit`
+
+**Files to modify:**
+
+- `.github/workflows/ci.yml` (add SAST step)
+- `packages/api-server/src/routes/security.ts` (new)
+- `.husky/pre-commit` or create pre-commit script
+
+**MCP exploration required before coding:**
+
+```bash
+search_graph(query="SAST scanner security")
+search_graph(query="secret detector patterns")
+get_code_snippet(qualified_name="root-Agentx.packages.shared.security.src.scanner.SASTScanner")
+```
 
 ---
 

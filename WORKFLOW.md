@@ -808,12 +808,97 @@ docs/
 
 **Phase 2: Security Hardening** (Week 3-4)
 
-| Batch                               | Status         | PR  | Notes                         |
-| ----------------------------------- | -------------- | --- | ----------------------------- |
-| 2.1 - Authentication Implementation | ✅ Complete    | #54 | JWT auth implemented          |
-| 2.2 - Authorization (RBAC)          | ✅ Complete    | -   | RBAC middleware + integration |
-| 2.3 - Rate Limiting                 | ✅ Complete    | -   | Per-user/API-key rate limiter |
-| 2.4 - Security Audit                | ⬜ Not started | -   | Security scans                |
+| Batch                               | Status         | PR  | Notes                     |
+| ----------------------------------- | -------------- | --- | ------------------------- |
+| 2.1 - Authentication Implementation | ✅ Complete    | #54 | JWT auth implemented      |
+| 2.2 - Authorization (RBAC)          | ✅ Complete    | #57 | RBAC middleware merged    |
+| 2.3 - Rate Limiting                 | ✅ Complete    | #57 | Rate limiter merged       |
+| 2.4 - Security Audit                | ⬜ In Progress | -   | **NEXT TASK - See below** |
+
+---
+
+### 📋 For Next AI Session (Solo Dev Context)
+
+**Project:** AgentX - Cognitive Intelligence Platform  
+**Dev Mode:** Solo Developer (self-review OK)  
+**Current State:** Phase 2.4 Security Audit IN PROGRESS
+
+**What's Already Done (in main branch):**
+
+- ✅ Phase 2.1: JWT Authentication (PR #54)
+- ✅ Phase 2.2: RBAC Authorization (PR #57)
+- ✅ Phase 2.3: Per-User Rate Limiting (PR #57)
+- ✅ DevOps: pre-pr-check.sh script, CI pipeline fixed
+
+**Next Task: Phase 2.4 - Security Audit**
+
+Per MASTER_PLAN_PRODUCTION.md Batch 2.4, implement:
+
+1. **SAST Scanner Integration**
+   - Existing: `packages/shared/security/src/scanner.ts` (SASTScanner class)
+   - Task: Add to CI pipeline as automated security gate
+   - File: `.github/workflows/ci.yml`
+
+2. **Secret Detection**
+   - Existing: `packages/shared/security/src/secret-detector.ts`
+   - Task: Pre-commit hook to prevent secret commits
+   - File: `.husky/pre-commit` or `scripts/pre-commit-secret-detect.sh`
+
+3. **Security Audit API Endpoints**
+   - Create: `packages/api-server/src/routes/security.ts`
+   - Endpoints:
+     - `POST /api/v1/security/scan` - Trigger SAST scan (owner only)
+     - `GET /api/v1/security/secrets` - Check for secrets (owner only)
+     - `GET /api/v1/security/audit-log` - Query audit logs (developer+)
+   - Use existing RBAC middleware for permissions
+
+4. **Vulnerability Remediation**
+   - Run: `pnpm audit --audit-level=high`
+   - Fix: Any HIGH/CRITICAL vulnerabilities
+   - Document: Findings in docs/security/
+
+**MCP Tools to Use (REQUIRED before coding):**
+
+```bash
+# Understand existing security infrastructure
+search_graph(query="SAST scanner security")
+search_graph(query="secret detector patterns")
+get_code_snippet(qualified_name="root-Agentx.packages.shared.security.src.scanner.SASTScanner")
+get_code_snippet(qualified_name="root-Agentx.packages.shared.security.src.secret-detector.SecretPatternDetector")
+get_code_snippet(qualified_name="root-Agentx.packages.shared.security.src.audit-log.HashChainedAuditLog")
+```
+
+**Branch to Create:**
+
+```bash
+git checkout -b phase2-batch2.4-security-audit
+```
+
+**Workflow Rules (ALWAYS follow):**
+
+1. **MCP-First:** Use MCP tools before any implementation
+2. **CI Gates:** No merge without green CI
+3. **Pre-PR Check:** Run `./scripts/pre-pr-check.sh` before PR
+4. **Small Batches:** Keep PRs <400 lines (split if needed)
+5. **Documentation:** Update WORKFLOW.md + MASTER_PLAN.md after merge
+
+**Success Criteria (Definition of Done):**
+
+- [ ] SAST scan runs in CI on every PR
+- [ ] Secret detection pre-commit hook active
+- [ ] Security audit API endpoints implemented & tested
+- [ ] 0 HIGH/CRITICAL vulnerabilities from `pnpm audit`
+- [ ] CI green (all gates pass)
+- [ ] WORKFLOW.md & MASTER_PLAN.md updated with PR link
+
+**Solo Dev Notes:**
+
+- Self-review acceptable (no team members)
+- CI green = primary quality gate
+- Security-critical code: extra careful with auth/RBAC/secret handling
+- Split large features into smaller PRs (<400 lines)
+
+---
 
 ### Phase 1 Summary (Completed)
 
