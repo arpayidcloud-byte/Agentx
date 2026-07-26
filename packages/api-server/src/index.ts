@@ -10,6 +10,7 @@ import { createHealthRoutes } from './routes/health.js';
 import { createEventRoutes } from './routes/events.js';
 import { createMetricsRoutes } from './routes/metrics.js';
 import { createGitHubWebhookRoutes } from './integrations/github.js';
+import { createSecurityRoutes } from './routes/security.js';
 import { createAuthMiddleware } from './middleware/auth.js';
 import { createRBACMiddleware } from './middleware/rbac.js';
 import { createRateLimitMiddleware } from './middleware/rate-limit.js';
@@ -150,6 +151,7 @@ export async function createApiServer(config: ApiServerConfig) {
   await fastify.register(createApprovalRoutes, { prefix: '/api/v1' });
   await fastify.register(createHealthRoutes, { prefix: '/api/v1' });
   await fastify.register(createEventRoutes, { prefix: '/api/v1' });
+  await fastify.register(createSecurityRoutes, { prefix: '/api/v1' });
   await fastify.register(createGitHubWebhookRoutes, {
     secret: config.githubWebhookSecret || '',
   });
