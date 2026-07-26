@@ -34,6 +34,8 @@
     "test:e2e": "vitest run --config tests/e2e/vitest.e2e.config.ts",
     "test:load": "k6 run load-tests/performance.test.js",
     "test:load:shutdown": "k6 run load-tests/shutdown.test.js",
+    "test:security": "vitest run tests/e2e/specs/security-owasp.test.ts",
+    "security:scan": "./scripts/security-scan.sh",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md,json,yaml,yml}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,md,json,yaml,yml}\"",
