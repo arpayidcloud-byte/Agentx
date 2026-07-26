@@ -9,6 +9,7 @@ import { cost } from './commands/cost.js';
 import { audit } from './commands/audit.js';
 import { plugin } from './commands/plugin.js';
 import { watch } from './commands/watch.js';
+import { dlq } from './commands/dlq.js';
 
 const program = new Command();
 
@@ -130,6 +131,18 @@ program
   .action(async () => {
     try {
       await watch([]);
+    } catch (error) {
+      console.error(error instanceof Error ? error.message : String(error));
+      process.exit(1);
+    }
+  });
+
+program
+  .command('dlq [action]')
+  .description('Manage Dead Letter Queue (list|clear|size)')
+  .action(async (action?: string) => {
+    try {
+      await dlq(action ? [action] : []);
     } catch (error) {
       console.error(error instanceof Error ? error.message : String(error));
       process.exit(1);
