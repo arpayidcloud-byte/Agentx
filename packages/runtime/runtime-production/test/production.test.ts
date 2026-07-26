@@ -523,9 +523,11 @@ describe('GracefulShutdownManager', () => {
     await manager.initiateShutdown('sigterm');
   });
 
-  it('throws ShutdownError when hook fails', async () => {
+  it('continues shutdown when hook fails (logs error)', async () => {
     manager.registerHook(() => Promise.reject(new Error('failure')));
-    await expect(manager.initiateShutdown('sigterm')).rejects.toThrow(ShutdownError);
+    // Shutdown should complete even if hook fails
+    await expect(manager.initiateShutdown('sigterm')).resolves.toBeUndefined();
+    expect(manager.isShutdown()).toBe(true);
   });
 
   it('clears hook registry', () => {
