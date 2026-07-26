@@ -43,6 +43,8 @@
     "deploy-test": "echo 'deploy validation passed'",
     "typecheck": "turbo run typecheck",
     "dev": "turbo run dev",
+    "demo": "pnpm build && node apps/cli/dist/index.js demo",
+    "agentx": "node apps/cli/dist/index.js",
     "prepare": "husky install",
     "changeset": "changeset",
     "version": "changeset version",

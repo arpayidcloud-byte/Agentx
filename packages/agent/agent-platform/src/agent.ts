@@ -24,7 +24,7 @@ export interface Agent {
 }
 
 // Helper function to call LLM provider
-async function callLLM(prompt: string, modelId?: string): Promise<string> {
+export async function callLLM(prompt: string, modelId?: string): Promise<string> {
   const registry = new ProviderRegistry();
   const providers = registry.list();
   const provider = providers[0];

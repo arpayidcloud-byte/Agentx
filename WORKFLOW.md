@@ -21,47 +21,55 @@
 
 ## 📍 Current Status
 
-**Phase 2: Security Hardening** (Week 3-4)
+**Phase 3: Core Functionality** (Week 5-6)
 
-| Batch   | Task               | Status             | PR  | Notes          |
-| ------- | ------------------ | ------------------ | --- | -------------- |
-| 2.1     | JWT Authentication | ✅ Complete        | #54 | Merged         |
-| 2.2     | RBAC Authorization | ✅ Complete        | #57 | Merged         |
-| 2.3     | Rate Limiting      | ✅ Complete        | #57 | Merged         |
-| **2.4** | **Security Audit** | **⬜ IN PROGRESS** | -   | **START HERE** |
+| Batch                            | Task                 | Status             | PR  | Notes          |
+| -------------------------------- | -------------------- | ------------------ | --- | -------------- |
+| **Phase 2 - Security Hardening** |                      |                    |     |                |
+| 2.1                              | JWT Authentication   | ✅ Complete        | #54 | Merged         |
+| 2.2                              | RBAC Authorization   | ✅ Complete        | #57 | Merged         |
+| 2.3                              | Rate Limiting        | ✅ Complete        | #57 | Merged         |
+| 2.4                              | Security Audit       | ✅ Complete        | #58 | Merged         |
+| **Phase 3 - Core Functionality** |                      |                    |     |                |
+| 3.1                              | LLM Integration      | ✅ Complete        | #59 | Merged         |
+| 3.2                              | Agent Implementation | ✅ Complete        | #60 | Merged (docs)  |
+| **3.3**                          | **E2E Flow**         | **⬜ IN PROGRESS** | -   | **START HERE** |
 
-### Next Task: Phase 2.4 - Security Audit
+### Next Task: Phase 3.3 - End-to-End Flow
 
 **What to implement:**
 
-1. SAST scanner integration to CI
-2. Secret detection pre-commit hook
-3. Security audit API endpoints (`/api/v1/security/*`)
-4. Vulnerability scan & fix (0 HIGH/CRITICAL)
+1. Working E2E demo: CLI → Runtime → Agent → LLM → Response
+2. Full request/response cycle
+3. Error handling demo
+4. Document demo in README
 
 **Files to create/modify:**
 
-- `packages/api-server/src/routes/security.ts` (NEW)
-- `.github/workflows/ci.yml` (ADD SAST step)
-- `scripts/pre-commit-secret-detect.sh` (NEW)
+- `apps/cli/src/commands/demo.ts` (NEW - E2E demo command)
+- `packages/api-server/src/routes/demo.ts` (NEW - demo endpoint)
+- `README.md` (UPDATE - add E2E demo section)
+- `docs/e2e-demo.md` (NEW - detailed demo guide)
 
 **MCP commands before coding:**
 
 ```bash
-search_graph(query="SAST scanner security")
-search_graph(query="secret detector patterns")
-get_code_snippet(qualified_name="root-Agentx.packages.shared.security.src.scanner.SASTScanner")
-get_code_snippet(qualified_name="root-Agentx.packages.shared.security.src.secret-detector.SecretPatternDetector")
+search_graph(query="LLM provider integration")
+search_graph(query="agent orchestration")
+get_code_snippet(qualified_name="root-Agentx.packages.shared.llm.src.provider.LLMProvider")
+get_code_snippet(qualified_name="root-Agentx.packages.agents.orchestrator.src.AgentOrchestrator")
+trace_path(function_name="AgentOrchestrator", direction="both")
 ```
 
-**Branch name:** `phase2-batch2.4-security-audit`
+**Branch name:** `phase3-batch3.3-e2e-flow`
 
 **Success criteria:**
 
-- [ ] SAST scan runs in CI
-- [ ] Secret detection pre-commit active
-- [ ] Security API endpoints implemented
-- [ ] 0 HIGH/CRITICAL vulnerabilities
+- [ ] CLI command triggers full E2E flow
+- [ ] Real LLM call executed (Anthropic/OpenAI)
+- [ ] Response displayed to user
+- [ ] Error handling demonstrated
+- [ ] README updated with demo instructions
 - [ ] CI green → Auto-merge
 
 ---
@@ -583,7 +591,7 @@ CI: ✅ All gates passed
 ---
 
 **Last Updated:** July 26, 2026  
-**Next Review:** After Phase 2 complete  
+**Next Review:** After Phase 3 complete  
 **DevOps Model:** Agent DevOps (Auto-merge on CI green)  
 **Status:** Active
 
@@ -594,8 +602,8 @@ CI: ✅ All gates passed
 ```
 Week 0:   Phase 0 - Cleanup & Security ✅ COMPLETE
 Week 1-2: Phase 1 - Code Quality ✅ COMPLETE
-Week 3-4: Phase 2 - Security Hardening ⬅️ CURRENT (2.4 IN PROGRESS)
-Week 5-6: Phase 3 - Core Functionality ⬜ PENDING
+Week 3-4: Phase 2 - Security Hardening ✅ COMPLETE
+Week 5-6: Phase 3 - Core Functionality ⬅️ CURRENT (3.3 IN PROGRESS)
 Week 7-8: Phase 4 - Reliability ⬜ PENDING
 Week 9-10: Phase 5 - Testing ⬜ PENDING
 Week 11-12: Phase 6 - Performance ⬜ PENDING
