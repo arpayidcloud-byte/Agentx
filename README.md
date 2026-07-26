@@ -51,6 +51,11 @@ pnpm agentx reject <task-id>
 # Run E2E demo
 pnpm agentx demo "Your goal here"
 
+# Dead Letter Queue management (NEW!)
+pnpm agentx dlq list    # List failed tasks
+pnpm agentx dlq size    # Show DLQ size
+pnpm agentx dlq clear   # Clear DLQ
+
 # Other commands
 pnpm agentx config      # Manage configuration
 pnpm agentx cost        # Show cost analysis
