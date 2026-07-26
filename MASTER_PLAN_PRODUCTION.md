@@ -595,25 +595,29 @@ Coverage thresholds vary:
 ### Tasks
 
 1. **Implement role-based access control**
-   - [ ] Role definitions (admin, user, viewer)
-   - [ ] Permission definitions
-   - [ ] Role-permission mapping
-   - [ ] User-role assignment
+   - [x] Role definitions (owner, developer, viewer)
+   - [x] Permission definitions
+   - [x] Role-permission mapping
+   - [x] User-role assignment
 
 2. **Add authorization middleware**
-   - [ ] Check user role
-   - [ ] Check user permissions
-   - [ ] Deny unauthorized access
+   - [x] Check user role
+   - [x] Check user permissions
+   - [x] Deny unauthorized access
 
 3. **Add RBAC tests**
-   - [ ] Unit tests for role checking
-   - [ ] Integration tests for protected routes
+   - [x] Unit tests for role checking
+   - [x] Integration tests for protected routes
 
 ### Success Criteria
 
 - ✅ RBAC fully implemented
 - ✅ Middleware protecting routes
 - ✅ Tests verify authorization
+
+### Status
+
+**COMPLETE** - PR #57
 
 ---
 
@@ -622,26 +626,30 @@ Coverage thresholds vary:
 ### Tasks
 
 1. **Implement rate limiting**
-   - [ ] Per-API key limits
-   - [ ] Per-user limits
-   - [ ] Per-IP limits (optional)
-   - [ ] Configurable limits
+   - [x] Per-API key limits
+   - [x] Per-user limits
+   - [x] Per-IP limits (optional)
+   - [x] Configurable limits
 
 2. **Add rate limit headers**
-   - [ ] X-RateLimit-Limit
-   - [ ] X-RateLimit-Remaining
-   - [ ] X-RateLimit-Reset
+   - [x] X-RateLimit-Limit
+   - [x] X-RateLimit-Remaining
+   - [x] X-RateLimit-Reset
 
 3. **Add rate limit tests**
-   - [ ] Test limit enforcement
-   - [ ] Test header accuracy
-   - [ ] Test recovery after limit reset
+   - [x] Test limit enforcement
+   - [x] Test header accuracy
+   - [x] Test recovery after limit reset
 
 ### Success Criteria
 
 - ✅ Rate limiting active
 - ✅ Headers present
 - ✅ Tests pass
+
+### Status
+
+**COMPLETE** - PR #57
 
 ---
 
