@@ -1,22 +1,21 @@
 # AgentX Development Workflow
 
-**Version:** 3.0 (Solo Dev Optimized)  
+**Version:** 4.0 (Agent DevOps)  
 **Created:** July 24, 2026  
 **Last Updated:** July 26, 2026  
 **Status:** Active
 
 ---
 
-## 🎯 Quick Start (Solo Dev)
+## 🎯 Quick Start (For Next AI Agent)
 
-**Untuk AI berikutnya yang接手 project ini:**
+**Ketika kamu接手 project ini:**
 
-1. **Baca section ini dulu** → Kamu tahu context solo dev
-2. **Scroll ke "📍 Current Status"** → Tahu apa yang harus dikerjakan
-3. **Ikuti "🚀 Development Workflow"** → Step-by-step dari branch sampai merge
-4. **Pakai MCP tools** → Sebelum coding, explore dulu
-5. **Run CI lokal** → `./scripts/pre-pr-check.sh` sebelum push
-6. **Merge sendiri** → Solo dev = self-review OK
+1. **Baca "📍 Current Status"** → Tahu apa yang harus dikerjakan
+2. **Ikuti "🚀 Development Workflow"** → Step-by-step lengkap
+3. **Pakai MCP tools** → WAJIB sebelum coding
+4. **Run CI lokal** → `./scripts/pre-pr-check.sh`
+5. **Auto-merge jika CI green** → Agent DevOps decision
 
 ---
 
@@ -63,7 +62,40 @@ get_code_snippet(qualified_name="root-Agentx.packages.shared.security.src.secret
 - [ ] Secret detection pre-commit active
 - [ ] Security API endpoints implemented
 - [ ] 0 HIGH/CRITICAL vulnerabilities
-- [ ] CI green before merge
+- [ ] CI green → Auto-merge
+
+---
+
+## 🤖 Agent DevOps Model
+
+### Overview
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    AI AGENT                              │
+│  - Orchestrator: Planning, MCP exploration               │
+│  - Developer: Implementation, testing                    │
+│  - DevOps: CI/CD, quality gates, merge decisions         │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Agent Responsibilities
+
+| Role             | Responsibility                                  | Decision Rules                                                                              |
+| ---------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| **Orchestrator** | Plan tasks, MCP exploration, coordinate batches | - MCP before every task<br>- Break into small batches<br>- Track progress                   |
+| **Developer**    | Implement features, write tests, fix bugs       | - Follow coding standards<br>- No console.log<br>- No hardcoded secrets<br>- Tests required |
+| **DevOps**       | CI/CD, quality gates, merge decisions           | - **BLOCK if CI red**<br>- Auto-merge if CI green<br>- Run pre-PR checks                    |
+
+### Agent DevOps Golden Rules
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  RULE 1: NO MERGE IF CI RED                             │
+│  RULE 2: AUTO-MERGE IF CI GREEN                         │
+│  RULE 3: DOCS-ONLY CHANGES → SKIP CI, AUTO-MERGE        │
+└─────────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -237,12 +269,28 @@ gh pr checks <PR_NUMBER>
 
 **Jika CI fail → FIX, push lagi, wait CI again**
 
-### Step 10: Merge (Solo Dev = Self-Review)
+### Step 10: Auto-Merge Decision (Agent DevOps)
 
-Karena solo dev, self-review acceptable:
+**DevOps Logic:**
+
+```
+IF CI status == "GREEN" (all jobs pass):
+  → MERGE immediately (auto-merge)
+
+ELSE IF CI status == "RED" (any job fails):
+  → BLOCK merge, fix failures first
+
+ELSE IF CI status == "WARNINGS ONLY":
+  → Can merge, create follow-up task to fix warnings
+
+ELSE IF docs-only changes:
+  → SKIP CI check, auto-merge
+```
+
+**Execute merge:**
 
 ```bash
-gh pr merge <PR_NUMBER> --merge
+gh pr merge <PR_NUMBER> --merge --auto
 ```
 
 ### Step 11: Update Documentation
@@ -274,12 +322,12 @@ git pull origin main
 ## 📋 Core Principles
 
 1. **Master Plan First** → Semua kerjaan refer ke MASTER_PLAN_PRODUCTION.md
-2. **CI Gates** → No merge without green CI
+2. **CI Gates** → No merge without green CI (auto-enforced by DevOps)
 3. **Small Batches** → PR <400 lines, frequent merges
 4. **Documentation** → Code changes = doc updates
 5. **Testing** → No feature without tests
 6. **MCP-First** → MCP tools sebelum implementation
-7. **Solo Dev** → Self-review OK, CI = primary gate
+7. **Agent DevOps** → CI green = auto-merge, CI red = block
 
 ---
 
@@ -347,11 +395,14 @@ Jobs (must all pass):
 8. ✅ handbook lint (continue-on-error)
 9. ✅ contract tests (continue-on-error)
 
-**Merge Rules:**
+**Auto-Merge Decision Matrix:**
 
-- ✅ All green → Merge immediately
-- ⚠️ Warnings only → Can merge
-- ❌ Any failure → DO NOT MERGE, fix first
+| CI Status        | DevOps Action                |
+| ---------------- | ---------------------------- |
+| ✅ All green     | **AUTO-MERGE** immediately   |
+| ⚠️ Warnings only | Merge, create follow-up task |
+| ❌ Any failure   | **BLOCK**, fix first         |
+| 📄 Docs-only     | **SKIP CI**, auto-merge      |
 
 ---
 
@@ -379,33 +430,58 @@ Jobs (must all pass):
 git commit -m "docs: mark Phase 2.4 complete (PR #XX)"
 ```
 
+### Auto-Continue to Next Batch
+
+**After progress update:**
+
+```
+IF batch complete AND CI green AND docs updated:
+  → READ next batch in MASTER_PLAN_PRODUCTION.md
+  → CREATE feature branch for next batch
+  → START MCP exploration
+  → BEGIN implementation
+```
+
+**Example:**
+
+```bash
+# Batch 2.4 complete
+→ Update docs
+→ Push progress
+→ Auto-continue to Phase 3 (Core Functionality)
+
+git checkout -b phase3-batch3.1-llm-integration
+# MCP exploration
+# Implementation
+```
+
 ---
 
-## 📝 Solo Dev Notes
+## 📝 Agent DevOps Auto-Decisions
 
-### Self-Review Acceptable
-
-Karena solo dev:
-
-- ✅ Kamu write code
-- ✅ Kamu review code
-- ✅ Kamu merge
-- ✅ CI green = sufficient quality gate
-
-### When to Split PRs
-
-**Keep PRs <400 lines.** Jika lebih besar, split:
+### When to Auto-Merge
 
 ```
-Bad: 1 PR with 1000 lines
-Good: 3 PRs with 300-350 lines each
+✅ CI all green → Auto-merge
+✅ Docs-only changes → Auto-merge (skip CI)
+⚠️ Warnings only → Auto-merge + follow-up task
 ```
 
-**Split by feature:**
+### When to Block
 
-- PR 1: RBAC middleware
-- PR 2: Rate limiting
-- PR 3: CI improvements
+```
+❌ CI red → Block, fix first
+❌ Pre-PR check failed → Block, fix first
+❌ Coverage threshold not met → Block, add tests
+```
+
+### When to Split PR
+
+```
+IF PR size > 400 lines:
+  → SPLIT into smaller PRs by feature
+  → Merge each separately
+```
 
 ### Security-Critical Code
 
@@ -414,7 +490,8 @@ Untuk auth/RBAC/secrets:
 - Extra careful dengan implementation
 - Double-check CI green
 - Test thoroughly locally
-- Consider waiting 1 session before merge (fresh eyes)
+- Add security scan step
+- Document security decisions
 
 ---
 
@@ -442,22 +519,31 @@ gh pr create --title "..." --body "..."
 # Check CI
 gh pr checks <PR_NUMBER>
 
-# Merge (solo dev)
-gh pr merge <PR_NUMBER> --merge
+# Auto-merge (if CI green)
+gh pr merge <PR_NUMBER> --merge --auto
 
 # Cleanup
 git branch -d <branch>
 git push origin --delete <branch>
 ```
 
-### MCP Commands
+### MCP Commands (REQUIRED before EVERY task)
 
 ```bash
-# Before EVERY task
+# 1. Architecture
 get_architecture()
+
+# 2. Find code
 search_graph(query="relevant pattern")
-trace_path(function_name="TargetFunction")
+
+# 3. Trace dependencies
+trace_path(function_name="TargetFunction", direction="both")
+
+# 4. Read source
 get_code_snippet(qualified_name="full.path.Function")
+
+# 5. Complex queries
+query_graph(query="MATCH (n:Function) RETURN n LIMIT 10")
 ```
 
 ### Branch Naming
@@ -468,20 +554,37 @@ phase2-batch2.4-security-audit
 phase3-batch3.1-llm-integration
 ```
 
+### Commit Message Format
+
+```bash
+<type>(<scope>): <description>
+
+# Types: feat, fix, docs, chore, refactor, test
+# Scope: phase2-batch2.4, ci, docs, etc.
+
+# Example:
+feat(phase2-batch2.4): implement SAST scanner integration
+
+- Add security scan step to CI
+- Use existing SASTScanner class
+
+CI: ✅ All gates passed
+```
+
 ---
 
 ## 📚 References
 
 - [Master Production Plan](./MASTER_PLAN_PRODUCTION.md) - Main reference
 - [Architecture](./ARCHITECTURE.md) - System design
-- [Contributing](./CONTRIBUTING.md) - Contribution guide
 - [Pre-PR Script](./scripts/pre-pr-check.sh) - Local CI
+- [CI Workflow](./.github/workflows/ci.yml) - GitHub Actions
 
 ---
 
 **Last Updated:** July 26, 2026  
 **Next Review:** After Phase 2 complete  
-**Owner:** Solo Developer  
+**DevOps Model:** Agent DevOps (Auto-merge on CI green)  
 **Status:** Active
 
 ---
