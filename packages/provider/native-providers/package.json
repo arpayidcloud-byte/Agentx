@@ -6,7 +6,7 @@
     "url": "https://github.com/arpayidcloud-byte/Agentx.git",
     "directory": "packages/provider/native-providers"
   },
-  "version": "0.1.0",
+  "version": "1.0.0",
   "deprecated": true,
   "private": true,
   "type": "module",
