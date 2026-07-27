@@ -6,7 +6,7 @@
     "url": "https://github.com/arpayidcloud-byte/Agentx.git",
     "directory": "tooling/eslint-plugin-internal"
   },
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "main": "index.js",
   "scripts": {
