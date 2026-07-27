@@ -2,6 +2,19 @@
 
 > Provider-agnostic, multi-agent AI software-engineering platform.
 
+## 📦 Installation
+
+```bash
+# Install core runtime
+npm install @agentx-cli/core-runtime
+
+# Install CLI
+npm install -g @agentx-cli/cli
+
+# Or install all packages
+npm install @agentx-cli/autonomous-cognition @agentx-cli/reasoning-framework @agentx-cli/workflow-engine
+```
+
 ## Quick Start
 
 ```bash
@@ -36,6 +49,8 @@ The demo will:
 
 ## CLI Commands
 
+### Using Local Development
+
 ```bash
 # Submit a new task
 pnpm agentx submit "Write a REST API for user management" --role coder
@@ -43,36 +58,48 @@ pnpm agentx submit "Write a REST API for user management" --role coder
 # Check task status
 pnpm agentx status
 pnpm agentx status <task-id>
+```
 
-# Approve/reject pending tasks
-pnpm agentx approve <task-id>
-pnpm agentx reject <task-id>
+### Using Published npm Package
 
-# Run E2E demo
-pnpm agentx demo "Your goal here"
+```bash
+# Install CLI globally
+npm install -g @agentx-cli/cli
 
-# Dead Letter Queue management
-pnpm agentx dlq list    # List failed tasks
-pnpm agentx dlq size    # Show DLQ size
-pnpm agentx dlq clear   # Clear DLQ
+# Submit task
+agentx submit "Your goal here" --role coder
 
-# Graceful shutdown
-pnpm agentx shutdown "Maintenance"  # Trigger graceful shutdown
+# Check status
+agentx status
 
-# Load Testing
-pnpm test:load              # Run performance load tests (100-1000 users)
-pnpm test:load:shutdown     # Test graceful shutdown under load
+# Run demo
+agentx demo "Explain quantum computing"
+```
 
-# Security Testing
-pnpm test:security          # Run OWASP Top 10 security tests
-pnpm security:scan          # Run comprehensive security scan
+### All Available Commands
 
-# Other commands
-pnpm agentx config      # Manage configuration
-pnpm agentx cost        # Show cost analysis
-pnpm agentx audit       # Run security audit
-pnpm agentx plugin      # Manage plugins
-pnpm agentx watch       # Watch for changes
+```bash
+# Task Management
+agentx submit <goal> [--role <role>]    # Submit new task
+agentx status [task-id]                 # Check task status
+agentx approve <task-id>                # Approve pending task
+agentx reject <task-id>                 # Reject pending task
+
+# Queue Management
+agentx dlq list                         # List failed tasks
+agentx dlq size                         # Show DLQ size
+agentx dlq clear                        # Clear DLQ
+
+# System Commands
+agentx shutdown [reason]                # Graceful shutdown
+agentx config                           # Manage configuration
+agentx cost                             # Show cost analysis
+agentx audit                            # Run security audit
+
+# Testing
+pnpm test:load                          # Load tests (100-1000 users)
+pnpm test:security                      # OWASP Top 10 tests
+pnpm security:scan                      # Security scan
 ```
 
 ## Architecture

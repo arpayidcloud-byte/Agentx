@@ -1304,6 +1304,18 @@ get_code_snippet(qualified_name="root-Agentx.packages.shared.security.src.scanne
 
 **RELEASED: 2026-07-27** 🎉
 
+**npm Publication:**
+- ✅ 49 packages published to npm
+- ✅ Organization: @agentx-cli
+- ✅ All packages @ v1.0.0
+- ✅ Public access enabled
+- ✅ No security vulnerabilities
+
+**npm Links:**
+- Organization: https://www.npmjs.com/org/agentx-cli
+- All packages: https://www.npmjs.com/search?q=scope:@agentx-cli
+- Installation: `npm install @agentx-cli/core-runtime`
+
 ---
 
 ## 📊 Success Metrics

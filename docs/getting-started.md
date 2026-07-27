@@ -8,10 +8,24 @@
 
 ## Installation
 
+### Option 1: From npm (Recommended)
+
+```bash
+# Install core packages
+npm install @agentx-cli/core-runtime @agentx-cli/autonomous-cognition
+npm install -g @agentx-cli/cli
+
+# Run your first agent
+agentx demo "Explain quantum computing"
+```
+
+### Option 2: From Source
+
 ```bash
 git clone https://github.com/arpayidcloud-byte/Agentx.git
 cd Agentx
 pnpm install
+pnpm build
 ```
 
 ## Quick Start
