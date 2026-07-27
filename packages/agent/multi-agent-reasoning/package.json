@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/multi-agent-reasoning",
+  "name": "@agentx-cli/multi-agent-reasoning",
   "license": "MIT",
   "repository": {
     "type": "git",

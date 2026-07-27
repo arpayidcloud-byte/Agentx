@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/workflow-engine",
+  "name": "@agentx-cli/workflow-engine",
   "license": "MIT",
   "repository": {
     "type": "git",

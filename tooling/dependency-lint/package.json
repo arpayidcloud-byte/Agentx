@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/dependency-lint",
+  "name": "@agentx-cli/dependency-lint",
   "license": "MIT",
   "repository": {
     "type": "git",

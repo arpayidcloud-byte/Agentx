@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/provider-sdk",
+  "name": "@agentx-cli/provider-sdk",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -34,9 +34,9 @@
     "vitest": "^3.2.6"
   },
   "dependencies": {
-    "@agentx/secrets": "workspace:*",
-    "@agentx/runtime-adapters": "workspace:*",
-    "@agentx/observability": "workspace:*",
+    "@agentx-cli/secrets": "workspace:*",
+    "@agentx-cli/runtime-adapters": "workspace:*",
+    "@agentx-cli/observability": "workspace:*",
     "@anthropic-ai/sdk": "^0.111.0",
     "@google/generative-ai": "^0.24.1"
   }

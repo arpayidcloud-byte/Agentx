@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/persistence",
+  "name": "@agentx-cli/persistence",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@prisma/client": "^5.14.0",
-    "@agentx/core-runtime": "workspace:*"
+    "@agentx-cli/core-runtime": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

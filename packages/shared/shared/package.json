@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/shared",
+  "name": "@agentx-cli/shared",
   "license": "MIT",
   "repository": {
     "type": "git",

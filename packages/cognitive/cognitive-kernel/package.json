@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/cognitive-kernel",
+  "name": "@agentx-cli/cognitive-kernel",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -34,7 +34,7 @@
     "vitest": "^3.2.6"
   },
   "dependencies": {
-    "@agentx/cognitive-learning": "workspace:*",
-    "@agentx/autonomous-cognition": "workspace:*"
+    "@agentx-cli/cognitive-learning": "workspace:*",
+    "@agentx-cli/autonomous-cognition": "workspace:*"
   }
 }

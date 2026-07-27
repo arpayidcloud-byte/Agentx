@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/memory-engine",
+  "name": "@agentx-cli/memory-engine",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -33,7 +33,7 @@
     "vitest": "^3.2.6"
   },
   "dependencies": {
-    "@agentx/core-runtime": "workspace:*",
+    "@agentx-cli/core-runtime": "workspace:*",
     "@prisma/client": "^5.14.0"
   }
 }

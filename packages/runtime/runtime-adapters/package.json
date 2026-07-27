@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/runtime-adapters",
+  "name": "@agentx-cli/runtime-adapters",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -28,7 +28,7 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@agentx/core-runtime": "workspace:*",
+    "@agentx-cli/core-runtime": "workspace:*",
     "bullmq": "^5.80.2",
     "ioredis": "^5.11.1"
   },

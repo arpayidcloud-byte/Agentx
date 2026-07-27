@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/enterprise-runtime",
+  "name": "@agentx-cli/enterprise-runtime",
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/provider-qualification",
+  "name": "@agentx-cli/provider-qualification",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -28,7 +28,7 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@agentx/runtime-adapters": "workspace:*"
+    "@agentx-cli/runtime-adapters": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

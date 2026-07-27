@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/planning-engine",
+  "name": "@agentx-cli/planning-engine",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -28,7 +28,7 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@agentx/core-runtime": "workspace:*"
+    "@agentx-cli/core-runtime": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

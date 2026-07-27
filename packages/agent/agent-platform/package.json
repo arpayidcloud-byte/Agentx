@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/agent-platform",
+  "name": "@agentx-cli/agent-platform",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -28,9 +28,9 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@agentx/core-runtime": "workspace:*",
-    "@agentx/multi-agent-collaboration": "workspace:*",
-    "@agentx/provider-sdk": "workspace:*"
+    "@agentx-cli/core-runtime": "workspace:*",
+    "@agentx-cli/multi-agent-collaboration": "workspace:*",
+    "@agentx-cli/provider-sdk": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

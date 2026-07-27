@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/workflow-hardening",
+  "name": "@agentx-cli/workflow-hardening",
   "license": "MIT",
   "repository": {
     "type": "git",

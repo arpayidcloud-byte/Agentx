@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/vendor-certification",
+  "name": "@agentx-cli/vendor-certification",
   "license": "MIT",
   "repository": {
     "type": "git",

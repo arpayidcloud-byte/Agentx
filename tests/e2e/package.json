@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/e2e",
+  "name": "@agentx-cli/e2e",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -17,10 +17,10 @@
   "devDependencies": {
     "typescript": "5.4.5",
     "vitest": "^3.2.6",
-    "@agentx/core-runtime": "workspace:*",
-    "@agentx/tool-sdk": "workspace:*",
-    "@agentx/security": "workspace:*",
-    "@agentx/telemetry": "workspace:*",
-    "@agentx/observability": "workspace:*"
+    "@agentx-cli/core-runtime": "workspace:*",
+    "@agentx-cli/tool-sdk": "workspace:*",
+    "@agentx-cli/security": "workspace:*",
+    "@agentx-cli/telemetry": "workspace:*",
+    "@agentx-cli/observability": "workspace:*"
   }
 }

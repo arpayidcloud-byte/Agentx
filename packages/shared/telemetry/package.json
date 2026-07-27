@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/telemetry",
+  "name": "@agentx-cli/telemetry",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -33,7 +33,7 @@
     "vitest": "^3.2.6"
   },
   "dependencies": {
-    "@agentx/shared": "workspace:*",
-    "@agentx/observability": "workspace:*"
+    "@agentx-cli/shared": "workspace:*",
+    "@agentx-cli/observability": "workspace:*"
   }
 }

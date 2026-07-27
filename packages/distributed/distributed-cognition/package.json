@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/distributed-cognition",
+  "name": "@agentx-cli/distributed-cognition",
   "license": "MIT",
   "repository": {
     "type": "git",

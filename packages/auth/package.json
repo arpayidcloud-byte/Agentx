@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/auth",
+  "name": "@agentx-cli/auth",
   "license": "MIT",
   "repository": {
     "type": "git",

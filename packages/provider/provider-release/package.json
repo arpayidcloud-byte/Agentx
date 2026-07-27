@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/provider-release",
+  "name": "@agentx-cli/provider-release",
   "license": "MIT",
   "repository": {
     "type": "git",

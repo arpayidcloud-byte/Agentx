@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/cognitive-contracts",
+  "name": "@agentx-cli/cognitive-contracts",
   "license": "MIT",
   "repository": {
     "type": "git",

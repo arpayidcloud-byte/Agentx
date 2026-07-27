@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/tool-sdk",
+  "name": "@agentx-cli/tool-sdk",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -34,11 +34,11 @@
     "vitest": "^3.2.6"
   },
   "dependencies": {
-    "@agentx/agent-platform": "workspace:*",
-    "@agentx/cache": "workspace:*",
-    "@agentx/core-runtime": "workspace:*",
-    "@agentx/observability": "workspace:*",
-    "@agentx/provider-sdk": "workspace:*",
+    "@agentx-cli/agent-platform": "workspace:*",
+    "@agentx-cli/cache": "workspace:*",
+    "@agentx-cli/core-runtime": "workspace:*",
+    "@agentx-cli/observability": "workspace:*",
+    "@agentx-cli/provider-sdk": "workspace:*",
     "yaml": "^2.9.0"
   }
 }

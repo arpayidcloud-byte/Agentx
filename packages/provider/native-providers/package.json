@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/native-providers",
+  "name": "@agentx-cli/native-providers",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -36,6 +36,6 @@
     "vitest": "^3.2.6"
   },
   "dependencies": {
-    "@agentx/runtime-adapters": "workspace:*"
+    "@agentx-cli/runtime-adapters": "workspace:*"
   }
 }

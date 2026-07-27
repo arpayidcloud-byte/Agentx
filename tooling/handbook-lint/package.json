@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/handbook-lint",
+  "name": "@agentx-cli/handbook-lint",
   "license": "MIT",
   "repository": {
     "type": "git",

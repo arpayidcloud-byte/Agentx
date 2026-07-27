@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/runtime-production",
+  "name": "@agentx-cli/runtime-production",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -28,10 +28,10 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@agentx/persistence": "workspace:*",
-    "@agentx/runtime-adapters": "workspace:*",
-    "@agentx/core-runtime": "workspace:*",
-    "@agentx/tool-sdk": "workspace:*",
+    "@agentx-cli/persistence": "workspace:*",
+    "@agentx-cli/runtime-adapters": "workspace:*",
+    "@agentx-cli/core-runtime": "workspace:*",
+    "@agentx-cli/tool-sdk": "workspace:*",
     "@prisma/client": "^5.14.0"
   },
   "devDependencies": {

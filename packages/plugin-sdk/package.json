@@ -1,5 +1,5 @@
 {
-  "name": "@agentx/plugin-sdk",
+  "name": "@agentx-cli/plugin-sdk",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -34,7 +34,7 @@
     "vitest": "^3.2.6"
   },
   "dependencies": {
-    "@agentx/core-runtime": "workspace:*",
-    "@agentx/shared": "workspace:*"
+    "@agentx-cli/core-runtime": "workspace:*",
+    "@agentx-cli/shared": "workspace:*"
   }
 }
