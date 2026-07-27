@@ -7,7 +7,6 @@
     "directory": "tooling/eslint-plugin-internal"
   },
   "version": "1.0.0",
-  "private": true,
   "main": "index.js",
   "scripts": {
     "test": "vitest run --passWithNoTests",

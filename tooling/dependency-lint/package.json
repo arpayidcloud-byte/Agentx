@@ -7,7 +7,6 @@
     "directory": "tooling/dependency-lint"
   },
   "version": "1.0.0",
-  "private": true,
   "type": "module",
   "scripts": {
     "lint:deps": "node --loader ts-node/esm src/index.ts"

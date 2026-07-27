@@ -7,7 +7,6 @@
     "directory": "packages/agent/multi-agent-collaboration"
   },
   "version": "1.0.0",
-  "private": true,
   "type": "module",
   "main": "./dist/index.js",
   "exports": {
