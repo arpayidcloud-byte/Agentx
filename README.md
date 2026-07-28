@@ -4,15 +4,27 @@
 
 ## 📦 Installation
 
+### CLI (Global Install)
+
+```bash
+# Install CLI globally
+npm install -g @agentx-fast/cli
+
+# Verify installation
+agentx --version
+agentx --help
+```
+
+### Core Packages
+
 ```bash
 # Install core runtime
-npm install @agentx-cli/core-runtime
+npm install @agentx-fast/core-runtime
 
-# Install CLI
-npm install -g @agentx-cli/cli
-
-# Or install all packages
-npm install @agentx-cli/autonomous-cognition @agentx-cli/reasoning-framework @agentx-cli/workflow-engine
+# Install individual packages as needed
+npm install @agentx-fast/provider-sdk
+npm install @agentx-fast/agent-platform
+npm install @agentx-fast/tool-sdk
 ```
 
 ## Quick Start
@@ -22,94 +34,44 @@ pnpm install
 docker compose up -d
 cp .env.example .env
 pnpm build
-pnpm test
-```
-
-## E2E Demo
-
-Run the end-to-end demo to see AgentX in action:
-
-```bash
-# Run E2E demo (CLI → Runtime → Agent → LLM → Response)
 pnpm demo "Explain what is AgentX"
-
-# Or with custom goal
-pnpm demo "Write a Python function to calculate fibonacci"
 ```
 
-The demo will:
+## 📊 Published Packages (10/52)
 
-1. ✅ Initialize the runtime
-2. ✅ Create and enqueue a task
-3. ✅ Call LLM provider (Anthropic/OpenAI)
-4. ✅ Display the response
-5. ✅ Show task status
+| Package                           | Version | Description               |
+| --------------------------------- | ------- | ------------------------- |
+| `@agentx-fast/cli`                | 1.0.0   | ⭐ Command-line interface |
+| `@agentx-fast/core-runtime`       | 1.0.0   | Core runtime utilities    |
+| `@agentx-fast/shared`             | 1.0.0   | Shared utilities          |
+| `@agentx-fast/observability`      | 1.0.0   | Observability tools       |
+| `@agentx-fast/persistence`        | 1.0.0   | Persistence layer         |
+| `@agentx-fast/runtime-adapters`   | 1.0.0   | Runtime adapters          |
+| `@agentx-fast/provider-sdk`       | 1.0.0   | Provider SDK              |
+| `@agentx-fast/agent-platform`     | 1.0.0   | Agent platform            |
+| `@agentx-fast/tool-sdk`           | 1.0.0   | Tool SDK                  |
+| `@agentx-fast/runtime-production` | 1.0.0   | Production runtime        |
 
-**Note:** Set `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` in your `.env` file for real LLM calls.
+**More packages coming soon!** Check [npm](https://npmjs.com/org/agentx-fast) for updates.
 
-## CLI Commands
-
-### Using Local Development
-
-```bash
-# Submit a new task
-pnpm agentx submit "Write a REST API for user management" --role coder
-
-# Check task status
-pnpm agentx status
-pnpm agentx status <task-id>
-```
-
-### Using Published npm Package
-
-```bash
-# Install CLI globally
-npm install -g @agentx-cli/cli
-
-# Submit task
-agentx submit "Your goal here" --role coder
-
-# Check status
-agentx status
-
-# Run demo
-agentx demo "Explain quantum computing"
-```
-
-### All Available Commands
-
-```bash
-# Task Management
-agentx submit <goal> [--role <role>]    # Submit new task
-agentx status [task-id]                 # Check task status
-agentx approve <task-id>                # Approve pending task
-agentx reject <task-id>                 # Reject pending task
-
-# Queue Management
-agentx dlq list                         # List failed tasks
-agentx dlq size                         # Show DLQ size
-agentx dlq clear                        # Clear DLQ
-
-# System Commands
-agentx shutdown [reason]                # Graceful shutdown
-agentx config                           # Manage configuration
-agentx cost                             # Show cost analysis
-agentx audit                            # Run security audit
-
-# Testing
-pnpm test:load                          # Load tests (100-1000 users)
-pnpm test:security                      # OWASP Top 10 tests
-pnpm security:scan                      # Security scan
-```
-
-## Architecture
+## 🏗️ Architecture
 
 Please see [ARCHITECTURE.md](./ARCHITECTURE.md).
 
-## Contributing
+## 🤝 Contributing
 
 Please read [CONTRIBUTING.md](./CONTRIBUTING.md).
 
-## Handbook
+## 📚 Handbook
 
-The full architecture specification and authoritative documentation live in the separate `agentx-handbook` repository.
+The full architecture specification lives in the separate `agentx-handbook` repository.
+
+## 📝 License
+
+MIT License
+
+---
+
+**GitHub:** https://github.com/arpayidcloud-byte/Agentx  
+**npm Org:** https://npmjs.com/org/agentx-fast  
+**Docs:** https://github.com/arpayidcloud-byte/agentx-platform
