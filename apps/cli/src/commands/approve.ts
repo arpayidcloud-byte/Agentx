@@ -1,5 +1,5 @@
 import { getRuntime } from '../lib/runtime.js';
-import { TaskStatus } from '@agentx/core-runtime';
+import { TaskStatus } from '@agentx-fast/core-runtime';
 
 export async function approve(args: string[]): Promise<void> {
   const taskId = args[0];

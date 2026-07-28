@@ -1,6 +1,6 @@
 // apps/cli/src/commands/dlq.ts
 import { getRuntime } from '../lib/runtime.js';
-import { TaskStatus } from '@agentx/core-runtime';
+import { TaskStatus } from '@agentx-fast/core-runtime';
 
 /**
  * Dead Letter Queue Management Commands

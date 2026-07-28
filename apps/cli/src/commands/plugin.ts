@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { getRuntime } from '../lib/runtime.js';
-import type { TaskStatus, TaskPriority, TaskMetadata } from '@agentx/core-runtime';
-import { TaskStatus as TaskStatusEnum } from '@agentx/core-runtime';
+import type { TaskStatus, TaskPriority, TaskMetadata } from '@agentx-fast/core-runtime';
+import { TaskStatus as TaskStatusEnum } from '@agentx-fast/core-runtime';
 
 interface PluginRecord {
   id: string;

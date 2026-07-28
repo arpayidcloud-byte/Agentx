@@ -1,12 +1,12 @@
 {
-  "name": "@agentx-cli/dependency-lint",
+  "name": "@agentx-fast/dependency-lint",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/arpayidcloud-byte/Agentx.git",
     "directory": "tooling/dependency-lint"
   },
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
     "lint:deps": "node --loader ts-node/esm src/index.ts"

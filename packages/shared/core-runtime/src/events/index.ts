@@ -2,7 +2,7 @@ import type { IEventBus, EventEnvelope } from '../interfaces/events.js';
 import { EventBusError } from '../errors.js';
 import { Queue, Worker } from 'bullmq';
 import { Redis } from 'ioredis';
-import { AgentXLoggerFactory } from '@agentx/shared';
+import { AgentXLoggerFactory } from '@agentx-fast/shared';
 
 /**
  * In-memory implementation of IEventBus for testing and development.

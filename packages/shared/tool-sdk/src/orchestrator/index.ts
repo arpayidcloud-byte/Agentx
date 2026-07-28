@@ -9,8 +9,8 @@ import type {
   NormalizedToolCall,
   ToolResult as ProviderToolResult,
   CompletionResponse,
-} from '@agentx/provider-sdk';
-import { Metrics, Tracer } from '@agentx/observability';
+} from '@agentx-fast/provider-sdk';
+import { Metrics, Tracer } from '@agentx-fast/observability';
 
 export interface ToolOrchestratorConfig {
   maxIterations: number;

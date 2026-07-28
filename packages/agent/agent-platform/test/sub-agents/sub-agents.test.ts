@@ -22,7 +22,7 @@ import {
   AgentTimeoutError,
   AgentFailureError,
 } from '../../src/sub-agents/errors.js';
-import { InMemoryEventBus } from '@agentx/core-runtime';
+import { InMemoryEventBus } from '@agentx-fast/core-runtime';
 
 // ============================================================
 // DEFAULT CONFIGS & MOCKS

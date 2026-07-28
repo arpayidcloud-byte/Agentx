@@ -1,5 +1,5 @@
 import type { FastifyInstance, FastifyReply } from 'fastify';
-import type { PrometheusExporter } from '@agentx/observability';
+import type { PrometheusExporter } from '@agentx-fast/observability';
 
 export async function createMetricsRoutes(
   fastify: FastifyInstance,

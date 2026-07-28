@@ -1,5 +1,5 @@
-import type { CompletionRequest, Provider } from '@agentx/provider-sdk';
-import { ProviderRegistry } from '@agentx/provider-sdk';
+import type { CompletionRequest, Provider } from '@agentx-fast/provider-sdk';
+import { ProviderRegistry } from '@agentx-fast/provider-sdk';
 
 export interface AgentInput {
   input: string;

@@ -1,5 +1,6 @@
 // V9 CLI - Human Interface
 import { Command } from 'commander';
+import { createRequire } from 'module';
 import { submit } from './commands/submit.js';
 import { approve, reject } from './commands/approve.js';
 import { status } from './commands/status.js';
@@ -12,9 +13,12 @@ import { watch } from './commands/watch.js';
 import { dlq } from './commands/dlq.js';
 import { shutdown } from './commands/shutdown.js';
 
+const require = createRequire(import.meta.url);
+const pkg = require('../package.json');
+
 const program = new Command();
 
-program.name('agentx').description('AgentX CLI').version('0.1.0');
+program.name('agentx').description('AgentX CLI').version(pkg.version);
 
 program
   .command('submit <goal>')
@@ -161,5 +165,8 @@ program
       process.exit(1);
     }
   });
+
+// Execute CLI
+program.parse(process.argv);
 
 export { program };

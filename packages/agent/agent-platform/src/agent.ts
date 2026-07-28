@@ -1,7 +1,7 @@
 // packages/agent/agent-platform/src/agent.ts
-import type { TaskModel, TaskContext } from '@agentx/core-runtime';
-import type { CompletionRequest } from '@agentx/provider-sdk';
-import { ProviderRegistry } from '@agentx/provider-sdk';
+import type { TaskModel, TaskContext } from '@agentx-fast/core-runtime';
+import type { CompletionRequest } from '@agentx-fast/provider-sdk';
+import { ProviderRegistry } from '@agentx-fast/provider-sdk';
 
 export type AgentRole = 'coding' | 'review' | 'test' | 'security';
 

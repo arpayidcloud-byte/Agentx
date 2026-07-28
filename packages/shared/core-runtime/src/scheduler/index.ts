@@ -5,8 +5,8 @@ import type { IEventBus } from '../interfaces/events.js';
 import { EventTopic } from '../interfaces/events.js';
 import { TaskStateMachine } from '../state-machine/index.js';
 import { TaskNotFoundError } from '../errors.js';
-import { Tracer, Metrics } from '@agentx/observability';
-import { AgentXLoggerFactory } from '@agentx/shared';
+import { Tracer, Metrics } from '@agentx-fast/observability';
+import { AgentXLoggerFactory } from '@agentx-fast/shared';
 import type { AgentRegistry } from '../registry/agent-registry.js';
 
 /**

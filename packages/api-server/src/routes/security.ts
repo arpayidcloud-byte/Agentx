@@ -1,7 +1,7 @@
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
-import { SASTScanner } from '@agentx/shared/security';
-import { SecretPatternDetector } from '@agentx/shared/security';
-import { HashChainedAuditLog } from '@agentx/shared/security';
+import { SASTScanner } from '@agentx-fast/shared/security';
+import { SecretPatternDetector } from '@agentx-fast/shared/security';
+import { HashChainedAuditLog } from '@agentx-fast/shared/security';
 import { createRBACMiddleware } from '../middleware/rbac.js';
 
 const rbac = createRBACMiddleware();

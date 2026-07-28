@@ -1,16 +1,27 @@
 {
-  "name": "@agentx-cli/handbook-lint",
+  "name": "@agentx-fast/handbook-lint",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/arpayidcloud-byte/Agentx.git",
     "directory": "tooling/handbook-lint"
   },
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    }
+  },
   "bin": {
     "handbook-lint": "./bin/handbook-lint.js"
   },
+  "files": [
+    "dist",
+    "bin",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc --build",
     "typecheck": "tsc --noEmit",

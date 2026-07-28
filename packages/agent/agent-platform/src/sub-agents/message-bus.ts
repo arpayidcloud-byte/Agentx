@@ -1,5 +1,5 @@
 import type { AgentMessage } from './interfaces.js';
-import type { IEventBus } from '@agentx/core-runtime';
+import type { IEventBus } from '@agentx-fast/core-runtime';
 
 export class MessageBus {
   private handlers = new Map<string, Set<(msg: AgentMessage) => void>>();

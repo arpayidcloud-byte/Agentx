@@ -7,7 +7,7 @@
  * "Lower-numbered volumes must never depend on higher-numbered ones."
  *
  * Each package is mapped to a volume number. The script scans all .ts source
- * files for `from '@agentx/...'` imports and checks that no package imports
+ * files for `from '@agentx-fast/...'` imports and checks that no package imports
  * from a higher-numbered volume.
  */
 
@@ -94,7 +94,8 @@ const PACKAGE_VOLUME_MAP: Record<string, number> = {
 function getVolumeForPackage(pkgDir: string): number | null {
   // Normalize path relative to repo root
   const rel = path.relative(REPO_ROOT, pkgDir).replace(/\\/g, '/');
-  if (PACKAGE_VOLUME_MAP[rel] !== undefined) return PACKAGE_VOLUME_MAP[rel];
+  const volume = PACKAGE_VOLUME_MAP[rel];
+  if (volume !== undefined) return volume;
 
   // Fallback: try matching by prefix
   for (const [prefix, vol] of Object.entries(PACKAGE_VOLUME_MAP)) {
@@ -168,9 +169,11 @@ function extractImports(file: string): string[] {
   const content = fs.readFileSync(file, 'utf-8');
   const imports: string[] = [];
   const regex = /from\s+['"](@agentx\/[^'"]+)['"]/g;
-  let match;
+  let match: RegExpExecArray | null;
   while ((match = regex.exec(content)) !== null) {
-    imports.push(match[1]);
+    if (match[1]) {
+      imports.push(match[1]);
+    }
   }
   return imports;
 }

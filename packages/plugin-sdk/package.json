@@ -1,12 +1,12 @@
 {
-  "name": "@agentx-cli/plugin-sdk",
+  "name": "@agentx-fast/plugin-sdk",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/arpayidcloud-byte/Agentx.git",
     "directory": "packages/plugin-sdk"
   },
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "main": "./dist/index.js",
   "exports": {
@@ -34,7 +34,7 @@
     "vitest": "^3.2.6"
   },
   "dependencies": {
-    "@agentx-cli/core-runtime": "workspace:*",
-    "@agentx-cli/shared": "workspace:*"
+    "@agentx-fast/core-runtime": "^1.0.0",
+    "@agentx-fast/shared": "^1.0.0"
   }
 }

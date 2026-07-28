@@ -1,12 +1,12 @@
 {
-  "name": "@agentx-cli/native-providers",
+  "name": "@agentx-fast/native-providers",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/arpayidcloud-byte/Agentx.git",
     "directory": "packages/provider/native-providers"
   },
-  "version": "1.0.0",
+  "version": "2.0.0",
   "deprecated": true,
   "type": "module",
   "main": "./dist/index.js",
@@ -36,6 +36,6 @@
     "vitest": "^3.2.6"
   },
   "dependencies": {
-    "@agentx-cli/runtime-adapters": "workspace:*"
+    "@agentx-fast/runtime-adapters": "^1.0.0"
   }
 }

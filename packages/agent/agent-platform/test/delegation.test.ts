@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { AgentDelegationProtocol } from '../src/delegation.js';
-import type { TaskModel, TaskContext } from '@agentx/core-runtime';
-import { TaskStatus, TaskPriority } from '@agentx/core-runtime';
+import type { TaskModel, TaskContext } from '@agentx-fast/core-runtime';
+import { TaskStatus, TaskPriority } from '@agentx-fast/core-runtime';
 
 describe('AgentDelegationProtocol', () => {
   it('delegates task from coder to reviewer', async () => {

@@ -5,7 +5,7 @@
 
 import type { CoordinatorConfig } from './interfaces.js';
 import { ProductionExecutionCoordinator } from './coordinator.js';
-import type { IEventBus } from '@agentx/core-runtime';
+import type { IEventBus } from '@agentx-fast/core-runtime';
 
 export interface CoordinatorBootstrapOptions {
   config?: Partial<CoordinatorConfig>;

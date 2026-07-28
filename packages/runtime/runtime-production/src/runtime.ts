@@ -3,9 +3,9 @@ import {
   PrismaTaskRepository,
   PrismaEventRepository,
   PrismaApprovalRepository,
-} from '@agentx/persistence';
-import { BullMQProvider, RedisLockProvider } from '@agentx/runtime-adapters';
-import { Scheduler, InMemoryEventBus } from '@agentx/core-runtime';
+} from '@agentx-fast/persistence';
+import { BullMQProvider, RedisLockProvider } from '@agentx-fast/runtime-adapters';
+import { Scheduler, InMemoryEventBus } from '@agentx-fast/core-runtime';
 import { GracefulShutdownManager } from './graceful-shutdown-manager.js';
 
 export class ProductionRuntime {

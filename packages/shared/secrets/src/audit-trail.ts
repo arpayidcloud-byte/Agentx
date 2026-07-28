@@ -1,6 +1,6 @@
 import { createHash } from 'crypto';
 import * as fs from 'fs';
-import { AgentXLoggerFactory } from '@agentx/shared';
+import { AgentXLoggerFactory } from '@agentx-fast/shared';
 
 const LOG_FILE = process.env.AGENTX_SECRET_AUDIT_LOG;
 const logger = new AgentXLoggerFactory().createLogger('secret-audit');

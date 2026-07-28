@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { PlanningEngine } from '../src/index.js';
-import { InMemoryEventBus } from '@agentx/core-runtime';
+import { InMemoryEventBus } from '@agentx-fast/core-runtime';
 
 describe('Planning Engine', () => {
   let eventBus: InMemoryEventBus;

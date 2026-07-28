@@ -15,7 +15,7 @@ import {
   DuplicateTaskError,
   EventBusError,
 } from '../src/index.js';
-import { NullLogger } from '@agentx/shared';
+import { NullLogger } from '@agentx-fast/shared';
 import type { CancellationToken } from '../src/cancellation/index.js';
 import type { ICredentialResolver } from '../src/context/index.js';
 import { TaskContextBuilder } from '../src/context/task-context-builder.js';

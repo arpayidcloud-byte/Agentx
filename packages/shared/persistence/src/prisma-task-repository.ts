@@ -7,7 +7,7 @@ import type {
   TaskContext,
   TaskResult,
   TaskError,
-} from '@agentx/core-runtime';
+} from '@agentx-fast/core-runtime';
 import type { Prisma, PrismaClient } from '@prisma/client';
 
 export class PrismaTaskRepository implements ITaskRepository {

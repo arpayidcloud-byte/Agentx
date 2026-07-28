@@ -26,7 +26,7 @@ import {
   CompatibilityValidationError,
   QualificationRegistryError,
 } from '../src/index.js';
-import { MemoryQueueProvider } from '@agentx/runtime-adapters';
+import { MemoryQueueProvider } from '@agentx-fast/runtime-adapters';
 
 describe('Qualification Errors', () => {
   it('covers error instantiation', () => {

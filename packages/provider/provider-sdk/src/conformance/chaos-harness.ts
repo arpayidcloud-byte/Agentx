@@ -3,7 +3,7 @@
  * @description Fault injection testing harness.
  */
 
-import type { IProvider } from '@agentx/runtime-adapters';
+import type { IProvider } from '@agentx-fast/runtime-adapters';
 import type { HarnessResult } from './interfaces.js';
 
 export class ChaosHarness {

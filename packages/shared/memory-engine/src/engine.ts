@@ -6,7 +6,7 @@ import type {
   MemoryMetrics,
   MemoryType,
 } from './interfaces.js';
-import type { IEventBus } from '@agentx/core-runtime';
+import type { IEventBus } from '@agentx-fast/core-runtime';
 
 interface LRUCacheNode {
   key: string;

@@ -1,12 +1,12 @@
 {
-  "name": "@agentx-cli/auth",
+  "name": "@agentx-fast/auth",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/arpayidcloud-byte/Agentx.git",
     "directory": "packages/auth"
   },
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

@@ -8,7 +8,7 @@ import type {
   KnowledgeGraph,
   KnowledgeMetrics,
 } from './interfaces.js';
-import type { IEventBus } from '@agentx/core-runtime';
+import type { IEventBus } from '@agentx-fast/core-runtime';
 
 export class KnowledgeEngine implements IKnowledgeEngine {
   private metrics: KnowledgeMetrics = {

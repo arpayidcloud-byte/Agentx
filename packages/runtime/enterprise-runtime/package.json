@@ -1,12 +1,12 @@
 {
-  "name": "@agentx-cli/enterprise-runtime",
+  "name": "@agentx-fast/enterprise-runtime",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/arpayidcloud-byte/Agentx.git",
     "directory": "packages/runtime/enterprise-runtime"
   },
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "main": "./dist/index.js",
   "exports": {

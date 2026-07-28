@@ -1,12 +1,12 @@
 {
-  "name": "@agentx-cli/runtime-production",
+  "name": "@agentx-fast/runtime-production",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/arpayidcloud-byte/Agentx.git",
     "directory": "packages/runtime/runtime-production"
   },
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "main": "./dist/index.js",
   "exports": {
@@ -28,10 +28,10 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@agentx-cli/persistence": "workspace:*",
-    "@agentx-cli/runtime-adapters": "workspace:*",
-    "@agentx-cli/core-runtime": "workspace:*",
-    "@agentx-cli/tool-sdk": "workspace:*",
+    "@agentx-fast/persistence": "^1.0.0",
+    "@agentx-fast/runtime-adapters": "^1.0.0",
+    "@agentx-fast/core-runtime": "^1.0.0",
+    "@agentx-fast/tool-sdk": "^1.0.0",
     "@prisma/client": "^5.14.0"
   },
   "devDependencies": {

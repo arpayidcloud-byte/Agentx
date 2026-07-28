@@ -1,12 +1,12 @@
 {
-  "name": "@agentx-cli/cloud",
+  "name": "@agentx-fast/cloud",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/arpayidcloud-byte/Agentx.git",
     "directory": "packages/cloud"
   },
-  "version": "1.0.0",
+  "version": "2.0.0",
   "deprecated": true,
   "type": "module",
   "main": "./src/index.ts",

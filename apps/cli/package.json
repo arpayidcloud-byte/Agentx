@@ -1,15 +1,15 @@
 {
-  "name": "@agentx-cli/cli",
+  "name": "@agentx-fast/cli",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/arpayidcloud-byte/Agentx.git",
     "directory": "apps/cli"
   },
-  "version": "1.0.0",
+  "version": "2.0.3",
   "type": "module",
   "bin": {
-    "agentx": "./dist/index.js"
+    "agentx": "./bin/agentx"
   },
   "scripts": {
     "build": "tsc --build",
@@ -23,12 +23,12 @@
     "vitest": "^3.2.6"
   },
   "dependencies": {
-    "@agentx-cli/agent-platform": "workspace:*",
-    "@agentx-cli/core-runtime": "workspace:*",
-    "@agentx-cli/provider-sdk": "workspace:*",
-    "@agentx-cli/runtime-adapters": "workspace:*",
-    "@agentx-cli/runtime-production": "workspace:*",
-    "@agentx-cli/tool-sdk": "workspace:*",
+    "@agentx-fast/agent-platform": "^2.0.0",
+    "@agentx-fast/core-runtime": "^2.0.0",
+    "@agentx-fast/provider-sdk": "^2.0.0",
+    "@agentx-fast/runtime-adapters": "^2.0.0",
+    "@agentx-fast/runtime-production": "^2.0.0",
+    "@agentx-fast/tool-sdk": "^2.0.0",
     "@prisma/client": "^7.9.0",
     "commander": "^15.0.0"
   }

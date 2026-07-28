@@ -1,77 +1,173 @@
-# AgentX Platform
+# 🚀 AgentX Platform
 
-> Provider-agnostic, multi-agent AI software-engineering platform.
+**Enterprise AI Agent Platform** - Build, deploy, and manage intelligent agents at scale.
 
-## 📦 Installation
+[![npm version](https://img.shields.io/npm/v/@agentx-fast/cli.svg)](https://www.npmjs.com/package/@agentx-fast/cli)
+[![npm downloads](https://img.shields.io/npm/dm/@agentx-fast/cli.svg)](https://www.npmjs.com/package/@agentx-fast/cli)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-### CLI (Global Install)
+---
+
+## 🎯 Quick Start
+
+### Install CLI
 
 ```bash
-# Install CLI globally
-npm install -g @agentx-fast/cli
+npm install -g @agentx-fast/cli@2.0.2
+```
 
-# Verify installation
+### Verify Installation
+
+```bash
 agentx --version
 agentx --help
 ```
 
-### Core Packages
+### Run Your First Agent
 
 ```bash
-# Install core runtime
-npm install @agentx-fast/core-runtime
-
-# Install individual packages as needed
-npm install @agentx-fast/provider-sdk
-npm install @agentx-fast/agent-platform
-npm install @agentx-fast/tool-sdk
+agentx demo "Build a REST API with Node.js"
 ```
-
-## Quick Start
-
-```bash
-pnpm install
-docker compose up -d
-cp .env.example .env
-pnpm build
-pnpm demo "Explain what is AgentX"
-```
-
-## 📊 Published Packages (10/52)
-
-| Package                           | Version | Description               |
-| --------------------------------- | ------- | ------------------------- |
-| `@agentx-fast/cli`                | 1.0.0   | ⭐ Command-line interface |
-| `@agentx-fast/core-runtime`       | 1.0.0   | Core runtime utilities    |
-| `@agentx-fast/shared`             | 1.0.0   | Shared utilities          |
-| `@agentx-fast/observability`      | 1.0.0   | Observability tools       |
-| `@agentx-fast/persistence`        | 1.0.0   | Persistence layer         |
-| `@agentx-fast/runtime-adapters`   | 1.0.0   | Runtime adapters          |
-| `@agentx-fast/provider-sdk`       | 1.0.0   | Provider SDK              |
-| `@agentx-fast/agent-platform`     | 1.0.0   | Agent platform            |
-| `@agentx-fast/tool-sdk`           | 1.0.0   | Tool SDK                  |
-| `@agentx-fast/runtime-production` | 1.0.0   | Production runtime        |
-
-**More packages coming soon!** Check [npm](https://npmjs.com/org/agentx-fast) for updates.
-
-## 🏗️ Architecture
-
-Please see [ARCHITECTURE.md](./ARCHITECTURE.md).
-
-## 🤝 Contributing
-
-Please read [CONTRIBUTING.md](./CONTRIBUTING.md).
-
-## 📚 Handbook
-
-The full architecture specification lives in the separate `agentx-handbook` repository.
-
-## 📝 License
-
-MIT License
 
 ---
 
-**GitHub:** https://github.com/arpayidcloud-byte/Agentx  
-**npm Org:** https://npmjs.com/org/agentx-fast  
-**Docs:** https://github.com/arpayidcloud-byte/agentx-platform
+## 📦 Available Commands
+
+| Command | Description |
+|---------|-------------|
+| `agentx submit <goal>` | Submit a new task |
+| `agentx approve <task-id>` | Approve a pending task |
+| `agentx reject <task-id>` | Reject a pending task |
+| `agentx status [task-id]` | Check task status |
+| `agentx demo [goal...]` | Run E2E demo |
+| `agentx config` | Manage configuration |
+| `agentx cost` | Show cost analysis |
+| `agentx audit` | Run security audit |
+| `agentx plugin` | Manage plugins |
+| `agentx watch` | Watch for changes |
+| `agentx dlq [action]` | Manage Dead Letter Queue |
+| `agentx shutdown [reason...]` | Trigger graceful shutdown |
+
+---
+
+## 🏗️ Architecture
+
+AgentX consists of **49 npm packages** under the `@agentx-fast` scope:
+
+### Core Packages
+- `@agentx-fast/core-runtime` - Core runtime utilities
+- `@agentx-fast/shared` - Shared utilities and types
+- `@agentx-fast/observability` - Logging, metrics, tracing
+
+### Agent & Workflow
+- `@agentx-fast/agent-platform` - Agent orchestration
+- `@agentx-fast/workflow-engine` - Workflow management
+- `@agentx-fast/multi-agent-collaboration` - Multi-agent systems
+
+### Provider SDK
+- `@agentx-fast/provider-sdk` - Provider framework
+- `@agentx-fast/native-providers` - Built-in providers
+
+### Developer Tools
+- `@agentx-fast/cli` - Command-line interface
+- `@agentx-fast/plugin-sdk` - Plugin development
+- `@agentx-fast/developer-platform` - Dev tools
+
+[See all 49 packages →](https://www.npmjs.com/org/agentx-fast)
+
+---
+
+## 📖 Documentation
+
+- [Installation Guide](./INSTALLATION.md)
+- [Architecture Overview](./ARCHITECTURE.md)
+- [Deployment Guide](./DEPLOYMENT.md)
+- [Contributing](./CONTRIBUTING.md)
+
+---
+
+## 🚀 For Developers
+
+### Clone & Setup
+
+```bash
+git clone https://github.com/arpayidcloud-byte/AgentX.git
+cd AgentX
+pnpm install
+```
+
+### Build All Packages
+
+```bash
+pnpm build
+```
+
+### Generate Prisma Client
+
+```bash
+pnpm prisma generate
+```
+
+### Run Tests
+
+```bash
+pnpm test
+pnpm test:e2e
+```
+
+---
+
+## 🎉 v2.0.0 Release
+
+**Latest:** v2.0.0 (Released 2026-07-28)
+
+### What's New
+- ✅ All 49 packages updated to v2.0.0
+- ✅ Clean dependencies (no workspace:*)
+- ✅ All imports migrated to @agentx-fast/*
+- ✅ CLI version now reads from package.json
+- ✅ Improved build process
+
+### Migration from v1.x
+
+```bash
+# Update CLI
+npm install -g @agentx-fast/cli@2.0.2
+
+# Update local packages
+pnpm install
+pnpm build
+```
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! See our [Contributing Guide](./CONTRIBUTING.md) for details.
+
+### Quick Start
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests: `pnpm test`
+5. Submit a PR
+
+---
+
+## 📄 License
+
+MIT © [AgentX Platform](https://github.com/arpayidcloud-byte)
+
+---
+
+## 🔗 Links
+
+- **Website:** Coming soon
+- **npm Organization:** https://www.npmjs.com/org/agentx-fast
+- **GitHub:** https://github.com/arpayidcloud-byte/AgentX
+- **Documentation:** https://github.com/arpayidcloud-byte/agentx-platform
+
+---
+
+**Built with ❤️ by the AgentX Team**

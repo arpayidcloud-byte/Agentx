@@ -35,7 +35,7 @@ import {
   CoordinatorResourceLimitError,
   CoordinatorRecoveryError,
 } from '../src/coordinator/index.js';
-import { IEventBus } from '@agentx/core-runtime';
+import { IEventBus } from '@agentx-fast/core-runtime';
 
 const mockEventBus: IEventBus = {
   publish: vi.fn().mockResolvedValue(undefined),
